@@ -1,0 +1,77 @@
+body {
+    font-family: "Lato", sans-serif;
+  }
+  
+  h1 {
+    color: black;
+    background-color: white;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    /* padding-left: 5px; */
+    /* padding-top: 18px; */
+    
+  }
+  
+  
+  .sidebar {
+    margin: 0;
+    padding: 0;
+    width: 160px;
+    background-color: #ffffff;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+  }
+    
+  /* Sidebar links */
+  .sidebar a {
+    display: block;
+    color: #47BAC5;
+    padding: 12px;
+    text-decoration: none;
+    font-size: larger;
+  }
+  
+  /* Active/current link */
+  .sidebar a.active {
+    background-color: #47BAC5;
+    color: white;
+  }
+  
+  /* Links on mouse-over */
+  .sidebar a:hover:not(.active) {
+    background-color: #47BAC5;
+    color: white;
+  }
+  
+  /* value of the margin-left should match value of sidebar width */
+  div.content {
+    margin-left: 200px;
+    padding: 1px 16px;
+    height: 1000px;
+  }
+
+  #conf-interval {
+    padding: 160px;
+    padding-bottom: 20px;
+  }
+
+  #cases {
+    padding-top: 20px;
+    padding: 160px;
+    padding-bottom: 10px;
+
+  }
+
+  #deaths {
+    padding-top: 10px;
+    padding: 200px;
+  }
+
+
+  
+
+  
+
+  
+  
