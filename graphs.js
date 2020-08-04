@@ -1,4 +1,3 @@
-
 // set dimensions margins of graph
 var margin_conf = {top: 10, right: 10, bottom: 30, left: 60},
     width = 660 - margin_conf.left - margin_conf.right,
@@ -15,8 +14,9 @@ var svg_conf = d3.select("#conf-interval")
 
 //Read data
 //need to spin up server to read locally 
-// d3.csv("file.csv",function(data) {
-d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_IC.csv",function(data) {
+//d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/data_IC.csv",function(data) {
+ d3.csv("file.csv",function(data) {
+
 
 
     // Add X axis
@@ -58,7 +58,7 @@ d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/da
         )
 
 })
-
+/*
 // set the dimensions and margins of the graph
 var margin_cases = {top: 10, right: 30, bottom: 30, left: 40},
     width = 460 - margin_cases.left - margin_cases.right,
@@ -114,13 +114,6 @@ d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_data
 });
 
 
-
-
-
-
-
-
-
 // set the dimensions and margins of the graph
 var margin_deaths = {top: 10, right: 30, bottom: 30, left: 40},
     width = 460 - margin_deaths.left - margin_deaths.right,
@@ -173,4 +166,4 @@ d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_data
         .attr("height", function(d) { return height - y(d.length); })
         .style("fill", "#69b3a2")
 
-});
+});*/
