@@ -15,10 +15,11 @@ var svg_conf = d3.select("#conf-interval")
 //Read data
 //need to spin up server to read locally 
  d3.csv("rtData.csv", function(data) {
-    console.log(data);
+
+    parseDate = d3.timeParse("%Y-%m-%d");
     // Add X axis
-    var x = d3.scaleLinear()
-      .domain([1,100])
+    var x = d3.scaleTime()
+      .domain(d3.extent(data, function(d) { return parseDate(d.date) }))
       .range([ 0, width ]);
     svg_conf.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -26,10 +27,12 @@ var svg_conf = d3.select("#conf-interval")
 
     // Add Y axis
     var y = d3.scaleLinear()
-      .domain([0, 7])
+      .domain([0, d3.max(data, function(d) { return d.rt_upper })])
       .range([ height, 0 ]);
     svg_conf.append("g")
       .call(d3.axisLeft(y));
+
+ 
 
     // Show confidence interval
     svg_conf.append("path")
@@ -37,10 +40,10 @@ var svg_conf = d3.select("#conf-interval")
       .attr("fill", "#cce5df")
       .attr("stroke", "none")
       .attr("d", d3.area()
-        .x(function(d) { return x(d.time) })
+        .x(function(d) { return x(parseDate(d.date)) })
         .y0(function(d) { return y(d.rt_lower) })
         .y1(function(d) { return y(d.rt_upper) })
-        )
+        );
 
     // Add the line
     svg_conf
@@ -50,11 +53,10 @@ var svg_conf = d3.select("#conf-interval")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 1.5)
       .attr("d", d3.line()
-        .x(function(d) { return x(d.time) })
+        .x(function(d) { return x(parseDate(d.date)) })
         .y(function(d) { return y(d.rt_mean) })
-        )
-  console.log("attempting to plot");
-})
+        );
+});
 
 
 /*
