@@ -1,0 +1,10 @@
+---
+layout: none
+---
+[{% for chart in site.data.rt %}
+  {
+    "x": "{{ chart.date }}",
+    "y": "{{ chart.rt_median }}",
+    "geography_modeled": "{{ chart.geography_modeled }}"
+  }{% if forloop.last == false %},{% endif %}
+{% endfor %}] 

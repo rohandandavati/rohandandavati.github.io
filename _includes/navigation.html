@@ -1,0 +1,19 @@
+
+  
+  <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed">
+    <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        {% for item in site.data.navigation %}
+           <li class="nav-item">
+              <a class="nav-link" href="{{ item.link }}" {% if page.url == item.link %}class="current"{% endif %}>{{ item.name }}</a>
+            </li>
+        {% endfor %}
+       
+        </li>
+      </ul>
+    </div>
+  </nav>

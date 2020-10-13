@@ -1,46 +1,236 @@
+---
+layout: default
+title: Home
+---
+<style>
+    .jumbotron {
+    background-color:transparent !important;
+    }
+    .chart {
+        height: 400px;
+    }
+    /*div {*/
+    /*    border: 1px solid black;*/
+    /*}*/
+    /*.selectNumber {*/
+    /*    padding-top: 50px;*/
+    /*}*/
+    body {
+        padding-top: 70px;
+    }
 
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-174500308-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+</style>
 
-  gtag('config', 'UA-174500308-1');
-</script>
+<div id = "region" class = "container d-flex justify-content-end position-fixed ">
+<select id = "region_selector" name="regionselect" class="selectpicker ">
+  <option value='1' >Illinois</option>
+  <option value = "covid">Region 1</option>
+  <option>Region 2</option>
+  <option>Region 3</option>
+  <option>Region 4</option>
+  <option>Region 5</option>
+  <option>Region 6</option>
+  <option>Region 7</option>
+  <option>Region 8</option>
+  <option>Region 9</option>
+  <option>Region 10</option>
+  <option>Region 11</option>
+</select>
 
-        <meta charset="utf-8">
-        <title>Illinois COVID-19 Modeling</title>
-        <link rel="stylesheet" href="main.css">
-    </head>
-        
-    <body>
 
-        <script src="https://d3js.org/d3.v4.js"></script>
 
-        <h1> Illinois COVID-19 Modeling</h1>
+</div>
 
-        <div class="sidebar">
-            <a class="active" href="#home">Illinois</a>
-            <a href="#central">Central</a>
-            <a href="#northcentral">North Central</a>
-            <a href="#northeast">Northeast</a>
-            <a href="#southern">Southern</a>
+<div class="ui dropdown">
+  <div class="text"></div>
+  <i class="dropdown icon"></i>
+</div>
+
+<div class="container jumbotron">
+    <div class="row">
+        <div class="col">
+            <h2>Transmission Status</h2>
+            <p>Example subheading</p>
+            <div class="chart" id = "rt_chart"></div>
+            <p>Example text to decribe chart</p>
         </div>
+    </div>
+</div>
 
-        <div id="conf-interval"></div>
+<div class="container jumbotron">
+    <div class="row">
+        <div class="col">
+            <h2>Cases Map and Chart</h2>
+            <div class = "row"> 
+                <div class="col-sm-12 col-md-4 col-lg-3 chart"> 
+                    <div class="chart" id = "cases_map"></div>
+                </div>
+                <div class="col-sm-12 col-md-8 col-lg-9 chart">
+                    <div class="chart" id = "cases_chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <div id="cases"></div>
 
-        <div id="deaths"></div>
+<div class="container jumbotron">
+    <div class="row">
+        <div class="col">
+            <h2>Deaths Map and Chart</h2>
+            <div class = "row"> 
+                <div class="col-sm-12 col-md-4 col-lg-3 chart"> 
+                    <div class="chart" id = "deaths_map"></div>
+                </div>
+                <div class="col-sm-12 col-md-8 col-lg-9 chart">
+                    <div class="chart" id = "deaths_chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-        <script src="graphs.js"></script>
 
-        <meta charset="utf-8">
+<script>
 
 
-    </body>
-</html>
+d3.json("/data/rt.json", function(data) {
+    let parseDate = d3.time.format("%m/%d/%Y").parse;
+    data = data.filter(function(d){
+        if(isNaN(d.y)){
+            return false;
+        }
+        d.y = +d.y;
+        const now = parseDate(d.x);  
+        const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
+        d.x = secondsSinceEpoch
+        return true;
+    });
+    var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+     
+    // console.log(allGroup);
+    // console.log(allGroup[allGroup.length - 1])
+    
+  var graph = new Rickshaw.Graph( {
+  	element: document.getElementById("rt_chart"),
+  	width: 960,
+  	height: 500,
+  	renderer: 'line',
+  	series: [
+  		{
+  			color: "#c05020",
+  			data: data.filter(function(d){return d.geography_modeled==allGroup[allGroup.length - 1]})
+  		}
+  	]
+  } );
+
+graph.render();
+
+var resize = function() {
+	graph.configure({
+		width: document.getElementById("rt_chart").offsetWidth,
+		height: document.getElementById("rt_chart").offsetHeight
+	});
+	graph.render();
+}
+
+window.addEventListener('resize', resize); 
+resize();
+
+    
+    
+});
+
+d3.json("/data/cases_deaths.json", function(data) {
+    let parseDate = d3.time.format("%Y-%m-%d").parse;
+    data = data.filter(function(d){
+        if(isNaN(d.y)){
+            return false;
+        }
+        d.y = +d.y;
+        const now = parseDate(d.x);  
+        const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
+        d.x = secondsSinceEpoch
+        return true;
+    });
+    
+    console.log(data)
+    var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+     
+    console.log(allGroup);
+    console.log(allGroup[allGroup.length - 1])
+    console.log(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+ 
+  var graph = new Rickshaw.Graph( {
+  	element: document.getElementById("cases_chart"),
+  	width: 960,
+  	height: 500,
+  	renderer: 'area',
+  	series: [
+  		{
+  			color: "#c05020",
+  			data: data.filter(function(d){return d.geography_modeled==allGroup[0]})
+  		}
+  	]
+  } );
+
+graph.render();
+
+var resize = function() {
+	graph.configure({
+		width: document.getElementById("cases_chart").offsetWidth,
+		height: document.getElementById("cases_chart").offsetHeight
+	});
+	graph.render();
+}
+
+window.addEventListener('resize', resize); 
+resize();
+
+    
+    
+});
+
+
+
+// function handlerFunctionA(){
+//     alert("do some stuff");    
+// }
+
+// function handlerFunctionB(){
+//     alert("Do some other stuff");
+// }
+
+//  $(document).ready(function () { 
+//     $(".selectpicker").selectpicker();
+//     $(".regionselect").click(function () {
+//          $(this).addClass("open");
+//     });
+//   });
+
+// $('#region_selector').change(function(){ 
+//     var value = $(this).val();
+// });
+    
+//     ndata = [ { x: 0, y: 23}, { x: 1, y: 15 }, { x: 2, y: 79 } ];
+//     //   instantiate our graph!
+//   var graph = new Rickshaw.Graph( {
+//   	element: document.getElementById("rt_chart"),
+//   	width: 960,
+//   	height: 500,
+//   	renderer: 'line',
+//   	series: [
+//   		{
+//   			color: "#c05020",
+//   			data: ndata,
+//   		}
+//   	]
+//   } );
+
+// graph.render();
+
+// // });
+
+
+
+</script>
