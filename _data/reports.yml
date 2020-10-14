@@ -1,0 +1,16 @@
+- name: Contact tracing notes
+  path: /reports/20200426_contact_tracing.pdf
+- name: Surveillance to "restore Illinois"
+  path: /reports/20200515_surveillance_to_restore_illinois.pdf
+- name: Reduce time to diagnosis
+  path: /reports/20200618_reduce_time_to_diagnosis.pdf
+- name: Second wave
+  path: /reports/20200706_second_wave.pdf
+- name: Contact tracing
+  path: /reports/20200710_contact_tracing.pdf
+- name: Overflow alerts v3
+  path: /reports/20200714_overflow_alert_v3.pdf
+- name: Hospitalizations trigger analysis
+  path: /reports/20200804_hospitalizations_trigger_analysis.pdf
+- name: Hospital census trigger analysis
+  path: /reports/20200811_hospital_census_trigger_analysis.pdf
