@@ -1,36 +1,42 @@
 - name: Surveillance to "restore Illinois"
   path: /reports/20200515_surveillance_to_restore_illinois.pdf
-  image_path: /images/20200515
+  image_path: /images/20200515_surveillance_to_restore_illinois.jpg
   description: >
     Prerequisites for a safe reopening. Summary of 
     suggested surveillance enhancements.
 - name: Reduce time to diagnosis
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
+  image_path: /images/20200618_reduce_time_to_diagnosis.jpg
   description: >
     Investigating the effect of reducing time to diagnosis for COVID-19
     in Illinois.
 - name: Second wave
   path: /reports/20200706_second_wave.pdf
+  image_path: /images/20200706_second_wave.jpg
   description: >
     Is Illinois experiencing a second wave? Overall, cases are up slightly
     while TPR is constant.
 - name: Contact tracing
   path: /reports/20200710_contact_tracing.pdf
+  image_path: /images/20200710_contact_tracing.jpg
   description: >
     How do contact tracing thresholds 
     for Illinois vary across different reopening scenarios?
 - name: Overflow alerts v3
   path: /reports/20200714_overflow_alert_v3.pdf
+  image_path: /images/20200714_overflow_alert_v3.jpg
   description: >
     Early warning signs for exceeding hospital capacity in the Northeast
     Restore Region.
 - name: Hospitalizations trigger analysis
   path: /reports/20200804_hospitalizations_trigger_analysis.pdf
+  image_path: /images/20200804_hospitalizations_trigger_analysis.jpg
   description: >
     Using CLI admissions as an indicator: how reliable is it for COVID Regions
     with fewer admissions?
 - name: Hospital census trigger analysis
   path: /reports/20200811_hospital_census_trigger_analysis.pdf
+  image_path: /images/20200811_hospital_census_trigger_analysis.jpg
   description: >
     Can we predict ICU/hospital capacity overflow by fitting an exponential
     curve to recent data?
