@@ -22,33 +22,55 @@ title: Home
 	.rickshaw_graph .detail {
 		background: none;
 	}
+	
+	/*.drop {*/
+	/*    height: 50px;*/
+	/*}*/
 
 </style>
 
-<div id = "region" class = "container d-flex justify-content-end position-fixed ">
-<select id = "region_selector" name="regionselect" class="selectpicker ">
-  <option value='1' >Illinois</option>
-  <option value = "covid">Region 1</option>
-  <option>Region 2</option>
-  <option>Region 3</option>
-  <option>Region 4</option>
-  <option>Region 5</option>
-  <option>Region 6</option>
-  <option>Region 7</option>
-  <option>Region 8</option>
-  <option>Region 9</option>
-  <option>Region 10</option>
-  <option>Region 11</option>
-</select>
+<!--<div id = "region" class = "container d-flex justify-content-end position-fixed ">-->
+<!--<select id = "region_selector" name="regionselect" class="selectpicker ">-->
+<!--  <option value='1' >Illinois</option>-->
+<!--  <option value = "covid">Region 1</option>-->
+<!--  <option>Region 2</option>-->
+<!--  <option>Region 3</option>-->
+<!--  <option>Region 4</option>-->
+<!--  <option>Region 5</option>-->
+<!--  <option>Region 6</option>-->
+<!--  <option>Region 7</option>-->
+<!--  <option>Region 8</option>-->
+<!--  <option>Region 9</option>-->
+<!--  <option>Region 10</option>-->
+<!--  <option>Region 11</option>-->
+<!--</select>-->
 
+<!--</div>-->
 
+<!--<div class="ui dropdown">-->
+<!--  <div class="text"></div>-->
+<!--  <i class="dropdown icon"></i>-->
+<!--</div>-->
 
+<!--<div id = "region" class = "container justify-content-end position-fixed ">-->
+<!--<select id = "region_selector" name="regionselect" class="selectpicker ">-->
+<!--</select>-->
+
+<!--</div>-->
+<div class = "container position-fixed">
+    <div class = "row">
+        <div class = "col drop">
+            <select id="selectButton" class = "dropdown float-right"  ></select>
+        </div>
+    </div>
 </div>
 
-<div class="ui dropdown">
-  <div class="text"></div>
-  <i class="dropdown icon"></i>
-</div>
+<!--<div class = "container position-relative ">-->
+<!--    <div class="dropdown position-fixed ">-->
+<!--        <select id="selectButton" class = "dropdown-item"  ></select>-->
+<!--    </div>-->
+<!--</div>-->
+
 
 <div class="container jumbotron">
     <div class="row">
@@ -56,10 +78,41 @@ title: Home
             <h2>Transmission Status</h2>
             <p>Example subheading</p>
             <div class="chart rickshaw_graph" id = "rt_chart"></div>
-            <p>Example text to decribe chart</p>
+            <br></br>
+            <text>Example text to decribe chart</text>
         </div>
     </div>
 </div>
+
+<!--<div class="dropdown ">-->
+<!--<select id="selectButton" class = "dropdown-item"></select>-->
+
+<!--</div>-->
+
+<!--<div class="dropdown">-->
+<!--  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--    Dropdown button-->
+<!--  </button>-->
+<!--  <select id="selectButton" class = "dropdown-menu"></select>-->
+  <!--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+  <!--  <a class="dropdown-item" href="#">Action</a>-->
+  <!--  <a class="dropdown-item" href="#">Another action</a>-->
+  <!--  <a class="dropdown-item" href="#">Something else here</a>-->
+  <!--</div>-->
+<!--</div>-->
+
+<!--<div class="dropdown">-->
+<!--  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--    Dropdown button-->
+<!--  </button>-->
+<!--  <div id = "drop" class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
+<!--    <a class="dropdown-item" href="#">Action</a>-->
+<!--    <a class="dropdown-item" href="#">Another action</a>-->
+<!--    <a class="dropdown-item" href="#">Something else here</a>-->
+<!--  </div>-->
+<!--</div>-->
+
+
 
 <div class="container jumbotron">
     <div class="row">
@@ -120,7 +173,29 @@ d3.json("/data/rt.json", function(data) {
     });
     
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
-     
+    
+    // allGroup.sort();
+    //SORT, move il to front 
+    
+        // add the options to the button
+    d3.select("#selectButton")
+      .selectAll('myOptions')
+     	.data(allGroup)
+      .enter()
+    	.append('option')
+      .text(function (d) { 
+          
+          if(d == "illinois" ||d == "Illinois" ) {
+              return "Illinois";
+          }
+        //   n = d.charAt(d.length - 1 );
+          d = "Region " + d.substring( d.indexOf('_')+1);
+          return d; 
+          
+      }) // text showed in the menu
+      .attr("value", function (d) { return d; })
+      .attr("class", "dropdown-item")
+      
     console.log(data);
     console.log(allGroup)
     
