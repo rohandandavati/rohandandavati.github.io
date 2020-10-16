@@ -95,25 +95,33 @@ title: Home
 
 
 d3.json("/data/rt.json", function(data) {
-    let parseDate = d3.time.format("%m/%d/%Y").parse;
+    // let parseDate = d3.time.format("%m/%d/%Y").parse;
+    // let parseDate = d3.time.format("%m-%d-%y").parse;
+    // let parseDate = Date.parse('%m-%d-%y');
     data = data.filter(function(d){
         if(isNaN(d.y)){
             return false;
         }
-        d.y = +d.y;
-        const now = parseDate(d.x);  
-        const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
-        d.x = secondsSinceEpoch
+        
+        d.y = parseFloat(d.y); //rt
+        // d.x = parseDate(d.x);
+        
+        d.x = Date.parse(d.x) / 1000;
+        
+        // console.log(d.x);
+        // d.x = d.x;
+        // const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
+        // d.x = secondsSinceEpoch
         return true;
     });
+    
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
      
-    // console.log(allGroup);
-    // console.log(allGroup[allGroup.length - 1])
+    console.log(data);
+    console.log(allGroup)
     
-  var graph = new Rickshaw.Graph( {
+    var graph = new Rickshaw.Graph( {
   	element: document.getElementById("rt_chart"),
-  	width: 960,
   	height: 500,
   	renderer: 'line',
   	series: [
@@ -122,74 +130,89 @@ d3.json("/data/rt.json", function(data) {
   			data: data.filter(function(d){return d.geography_modeled==allGroup[allGroup.length - 1]})
   		}
   	]
-  } );
-
-graph.render();
-
-var resize = function() {
+  });
+  
+  graph.render();
+  
+      var yAxis = new Rickshaw.Graph.Axis.Y({
+        graph: graph
+    });
+    
+    yAxis.render();
+      
+  var axes = new Rickshaw.Graph.Axis.Time({
+    graph: graph
+  });
+  
+  axes.render();
+  
+  var resize = function() {
 	graph.configure({
 		width: document.getElementById("rt_chart").offsetWidth,
 		height: document.getElementById("rt_chart").offsetHeight
 	});
 	graph.render();
-}
-
-window.addEventListener('resize', resize); 
-resize();
-
-    
-    
+	axes.render();
+  }
+  
+  window.addEventListener('resize', resize); 
+  
+  resize();
+  
 });
 
-d3.json("/data/cases_deaths.json", function(data) {
-    let parseDate = d3.time.format("%Y-%m-%d").parse;
-    data = data.filter(function(d){
-        if(isNaN(d.y)){
-            return false;
-        }
-        d.y = +d.y;
-        const now = parseDate(d.x);  
-        const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
-        d.x = secondsSinceEpoch
-        return true;
-    });
+// d3.json("/data/cases_deaths.json", function(data) {
+//     let parseDate = d3.time.format("%Y-%m-%d").parse;
+//     data = data.filter(function(d){
+//         if(isNaN(d.y)){
+//             return false;
+//         }
+//         d.y = +d.y;
+//         const now = parseDate(d.x);  
+//         const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
+//         d.x = secondsSinceEpoch
+//         return true;
+//     });
     
-    console.log(data)
-    var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+//     console.log(data)
+//     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
      
-    console.log(allGroup);
-    console.log(allGroup[allGroup.length - 1])
-    console.log(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+//     console.log(allGroup);
+//     console.log(allGroup[allGroup.length - 1])
+//     console.log(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
  
-  var graph = new Rickshaw.Graph( {
-  	element: document.getElementById("cases_chart"),
-  	width: 960,
-  	height: 500,
-  	renderer: 'area',
-  	series: [
-  		{
-  			color: "#c05020",
-  			data: data.filter(function(d){return d.geography_modeled==allGroup[0]})
-  		}
-  	]
-  } );
+//   var graph = new Rickshaw.Graph( {
+//   	element: document.getElementById("cases_chart"),
+//   	width: 960,
+//   	height: 500,
+//   	renderer: 'area',
+//   	series: [
+//   		{
+//   			color: "#c05020",
+//   			data: data.filter(function(d){return d.geography_modeled==allGroup[0]})
+//   		}
+//   	]
+//   } );
 
-graph.render();
+// graph.render();
 
-var resize = function() {
-	graph.configure({
-		width: document.getElementById("cases_chart").offsetWidth,
-		height: document.getElementById("cases_chart").offsetHeight
-	});
-	graph.render();
-}
+// var resize = function() {
+// 	graph.configure({
+// 		width: document.getElementById("cases_chart").offsetWidth,
+// 		height: document.getElementById("cases_chart").offsetHeight
+// 	});
+// 	graph.render();
+// }
 
-window.addEventListener('resize', resize); 
-resize();
+// window.addEventListener('resize', resize); 
+// resize();
 
     
     
-});
+// });
+
+
+
 
 
 
