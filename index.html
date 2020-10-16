@@ -18,6 +18,10 @@ title: Home
     body {
         padding-top: 70px;
     }
+    
+	.rickshaw_graph .detail {
+		background: none;
+	}
 
 </style>
 
@@ -51,7 +55,7 @@ title: Home
         <div class="col">
             <h2>Transmission Status</h2>
             <p>Example subheading</p>
-            <div class="chart" id = "rt_chart"></div>
+            <div class="chart rickshaw_graph" id = "rt_chart"></div>
             <p>Example text to decribe chart</p>
         </div>
     </div>
@@ -134,6 +138,19 @@ d3.json("/data/rt.json", function(data) {
   
   graph.render();
   
+      var hoverDetail = new Rickshaw.Graph.HoverDetail({
+        graph: graph,
+        // xFormatter: function(x) { return x + "seconds" },
+        // yFormatter: function(y) { return y + " percent" }
+        formatter: function(series, x, y) {
+// 		var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
+		var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
+// 		var content = swatch + "R" + '<sub>t </sub> ' + ": " + parseFloat(y) + '<br>' + date;
+		var content = swatch + "R" + '<sub>t </sub> ' + ": " + parseFloat(y) + '<br>';
+		return content;
+	}
+    });
+
       var yAxis = new Rickshaw.Graph.Axis.Y({
         graph: graph
     });
