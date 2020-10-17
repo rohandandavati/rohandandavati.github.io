@@ -318,8 +318,8 @@ d3.json("/data/rt.json").then(function(data) {
 function drawChart() {
 
   // get the current width of the div where the chart appear, and attribute it to Svg
-  //?width = document.getElementById("rt_chart").offsetWidth - margin.left - margin.right
-  currentWidth = parseInt(d3.select('#rt_chart').style('width'), 10) + margin.left + margin.right
+  currentWidth = document.getElementById("rt_chart").offsetWidth
+  // currentWidth = parseInt(d3.select('#rt_chart').style('width'), 10) + margin.left + margin.right
   svg
   .attr("width", currentWidth)
   .append("g")
@@ -331,10 +331,6 @@ function drawChart() {
   
   yAxis.call(d3.axisLeft(y));
 
-  // // Add the last information needed for the circles: their X position
-  // myCircles
-  //   .attr("cx", function(d){ return x(d)})
-  // }
   interval
   .attr("d", d3.area()
     .x(function(d) { return x(d.date) })
