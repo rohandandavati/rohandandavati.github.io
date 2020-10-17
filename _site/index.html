@@ -14,11 +14,13 @@
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.0.0/d3.min.js" integrity="sha512-5K26U2JrBY0NJ/PVtWxH83wFeLdHPnrUxfw5GrE+kYTR8NglhnG0AdxFCJJuaPIp/4WJTaWK6MZHagmkBcgA2g==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-collection/1.0.5/d3-collection.min.js" integrity="sha512-wYLIhsNaJ6cBEcFIgAtY0ncVV3KEzE95+32OfOdQJQkEfZVrWOn+N2woUPaBCuW8N6S7++72Y7XlOPZ/3U7X2w==" crossorigin="anonymous"></script>
     
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.7.1/rickshaw.min.css" integrity="sha512-KKmSL0eC7hDfWUgjyBrDnF1CMmmvIJHwBkkFgRmvWaB4tW1edekBh1PHpDdYnaOsf3pKlDASzG74R3KTsww4ZA==" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.7.1/rickshaw.min.js" integrity="sha512-3S/ENqAZXO3KkNgGFRiWLoZDJBa00SVDW87HOzZy8dNJ3Yv+mw0GOe/gbpeo562OuQ3UfLbN4eYfj8JgzKRiqA==" crossorigin="anonymous"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.0.0/d3.min.js" integrity="sha512-5K26U2JrBY0NJ/PVtWxH83wFeLdHPnrUxfw5GrE+kYTR8NglhnG0AdxFCJJuaPIp/4WJTaWK6MZHagmkBcgA2g==" crossorigin="anonymous"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js" integrity="sha512-C2RveGuPIWqkaLAluvoxyiaN1XYNe5ss11urhZWZYBUA9Ydgj+hfGKPcxCzTwut1/fmjEZR7Ac35f2aycT8Ogw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-collection/1.0.5/d3-collection.min.js" integrity="sha512-wYLIhsNaJ6cBEcFIgAtY0ncVV3KEzE95+32OfOdQJQkEfZVrWOn+N2woUPaBCuW8N6S7++72Y7XlOPZ/3U7X2w==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-scale/1.0.7/d3-scale.min.js" integrity="sha512-CagQ2MAkdTRJK0ge/Q/+y2QL+0wvabHP7y7GIKwy7E5aptPLpHu26CDi3Ec95xkYPMvZBqjNOwe02NZoBqWXIg==" crossorigin="anonymous"></script>
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.7.1/rickshaw.min.css" integrity="sha512-KKmSL0eC7hDfWUgjyBrDnF1CMmmvIJHwBkkFgRmvWaB4tW1edekBh1PHpDdYnaOsf3pKlDASzG74R3KTsww4ZA==" crossorigin="anonymous" />-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/rickshaw/1.7.1/rickshaw.min.js" integrity="sha512-3S/ENqAZXO3KkNgGFRiWLoZDJBa00SVDW87HOzZy8dNJ3Yv+mw0GOe/gbpeo562OuQ3UfLbN4eYfj8JgzKRiqA==" crossorigin="anonymous"></script>-->
    
    
 
@@ -199,101 +201,161 @@
 
 <script>
 
-
-d3.json("/data/rt.json", function(data) {
-    // let parseDate = d3.time.format("%m/%d/%Y").parse;
-    // let parseDate = d3.time.format("%m-%d-%y").parse;
-    // let parseDate = Date.parse('%m-%d-%y');
+var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    width = document.getElementById("rt_chart").offsetWidth - margin.left - margin.right,
+    height = document.getElementById("rt_chart").offsetHeight - margin.top - margin.bottom;
+    
+    // append the svg object to the body of the page
+    var svg = d3.select("#rt_chart")
+      .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform",
+              "translate(" + margin.left + "," + margin.top + ")");
+              
+              
+// d3.json("/data/rt.json").then(function(data) {
+d3.json("/data/rt.json").then(function(data) {
+    // filers NaN and converts from string
+    let parseDate = d3.timeParse("%m/%d/%Y");
+    
+    // console.log(data)
     data = data.filter(function(d){
-        if(isNaN(d.y)){
+        if(isNaN(d.rt_median)){
             return false;
         }
-        
-        d.y = parseFloat(d.y); //rt
-        // d.x = parseDate(d.x);
-        
-        d.x = Date.parse(d.x) / 1000;
-        
-        // console.log(d.x);
-        // d.x = d.x;
-        // const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
-        // d.x = secondsSinceEpoch
+        d.rt_lower = parseFloat(d.rt_lower);
+        d.rt_median = parseFloat(d.rt_median);
+        d.rt_upper = parseFloat(d.rt_upper);
+        // d.date = Date.parse(d.date) / 1000;
+        d.date = parseDate(d.date);
         return true;
     });
     
+    console.log(data)
+    
+    // array of regions - TODO: need to sort, move Illinois to front
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+    // allGroup.sort(); // doesn't work - need to convert ending to number and compare
     
-    // allGroup.sort();
-    //SORT, move il to front 
-    
-        // add the options to the button
+    // add the options to the button
     d3.select("#selectButton")
       .selectAll('myOptions')
      	.data(allGroup)
       .enter()
     	.append('option')
       .text(function (d) { 
-          
           if(d == "illinois" ||d == "Illinois" ) {
               return "Illinois";
           }
         //   n = d.charAt(d.length - 1 );
           d = "Region " + d.substring( d.indexOf('_')+1);
           return d; 
-          
       }) // text showed in the menu
       .attr("value", function (d) { return d; })
       .attr("class", "dropdown-item")
       
-    console.log(data);
-    console.log(allGroup)
+    // console.log(data);
+    // console.log(allGroup)
     
-    var graph = new Rickshaw.Graph( {
-  	element: document.getElementById("rt_chart"),
-  	height: 500,
-  	renderer: 'line',
-  	series: [
-  		{
-  			color: "#c05020",
-  			data: data.filter(function(d){return d.geography_modeled==allGroup[allGroup.length - 1]})
-  		}
-  	]
-  });
-  
-  graph.render();
-  
-      var hoverDetail = new Rickshaw.Graph.HoverDetail({
-        graph: graph,
-        // xFormatter: function(x) { return x + "seconds" },
-        // yFormatter: function(y) { return y + " percent" }
-        formatter: function(series, x, y) {
-// 		var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
-		var swatch = '<span class="detail_swatch" style="background-color: ' + series.color + '"></span>';
-// 		var content = swatch + "R" + '<sub>t </sub> ' + ": " + parseFloat(y) + '<br>' + date;
-		var content = swatch + "R" + '<sub>t </sub> ' + ": " + parseFloat(y) + '<br>';
-		return content;
-	}
-    });
-
-      var yAxis = new Rickshaw.Graph.Axis.Y({
-        graph: graph
-    });
-    
-    yAxis.render();
+    // A color scale: one color for each group
+    var myColor = d3.scaleOrdinal()
+      .domain(allGroup)
+      .range(d3.schemeSet2);
       
-  var axes = new Rickshaw.Graph.Axis.Time({
-    graph: graph
-  });
-  
-  axes.render();
+    var lightColors = d3.scaleOrdinal()
+      .domain(allGroup)
+      .range(d3.schemePastel2);
+      
+    var x = d3.scaleTime()
+      .domain(d3.extent(data, function(d) { return d.date}))
+      .range([ 0, width ]);
+    svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x).ticks(5));
+      
+          // Add Y axis
+    var y = d3.scaleLinear()
+      .domain([0, d3.max(data, function(d) { return +d.rt_median; })])
+      .range([ height, 0 ]);
+    svg.append("g")
+      .call(d3.axisLeft(y));
+    
+    
+    var interval = svg.append("path")
+      .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+      .attr("fill", function(d){ return lightColors(allGroup[0]) })
+      .attr("stroke", "none")
+      .attr("d", d3.area()
+        .x(function(d) { return x(d.date) })
+        .y0(function(d) { return y(d.rt_lower) })
+        .y1(function(d) { return y(d.rt_upper) })
+        )
+        
+              // Initialize line with first group of the list
+    var line = svg
+      .append('g')
+      .append("path")
+        .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+        .attr("d", d3.line()
+          .x(function(d) { return x(d.date) })
+          .y(function(d) { return y(d.rt_median) })
+        )
+        .attr("stroke", function(d){ return myColor(allGroup[0]) })
+        .style("stroke-width", 4)
+        .style("fill", "none")
+        
+    // A function that update the chart
+    function update(selectedGroup) {
+
+      // Create new data with the selection?
+      var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
+      
+      interval
+      .datum(dataFilter)
+      .transition()
+      .duration(1000)
+      .attr("fill", function(d){ return lightColors(selectedGroup) })
+      .attr("stroke", "none")
+      .attr("d", d3.area()
+        .x(function(d) { return x(d.date) })
+        .y0(function(d) { return y(d.rt_lower) })
+        .y1(function(d) { return y(d.rt_upper) })
+        )
+      
+      
+      // Give these new data to update line
+        line
+          .datum(dataFilter)
+          .transition()
+          .duration(1000)
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.date) })
+            .y(function(d) { return y(d.rt_median) })
+          )
+          .attr("stroke", function(d){ return myColor(selectedGroup) })
+ 
+      
+    }
+    // When the button is changed, run the updateChart function
+    d3.select("#selectButton").on("change", function(d) {
+        // recover the option that has been chosen
+        var selectedOption = d3.select(this).property("value")
+        // run the updateChart function with this selected option
+        console.log(selectedOption)
+        update(selectedOption)
+    })
+    
   
   var resize = function() {
-	graph.configure({
-		width: document.getElementById("rt_chart").offsetWidth,
-		height: document.getElementById("rt_chart").offsetHeight
-	});
-	graph.render();
-	axes.render();
+      console.log('resize')
+// 	graph.configure({
+// 		width: document.getElementById("rt_chart").offsetWidth,
+// 		height: document.getElementById("rt_chart").offsetHeight
+// 	});
+// 	graph.render();
+// 	axes.render();
   }
   
   window.addEventListener('resize', resize); 
@@ -301,6 +363,25 @@ d3.json("/data/rt.json", function(data) {
   resize();
   
 });
+
+
+  
+    // d3.select("#selectButton").on("change", function(d) {
+    //     // recover the option that has been chosen
+    //     var selectedOption = d3.select(this).property("value")
+    //     // run the updateChart function with this selected option
+    //     // update(selectedOption)
+    //     console.log(selectedOption);
+    //     // console.log(allGroup.indexOf(selectedOption));
+    //     console.log(data.filter(function(d){return d.geography_modeled == selectedOption}));
+    // 	graph.configure({
+	   //     data: data.filter(function(d){return d.geography_modeled == selectedOption})
+    // 	});
+    	
+    // 	graph.render();
+    // 	axes.render();
+    // })
+  
 
 // d3.json("/data/cases_deaths.json", function(data) {
 //     let parseDate = d3.time.format("%Y-%m-%d").parse;

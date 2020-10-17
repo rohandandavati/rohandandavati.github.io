@@ -3,8 +3,10 @@ layout: none
 ---
 [{% for chart in site.data.rt %}
   {
-    "x": "{{ chart.date }}",
-    "y": "{{ chart.rt_median }}",
-    "geography_modeled": "{{ chart.geography_modeled }}"
+    "date": "{{ chart.date }}",
+    "geography_modeled": "{{ chart.geography_modeled }}",
+    "rt_lower": "{{ chart.rt_lower }}",
+    "rt_median": "{{ chart.rt_median }}",
+    "rt_upper": "{{ chart.rt_upper }}"
   }{% if forloop.last == false %},{% endif %}
 {% endfor %}] 
