@@ -149,46 +149,28 @@ title: Home
 
 
 <script>
-
-/* global d3 */
-
-// var margin = {top: 10, right: 30, bottom: 30, left: 60},
-//     width = document.getElementById("rt_chart").offsetWidth - margin.left - margin.right,
-//     height = document.getElementById("rt_chart").offsetHeight - margin.top - margin.bottom;
-   
-  var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    // width = document.getElementById("rt_chart").offsetWidth - margin.left - margin.right,
-    height = 300;
+  /* global d3 */
+  
+  var margin = {top: 10, right: 20, bottom: 20, left: 50}, height = 300;
+  // append the svg object to the body of the page
+  var svg = d3.select("#rt_chart")
+              .append("svg")
+              .attr("height", height + margin.top + margin.bottom);
+  
+  d3.json("/data/rt.json").then(function(data) {
     
-    // append the svg object to the body of the page
-    var svg = d3.select("#rt_chart")
-      .append("svg")
-        // .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      // .append("g")
-      //   .attr("transform",
-      //         "translate(" + margin.left + "," + margin.top + ")");
-              
-              
-// d3.json("/data/rt.json").then(function(data) {
-d3.json("/data/rt.json").then(function(data) {
-    // filers NaN and converts from string
+    // filers NaN and converts strings
     let parseDate = d3.timeParse("%m/%d/%Y");
-    
-    // console.log(data)
     data = data.filter(function(d){
-        if(isNaN(d.rt_median)){
-            return false;
-        }
-        d.rt_lower = parseFloat(d.rt_lower);
-        d.rt_median = parseFloat(d.rt_median);
-        d.rt_upper = parseFloat(d.rt_upper);
-        // d.date = Date.parse(d.date) / 1000;
-        d.date = parseDate(d.date);
-        return true;
+      if(isNaN(d.rt_median)){
+        return false;
+      }
+      d.rt_lower = +d.rt_lower;
+      d.rt_median = +d.rt_median;
+      d.rt_upper = +d.rt_upper;
+      d.date = parseDate(d.date);
+      return true;
     });
-    
-    console.log(data)
     
     // array of regions - TODO: need to sort, move Illinois to front
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
@@ -226,17 +208,18 @@ d3.json("/data/rt.json").then(function(data) {
       
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date}))
-      // .range([ 0, width ]);
     var xAxis = svg.append("g")
       .attr("transform", "translate(0," + height + ")");
-      // .call(d3.axisBottom(x).ticks(5));
+     
       
-          // Add Y axis
     var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return +d.rt_median; })])
+      .domain([0, 8])
       .range([ height, 0 ]);
-    var yAxis = svg.append("g")
-      // .call(d3.axisLeft(y));
+      
+    svg.append("g")
+    .attr("class", "y axis")
+    .attr("transform", "translate(30,0)")//magic number, change it at will
+    .call(d3.axisLeft(y));
     
     
     var interval = svg.append("path")
@@ -277,8 +260,9 @@ function drawChart() {
   // Update the X scale and Axis (here the 20 is just to have a bit of margin)
   x.range([ 20, currentWidth-20 ]);
   xAxis.call(d3.axisBottom(x).ticks(5));
+  // console.log("resie");
   
-  yAxis.call(d3.axisLeft(y));
+  // yAxis.call(d3.axisLeft(y));
 
   interval
   .attr("d", d3.area()
