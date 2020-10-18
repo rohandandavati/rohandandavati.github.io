@@ -219,6 +219,8 @@ TODO:
     - collapsed button (that works)
     - uncollapsed list 
 
+
+-adjust y-axis scale with dropdown change
 */
 
 
@@ -388,7 +390,7 @@ TODO:
 d3.json("/data/cases_deaths.json").then(function(data) {
     let parseDate = d3.timeParse("%Y-%m-%d");
     data = data.filter(function(d){
-        if(isNaN(d.cases_median) ||isNaN(d.deaths_median) ){
+        if(isNaN(d.cases_median) || isNaN(d.deaths_median) ){
             return false;
         }
         d.cases_median = +d.cases_median;
@@ -397,20 +399,23 @@ d3.json("/data/cases_deaths.json").then(function(data) {
         return true;
     });
     
-    // var myColor = d3.scaleOrdinal()
-    //                 .domain(allGroup)
-    //                 .range(d3.schemeSet2);
+    var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+    
+    console.log(allGroup);
+    var myColor = d3.scaleOrdinal()
+                    .domain(allGroup)
+                    .range(d3.schemeSet2);
       
-    // var lightColors = d3.scaleOrdinal()
-    //                     .domain(allGroup)
-    //                     .range(d3.schemePastel2);
+    var lightColors = d3.scaleOrdinal()
+                        .domain(allGroup)
+                        .range(d3.schemePastel2);
 
     // Add X axis --> it is a date format
     var x = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date; }))
       // .range([ 0, width_cases ]);
     var xAxis = svg_cases.append("g")
-      .attr("transform", "translate(1," + height + ")")
+      .attr("transform", "translate(0," + height + ")")
       // .call(d3.axisBottom(x));
 
     // Add Y axis
@@ -424,11 +429,12 @@ d3.json("/data/cases_deaths.json").then(function(data) {
 
     // Add the area
     var area = svg_cases.append("path")
-      .datum(data)
+      .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
       .attr("fill", "#cce5df")
       .attr("stroke", "#69b3a2")
       .attr("stroke-width", 1.5)
-      
+      .attr("transform", "translate(2,-1)");
+      // .attr("transform", "translate(10," + 0 + ")")
       // .attr("d", d3.area()
       //   .x(function(d) { return x(d.date) })
       //   .y0(y(0))
@@ -464,7 +470,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
     window.addEventListener('resize', drawChart ); 
 });
 
-
+console.log("hi")
 
 
 
