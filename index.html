@@ -9,9 +9,9 @@ title: Home
     .chart {
         height: 400px;
     }
-    /*div {*/
-    /*    border: 1px solid black;*/
-    /*}*/
+    div {
+        border: 1px solid black;
+    }
     /*.selectNumber {*/
     /*    padding-top: 50px;*/
     /*}*/
@@ -329,7 +329,19 @@ TODO:
       update(selectedOption)
     })
 });
-  console.log("h")
+
+var margin_cases = {top: 10, right: 30, bottom: 30, left: 50},
+    width_cases = document.getElementById("cases_chart").offsetWidth,
+    height_cases = document.getElementById("cases_chart").offsetHeight;
+
+// append the svg object to the body of the page
+var svg_cases = d3.select("#cases_chart")
+  .append("svg")
+    .attr("width", width_cases + margin_cases.left + margin_cases.right)
+    .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
+    .append("g")
+    .attr("transform",
+          "translate(" + margin_cases.left + "," + margin_cases.top + ")");
 
 d3.json("/data/cases_deaths.json").then(function(data) {
     let parseDate = d3.timeParse("%Y-%m-%d");
@@ -343,42 +355,34 @@ d3.json("/data/cases_deaths.json").then(function(data) {
         return true;
     });
     
-    console.log(data);
-    console.log("hi")
-//     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
-     
-//     console.log(allGroup);
-//     console.log(allGroup[allGroup.length - 1])
-//     console.log(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
- 
-//   var graph = new Rickshaw.Graph( {
-//   	element: document.getElementById("cases_chart"),
-//   	width: 960,
-//   	height: 500,
-//   	renderer: 'area',
-//   	series: [
-//   		{
-//   			color: "#c05020",
-//   			data: data.filter(function(d){return d.geography_modeled==allGroup[0]})
-//   		}
-//   	]
-//   } );
 
-// graph.render();
+    // Add X axis --> it is a date format
+    var x = d3.scaleTime()
+      .domain(d3.extent(data, function(d) { return d.date; }))
+      .range([ 0, width_cases ]);
+    svg_cases.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
 
-// var resize = function() {
-// 	graph.configure({
-// 		width: document.getElementById("cases_chart").offsetWidth,
-// 		height: document.getElementById("cases_chart").offsetHeight
-// 	});
-// 	graph.render();
-// }
+    // Add Y axis
+    var y = d3.scaleLinear()
+      .domain([0, d3.max(data, function(d) { return d.cases_median; })])
+      .range([ height, 0 ]);
+    svg_cases.append("g")
+      .call(d3.axisLeft(y));
 
-// window.addEventListener('resize', resize); 
-// resize();
+    // Add the area
+    svg_cases.append("path")
+      .datum(data)
+      .attr("fill", "#cce5df")
+      .attr("stroke", "#69b3a2")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.area()
+        .x(function(d) { return x(d.date) })
+        .y0(y(0))
+        .y1(function(d) { return y(d.cases_median) })
+        )
 
-    
-    
 });
 
 
