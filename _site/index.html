@@ -200,9 +200,24 @@
 
 
 <script>
+
+
+/* 
+TODO:
+-Dropdown Menu
+  - alignment - put inside nav bar? / combine
+  - sort regions, illinois to top
+  - style 
+    - collapsed button (that works)
+    - uncollapsed list 
+
+*/
+
+
+
   /* global d3 */
   
-  var margin = {top: 10, right: 20, bottom: 20, left: 50}, height = 300;
+  var margin = {top: 10, right: 20, bottom: 20, left: 10}, height = 300;
   // append the svg object to the body of the page
   var svg = d3.select("#rt_chart")
               .append("svg")
@@ -225,7 +240,6 @@
     
     // array of regions - TODO: need to sort, move Illinois to front
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
-    // allGroup.sort(); // doesn't work - need to convert ending to number and compare
     
     // add the options to the button
     d3.select("#selectButton")
@@ -237,110 +251,87 @@
           if(d == "illinois" ||d == "Illinois" ) {
               return "Illinois";
           }
-        //   n = d.charAt(d.length - 1 );
           d = "Region " + d.substring( d.indexOf('_')+1);
           return d; 
-      }) // text showed in the menu
+      })
       .attr("value", function (d) { return d; })
       .attr("class", "dropdown-item")
-      
-    // console.log(data);
-    // console.log(allGroup)
-    
-    // A color scale: one color for each group
+
     var myColor = d3.scaleOrdinal()
-      .domain(allGroup)
-      .range(d3.schemeSet2);
+                    .domain(allGroup)
+                    .range(d3.schemeSet2);
       
     var lightColors = d3.scaleOrdinal()
-      .domain(allGroup)
-      .range(d3.schemePastel2);
-    
+                        .domain(allGroup)
+                        .range(d3.schemePastel2);
+      
       
     var x = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date}))
+              .domain(d3.extent(data, function(d) { return d.date}))
     var xAxis = svg.append("g")
-      .attr("transform", "translate(0," + height + ")");
-     
+                   .attr("transform", "translate("+ margin.left  +"," + height + ")");
       
     var y = d3.scaleLinear()
-      .domain([0, 8])
-      .range([ height, 0 ]);
-      
-    svg.append("g")
-    .attr("class", "y axis")
-    .attr("transform", "translate(30,0)")//magic number, change it at will
-    .call(d3.axisLeft(y));
-    
+              .domain([0, 8])
+              .range([ height, 0 ]);
+    var yAxis = svg.append("g")
+                   .attr("class", "y axis")
+                   .attr("transform", "translate("+ 30 +",0)")
+                   .call(d3.axisLeft(y));
     
     var interval = svg.append("path")
-      .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
-      .attr("fill", function(d){ return lightColors(allGroup[0]) })
-      .attr("stroke", "none")
-      // .attr("d", d3.area()
-      //   .x(function(d) { return x(d.date) })
-      //   .y0(function(d) { return y(d.rt_lower) })
-      //   .y1(function(d) { return y(d.rt_upper) })
-      //   )
+                      .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+                      .attr("fill", function(d){ return lightColors(allGroup[0]) })
+                      .attr("stroke", "none")
+                      .attr("transform", "translate("+ margin.left +" ,0)")
         
-              // Initialize line with first group of the list
-    var line = svg
-      .append('g')
-      .append("path")
-        .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
-        // .attr("d", d3.line()
-        //   .x(function(d) { return x(d.date) })
-        //   .y(function(d) { return y(d.rt_median) })
-        // )
-        .attr("stroke", function(d){ return myColor(allGroup[0]) })
-        .style("stroke-width", 4)
-        .style("fill", "none")
-        
-        
+  // Initialize line with first group of the list
+    var line = svg.append('g')
+                  .append("path")
+                  .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+                  .attr("stroke", function(d){ return myColor(allGroup[0]) })
+                  .attr("transform", "translate("+ margin.left +",0)")
+                  .style("stroke-width", 4)
+                  .style("fill", "none")
+                  
+                  
     // A function that finishes to draw the chart for a specific device size.
-function drawChart() {
-
-  // get the current width of the div where the chart appear, and attribute it to Svg
-  currentWidth = document.getElementById("rt_chart").offsetWidth
-  // currentWidth = parseInt(d3.select('#rt_chart').style('width'), 10) + margin.left + margin.right
-  svg
-  .attr("width", currentWidth)
-  .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  // Update the X scale and Axis (here the 20 is just to have a bit of margin)
-  x.range([ 20, currentWidth-20 ]);
-  xAxis.call(d3.axisBottom(x).ticks(5));
-  // console.log("resie");
-  
-  // yAxis.call(d3.axisLeft(y));
-
-  interval
-  .attr("d", d3.area()
-    .x(function(d) { return x(d.date) })
-    .y0(function(d) { return y(d.rt_lower) })
-    .y1(function(d) { return y(d.rt_upper) })
-    )
-
-  line
-    .attr("d", d3.line()
-    .x(function(d) { return x(d.date) })
-    .y(function(d) { return y(d.rt_median) })
-  )
-
-}
-
-
-// Initialize the chart
-drawChart();
-
-// Add an event listener that run the function when dimension change
-window.addEventListener('resize', drawChart ); 
-        
-        
-    // A function that update the chart
+    function drawChart() {
+      
+      // get the current width of the div where the chart appear, and attribute it to Svg
+      // currentWidth = parseInt(d3.select('#rt_chart').style('width'), 10) + margin.left + margin.right
+      var currentWidth = document.getElementById("rt_chart").offsetWidth
+      
+      svg
+      .attr("width", currentWidth)
+      .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+         
+      // Update the X scale and Axis (here the 20 is just to have a bit of margin)
+      x.range([ 20, currentWidth-20 ]);
+      
+      xAxis.call(d3.axisBottom(x).ticks(5));
+      
+      interval
+      .attr("d", d3.area()
+      .x(function(d) { return x(d.date) })
+      .y0(function(d) { return y(d.rt_lower) })
+      .y1(function(d) { return y(d.rt_upper) }))
+      
+      line
+      .attr("d", d3.line()
+      .x(function(d) { return x(d.date) })
+      .y(function(d) { return y(d.rt_median) })
+      )
+    }
+    // Initialize the chart
+    drawChart();
+    // Add an event listener that run the function when dimension change
+    window.addEventListener('resize', drawChart ); 
+    
+    
+    // A function that updates the chart
     function update(selectedGroup) {
-
       // Create new data with the selection?
       var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
       
@@ -351,54 +342,32 @@ window.addEventListener('resize', drawChart );
       .attr("fill", function(d){ return lightColors(selectedGroup) })
       .attr("stroke", "none")
       .attr("d", d3.area()
-        .x(function(d) { return x(d.date) })
-        .y0(function(d) { return y(d.rt_lower) })
-        .y1(function(d) { return y(d.rt_upper) })
-        )
-      
+            .x(function(d) { return x(d.date) })
+            .y0(function(d) { return y(d.rt_lower) })
+            .y1(function(d) { return y(d.rt_upper) })
+            )
       
       // Give these new data to update line
-        line
-          .datum(dataFilter)
-          .transition()
-          .duration(1000)
-          .attr("d", d3.line()
+      line
+      .datum(dataFilter)
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
             .x(function(d) { return x(d.date) })
             .y(function(d) { return y(d.rt_median) })
-          )
-          .attr("stroke", function(d){ return myColor(selectedGroup) })
+            )
+            .attr("stroke", function(d){ return myColor(selectedGroup) })
     }
-    
     
     // When the button is changed, run the updateChart function
     d3.select("#selectButton").on("change", function(d) {
-        // recover the option that has been chosen
-        var selectedOption = d3.select(this).property("value")
-        // run the updateChart function with this selected option
-        console.log(selectedOption)
-        update(selectedOption)
+      // recover the option that has been chosen
+      var selectedOption = d3.select(this).property("value")
+      // run the updateChart function with this selected option
+      console.log(selectedOption)
+      update(selectedOption)
     })
-    
-  
 });
-
-
-  
-    // d3.select("#selectButton").on("change", function(d) {
-    //     // recover the option that has been chosen
-    //     var selectedOption = d3.select(this).property("value")
-    //     // run the updateChart function with this selected option
-    //     // update(selectedOption)
-    //     console.log(selectedOption);
-    //     // console.log(allGroup.indexOf(selectedOption));
-    //     console.log(data.filter(function(d){return d.geography_modeled == selectedOption}));
-    // 	graph.configure({
-	   //     data: data.filter(function(d){return d.geography_modeled == selectedOption})
-    // 	});
-    	
-    // 	graph.render();
-    // 	axes.render();
-    // })
   
 
 // d3.json("/data/cases_deaths.json", function(data) {
@@ -454,45 +423,6 @@ window.addEventListener('resize', drawChart );
 
 
 
-
-
-// function handlerFunctionA(){
-//     alert("do some stuff");    
-// }
-
-// function handlerFunctionB(){
-//     alert("Do some other stuff");
-// }
-
-//  $(document).ready(function () { 
-//     $(".selectpicker").selectpicker();
-//     $(".regionselect").click(function () {
-//          $(this).addClass("open");
-//     });
-//   });
-
-// $('#region_selector').change(function(){ 
-//     var value = $(this).val();
-// });
-    
-//     ndata = [ { x: 0, y: 23}, { x: 1, y: 15 }, { x: 2, y: 79 } ];
-//     //   instantiate our graph!
-//   var graph = new Rickshaw.Graph( {
-//   	element: document.getElementById("rt_chart"),
-//   	width: 960,
-//   	height: 500,
-//   	renderer: 'line',
-//   	series: [
-//   		{
-//   			color: "#c05020",
-//   			data: ndata,
-//   		}
-//   	]
-//   } );
-
-// graph.render();
-
-// // });
 
 
 
