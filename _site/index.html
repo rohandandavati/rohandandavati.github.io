@@ -52,6 +52,14 @@
         </li>
       </ul>
     </div>
+    <div class = "container position-relative">
+    <div class = "row">
+        <div class = "col drop">
+            <select id="selectButton" class = "dropdown float-right"  ></select>
+        </div>
+    </div>
+</div>
+
   </nav>
     <style>
     .jumbotron {
@@ -108,13 +116,13 @@
 <!--</select>-->
 
 <!--</div>-->
-<div class = "container position-fixed">
-    <div class = "row">
-        <div class = "col drop">
-            <select id="selectButton" class = "dropdown float-right"  ></select>
-        </div>
-    </div>
-</div>
+<!--<div class = "container position-fixed">-->
+<!--    <div class = "row">-->
+<!--        <div class = "col drop">-->
+<!--            <select id="selectButton" class = "dropdown float-right"  ></select>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <!--<div class = "container position-relative ">-->
 <!--    <div class="dropdown position-fixed ">-->
@@ -296,8 +304,6 @@ TODO:
                       .attr("fill", function(d){ return lightColors(allGroup[0]) })
                       .attr("stroke", "none")
                       .attr("transform", "translate(1,0)")
-                      
-                      console.log('done')
         
   // Initialize line with first group of the list
     var line = svg.append('g')
