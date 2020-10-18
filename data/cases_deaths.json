@@ -3,8 +3,9 @@ layout: none
 ---
 [{% for chart in site.data.cases_deaths %}
   {
-    "x": "{{ chart.date }}",
-    "y": "{{ chart.cases_median }}",
+    "date": "{{ chart.date }}",
+    "cases_median": "{{ chart.cases_median }}",
+    "deaths_median": "{{ chart.deaths_median }}",
     "geography_modeled": "{{ chart.geography_modeled }}"
   }{% if forloop.last == false %},{% endif %}
 {% endfor %}] 

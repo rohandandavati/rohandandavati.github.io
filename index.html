@@ -78,7 +78,7 @@ title: Home
             <h2>Transmission Status</h2>
             <p>Example subheading</p>
             <div class="chart" id = "rt_chart"></div>
-            <br></br>
+            <!--<br></br>-->
             <text>Example text to decribe chart</text>
         </div>
     </div>
@@ -228,7 +228,7 @@ TODO:
                   .attr("transform", "translate("+ margin.left +",0)")
                    
                    .call(d3.axisLeft(y).ticks(6));
-    console.log("hp");
+    // console.log("hp");
     // svg
     // .append("path")
     // .attr("class", "line")
@@ -329,22 +329,22 @@ TODO:
       update(selectedOption)
     })
 });
-  
+  console.log("h")
 
-// d3.json("/data/cases_deaths.json", function(data) {
-//     let parseDate = d3.time.format("%Y-%m-%d").parse;
-//     data = data.filter(function(d){
-//         if(isNaN(d.y)){
-//             return false;
-//         }
-//         d.y = +d.y;
-//         const now = parseDate(d.x);  
-//         const secondsSinceEpoch = Math.round(now.getTime() / 1000)  
-//         d.x = secondsSinceEpoch
-//         return true;
-//     });
+d3.json("/data/cases_deaths.json").then(function(data) {
+    let parseDate = d3.timeParse("%Y-%m-%d");
+    data = data.filter(function(d){
+        if(isNaN(d.cases_median) ||isNaN(d.deaths_median) ){
+            return false;
+        }
+        d.cases_median = +d.cases_median;
+        d.deaths_median = +d.deaths_median;
+        d.date = parseDate(d.date);
+        return true;
+    });
     
-//     console.log(data)
+    console.log(data);
+    console.log("hi")
 //     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
      
 //     console.log(allGroup);
@@ -379,7 +379,7 @@ TODO:
 
     
     
-// });
+});
 
 
 
