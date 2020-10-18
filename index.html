@@ -166,14 +166,13 @@ TODO:
 
   /* global d3 */
   
-  var margin = {top: 10, right: 20, bottom: 20, left: 11}, height = 300;
+  var margin = {top: 10, right: 20, bottom: 20, left: 20}, height = 300;
   // append the svg object to the body of the page
   var svg = d3.select("#rt_chart")
               .append("svg")
               .attr("height", height + margin.top + margin.bottom);
   
   d3.json("/data/rt.json").then(function(data) {
-    
     // filers NaN and converts strings
     let parseDate = d3.timeParse("%m/%d/%Y");
     data = data.filter(function(d){
@@ -217,7 +216,7 @@ TODO:
     var x = d3.scaleTime()
               .domain(d3.extent(data, function(d) { return d.date}))
     var xAxis = svg.append("g")
-                   .attr("transform", "translate("+ (margin.left-1)  +"," + height + ")");
+                  .attr("transform", "translate( 0," + height + ")");
       
     var y = d3.scaleLinear()
               // .domain([0, 7]) 
@@ -225,21 +224,36 @@ TODO:
               .range([ height, 5 ]);
     var yAxis = svg.append("g")
                    .attr("class", "y axis")
-                   .attr("transform", "translate("+ 30 +",0)")
+                  // .attr("transform", "translate("+ 30 +",0)")
+                  .attr("transform", "translate("+ margin.left +",0)")
+                   
                    .call(d3.axisLeft(y).ticks(6));
+    console.log("hp");
+    // svg
+    // .append("path")
+    // .attr("class", "line")
+    // .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
+    // // .attr("d", valueline(data))
+    // .attr("transform", "translate( 1," + (height+1) + ")");
+    // // svg.append("path")
+    //   .attr("class", "line")
+    //   .style("stroke-dasharray", ("3, 3"))  // <== This line here!!
+    //   .attr("d", valueline(data));
     
     var interval = svg.append("path")
                       .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                       .attr("fill", function(d){ return lightColors(allGroup[0]) })
                       .attr("stroke", "none")
-                      .attr("transform", "translate("+ margin.left +" ,0)")
+                      .attr("transform", "translate(1,0)")
+                      
+                      console.log('done')
         
   // Initialize line with first group of the list
     var line = svg.append('g')
                   .append("path")
                   .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                   .attr("stroke", function(d){ return myColor(allGroup[0]) })
-                  .attr("transform", "translate("+ margin.left +",0)")
+                  .attr("transform", "translate(1,0)")
                   .style("stroke-width", 4)
                   .style("fill", "none")
                   
