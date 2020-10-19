@@ -92,64 +92,11 @@
 	.rickshaw_graph .detail {
 		background: none;
 	}
-	
-	.line {
-    fill: none;
-    stroke-width: 4px;
-}
-.axis path, .tick line {
-    fill: none;
-    stroke: #333;
-}
-	
 	/*.drop {*/
 	/*    height: 50px;*/
 	/*}*/
 
 </style>
-
-<!--<div id = "region" class = "container d-flex justify-content-end position-fixed ">-->
-<!--<select id = "region_selector" name="regionselect" class="selectpicker ">-->
-<!--  <option value='1' >Illinois</option>-->
-<!--  <option value = "covid">Region 1</option>-->
-<!--  <option>Region 2</option>-->
-<!--  <option>Region 3</option>-->
-<!--  <option>Region 4</option>-->
-<!--  <option>Region 5</option>-->
-<!--  <option>Region 6</option>-->
-<!--  <option>Region 7</option>-->
-<!--  <option>Region 8</option>-->
-<!--  <option>Region 9</option>-->
-<!--  <option>Region 10</option>-->
-<!--  <option>Region 11</option>-->
-<!--</select>-->
-
-<!--</div>-->
-
-<!--<div class="ui dropdown">-->
-<!--  <div class="text"></div>-->
-<!--  <i class="dropdown icon"></i>-->
-<!--</div>-->
-
-<!--<div id = "region" class = "container justify-content-end position-fixed ">-->
-<!--<select id = "region_selector" name="regionselect" class="selectpicker ">-->
-<!--</select>-->
-
-<!--</div>-->
-<!--<div class = "container position-fixed">-->
-<!--    <div class = "row">-->
-<!--        <div class = "col drop">-->
-<!--            <select id="selectButton" class = "dropdown float-right"  ></select>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class = "container position-relative ">-->
-<!--    <div class="dropdown position-fixed ">-->
-<!--        <select id="selectButton" class = "dropdown-item"  ></select>-->
-<!--    </div>-->
-<!--</div>-->
-
 
 <div class="container jumbotron">
     <div class="row">
@@ -162,36 +109,6 @@
         </div>
     </div>
 </div>
-
-<!--<div class="dropdown ">-->
-<!--<select id="selectButton" class = "dropdown-item"></select>-->
-
-<!--</div>-->
-
-<!--<div class="dropdown">-->
-<!--  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--    Dropdown button-->
-<!--  </button>-->
-<!--  <select id="selectButton" class = "dropdown-menu"></select>-->
-  <!--<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-  <!--  <a class="dropdown-item" href="#">Action</a>-->
-  <!--  <a class="dropdown-item" href="#">Another action</a>-->
-  <!--  <a class="dropdown-item" href="#">Something else here</a>-->
-  <!--</div>-->
-<!--</div>-->
-
-<!--<div class="dropdown">-->
-<!--  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
-<!--    Dropdown button-->
-<!--  </button>-->
-<!--  <div id = "drop" class="dropdown-menu" aria-labelledby="dropdownMenuButton">-->
-<!--    <a class="dropdown-item" href="#">Action</a>-->
-<!--    <a class="dropdown-item" href="#">Another action</a>-->
-<!--    <a class="dropdown-item" href="#">Something else here</a>-->
-<!--  </div>-->
-<!--</div>-->
-
-
 
 <div class="container jumbotron">
     <div class="row">
@@ -291,6 +208,8 @@ TODO:
     var lightColors = d3.scaleOrdinal()
                         .domain(allGroup)
                         .range(d3.schemePastel2);
+                        
+    
       
     var x = d3.scaleTime()
               .domain(d3.extent(data, function(d) { return d.date}))
@@ -299,14 +218,13 @@ TODO:
       
     var y = d3.scaleLinear()
               // .domain([0, 7]) 
-              .domain([0, d3.max(data, function(d) { return d.rt_upper })])
+              .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
               .range([ height, 5 ]);
     var yAxis = svg.append("g")
                    .attr("class", "y axis")
                   // .attr("transform", "translate("+ 30 +",0)")
                   .attr("transform", "translate("+ margin.left +",0)")
-                   
-                   .call(d3.axisLeft(y).ticks(6));
+                  .call(d3.axisLeft(y).ticks(6));
     
     var interval = svg.append("path")
                       .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
@@ -341,6 +259,8 @@ TODO:
       
       xAxis.call(d3.axisBottom(x).ticks(5));
       
+      
+      
       interval
       .attr("d", d3.area()
       .x(function(d) { return x(d.date) })
@@ -355,6 +275,7 @@ TODO:
     }
     // Initialize the chart
     drawChart();
+    console.log("done")
     // Add an event listener that run the function when dimension change
     window.addEventListener('resize', drawChart ); 
     
@@ -363,6 +284,10 @@ TODO:
     function update(selectedGroup) {
       // Create new data with the selection?
       var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
+      
+      y.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
+      yAxis.call(d3.axisLeft(y).ticks(6));
+      
       
       interval
       .datum(dataFilter)
