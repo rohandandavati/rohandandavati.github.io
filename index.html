@@ -112,9 +112,11 @@ TODO:
       return true;
     });
     
+    
+    
     // array of regions - TODO: need to sort, move Illinois to front
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
-    
+    console.log(allGroup)
     // add the options to the button
     d3.select("#selectButton")
       .selectAll('myOptions')
@@ -276,6 +278,8 @@ d3.json("/data/cases_deaths.json").then(function(data) {
         return true;
     });
     
+    console.log(data);
+    
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
     
     console.log(allGroup);
@@ -298,7 +302,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
 
     // Add Y axis
     var y = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return d.cases_median; })])
+      .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.cases_median; })])
       .range([ height, 0 ]);
     var yAxis = svg_cases.append("g")
     .attr("class", "y axis")
@@ -326,7 +330,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
 
     // Add Y axis
     var y_deaths = d3.scaleLinear()
-      .domain([0, d3.max(data, function(d) { return d.deaths_median; })])
+      .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.deaths_median; })])
       .range([ height, 0 ]);
     var yAxis_deaths = svg_deaths.append("g")
     .attr("class", "y axis")
@@ -336,7 +340,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
     var area_deaths = svg_deaths.append("path")
       .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
       .attr("fill", "#cce5df")
-      .attr("stroke", "#69b3a2")
+      .attr("stroke", "#69b3a2" )
       .attr("stroke-width", 1.5)
       .attr("transform", "translate(2,-1)");
       
@@ -390,6 +394,61 @@ d3.json("/data/cases_deaths.json").then(function(data) {
     // Initialize the chart
     drawChart();
     window.addEventListener('resize', drawChart ); 
+    
+    
+        // A function that updates the chart
+    function update(selectedGroup) {
+      // Create new data with the selection?
+      var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
+      
+      y.domain([0, d3.max(dataFilter, function(d) { return d.cases_median })])
+      yAxis.call(d3.axisLeft(y).ticks(6));
+      
+      // y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
+      // yAxis_deaths.call(d3.axisLeft(y).ticks(6));
+      
+      area
+      .datum(dataFilter)
+      .transition()
+      .duration(1000)
+      .attr("fill", function(d){ return lightColors(selectedGroup) })
+      .attr("d", d3.area()
+      .x(function(d) { return x(d.date) })
+      .y0(y(0))
+      .y1(function(d) { return y(d.cases_median) })
+      ).attr("stroke", function(d){ return myColor(selectedGroup) } )
+      // interval
+      // .datum(dataFilter)
+      // .transition()
+      // .duration(1000)
+      // .attr("fill", function(d){ return lightColors(selectedGroup) })
+      // .attr("stroke", "none")
+      // .attr("d", d3.area()
+      //       .x(function(d) { return x(d.date) })
+      //       .y0(function(d) { return y(d.rt_lower) })
+      //       .y1(function(d) { return y(d.rt_upper) })
+      //       )
+      
+      // // Give these new data to update line
+      // line
+      // .datum(dataFilter)
+      // .transition()
+      // .duration(1000)
+      // .attr("d", d3.line()
+      //       .x(function(d) { return x(d.date) })
+      //       .y(function(d) { return y(d.rt_median) })
+      //       )
+      //       .attr("stroke", function(d){ return myColor(selectedGroup) })
+    }
+    
+    // When the button is changed, run the updateChart function
+    d3.select("#selectButton").on("change", function(d) {
+      // recover the option that has been chosen
+      var selectedOption = d3.select(this).property("value")
+      // run the updateChart function with this selected option
+      console.log(selectedOption)
+      update(selectedOption)
+    })
     
 });
 
