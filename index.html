@@ -404,8 +404,8 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       y.domain([0, d3.max(dataFilter, function(d) { return d.cases_median })])
       yAxis.call(d3.axisLeft(y).ticks(6));
       
-      // y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
-      // yAxis_deaths.call(d3.axisLeft(y).ticks(6));
+      y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.deaths_median })])
+      yAxis_deaths.call(d3.axisLeft(y_deaths).ticks(6));
       
       area
       .datum(dataFilter)
@@ -417,28 +417,19 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       .y0(y(0))
       .y1(function(d) { return y(d.cases_median) })
       ).attr("stroke", function(d){ return myColor(selectedGroup) } )
-      // interval
-      // .datum(dataFilter)
-      // .transition()
-      // .duration(1000)
-      // .attr("fill", function(d){ return lightColors(selectedGroup) })
-      // .attr("stroke", "none")
-      // .attr("d", d3.area()
-      //       .x(function(d) { return x(d.date) })
-      //       .y0(function(d) { return y(d.rt_lower) })
-      //       .y1(function(d) { return y(d.rt_upper) })
-      //       )
       
-      // // Give these new data to update line
-      // line
-      // .datum(dataFilter)
-      // .transition()
-      // .duration(1000)
-      // .attr("d", d3.line()
-      //       .x(function(d) { return x(d.date) })
-      //       .y(function(d) { return y(d.rt_median) })
-      //       )
-      //       .attr("stroke", function(d){ return myColor(selectedGroup) })
+      
+      area_deaths
+      .datum(dataFilter)
+      .transition()
+      .duration(1000)
+      .attr("fill", function(d){ return lightColors(selectedGroup) })
+      .attr("d", d3.area()
+      .x(function(d) { return x_deaths(d.date) })
+      .y0(y_deaths(0))
+      .y1(function(d) { return y_deaths(d.deaths_median) })
+      ).attr("stroke", function(d){ return myColor(selectedGroup) } )
+      
     }
     
     // When the button is changed, run the updateChart function
@@ -446,7 +437,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       // recover the option that has been chosen
       var selectedOption = d3.select(this).property("value")
       // run the updateChart function with this selected option
-      console.log(selectedOption)
+      // console.log(selectedOption)
       update(selectedOption)
     })
     
