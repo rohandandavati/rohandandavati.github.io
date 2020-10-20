@@ -387,8 +387,20 @@ TODO:
               
               
               
-              
-
+           console.log("hello")   
+           
+    var x_cases = d3.scaleTime();
+    var xAxis_cases = svg_cases.append("g")
+    var y_cases = d3.scaleLinear()
+    var yAxis_cases = svg_cases.append("g")
+    var area_cases = svg_cases.append("path")
+    var x_deaths = d3.scaleTime()
+    var xAxis_deaths = svg_deaths.append("g")
+    var y_deaths = d3.scaleLinear()
+    var yAxis_deaths = svg_deaths.append("g")
+    var area_deaths = svg_deaths.append("path")
+    
+    
 d3.json("/data/cases_deaths.json").then(function(data) {
     let parseDate = d3.timeParse("%Y-%m-%d");
     data = data.filter(function(d){
@@ -403,7 +415,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
     
     // console.log(data);
     
-    var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+    allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
     
     // console.log(allGroup);
     
@@ -416,25 +428,25 @@ d3.json("/data/cases_deaths.json").then(function(data) {
                         .range(d3.schemePastel2);
 
     // Add X axis --> it is a date format
-    var x_cases = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date; }))
+    // var x_cases = d3.scaleTime()
+      x_cases.domain(d3.extent(data, function(d) { return d.date; }))
       // .range([ 0, width_cases ]);
-    var xAxis_cases = svg_cases.append("g")
-      .attr("transform", "translate(0," + height + ")")
+    // var xAxis_cases = svg_cases.append("g")
+      xAxis_cases.attr("transform", "translate(0," + height + ")")
       // .call(d3.axisBottom(x));
 
     // Add Y axis
-    var y_cases = d3.scaleLinear()
-      .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.cases_median; })])
+    // var y_cases = d3.scaleLinear()
+      y_cases.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.cases_median; })])
       .range([ height, 0 ]);
-    var yAxis_cases = svg_cases.append("g")
-    .attr("class", "y axis")
+    // var yAxis_cases = svg_cases.append("g")
+    yAxis_cases.attr("class", "y axis")
     .attr("transform", "translate("+ (margin.left+50) +",0)")
       .call(d3.axisLeft(y_cases));
 
     // Add the area
-    var area_cases = svg_cases.append("path")
-      .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+    // var area_cases = svg_cases.append("path")
+      area_cases.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
       .attr("fill", "#cce5df")
       .attr("stroke", "#69b3a2")
       .attr("stroke-width", 1.5)
@@ -444,29 +456,29 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       
       
         // Add X axis --> it is a date format
-    var x_deaths = d3.scaleTime()
-      .domain(d3.extent(data, function(d) { return d.date; }))
+    // var x_deaths = d3.scaleTime()
+      x_deaths.domain(d3.extent(data, function(d) { return d.date; }))
       // .range([ 0, width_cases ]);
-    var xAxis_deaths = svg_deaths.append("g")
-      .attr("transform", "translate(0," + height + ")")
+    // var xAxis_deaths = svg_deaths.append("g")
+      xAxis_deaths.attr("transform", "translate(0," + height + ")")
       // .call(d3.axisBottom(x));
 
     // Add Y axis
-    var y_deaths = d3.scaleLinear()
-      .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.deaths_median; })])
+    // var y_deaths = d3.scaleLinear()
+      y_deaths.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.deaths_median; })])
       .range([ height, 0 ]);
-    var yAxis_deaths = svg_deaths.append("g")
-    .attr("class", "y axis")
+    // var yAxis_deaths = svg_deaths.append("g")
+    yAxis_deaths.attr("class", "y axis")
     .attr("transform", "translate("+ (margin.left+50) +",0)")
       .call(d3.axisLeft(y_deaths));
 
-    var area_deaths = svg_deaths.append("path")
-      .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+    // var area_deaths = svg_deaths.append("path")
+      area_deaths.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
       .attr("fill", "#cce5df")
       .attr("stroke", "#69b3a2" )
       .attr("stroke-width", 1.5)
       .attr("transform", "translate(2,-1)");
-      
+      console.log("success?")
       
       
     // A function that finishes to draw the chart for a specific device size.
