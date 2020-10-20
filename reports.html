@@ -23,8 +23,8 @@ title: Reports
     <div class=" head container">
       <div class="row">
         {% for report in site.data.reports %}
-          <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
+          <div class="col-md-4" style="margin-bottom: 10px">
+            <div class="card mb-4 shadow-sm h-100">
               <img class="card-img-top" src="{{ report.image_path }}" alt="{{ report.name }}">
               <div class="card-body">
                   <text class = "card-title">{{ report.name }}</text>
