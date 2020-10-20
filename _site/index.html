@@ -188,7 +188,8 @@ TODO:
   var interval = svg.append("path");
       var line = svg.append('g')
                   .append("path");
-  // var line = svg.append('g')
+                  
+  var dataFilter = null;               
   
   d3.json("/data/rt.json").then(function(data) {
     // filers NaN and converts strings
@@ -234,7 +235,7 @@ TODO:
                         .domain(allGroup)
                         .range(d3.schemePastel2);
                         
-    console.log("sf")
+    // console.log("sf")
       
     // var x = d3.scaleTime()
     //         .domain(d3.extent(data, function(d) { return d.date}))
@@ -323,12 +324,15 @@ TODO:
     // console.log("done")
     // Add an event listener that run the function when dimension change
     window.addEventListener('resize', drawChart ); 
-    
+    console.log("hi")
     
     // A function that updates the chart
     function update(selectedGroup) {
       // Create new data with the selection?
-      var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
+      // var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
+      // dataFilter.splice(0, dataFilter.length);
+      dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
+      // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
       
       y.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
       yAxis.call(d3.axisLeft(y).ticks(6));
@@ -366,6 +370,7 @@ TODO:
       // console.log(selectedOption)
       update(selectedOption)
     })
+    
 });
 
 // var margin_cases = {top: 10, right: 30, bottom: 30, left: 50},
@@ -378,6 +383,11 @@ TODO:
     var svg_deaths = d3.select("#deaths_chart")
               .append("svg")
               .attr("height", height + margin.top + margin.bottom);
+              
+              
+              
+              
+              
 
 d3.json("/data/cases_deaths.json").then(function(data) {
     let parseDate = d3.timeParse("%Y-%m-%d");
@@ -406,31 +416,31 @@ d3.json("/data/cases_deaths.json").then(function(data) {
                         .range(d3.schemePastel2);
 
     // Add X axis --> it is a date format
-    var x = d3.scaleTime()
+    var x_cases = d3.scaleTime()
       .domain(d3.extent(data, function(d) { return d.date; }))
       // .range([ 0, width_cases ]);
-    var xAxis = svg_cases.append("g")
+    var xAxis_cases = svg_cases.append("g")
       .attr("transform", "translate(0," + height + ")")
       // .call(d3.axisBottom(x));
 
     // Add Y axis
-    var y = d3.scaleLinear()
+    var y_cases = d3.scaleLinear()
       .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.cases_median; })])
       .range([ height, 0 ]);
-    var yAxis = svg_cases.append("g")
+    var yAxis_cases = svg_cases.append("g")
     .attr("class", "y axis")
     .attr("transform", "translate("+ (margin.left+50) +",0)")
-      .call(d3.axisLeft(y));
+      .call(d3.axisLeft(y_cases));
 
     // Add the area
-    var area = svg_cases.append("path")
+    var area_cases = svg_cases.append("path")
       .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
       .attr("fill", "#cce5df")
       .attr("stroke", "#69b3a2")
       .attr("stroke-width", 1.5)
       .attr("transform", "translate(2,-1)");
       
-      
+      // console.log("hi")
       
       
         // Add X axis --> it is a date format
@@ -473,15 +483,15 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
          
       // Update the X scale and Axis (here the 20 is just to have a bit of margin)
-      x.range([ 70, currentWidth-70 ]);
+      x_cases.range([ 70, currentWidth-70 ]);
       
-      xAxis.call(d3.axisBottom(x).ticks(5));
+      xAxis_cases.call(d3.axisBottom(x).ticks(5));
       
-      area
+      area_cases
       .attr("d", d3.area()
-      .x(function(d) { return x(d.date) })
-      .y0(y(0))
-      .y1(function(d) { return y(d.cases_median) })
+      .x(function(d) { return x_cases(d.date) })
+      .y0(y_cases(0))
+      .y1(function(d) { return y_cases(d.cases_median) })
       )
       
       svg_deaths
