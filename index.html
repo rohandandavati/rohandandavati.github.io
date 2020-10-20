@@ -37,7 +37,7 @@ title: Home
               <p>Example subheading</p>
               <div class="chart" id = "rt_chart"></div>
               <!--<br></br>-->
-              <text>Example text to decribe chart</text>
+              <text></text>
           </div>
       </div>
   </div>
@@ -102,6 +102,17 @@ TODO:
   var svg = d3.select("#rt_chart")
               .append("svg")
               .attr("height", height + margin.top + margin.bottom);
+              
+  
+  var x = d3.scaleTime();
+  var xAxis = svg.append("g");
+  var y = d3.scaleLinear();
+  var yAxis = svg.append("g");
+  
+  var interval = svg.append("path");
+      var line = svg.append('g')
+                  .append("path");
+  // var line = svg.append('g')
   
   d3.json("/data/rt.json").then(function(data) {
     // filers NaN and converts strings
@@ -121,6 +132,7 @@ TODO:
     
     // array of regions - TODO: need to sort, move Illinois to front
     var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+    // allGroup.append(d3.map(data, function(d){return(d.geography_modeled)}).keys());
     // console.log(allGroup)
     // add the options to the button
     d3.select("#selectButton")
@@ -146,38 +158,58 @@ TODO:
                         .domain(allGroup)
                         .range(d3.schemePastel2);
                         
-    
+    console.log("sf")
       
-    var x = d3.scaleTime()
-              .domain(d3.extent(data, function(d) { return d.date}))
-    var xAxis = svg.append("g")
-                  .attr("transform", "translate( 0," + height + ")");
+    // var x = d3.scaleTime()
+    //         .domain(d3.extent(data, function(d) { return d.date}))
+    // var xAxis = svg.append("g")
+    //               .attr("transform", "translate( 0," + height + ")");
       
-    var y = d3.scaleLinear()
-              // .domain([0, 7]) 
-              .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
-              .range([ height, 0 ]);
-    var yAxis = svg.append("g")
-                   .attr("class", "y axis")
-                  // .attr("transform", "translate("+ 30 +",0)")
-                  .attr("transform", "translate("+ margin.left +",0)")
-                  .call(d3.axisLeft(y).ticks(6));
+    x.domain(d3.extent(data, function(d) { return d.date}))
+    xAxis.attr("transform", "translate( 0," + height + ")")
+      
+    // var y = d3.scaleLinear()
+    //           // .domain([0, 7]) 
+    //           .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
+    //           .range([ height, 0 ]);
+    // var yAxis = svg.append("g")
+    //               .attr("class", "y axis")
+    //               // .attr("transform", "translate("+ 30 +",0)")
+    //               .attr("transform", "translate("+ margin.left +",0)")
+    //               .call(d3.axisLeft(y).ticks(6));
+                  
+    y.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
+     .range([ height, 0 ]);
+    yAxis.attr("class", "y axis")
+        .attr("transform", "translate("+ margin.left +",0)")
+        .call(d3.axisLeft(y).ticks(6));
+               
     
-    var interval = svg.append("path")
-                      .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+    // var interval = svg.append("path")
+    //                   .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+    //                   .attr("fill", function(d){ return lightColors(allGroup[0]) })
+    //                   .attr("stroke", "none")
+    //                   .attr("transform", "translate(1,0)")
+      
+      interval.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                       .attr("fill", function(d){ return lightColors(allGroup[0]) })
                       .attr("stroke", "none")
-                      .attr("transform", "translate(1,0)")
+                      .attr("transform", "translate(1,0)")  
         
   // Initialize line with first group of the list
-    var line = svg.append('g')
-                  .append("path")
-                  .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+    // var line = svg.append('g')
+    //               .append("path")
+    //               .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+    //               .attr("stroke", function(d){ return myColor(allGroup[0]) })
+    //               .attr("transform", "translate(1,0)")
+    //               .style("stroke-width", 4)
+    //               .style("fill", "none")
+                  
+    line.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                   .attr("stroke", function(d){ return myColor(allGroup[0]) })
                   .attr("transform", "translate(1,0)")
                   .style("stroke-width", 4)
                   .style("fill", "none")
-                  
                   
     // A function that finishes to draw the chart for a specific device size.
     function drawChart() {
