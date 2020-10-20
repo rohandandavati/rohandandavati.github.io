@@ -105,54 +105,54 @@
 	/*}*/
 
 </style>
-
-<div class="container jumbotron">
-    <div class="row">
-        <div class="col">
-            <h2>Transmission Status</h2>
-            <p>Example subheading</p>
-            <div class="chart" id = "rt_chart"></div>
-            <!--<br></br>-->
-            <text>Example text to decribe chart</text>
-        </div>
-    </div>
+<div class = "container ">
+  <div class="container jumbotron">
+      <div class="row">
+          <div class="col">
+              <h2>Transmission Status</h2>
+              <p>Example subheading</p>
+              <div class="chart" id = "rt_chart"></div>
+              <!--<br></br>-->
+              <text>Example text to decribe chart</text>
+          </div>
+      </div>
+  </div>
+  
+  <div class="container jumbotron">
+      <div class="row">
+          <div class="col">
+              <h2>Cases Map and Chart</h2>
+              <div class = "row"> 
+                  <div class="col-sm-12 col-md-4 col-lg-3 chart"> 
+                      <div class="chart" id = "cases_map"></div>
+                  </div>
+                  <div class="col-sm-12 col-md-8 col-lg-9 chart">
+                      <div class="chart" id = "cases_chart">
+                          <!--<svg id="my_dataviz" width="440" height="300"></svg>-->
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  
+  <div class="container jumbotron">
+      <div class="row">
+          <div class="col">
+              <h2>Deaths Map and Chart</h2>
+              <div class = "row"> 
+                  <div class="col-sm-12 col-md-4 col-lg-3 chart"> 
+                      <div class="chart" id = "deaths_map"></div>
+                  </div>
+                  <div class="col-sm-12 col-md-8 col-lg-9 chart">
+                      <div class="chart" id = "deaths_chart"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </div>
-
-<div class="container jumbotron">
-    <div class="row">
-        <div class="col">
-            <h2>Cases Map and Chart</h2>
-            <div class = "row"> 
-                <div class="col-sm-12 col-md-4 col-lg-3 chart"> 
-                    <div class="chart" id = "cases_map"></div>
-                </div>
-                <div class="col-sm-12 col-md-8 col-lg-9 chart">
-                    <div class="chart" id = "cases_chart">
-                        <svg id="my_dataviz" width="440" height="300"></svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="container jumbotron">
-    <div class="row">
-        <div class="col">
-            <h2>Deaths Map and Chart</h2>
-            <div class = "row"> 
-                <div class="col-sm-12 col-md-4 col-lg-3 chart"> 
-                    <div class="chart" id = "deaths_map"></div>
-                </div>
-                <div class="col-sm-12 col-md-8 col-lg-9 chart">
-                    <div class="chart" id = "deaths_chart"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 
 
 <script>
@@ -173,7 +173,7 @@ TODO:
 
   /* global d3 */
   
-  var margin = {top: 10, right: 20, bottom: 20, left: 20}, height = 300;
+  var margin = {top: 10, right: 20, bottom: 50, left: 20}, height = 400;
   // append the svg object to the body of the page
   var svg = d3.select("#rt_chart")
               .append("svg")
@@ -232,7 +232,7 @@ TODO:
     var y = d3.scaleLinear()
               // .domain([0, 7]) 
               .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
-              .range([ height, 5 ]);
+              .range([ height, 0 ]);
     var yAxis = svg.append("g")
                    .attr("class", "y axis")
                   // .attr("transform", "translate("+ 30 +",0)")
@@ -260,7 +260,7 @@ TODO:
       
       // get the current width of the div where the chart appear, and attribute it to Svg
       // currentWidth = parseInt(d3.select('#rt_chart').style('width'), 10) + margin.left + margin.right
-      var currentWidth = document.getElementById("rt_chart").offsetWidth
+      var currentWidth = document.getElementById("rt_chart").offsetWidth - 10 - 20;
       
       svg
       .attr("width", currentWidth)
@@ -513,14 +513,14 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       
     }
     
-    // When the button is changed, run the updateChart function
-    d3.select("#selectButton").on("change", function(d) {
-      // recover the option that has been chosen
-      var selectedOption = d3.select(this).property("value")
-      // run the updateChart function with this selected option
-      // console.log(selectedOption)
-      update(selectedOption)
-    })
+    // // When the button is changed, run the updateChart function
+    // d3.select("#selectButton").on("change", function(d) {
+    //   // recover the option that has been chosen
+    //   var selectedOption = d3.select(this).property("value")
+    //   // run the updateChart function with this selected option
+    //   // console.log(selectedOption)
+    //   update(selectedOption)
+    // })
 
 
 
