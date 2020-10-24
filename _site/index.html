@@ -110,7 +110,6 @@
       <div class="row">
           <div class="col">
               <h2>Transmission Status</h2>
-              <p>Example subheading</p>
               <div class="chart" id = "rt_chart"></div>
               <!--<br></br>-->
               <text></text>
@@ -260,7 +259,22 @@ TODO:
     yAxis.attr("class", "y axis")
         .attr("transform", "translate("+ margin.left +",0)")
         .call(d3.axisLeft(y).ticks(6));
-               
+
+    // Add X axis label:
+    svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("x", width)
+        .attr("y", height + margin.top + 20)
+        .text("Month");
+
+    // Y axis label:
+    svg.append("text")
+        .attr("text-anchor", "end")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -margin.left+20)
+        .attr("x", -margin.top+20)
+        .text("R_t")
+                  
     
     // var interval = svg.append("path")
     //                   .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))

@@ -17,29 +17,62 @@ title: Reports
         font-size: 18px;
         /*font-weight: bold;*/
     }
+    .card {
+      width: 300px;
+    }
+    
+    body {
+    padding-top: 70px;
+    }
+    .read {
+      width: 80px;
+    }
 </style>
 
-  <div class="album py-5 bg-light">
-    <div class=" head container">
-      <div class="row">
-        {% for report in site.data.reports %}
-          <div class="col-md-4" style="margin-bottom: 10px">
-            <div class="card mb-4 shadow-sm h-100">
-              <img class="card-img-top" src="{{ report.image_path }}" alt="{{ report.name }}">
-              <div class="card-body">
-                  <text class = "card-title">{{ report.name }}</text>
-                  <br></br>
-                <p class="card-text">{{ report.description }}</p>
-                <div class="d-flex justify-content-between align-items-end">
-                  <div class="btn-group">
-                    <a href="{{ report.path }}" class="card-link" target="_blank">Read</a>
+<div class = "container ">
+  <div class = "d-flex align-content-center flex-wrap">
+           {% for report in site.data.reports %}
+             
+             <div class="card mb-4 shadow-sm h-100 d-md-inline-flex">
+               
+               <img class="card-img-top" src="{{ report.image_path }}" alt="{{ report.name }}">
+                 
+                 <div class="card-body d-flex flex-column">
+                   
+                   <text class = "card-title ">{{ report.name }}</text>
+                   
+                   <!--<br></br>-->
+                   
+                   <p class="card-text">{{ report.description }}</p>
+                   
+                   <button href="{{ report.path }}" type="button" class="btn read btn-outline-primary" target="_blank" >Read</button>
+                   
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        {% endfor %}
+                </div>  
+            {% endfor %}
       </div>
-    </div>
-  </div>  
+</div>
+  <!--<div class="album py-5 bg-light">-->
+  <!--  <div class=" head container">-->
+  <!--    <div class="row">-->
+  <!--      {% for report in site.data.reports %}-->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="{{ report.image_path }}" alt="{{ report.name }}">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">{{ report.name }}</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">{{ report.description }}</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="{{ report.path }}" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      {% endfor %}-->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--</div>  -->
         
