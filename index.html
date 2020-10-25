@@ -7,11 +7,11 @@ title: Home
     background-color:transparent !important;
     }
     .chart {
-        height: 400px;
+        height: 500px;
     }
-    /*div {*/
-    /*    border: 1px solid black;*/
-    /*}*/
+    div {
+        border: 1px solid black;
+    }
     /*.selectNumber {*/
     /*    padding-top: 50px;*/
     /*}*/
@@ -35,8 +35,7 @@ title: Home
           <div class="col">
               <h2>Transmission Status</h2>
               <div class="chart" id = "rt_chart"></div>
-              <!--<br></br>-->
-              <text></text>
+              <!--<text></text>-->
           </div>
       </div>
   </div>
@@ -100,17 +99,28 @@ TODO:
 
   /* global d3 */
   
-  var margin = {top: 10, right: 20, bottom: 50, left: 20}, height = 400;
+  // set the dimensions and margins of the graph
+// var margin = {top: 10, right: 30, bottom: 30, left: 60},
+//     width = document.getElementById("rt_chart").offsetWidth - margin.left - margin.right,
+//     height = document.getElementById("rt_chart").offsetWidth  - margin.top - margin.bottom;
+
+  
+  var margin = {top: 10, right: 20, bottom: 50, left: 60}, 
+      height = document.getElementById("rt_chart").offsetHeight  - margin.top - margin.bottom;
   // append the svg object to the body of the page
+  
+
   var svg = d3.select("#rt_chart")
               .append("svg")
-              .attr("height", height + margin.top + margin.bottom);
-              
+              .attr("height", height + margin.top + margin.bottom)
+
   
   var x = d3.scaleTime();
   var xAxis = svg.append("g");
   var y = d3.scaleLinear();
   var yAxis = svg.append("g");
+  
+  //
   
   var interval = svg.append("path");
       var line = svg.append('g')
@@ -135,10 +145,8 @@ TODO:
     
     
     // array of regions - TODO: need to sort, move Illinois to front
-    var allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
-    // allGroup.append(d3.map(data, function(d){return(d.geography_modeled)}).keys());
-    // console.log(allGroup)
-    // add the options to the button
+    let allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+
     d3.select("#selectButton")
       .selectAll('myOptions')
      	.data(allGroup)
@@ -161,72 +169,28 @@ TODO:
     var lightColors = d3.scaleOrdinal()
                         .domain(allGroup)
                         .range(d3.schemePastel2);
-                        
-    // console.log("sf")
-      
-    // var x = d3.scaleTime()
-    //         .domain(d3.extent(data, function(d) { return d.date}))
-    // var xAxis = svg.append("g")
-    //               .attr("transform", "translate( 0," + height + ")");
-      
+
     x.domain(d3.extent(data, function(d) { return d.date}))
-    xAxis.attr("transform", "translate( 0," + height + ")")
-      
-    // var y = d3.scaleLinear()
-    //           // .domain([0, 7]) 
-    //           .domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
-    //           .range([ height, 0 ]);
-    // var yAxis = svg.append("g")
-    //               .attr("class", "y axis")
-    //               // .attr("transform", "translate("+ 30 +",0)")
-    //               .attr("transform", "translate("+ margin.left +",0)")
-    //               .call(d3.axisLeft(y).ticks(6));
+    
+    xAxis.attr("transform", "translate(" + margin.left + "," + height + ")")
                   
     y.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
-     .range([ height, 0 ]);
+     .range([ (height - margin.top - margin.bottom), 0 ]);
+     
     yAxis.attr("class", "y axis")
-        .attr("transform", "translate("+ margin.left +",0)")
+    .attr("transform", "translate("+ margin.left +","+ 0  + ")"  )
+        
         .call(d3.axisLeft(y).ticks(6));
 
-    // Add X axis label:
-    svg.append("text")
-        .attr("text-anchor", "end")
-        .attr("x", width)
-        .attr("y", height + margin.top + 20)
-        .text("Month");
-
-    // Y axis label:
-    svg.append("text")
-        .attr("text-anchor", "end")
-        .attr("transform", "rotate(-90)")
-        .attr("y", -margin.left+20)
-        .attr("x", -margin.top+20)
-        .text("R_t")
-                  
-    
-    // var interval = svg.append("path")
-    //                   .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
-    //                   .attr("fill", function(d){ return lightColors(allGroup[0]) })
-    //                   .attr("stroke", "none")
-    //                   .attr("transform", "translate(1,0)")
-      
-      interval.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+    interval.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                       .attr("fill", function(d){ return lightColors(allGroup[0]) })
                       .attr("stroke", "none")
-                      .attr("transform", "translate(1,0)")  
-        
-  // Initialize line with first group of the list
-    // var line = svg.append('g')
-    //               .append("path")
-    //               .datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
-    //               .attr("stroke", function(d){ return myColor(allGroup[0]) })
-    //               .attr("transform", "translate(1,0)")
-    //               .style("stroke-width", 4)
-    //               .style("fill", "none")
-                  
+                      .attr("transform", "translate(" +(margin.left+1)+" ,0)")  
+
+    
     line.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                   .attr("stroke", function(d){ return myColor(allGroup[0]) })
-                  .attr("transform", "translate(1,0)")
+                  .attr("transform", "translate(" +(margin.left+1)+" ,0)") 
                   .style("stroke-width", 4)
                   .style("fill", "none")
                   
@@ -235,17 +199,23 @@ TODO:
       
       // get the current width of the div where the chart appear, and attribute it to Svg
       // currentWidth = parseInt(d3.select('#rt_chart').style('width'), 10) + margin.left + margin.right
-      var currentWidth = document.getElementById("rt_chart").offsetWidth - 10 - 20;
+      var currentWidth = document.getElementById("rt_chart").offsetWidth - margin.left - margin.right;
+      console.log(currentWidth)
       
       svg
-      .attr("width", currentWidth)
-      .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("width", currentWidth + margin.left + margin.right)
+      // .attr("width", currentWidth)
+      // .append("g")
+      // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
          
       // Update the X scale and Axis (here the 20 is just to have a bit of margin)
-      x.range([ 20, currentWidth-20 ]);
+      x.range([ 0, currentWidth ]);
       
-      xAxis.call(d3.axisBottom(x).ticks(5));
+      xAxis.attr("transform", "translate( "+margin.left+"," + (height-margin.top-margin.bottom) + ")")
+           .call(d3.axisBottom(x).ticks(5));
+           
+          // console.log("yo")
+           
       
       
       
@@ -267,51 +237,6 @@ TODO:
     // Add an event listener that run the function when dimension change
     window.addEventListener('resize', drawChart ); 
     // console.log("hi")
-    
-    // // A function that updates the chart
-    // function update(selectedGroup) {
-    //   // Create new data with the selection?
-    //   // var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
-    //   // dataFilter.splice(0, dataFilter.length);
-    //   dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
-    //   // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
-      
-    //   y.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
-    //   yAxis.call(d3.axisLeft(y).ticks(6));
-      
-      
-    //   interval
-    //   .datum(dataFilter)
-    //   .transition()
-    //   .duration(1000)
-    //   .attr("fill", function(d){ return lightColors(selectedGroup) })
-    //   .attr("stroke", "none")
-    //   .attr("d", d3.area()
-    //         .x(function(d) { return x(d.date) })
-    //         .y0(function(d) { return y(d.rt_lower) })
-    //         .y1(function(d) { return y(d.rt_upper) })
-    //         )
-      
-    //   // Give these new data to update line
-    //   line
-    //   .datum(dataFilter)
-    //   .transition()
-    //   .duration(1000)
-    //   .attr("d", d3.line()
-    //         .x(function(d) { return x(d.date) })
-    //         .y(function(d) { return y(d.rt_median) })
-    //         )
-    //         .attr("stroke", function(d){ return myColor(selectedGroup) })
-    // }
-    
-    // // When the button is changed, run the updateChart function
-    // d3.select("#selectButton").on("change", function(d) {
-    //   // recover the option that has been chosen
-    //   var selectedOption = d3.select(this).property("value")
-    //   // run the updateChart function with this selected option
-    //   // console.log(selectedOption)
-    //   update(selectedOption)
-    // })
     
 });
 
@@ -379,7 +304,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
     // Add Y axis
     // var y_cases = d3.scaleLinear()
       y_cases.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.cases_median; })])
-      .range([ height, 0 ]);
+      .range([ height -margin.bottom - margin.top, 0 ]);
     // var yAxis_cases = svg_cases.append("g")
     yAxis_cases.attr("class", "y axis")
     .attr("transform", "translate("+ (margin.left+50) +",0)")
@@ -419,7 +344,7 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       .attr("stroke", "#69b3a2" )
       .attr("stroke-width", 1.5)
       .attr("transform", "translate(2,-1)");
-      console.log("success?")
+      // console.log("success?")
       
       
     // A function that finishes to draw the chart for a specific device size.
@@ -511,7 +436,6 @@ d3.json("/data/cases_deaths.json").then(function(data) {
     
 });
 
-console.log("yo")
     // A function that updates the chart
     function update(selectedGroup) {
       // Create new data with the selection?
