@@ -159,6 +159,10 @@ TODO:
 -dropdown button stays to left 
 -different color charts 
 -reactive height
+-remove axis lines - only ticks 
+-axis tick labels bigger font 
+-axis tick labels font size reactive 
+-axis titles centered on axis range, not svg width/height
 
 
 */
@@ -297,7 +301,7 @@ TODO:
       
     yTitle = svg.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 10)
+      .attr("y", 6)
       // .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
