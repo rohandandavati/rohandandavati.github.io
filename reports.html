@@ -47,7 +47,8 @@ title: Reports
 </style>
 
 <div class = "container ">
-  <div class = "d-flex justify-content-center flex-wrap">
+  <div class = "d-flex justify-content-left flex-wrap">
+    <!--<div class = "d-flex justify-content-center"  > -->
     {% for report in site.data.reports %}             
     <div class="card mb-4 shadow-sm h-100 d-md-inline-flex card-outer">              
       <img class="card-img-top" src="{{ report.image_path }}" alt="{{ report.name }}">
@@ -62,6 +63,7 @@ title: Reports
       </div>
     </div>  
     {% endfor %}
+    <!--</div>-->
   </div>
 </div>
   <!--<div class="album py-5 bg-light">-->

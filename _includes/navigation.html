@@ -3,6 +3,9 @@
     /*div {*/
     /*    border: 1px solid black;*/
     /*}*/
+    .buttons {
+      width: 300px;
+    }
   </style>
   
   <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed">
@@ -10,7 +13,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse buttons" id="navbarNav">
       <ul class="navbar-nav ">
         {% for item in site.data.navigation %}
            <li class="nav-item">
