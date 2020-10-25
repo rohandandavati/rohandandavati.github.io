@@ -56,9 +56,9 @@ title: Reports
         <text class = "card-subtitle">{{ report.date }}</text>
         <!--<br></br>-->
         <p class="card-text">{{ report.description }}</p> 
-        <div class= "btn-group read">
-          <a href="{{ report.path }}" class="btn btn-outline-primary " target="_blank">Read</a>
-        </div>
+        <!--<div class= "btn-group read">-->
+          <a href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>
+        <!--</div>-->
       </div>
     </div>  
     {% endfor %}
