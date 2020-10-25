@@ -1,8 +1,8 @@
 
   <style>
-    div {
-        border: 1px solid black;
-    }
+    /*div {*/
+    /*    border: 1px solid black;*/
+    /*}*/
   </style>
   
   <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed">
@@ -11,7 +11,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ">
         {% for item in site.data.navigation %}
            <li class="nav-item">
               <a class="nav-link" href="{{ item.link }}" {% if page.url == item.link %}class="current"{% endif %}>{{ item.name }}</a>
