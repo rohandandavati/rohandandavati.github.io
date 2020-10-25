@@ -72,9 +72,9 @@
     .chart {
         height: 500px;
     }
-    div {
-        border: 1px solid black;
-    }
+    /*div {*/
+    /*    border: 1px solid black;*/
+    /*}*/
     /*.selectNumber {*/
     /*    padding-top: 50px;*/
     /*}*/
@@ -97,6 +97,8 @@
       <div class="row">
           <div class="col">
               <h2>Transmission Status</h2>
+              <p> Example subtitle to label chart </p>
+              <br></br>
               <div class="chart" id = "rt_chart"></div>
               <!--<text></text>-->
           </div>
@@ -156,6 +158,7 @@ TODO:
 -multiple lines with legend 
 -dropdown button stays to left 
 -different color charts 
+-reactive height
 
 
 */
@@ -171,17 +174,10 @@ TODO:
   var margin = {top: 10, right: 20, bottom: 50, left: 60}, 
       height = document.getElementById("rt_chart").offsetHeight  - margin.top - margin.bottom;
   // append the svg object to the body of the page
-  
-  // var svg = d3.select("#rt_chart")
-  //             .append("svg")
-  //             .attr("height", height + margin.top + margin.bottom);
-              
   var svg = d3.select("#rt_chart")
               .append("svg")
               .attr("height", height + margin.top + margin.bottom)
-              // .append("g")
-              // .attr("transform",
-              //     "translate(" + margin.left + "," + margin.top + ")");
+
   
   var x = d3.scaleTime();
   var xAxis = svg.append("g");
@@ -194,6 +190,8 @@ TODO:
       var line = svg.append('g')
                   .append("path");
                   
+  var refLine = svg.append('g').append("path")
+   
   var dataFilter = null;               
   
   d3.json("/data/rt.json").then(function(data) {
@@ -209,8 +207,6 @@ TODO:
       d.date = parseDate(d.date);
       return true;
     });
-    
-    
     
     // array of regions - TODO: need to sort, move Illinois to front
     let allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
@@ -237,6 +233,8 @@ TODO:
     var lightColors = d3.scaleOrdinal()
                         .domain(allGroup)
                         .range(d3.schemePastel2);
+                        
+            
 
     x.domain(d3.extent(data, function(d) { return d.date}))
     
@@ -245,10 +243,32 @@ TODO:
     y.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
      .range([ (height - margin.top - margin.bottom), 0 ]);
      
+ let str = "t"
+ let result = str.sub();
+// console.log("hello " + result )
+
+// svg.appendHTML('<div>Hello</div>')
+
+// svg.append("text")
+//     .attr("class", "x label")
+//     .attr("text-anchor", "end")
+//     .attr("x", width / 2)
+//     .attr("y", height - 20)
+//     .text("Date");
+    
+  // svg.append("text")
+  //   .attr("class", "y label")
+  //   .attr("text-anchor", "end")
+  //   .attr("y", 10)
+  //   .attr("dy", ".75em")
+  //   .attr("transform", "rotate(-90)")
+  //   .text("Effective Reproduction Number: Rt");
+        
     yAxis.attr("class", "y axis")
     .attr("transform", "translate("+ margin.left +","+ 0  + ")"  )
         
         .call(d3.axisLeft(y).ticks(6));
+
 
     interval.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                       .attr("fill", function(d){ return lightColors(allGroup[0]) })
@@ -262,31 +282,42 @@ TODO:
                   .style("stroke-width", 4)
                   .style("fill", "none")
                   
+                  
+                  
+        refLine.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+                  .attr("stroke", "black")
+                  .attr("transform", "translate(" +(margin.left+1)+" ,0)") 
+                  .style("stroke-width", 2)
+                  .style("stroke-dasharray", ("3, 3"))
+                  .style("fill", "none")              
+                  
+    xTitle = svg.append("text")
+      .style("text-anchor", "middle")
+      .text("Date");
+      
+    yTitle = svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 10)
+      // .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Effective Reproduction Number: Rt");    
     // A function that finishes to draw the chart for a specific device size.
     function drawChart() {
       
-      // get the current width of the div where the chart appear, and attribute it to Svg
-      // currentWidth = parseInt(d3.select('#rt_chart').style('width'), 10) + margin.left + margin.right
       var currentWidth = document.getElementById("rt_chart").offsetWidth - margin.left - margin.right;
-      console.log(currentWidth)
+      // console.log(currentWidth)
       
-      svg
-      .attr("width", currentWidth + margin.left + margin.right)
-      // .attr("width", currentWidth)
-      // .append("g")
-      // .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-         
-      // Update the X scale and Axis (here the 20 is just to have a bit of margin)
+      svg.attr("width", currentWidth + margin.left + margin.right)
+      
+      xTitle.attr("transform", "translate(" + (currentWidth/2) + " ," + (height -20) + ")")
+      yTitle.attr("x",0 - (height / 2))
+      
       x.range([ 0, currentWidth ]);
       
       xAxis.attr("transform", "translate( "+margin.left+"," + (height-margin.top-margin.bottom) + ")")
            .call(d3.axisBottom(x).ticks(5));
            
-          // console.log("yo")
-           
-      
-      
-      
       interval
       .attr("d", d3.area()
       .x(function(d) { return x(d.date) })
@@ -298,6 +329,14 @@ TODO:
       .x(function(d) { return x(d.date) })
       .y(function(d) { return y(d.rt_median) })
       )
+      
+            refLine
+        .attr("d", d3.line()
+        .x(function(d) { return x(d.date) })
+        .y(function(d) { return y(1.0) }));
+      
+      
+
     }
     // Initialize the chart
     drawChart();
@@ -538,7 +577,8 @@ d3.json("/data/cases_deaths.json").then(function(data) {
       // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
       
       y.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
-      yAxis.call(d3.axisLeft(y).ticks(6));
+      yAxis.transition()
+      .duration(1000).call(d3.axisLeft(y).ticks(6))
       
       
       interval
@@ -564,8 +604,18 @@ d3.json("/data/cases_deaths.json").then(function(data) {
             )
             .attr("stroke", function(d){ return myColor(selectedGroup) })
     
+           
+      refLine
+      .transition()
+      .duration(1000)
+        .attr("d", d3.line()
+        .x(function(d) { return x(d.date) })
+        .y(function(d) { return y(1.0) }));
+      
        }); 
        
+       
+
        
        
        d3.json("/data/cases_deaths.json").then(function(data) {
