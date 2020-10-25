@@ -1,7 +1,5 @@
 language: ruby
 
-cache: bundler 
-
 before_install: gem update bundler
 
 install:
@@ -9,9 +7,5 @@ install:
 
 script:
   - "./setup"
-
-branches:
-  only:
-  - master
 
 sudo: false
