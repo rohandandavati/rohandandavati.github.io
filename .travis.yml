@@ -10,8 +10,4 @@ install:
 script:
   - "./setup"
 
-branches:
-  only:
-  - build
-
 sudo: false
