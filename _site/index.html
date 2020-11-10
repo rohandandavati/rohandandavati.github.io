@@ -16,6 +16,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js" integrity="sha512-C2RveGuPIWqkaLAluvoxyiaN1XYNe5ss11urhZWZYBUA9Ydgj+hfGKPcxCzTwut1/fmjEZR7Ac35f2aycT8Ogw==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" integrity="sha512-P/PLNIojUNrUq2g5Q3NX8epp5X6KZmNvWV2pDGU+ZiU96YlqFhIrG0pkSZ/qgruT7uJ2Ok/vFN7/7brl4Y7ipw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-scale/1.0.7/d3-scale.min.js" integrity="sha512-CagQ2MAkdTRJK0ge/Q/+y2QL+0wvabHP7y7GIKwy7E5aptPLpHu26CDi3Ec95xkYPMvZBqjNOwe02NZoBqWXIg==" crossorigin="anonymous"></script>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-transition/1.1.1/d3-transition.min.js" integrity="sha512-9EoVFaJ1f642H4qLe+VUMu7CDqa1FQPdar1Pm76aS1AeesQoMdmm3NUZaZlJ1H/IEpwfS1Hbq41l/iUmhxq8jw==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-time/1.0.8/d3-time.min.js" integrity="sha512-UPE7yiWEYDz8P9wbryFMvk4XRktIUjV1Z5rQcmAsIgRelE9GAZ+6Z8jtGcaOUYEvz8aaoDWpDZXkhGbMkeWPQQ==" crossorigin="anonymous"></script>
@@ -31,8 +32,8 @@
   <style>
 
 
-  .list {
-    width:200px;
+  .hi {
+    width:500px;
   }
 
   </style>
@@ -42,8 +43,8 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse buttons" id="navbarNav">
-      <ul class="navbar-nav list">
+    <div class="collapse navbar-collapse buttons hi" id="navbarNav">
+      <ul class="navbar-nav list "id = "navList">
         
            <li class="nav-item">
               <a class="nav-link" href="/"  class="current" >Home</a>
@@ -127,7 +128,7 @@
 
 </style>
 
-<div class="map" id = "cases_map"></div>
+<!--<div class="map" id = "cases_map"></div>-->
 
 <div class = "container ">
   <div class="container jumbotron">
@@ -137,7 +138,7 @@
               <p> Example subtitle to label chart </p>
               <br></br>
               <div class="chart" id = "rt_chart"></div>
-              <text></text>
+              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
           </div>
       </div>
   </div>
@@ -167,7 +168,7 @@
               <p> Example subtitle to label chart </p>
               <br></br>
               <div class="chart" id = "cases_chart"></div>
-              <!--<text></text>-->
+              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
           </div>
       </div>
   </div>
@@ -181,7 +182,7 @@
               <p> Example subtitle to label chart </p>
               <br></br>
               <div class="chart" id = "deaths_chart"></div>
-              <!--<text></text>-->
+              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
           </div>
       </div>
   </div>
@@ -1167,8 +1168,12 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       
       x_rt.range([ 0, width ]);
       x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + height + ")")
-      .call(d3.axisBottom(x_rt).ticks(5));
-           
+      // .call(d3.axisBottom(x_rt).ticks(5));
+      if (currentWidth < 600) {
+         x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
+      }else {
+         x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
+      }
            
       y_rt.range([ height, 0 ])
       y_rt_axis.call(d3.axisLeft(y_rt).ticks(6));
@@ -1217,8 +1222,8 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
 
 
 
-  var margin_cases = {top: 10, right: 10, bottom: 50, left: 60};
-  var margin_deaths = {top: 10, right: 10, bottom: 50, left: 60};
+  var margin_cases = {top: 15, right: 10, bottom: 50, left: 60};
+  var margin_deaths = {top: 15, right: 10, bottom: 50, left: 60};
   
   var svg_cases = d3.select("#cases_chart").append("svg")
   var svg_deaths = d3.select("#deaths_chart").append("svg")
@@ -1283,8 +1288,7 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_cases.left+1)+" ,0)");
       
-          x_deaths.domain(d3.extent(data, function(d) { return d.update_date; }))
-
+      x_deaths.domain(d3.extent(data, function(d) { return d.update_date; }))
       y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })])
 
     y_deaths_axis.attr("class", "y axis")
@@ -1298,22 +1302,25 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");  
       
-
     function drawChart() {
       
-      
       const currentWidth = document.getElementById("cases_chart").offsetWidth;
-      
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
       const height_cases = parseInt(currentWidth * 0.45 ) - margin_cases.top - margin_cases.bottom;
-      
       
       svg_cases.attr("width", width_cases + margin_cases.left + margin_cases.right)
                .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
       
       
       x_cases.range([ 0, width_cases ]);
-      x_cases_axis.attr("transform", "translate(" + margin_rt.left + "," + height_cases + ")").call(d3.axisBottom(x_cases).ticks(5));
+      x_cases_axis.attr("transform", "translate(" + margin_rt.left + "," + height_cases + ")")
+      // .call(d3.axisBottom(x_cases).ticks(5));
+      
+      if (currentWidth < 600) {
+         x_cases_axis.call(d3.axisBottom(x_cases).ticks(3));
+      }else {
+         x_cases_axis.call(d3.axisBottom(x_cases).ticks(6));
+      }
       
       y_cases.range([ height_cases, 0 ])
       y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
@@ -1335,8 +1342,14 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       
       
       x_deaths.range([ 0, width_deaths ]);
-      x_deaths_axis.attr("transform", "translate(" + margin_deaths.left + "," + height_deaths + ")").call(d3.axisBottom(x_deaths).ticks(5));
+      x_deaths_axis.attr("transform", "translate(" + margin_deaths.left + "," + height_deaths + ")")
+      // .call(d3.axisBottom(x_deaths).ticks(5));
       
+            if (currentWidth < 600) {
+         x_deaths_axis.call(d3.axisBottom(x_deaths).ticks(3));
+      }else {
+         x_deaths_axis.call(d3.axisBottom(x_deaths).ticks(6));
+      }
       y_deaths.range([ height_deaths, 0 ])
       y_deaths_axis.call(d3.axisLeft(y_deaths).ticks(6));
       

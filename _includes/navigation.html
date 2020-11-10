@@ -2,8 +2,8 @@
   <style>
 
 
-  .list {
-    width:200px;
+  .hi {
+    width:500px;
   }
 
   </style>
@@ -13,8 +13,8 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse buttons" id="navbarNav">
-      <ul class="navbar-nav list">
+    <div class="collapse navbar-collapse buttons hi" id="navbarNav">
+      <ul class="navbar-nav list "id = "navList">
         {% for item in site.data.navigation %}
            <li class="nav-item">
               <a class="nav-link" href="{{ item.link }}" {% if page.url == item.link %} class="current" {% endif %}>{{ item.name }}</a>

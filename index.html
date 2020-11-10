@@ -60,7 +60,7 @@ title: Home
 
 </style>
 
-<div class="map" id = "cases_map"></div>
+<!--<div class="map" id = "cases_map"></div>-->
 
 <div class = "container ">
   <div class="container jumbotron">
@@ -70,7 +70,7 @@ title: Home
               <p> Example subtitle to label chart </p>
               <br></br>
               <div class="chart" id = "rt_chart"></div>
-              <text></text>
+              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
           </div>
       </div>
   </div>
@@ -100,7 +100,7 @@ title: Home
               <p> Example subtitle to label chart </p>
               <br></br>
               <div class="chart" id = "cases_chart"></div>
-              <!--<text></text>-->
+              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
           </div>
       </div>
   </div>
@@ -114,7 +114,7 @@ title: Home
               <p> Example subtitle to label chart </p>
               <br></br>
               <div class="chart" id = "deaths_chart"></div>
-              <!--<text></text>-->
+              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
           </div>
       </div>
   </div>
@@ -1100,8 +1100,12 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       
       x_rt.range([ 0, width ]);
       x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + height + ")")
-      .call(d3.axisBottom(x_rt).ticks(5));
-           
+      // .call(d3.axisBottom(x_rt).ticks(5));
+      if (currentWidth < 600) {
+         x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
+      }else {
+         x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
+      }
            
       y_rt.range([ height, 0 ])
       y_rt_axis.call(d3.axisLeft(y_rt).ticks(6));
@@ -1150,8 +1154,8 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
 
 
 
-  var margin_cases = {top: 10, right: 10, bottom: 50, left: 60};
-  var margin_deaths = {top: 10, right: 10, bottom: 50, left: 60};
+  var margin_cases = {top: 15, right: 10, bottom: 50, left: 60};
+  var margin_deaths = {top: 15, right: 10, bottom: 50, left: 60};
   
   var svg_cases = d3.select("#cases_chart").append("svg")
   var svg_deaths = d3.select("#deaths_chart").append("svg")
@@ -1216,8 +1220,7 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_cases.left+1)+" ,0)");
       
-          x_deaths.domain(d3.extent(data, function(d) { return d.update_date; }))
-
+      x_deaths.domain(d3.extent(data, function(d) { return d.update_date; }))
       y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })])
 
     y_deaths_axis.attr("class", "y axis")
@@ -1231,22 +1234,25 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");  
       
-
     function drawChart() {
       
-      
       const currentWidth = document.getElementById("cases_chart").offsetWidth;
-      
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
       const height_cases = parseInt(currentWidth * 0.45 ) - margin_cases.top - margin_cases.bottom;
-      
       
       svg_cases.attr("width", width_cases + margin_cases.left + margin_cases.right)
                .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
       
       
       x_cases.range([ 0, width_cases ]);
-      x_cases_axis.attr("transform", "translate(" + margin_rt.left + "," + height_cases + ")").call(d3.axisBottom(x_cases).ticks(5));
+      x_cases_axis.attr("transform", "translate(" + margin_rt.left + "," + height_cases + ")")
+      // .call(d3.axisBottom(x_cases).ticks(5));
+      
+      if (currentWidth < 600) {
+         x_cases_axis.call(d3.axisBottom(x_cases).ticks(3));
+      }else {
+         x_cases_axis.call(d3.axisBottom(x_cases).ticks(6));
+      }
       
       y_cases.range([ height_cases, 0 ])
       y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
@@ -1268,8 +1274,14 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       
       
       x_deaths.range([ 0, width_deaths ]);
-      x_deaths_axis.attr("transform", "translate(" + margin_deaths.left + "," + height_deaths + ")").call(d3.axisBottom(x_deaths).ticks(5));
+      x_deaths_axis.attr("transform", "translate(" + margin_deaths.left + "," + height_deaths + ")")
+      // .call(d3.axisBottom(x_deaths).ticks(5));
       
+            if (currentWidth < 600) {
+         x_deaths_axis.call(d3.axisBottom(x_deaths).ticks(3));
+      }else {
+         x_deaths_axis.call(d3.axisBottom(x_deaths).ticks(6));
+      }
       y_deaths.range([ height_deaths, 0 ])
       y_deaths_axis.call(d3.axisLeft(y_deaths).ticks(6));
       
