@@ -23,44 +23,155 @@ title: Home
       fill:#009DAA;
     } 
  
- /*.c117 {*/
- /*  fill: #009DAA;*/
- /*  stroke: #009DAA;*/
- /*}*/
- 
- 
+   #cases_map {
+      /*z-index: 2;*/
+      position: fixed;
+      z-index: 2;
+   }
+   /*#rtTitle {*/
+   /*   height: 200px;*/
+   /*}*/
+   /*.card {*/
+      /*position: relative;*/
+      /*z-index: 1;*/
+      /*position: relative;*/
+   /*   border: none;*/
+   /*   float: right;*/
+   /*   width: 100%;*/
+      
+   /*}*/
+   /*#rt_chart{*/
+   /*    display: inline-block;*/
+   /* position: relative;*/
+    /*width: 100%;*/
+   /* padding-bottom: 100%;*/
+   /* vertical-align: top;*/
+   /* overflow: hidden;*/
+   /* float:right;*/
+    
+   /* }*/
+@media only screen and (max-width: 339px) {
+      body {
+         padding-top: 100px;
+      }
+      #cases_map {
+         width: 22%;
+         /*border: solid red 1px;*/
+      }
+      /*#rtTitle {*/
+      /*   width: 78%;*/
+      /*   float: right;*/
+         /*margin-right: 10px;*/
+         
+         /*border: none;*/
+      /*}*/
 
-    /*.Berreman {*/
-    /*  fill: yellow;*/
-    /*}*/
-/*    .hover {*/
-/*    fill: yellow;*/
-/*}*/
-	/*.drop {*/
-	/*    height: 50px;*/
-	/*}*/
-	
-	#cases_map {
-	       height: 580px;
-        width: 320px;
-          position: fixed;
-        left: 10px;
-        top: 95px;
-        z-index: 2;
-        /*border: 1px solid black; */
-        
-        
-	}
-	
+      /*.card{*/
+         /*width: 78%;*/
+      /*}*/
+}
+
+
+@media only screen and (min-width: 339px) {
+      body {
+         padding-top: 60px;
+      }
+      #cases_map {
+         width: 20%;
+         /*border: solid red 1px;*/
+      }
+      /* #rtTitle {*/
+      /*   width: 80%;*/
+      /*   float: right;*/
+         /*margin-right: 10px;*/
+         
+         /*border: none;*/
+      /*}*/
+      /*      .card{*/
+         /*width: 80%;*/
+      /*}*/
+      /*#selectButton {*/
+      /*   display: inline-block;*/
+      /*}*/
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+      #cases_map {
+         width: 18%;
+      }
+      /*#rtTitle {*/
+      /*   width: 82%;*/
+      /*}*/
+   
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+      #cases_map {
+         width: 15%;
+      }
+      /*#rtTitle {*/
+      /*   width: 85%;*/
+      /*}*/
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+   body{
+      margin-left: 5%;
+      margin-right: 5%;
+   }
+   #cases_map {
+         width: 10%;
+      }
+      /*#rtTitle {*/
+      /*   width: 84%;*/
+         
+      /*}*/
+      /*.card {*/
+      /*   width: 84%;*/
+      /*   margin-right: 5%;*/
+      /*}*/
+   
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+   
+      body{
+      margin-left: 5%;
+      margin-right: 10%;
+   }
+   #cases_map {
+         width: 10%;
+      }
+      /*#rtTitle {*/
+      /*   width: 80%;*/
+         
+      /*}*/
+      /*      .card {*/
+      /*   width: 80%;*/
+      /*   margin-right: 5%;*/
+      /*}*/
+   /*}      #rt_chart {*/
+         /*width: 80%;*/
+         /*height: 800px;*/
+   
+      /*.rtBody {*/
+      /*   height: 400px;*/
+      /*}*/
+      
+}
 	.selected {
 	  
 	  fill: #20487c;
 	  
 	}
-
 </style>
 
-<!--<div class="map" id = "cases_map"></div>-->
+<div class="map" id = "cases_map"></div>
 
 <div class = "container ">
   <div class="container jumbotron">
@@ -511,418 +622,58 @@ var countyMap = {
    }
 }
 
-fipsmap = 
-{
-   "101": {
-      "county": "Lawrence",
-      "state": "IL"
-   },
-   "103": {
-      "county": "Lee",
-      "state": "IL"
-   },
-   "105": {
-      "county": "Livingston",
-      "state": "IL"
-   },
-   "107": {
-      "county": "Logan",
-      "state": "IL"
-   },
-   "109": {
-      "county": "McDonough",
-      "state": "IL"
-   },
-   "111": {
-      "county": "McHenry",
-      "state": "IL"
-   },
-   "113": {
-      "county": "McLean",
-      "state": "IL"
-   },
-   "115": {
-      "county": "Macon",
-      "state": "IL"
-   },
-   "117": {
-      "county": "Macoupin",
-      "state": "IL"
-   },
-   "119": {
-      "county": "Madison",
-      "state": "IL"
-   },
-   "121": {
-      "county": "Marion",
-      "state": "IL"
-   },
-   "123": {
-      "county": "Marshall",
-      "state": "IL"
-   },
-   "125": {
-      "county": "Mason",
-      "state": "IL"
-   },
-   "127": {
-      "county": "Massac",
-      "state": "IL"
-   },
-   "129": {
-      "county": "Menard",
-      "state": "IL"
-   },
-   "131": {
-      "county": "Mercer",
-      "state": "IL"
-   },
-   "133": {
-      "county": "Monroe",
-      "state": "IL"
-   },
-   "135": {
-      "county": "Montgomery",
-      "state": "IL"
-   },
-   "137": {
-      "county": "Morgan",
-      "state": "IL"
-   },
-   "139": {
-      "county": "Moultrie",
-      "state": "IL"
-   },
-   "141": {
-      "county": "Ogle",
-      "state": "IL"
-   },
-   "143": {
-      "county": "Peoria",
-      "state": "IL"
-   },
-   "145": {
-      "county": "Perry",
-      "state": "IL"
-   },
-   "147": {
-      "county": "Piatt",
-      "state": "IL"
-   },
-   "149": {
-      "county": "Pike",
-      "state": "IL"
-   },
-   "151": {
-      "county": "Pope",
-      "state": "IL"
-   },
-   "153": {
-      "county": "Pulaski",
-      "state": "IL"
-   },
-   "155": {
-      "county": "Putnam",
-      "state": "IL"
-   },
-   "157": {
-      "county": "Randolph",
-      "state": "IL"
-   },
-   "159": {
-      "county": "Richland",
-      "state": "IL"
-   },
-   "161": {
-      "county": "Rock Island",
-      "state": "IL"
-   },
-   "163": {
-      "county": "St. Clair",
-      "state": "IL"
-   },
-   "165": {
-      "county": "Saline",
-      "state": "IL"
-   },
-   "167": {
-      "county": "Sangamon",
-      "state": "IL"
-   },
-   "169": {
-      "county": "Schuyler",
-      "state": "IL"
-   },
-   "171": {
-      "county": "Scott",
-      "state": "IL"
-   },
-   "173": {
-      "county": "Shelby",
-      "state": "IL"
-   },
-   "175": {
-      "county": "Stark",
-      "state": "IL"
-   },
-   "177": {
-      "county": "Stephenson",
-      "state": "IL"
-   },
-   "179": {
-      "county": "Tazewell",
-      "state": "IL"
-   },
-   "181": {
-      "county": "Union",
-      "state": "IL"
-   },
-   "183": {
-      "county": "Vermilion",
-      "state": "IL"
-   },
-   "185": {
-      "county": "Wabash",
-      "state": "IL"
-   },
-   "187": {
-      "county": "Warren",
-      "state": "IL"
-   },
-   "189": {
-      "county": "Washington",
-      "state": "IL"
-   },
-   "191": {
-      "county": "Wayne",
-      "state": "IL"
-   },
-   "193": {
-      "county": "White",
-      "state": "IL"
-   },
-   "195": {
-      "county": "Whiteside",
-      "state": "IL"
-   },
-   "197": {
-      "county": "Will",
-      "state": "IL"
-   },
-   "199": {
-      "county": "Williamson",
-      "state": "IL"
-   },
-   "201": {
-      "county": "Winnebago",
-      "state": "IL"
-   },
-   "203": {
-      "county": "Woodford",
-      "state": "IL"
-   },
-   "001": {
-      "county": "Adams",
-      "state": "IL"
-   },
-   "003": {
-      "county": "Alexander",
-      "state": "IL"
-   },
-   "005": {
-      "county": "Bond",
-      "state": "IL"
-   },
-   "007": {
-      "county": "Boone",
-      "state": "IL"
-   },
-   "009": {
-      "county": "Brown",
-      "state": "IL"
-   },
-   "011": {
-      "county": "Bureau",
-      "state": "IL"
-   },
-   "013": {
-      "county": "Calhoun",
-      "state": "IL"
-   },
-   "015": {
-      "county": "Carroll",
-      "state": "IL"
-   },
-   "017": {
-      "county": "Cass",
-      "state": "IL"
-   },
-   "019": {
-      "county": "Champaign",
-      "state": "IL"
-   },
-   "021": {
-      "county": "Christian",
-      "state": "IL"
-   },
-   "023": {
-      "county": "Clark",
-      "state": "IL"
-   },
-   "025": {
-      "county": "Clay",
-      "state": "IL"
-   },
-   "027": {
-      "county": "Clinton",
-      "state": "IL"
-   },
-   "029": {
-      "county": "Coles",
-      "state": "IL"
-   },
-   "031": {
-      "county": "Cook",
-      "state": "IL"
-   },
-   "033": {
-      "county": "Crawford",
-      "state": "IL"
-   },
-   "035": {
-      "county": "Cumberland",
-      "state": "IL"
-   },
-   "037": {
-      "county": "DeKalb",
-      "state": "IL"
-   },
-   "039": {
-      "county": "De Witt",
-      "state": "IL"
-   },
-   "041": {
-      "county": "Douglas",
-      "state": "IL"
-   },
-   "043": {
-      "county": "DuPage",
-      "state": "IL"
-   },
-   "045": {
-      "county": "Edgar",
-      "state": "IL"
-   },
-   "047": {
-      "county": "Edwards",
-      "state": "IL"
-   },
-   "049": {
-      "county": "Effingham",
-      "state": "IL"
-   },
-   "051": {
-      "county": "Fayette",
-      "state": "IL"
-   },
-   "053": {
-      "county": "Ford",
-      "state": "IL"
-   },
-   "055": {
-      "county": "Franklin",
-      "state": "IL"
-   },
-   "057": {
-      "county": "Fulton",
-      "state": "IL"
-   },
-   "059": {
-      "county": "Gallatin",
-      "state": "IL"
-   },
-   "061": {
-      "county": "Greene",
-      "state": "IL"
-   },
-   "063": {
-      "county": "Grundy",
-      "state": "IL"
-   },
-   "065": {
-      "county": "Hamilton",
-      "state": "IL"
-   },
-   "067": {
-      "county": "Hancock",
-      "state": "IL"
-   },
-   "069": {
-      "county": "Hardin",
-      "state": "IL"
-   },
-   "071": {
-      "county": "Henderson",
-      "state": "IL"
-   },
-   "073": {
-      "county": "Henry",
-      "state": "IL"
-   },
-   "075": {
-      "county": "Iroquois",
-      "state": "IL"
-   },
-   "077": {
-      "county": "Jackson",
-      "state": "IL"
-   },
-   "079": {
-      "county": "Jasper",
-      "state": "IL"
-   },
-   "081": {
-      "county": "Jefferson",
-      "state": "IL"
-   },
-   "083": {
-      "county": "Jersey",
-      "state": "IL"
-   },
-   "085": {
-      "county": "Jo Daviess",
-      "state": "IL"
-   },
-   "087": {
-      "county": "Johnson",
-      "state": "IL"
-   },
-   "089": {
-      "county": "Kane",
-      "state": "IL"
-   },
-   "091": {
-      "county": "Kankakee",
-      "state": "IL"
-   },
-   "093": {
-      "county": "Kendall",
-      "state": "IL"
-   },
-   "095": {
-      "county": "Knox",
-      "state": "IL"
-   },
-   "097": {
-      "county": "Lake",
-      "state": "IL"
-   },
-   "099": {
-      "county": "LaSalle",
-      "state": "IL"
-   }
-}
 
+   var myColor = d3.scaleOrdinal()
+                    .domain(allGroup)
+                    .range(d3.schemeSet2);
+   var lightColors = d3.scaleOrdinal()
+                        .domain(allGroup)
+                        .range(d3.schemePastel2);
+
+   d3.select(window)
+    		.on("resize", sizeChange);
+
+	var projection = d3.geoAlbers()
+	                   .center([0, 38.82])
+	                   .rotate([89.5,0])
+	                   .scale(13000);
+
+	var path = d3.geoPath()
+	             .projection(projection);
+
+	var svg = d3.select("#cases_map")
+	            .append("svg")
+	            .append("g")
+	            .attr("class", "group");
+	
+	d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json').then(function(data) {
+	   svg.selectAll("path")
+	      .data(data.features)
+	      .enter().append("path")
+	      //initial fill function
+	      .attr("fill", function(d){ 
+	         return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+	      })
+	      .attr("stroke", function(d){ 
+	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+	      })
+	      .attr("stroke-width", "3px")
+	      .attr("class", "")
+	      .attr("d", path);
+	});
+	
+	function sizeChange() {
+	   projection.translate([ 400, 1700]);
+	   
+	   d3.select(".group")
+	     .attr("transform", "scale(" + $("#cases_map").width()/900 + ")");
+	   
+	   $("#cases_map").height($("#cases_map")
+	           .width()*1.618)
+	}
+	
+	
+// 	END MAP //
 // console.log(countyMap["WOODFORD"].covid_region) // 2
   // console.log(allGroup)
   
@@ -977,13 +728,13 @@ fipsmap =
       return true;
     });
 
-    var myColor = d3.scaleOrdinal()
-                    .domain(allGroup)
-                    .range(d3.schemeSet2);
+   //  var myColor = d3.scaleOrdinal()
+   //                 .domain(allGroup)
+   //                 .range(d3.schemeSet2);
       
-    var lightColors = d3.scaleOrdinal()
-                        .domain(allGroup)
-                        .range(d3.schemePastel2);
+   //  var lightColors = d3.scaleOrdinal()
+   //                      .domain(allGroup)
+   //                      .range(d3.schemePastel2);
                         
             
 
