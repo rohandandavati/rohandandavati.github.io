@@ -630,13 +630,14 @@ var countyMap = {
                         .domain(allGroup)
                         .range(d3.schemePastel2);
 
-   d3.select(window)
-    		.on("resize", sizeChange);
+   // d3.select(window)
+   //  		.on("resize", sizeChange);
 
 	var projection = d3.geoAlbers()
 	                   .center([0, 38.82])
 	                   .rotate([89.5,0])
-	                   .scale(13000);
+	                   .scale(10000)
+	                   .translate([ 400, 700]);
 
 	var path = d3.geoPath()
 	             .projection(projection);
@@ -644,9 +645,10 @@ var countyMap = {
 	var svg = d3.select("#cases_map")
 	            .append("svg")
 	            .append("g")
-	            .attr("class", "group");
+	           // .attr("id", "group");
 	
 	d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json').then(function(data) {
+	   
 	   svg.selectAll("path")
 	      .data(data.features)
 	      .enter().append("path")
@@ -658,19 +660,30 @@ var countyMap = {
 	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
 	      })
 	      .attr("stroke-width", "3px")
-	      .attr("class", "")
-	      .attr("d", path);
+	      .attr("d", path)
+	      .attr("transform", "scale(" + $("#cases_map").width()/900 + ")")
+	     // .attr("height", $("#cases_map").width()*1.918 );
 	});
 	
-	function sizeChange() {
-	   projection.translate([ 400, 1700]);
+		 //  $("#cases_map").height($("#cases_map").width()*1.618)
+	
+	
+// 	function sizeChange() {
+// 	   projection.translate([ 400, 1300]);
 	   
-	   d3.select(".group")
-	     .attr("transform", "scale(" + $("#cases_map").width()/900 + ")");
+// 	   d3.select("#group")
+// 	     .attr("transform", "scale(" + $("#cases_map").width()/900 + ")");
 	   
-	   $("#cases_map").height($("#cases_map")
-	           .width()*1.618)
+// 	   $("#cases_map").height($("#cases_map")
+// 	           .width()*1.618)
+// 	}
+	
+	/*
+		function sizeChange() {
+	    d3.select("g").attr("transform", "scale(" + $("#container").width()/900 + ")");
+	    $("svg").height($("#container").width()*0.618);
 	}
+	*/
 	
 	
 // 	END MAP //
@@ -1125,31 +1138,31 @@ var countyMap = {
     // A function that updates the chart
     function update(selectedGroup) {
         
-               //  console.log( parseInt(selectedGroup.split('_')[1]) )
-        d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-cousub.json').then(function(data) {
+      //          //  console.log( parseInt(selectedGroup.split('_')[1]) )
+      //  d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-cousub.json').then(function(data) {
         
-      //  console.log(data)
-            svg_map_cases.append("g")
-                .selectAll("path")
-                .data(data.features)
-                .enter()
-                .append("path")
-                .attr( "d", geoPath )
-                .attr("class", function(d){
-                    if (
-                       countyMap[(fipsmap[d.properties.COUNTYFP].county).toUpperCase()].covid_region ===
-                        parseInt(selectedGroup.split('_')[1])
-                        ) {
+      // //  console.log(data)
+      //       svg_map_cases.append("g")
+      //           .selectAll("path")
+      //           .data(data.features)
+      //           .enter()
+      //           .append("path")
+      //           .attr( "d", geoPath )
+      //           .attr("class", function(d){
+      //              if (
+      //                 countyMap[(fipsmap[d.properties.COUNTYFP].county).toUpperCase()].covid_region ===
+      //                   parseInt(selectedGroup.split('_')[1])
+      //                   ) {
                             
-                            return "classy"
+      //                       return "classy"
                         
-                    }
-                    else {
-                        return ""
-                    }
-                })
+      //              }
+      //              else {
+      //                   return ""
+      //              }
+      //           })
 
-        });    
+      //  });    
 
       
            
