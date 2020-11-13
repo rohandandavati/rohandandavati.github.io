@@ -1203,6 +1203,8 @@ fipsmap =
       prev_deaths = d.Deaths;
       d.new_deaths = d.Deaths;
       
+
+      
       prev_region = d.NOFO_Region;
       
     } else {
@@ -1212,10 +1214,23 @@ fipsmap =
       //  d.new_deaths = d.Deaths - prev_deaths;
       //  prev_deaths = d.Deaths;
       //  prev_region = d.NOFO_Region;
-       
-      d.new_cases = d.Positive_Cases - prev_cases;
-      d.new_deaths = d.Deaths - prev_deaths;
-       
+      if (d.Positive_Cases < prev_cases) {
+         d.new_cases = 0;
+      } else {
+         d.new_cases = d.Positive_Cases - prev_cases;
+      }
+      
+      if (d.Deaths < prev_deaths) {
+         d.new_deaths = 0;
+         
+      } else {
+         d.new_deaths = d.Deaths - prev_deaths;
+         
+      }
+      
+      
+      
+      
       if( d.new_cases > cases_max_diff[d.NOFO_Region] ) {
          cases_max_diff[d.NOFO_Region] = d.new_cases;
          // console.log(d.update_date)
@@ -1231,6 +1246,11 @@ fipsmap =
        prev_region = d.NOFO_Region;
     }
     
+   if (d.new_cases < 0) {
+         console.log(d.update_date)
+         console.log(d.new_cases)
+   }
+    
   });
 
 // console.log(data)
@@ -1241,6 +1261,8 @@ fipsmap =
 // console.log(regions)
   
   data = data.filter(function(d){return d.NOFO_Region=="Illinois"})
+  
+  console.log(data)
      
     var myColor = d3.scaleOrdinal()
                     .domain(allGroup)
@@ -1374,32 +1396,10 @@ fipsmap =
                     else {
                         return ""
                     }
-                    // d3.select("h2").text(d.properties.NAME);
-                    // d3.select(this).attr("class","county hover");
-                    
-                    // console.log(   countyMap[(fipsmap[d.properties.COUNTYFP].county).toUpperCase()].covid_region  )
                 })
-                
-                // console.log(function(d){return (d.properties.NAME).toUpperCase()})
-                
-                // .attr("class", 
-                // function(d){ 
-                //     //countyMap["WOODFORD"].covid_region
-                //     //if name is part of selected covid region 
-                //     if (countyMap[].covid_region === 2 ) {
-                //         return "classy"
-                //     }
-                    
-                //     return "" } )
+
         });    
 
-        
-
-      
-      
-      // Create new data with the selection?
-      // var dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
-      // dataFilter.splice(0, dataFilter.length);
       
            
   d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv').then(function(data) {
@@ -1502,9 +1502,6 @@ fipsmap =
     if (first_iteration) {
        //do stuff
        prev_cases = d.Positive_Cases;
-       
-       
-       
        first_iteration = false;
     }
     
