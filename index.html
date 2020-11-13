@@ -141,7 +141,7 @@ title: Home
 @media only screen and (min-width: 1200px) {
    
       body{
-      margin-left: 5%;
+      /*margin-left: 5%;*/
       margin-right: 10%;
    }
    #cases_map {
@@ -637,7 +637,7 @@ var countyMap = {
 	                   .center([0, 38.82])
 	                   .rotate([89.5,0])
 	                   .scale(10000)
-	                   .translate([ 400, 700]);
+	                   .translate([ 300, 700]);
 
 	var path = d3.geoPath()
 	             .projection(projection);
@@ -645,7 +645,7 @@ var countyMap = {
 	var svg = d3.select("#cases_map")
 	            .append("svg")
 	            .append("g")
-	           // .attr("id", "group");
+	            .attr("id", "group");
 	
 	d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json').then(function(data) {
 	   
@@ -668,15 +668,15 @@ var countyMap = {
 		 //  $("#cases_map").height($("#cases_map").width()*1.618)
 	
 	
-// 	function sizeChange() {
-// 	   projection.translate([ 400, 1300]);
+	function sizeChange() {
+	   projection.translate([ 400, 1300]);
 	   
-// 	   d3.select("#group")
-// 	     .attr("transform", "scale(" + $("#cases_map").width()/900 + ")");
+	   d3.select("#group")
+	     .attr("transform", "scale(" + $("#cases_map").width()/900 + ")");
 	   
-// 	   $("#cases_map").height($("#cases_map")
-// 	           .width()*1.618)
-// 	}
+	   $("#cases_map").height($("#cases_map")
+	           .width()*1.618)
+	}
 	
 	/*
 		function sizeChange() {
