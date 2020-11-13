@@ -138,7 +138,7 @@
               <p> Example subtitle to label chart </p>
               <br></br>
               <div class="chart" id = "rt_chart"></div>
-              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
+              <text>RTLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
           </div>
       </div>
   </div>
@@ -991,7 +991,7 @@ fipsmap =
    }
 }
 
-console.log(countyMap["WOODFORD"].covid_region) // 2
+// console.log(countyMap["WOODFORD"].covid_region) // 2
   // console.log(allGroup)
   
   d3.select("#selectButton")
@@ -1242,25 +1242,69 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
     
     
 // d3.csv('https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long').then(function(data) {
-  d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv').then(function(data) {
-  
-  // console.log(data)
-  
+ d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv').then(function(data) {
+//  var first_iteration = true;
+  var prev_cases = 0;
+  var prev_region = "";
+  var prev_deaths = 0;
+  var cases_max_diff = {};
+  var deaths_max_diff = {};
   let parseDate = d3.timeParse("%Y-%m-%d");
+
   data.forEach((d) => {
     d.update_date = (d.update_date).substr(0,(d.update_date).indexOf(' '))
-    // console.log(d.update_date)
     d.update_date = parseDate(d.update_date);
     d.Positive_Cases = +d.Positive_Cases
     d.Tested = +d.Tested
-    // d.tests_pos = +d.tests_pos;
     d.Deaths = +d.Deaths;
-    // d.total_tests = +d.total_tests;
-    // d.tests_neg = +d.tests_neg;
+    d.new_cases = 0;
+    d.new_deaths = 0;
+    
+    if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
+       console.log(d.NOFO_Region)
+       cases_max_diff[d.NOFO_Region] = 0;
+       deaths_max_diff[d.NOFO_Region] = 0;
+       
+       prev_cases = d.Positive_Cases;
+       d.new_cases = d.Positive_Cases;
+       
+      prev_deaths = d.Deaths;
+      d.new_deaths = d.Deaths;
+      
+      prev_region = d.NOFO_Region;
+      
+    } else {
+      //  d.new_cases = d.Positive_Cases - prev_cases;
+      //  prev_cases = d.Positive_Cases;
+       
+      //  d.new_deaths = d.Deaths - prev_deaths;
+      //  prev_deaths = d.Deaths;
+      //  prev_region = d.NOFO_Region;
+       
+      d.new_cases = d.Positive_Cases - prev_cases;
+      d.new_deaths = d.Deaths - prev_deaths;
+       
+      if( d.new_cases > cases_max_diff[d.NOFO_Region] ) {
+         cases_max_diff[d.NOFO_Region] = d.new_cases;
+         // console.log(d.update_date)
+         
+      } 
+      
+      if( d.new_deaths > deaths_max_diff[d.NOFO_Region] ) {
+         deaths_max_diff[d.NOFO_Region] = d.new_deaths;
+      } 
+       
+       prev_cases = d.Positive_Cases;
+       prev_deaths = d.Deaths;
+       prev_region = d.NOFO_Region;
+    }
     
   });
-//   console.log(data);
 
+// console.log(data)
+// console.log(cases_max_diff)
+// console.log(deaths_max_diff)
+// console.log(i)
 // regions = d3.map(data, function(d){return(d.NOFO_Region)}).keys();
 // console.log(regions)
   
@@ -1276,8 +1320,9 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
 
       x_cases.domain(d3.extent(data, function(d) { return d.update_date; }))
 
-      y_cases.domain([0, d3.max(data, function(d) { return d.Positive_Cases; })])
-
+      // y_cases.domain([0, d3.max(data, function(d) { return d.Positive_Cases; })])
+      y_cases.domain([0, d3.max(data, function(d) { return d.new_cases; })])
+      
     y_cases_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_cases.left +",0)")
       .call(d3.axisLeft(y_cases));
@@ -1289,8 +1334,9 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_cases.left+1)+" ,0)");
       
       x_deaths.domain(d3.extent(data, function(d) { return d.update_date; }))
-      y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })])
-
+      // y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })]) // Changed to the largest difference - save when reading in? 
+      y_deaths.domain([0, d3.max(data, function(d) { return d.new_deaths; })])
+      
     y_deaths_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_deaths.left +",0)")
       .call(d3.axisLeft(y_deaths));
@@ -1329,7 +1375,7 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       .attr("d", d3.area()
       .x(function(d) { return x_cases(d.update_date) })
       .y0(y_cases(0))
-      .y1(function(d) { return y_cases(d.Positive_Cases) })
+      .y1(function(d) { return y_cases(d.new_cases) })
       )
       
       
@@ -1357,7 +1403,7 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
       .attr("d", d3.area()
       .x(function(d) { return x_deaths(d.update_date) })
       .y0(y_deaths(0))
-      .y1(function(d) { return y_deaths(d.Deaths) })
+      .y1(function(d) { return y_deaths(d.new_deaths) })
       )
       
       
@@ -1374,10 +1420,10 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
     // A function that updates the chart
     function update(selectedGroup) {
         
-                console.log( parseInt(selectedGroup.split('_')[1]) )
+               //  console.log( parseInt(selectedGroup.split('_')[1]) )
         d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-cousub.json').then(function(data) {
         
-        console.log(data)
+      //  console.log(data)
             svg_map_cases.append("g")
                 .selectAll("path")
                 .data(data.features)
@@ -1501,19 +1547,39 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
   d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv').then(function(data) {
   // console.log(data)
   
+  //add new_cases
+  //add new_deaths
+  //add new_cases_max
+  //add new_deaths_max 
+  
+  var first_iteration = true;
+  var prev_cases = 0;
   let parseDate = d3.timeParse("%Y-%m-%d");
   data.forEach((d) => {
     d.update_date = (d.update_date).substr(0,(d.update_date).indexOf(' '))
-    // console.log(d.update_date)
     d.update_date = parseDate(d.update_date);
     d.Positive_Cases = +d.Positive_Cases
     d.Tested = +d.Tested
-    // d.tests_pos = +d.tests_pos;
     d.Deaths = +d.Deaths;
-    // d.total_tests = +d.total_tests;
-    // d.tests_neg = +d.tests_neg;
+    d.new_cases = 0;
+    d.new_deaths = 0;
+    d.new_deaths_max = 0;
+    d.new_cases_max = 0;
+    
+    
+    if (first_iteration) {
+       //do stuff
+       prev_cases = d.Positive_Cases;
+       
+       
+       
+       first_iteration = false;
+    }
+    
+    //do stuff 
     
   });
+//  console.log(prev_cases)
         
         // ["Central", "Chicago", "Collar", "Illinois", "North Central", "Northeast Central", 
         // "Northern", "Northwest", "Out Of State", "Southeast Central", "Southern", "Southwest Central", 
@@ -1596,41 +1662,7 @@ console.log(countyMap["WOODFORD"].covid_region) // 2
         
       });
        
-      }
-    
-    
-var width_ = document.getElementById("cases_map").offsetWidth,
-        height_ = document.getElementById("cases_map").offsetHeight;
-        
-var svg_map_cases = d3.select( "#cases_map" )
-          .append( "svg" )
-          .attr( "width", width_ )
-          .attr( "height", height_ );
-          
-          
-var projection = d3.geoAlbers()
-        .center([0, 38.82])
-        .rotate([89.5,0])
-        .scale(4000)
-        .translate([width_ / 2, height_ / 2]);
-        
-var geoPath = d3.geoPath()
-        .projection(projection);
-        
-d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-cousub.json').then(function(data) {
-
-    svg_map_cases.append("g")
-        .selectAll("path")
-        .data(data.features)
-        .enter()
-        .append("path")
-        .attr( "d", geoPath )
-
-});    
-
-
-//.attr("class", function(d){ return d.properties.NAME })
-        
+    }
     
         
         
