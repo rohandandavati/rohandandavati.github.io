@@ -142,15 +142,30 @@
 
 @media only screen and (min-width: 339px) {
       body {
-         padding-top: 60px;
+         padding-top: 80px;
+         margin-right: 0%;
       }
       #cases_map {
          width: 20%;
          /*border: solid red 1px;*/
       }
+      .rt {
+         width: 80%;
+         float: right;
+      }
+      .cases {
+         width: 80%;
+         float: right;
+      }
+      .deaths {
+         width: 80%;
+         float: right;
+      }
+      
+      
       /* #rtTitle {*/
       /*   width: 80%;*/
-      /*   float: right;*/
+      /*   */
          /*margin-right: 10px;*/
          
          /*border: none;*/
@@ -169,10 +184,27 @@
       #cases_map {
          width: 18%;
       }
-      /*#rtTitle {*/
-      /*   width: 82%;*/
-      /*}*/
-   
+      body {
+         padding-top: 70px;
+      }
+      #cases_map {
+         width: 15%;
+         /*border: solid red 1px;*/
+      }
+      .rt {
+         width: 85%;
+         float: right;
+         margin-right: 0%;
+      }
+      .cases {
+         width: 85%;
+         float: right;
+      }
+      .deaths {
+         width: 85%;
+         float: right;
+      }
+      
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -242,7 +274,8 @@
 <div class="map" id = "cases_map"></div>
 
 <div class = "container ">
-  <div class="container jumbotron">
+   
+  <div class="container rt">
       <div class="row">
           <div class="col">
               <h2>Transmission Status</h2>
@@ -272,7 +305,7 @@
 
   
   <div class = "container ">
-  <div class="container jumbotron">
+  <div class="container jumbotron cases">
       <div class="row">
           <div class="col">
               <h2>Cases</h2>
@@ -286,7 +319,7 @@
   
   
     <div class = "container ">
-  <div class="container jumbotron">
+  <div class="container jumbotron deaths">
       <div class="row">
           <div class="col">
               <h2>Deaths</h2>
