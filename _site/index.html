@@ -188,11 +188,11 @@
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
    body{
-      margin-left: 5%;
+      /*margin-left: 5%;*/
       margin-right: 5%;
    }
    #cases_map {
-         width: 10%;
+         width: 13%;
       }
       /*#rtTitle {*/
       /*   width: 84%;*/
@@ -701,16 +701,24 @@ var countyMap = {
    d3.select(window)
     		.on("resize", sizeChange);
 
+	var map_wid = document.getElementById("cases_map").offsetWidth;
+	var map_hid = map_wid *2.5;
+	
 	var projection = d3.geoAlbers()
 	                   .center([0, 38.82])
 	                   .rotate([89.5,0])
-	                   .scale(13000);
+	                   .scale(2000)
+	                   .translate([ map_wid / 2, map_hid / 2]);
 
 	var path = d3.geoPath()
 	             .projection(projection);
+	             
+
 
 	var svg = d3.select("#cases_map")
 	            .append("svg")
+	            .attr("width", map_wid )
+	            .attr("height", map_hid)
 	            .attr("id", "svg_id")
 	            .append("g").attr("id", "group");
 	
@@ -725,16 +733,17 @@ var countyMap = {
 	      .attr("stroke", function(d){ 
 	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
 	      })
-	      .attr("stroke-width", "3px")
+	     // .attr("stroke-width", "3px")
 	      .attr("class", "")
 	      .attr("d", path);
 	});
 	
 	function sizeChange() {
-	   projection.translate([ 400, 1000]);
+	   
+	   
 	   
 	   d3.select("#group")
-	     .attr("transform", "scale(" + $("#cases_map").width()/900 + ")");
+	     .attr("transform", "scale(" + $("#cases_map").width()/170 + ")");
 	   
 	   $("#svg_id").height($("#cases_map")
 	           .width()*1.618)
