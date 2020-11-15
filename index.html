@@ -56,19 +56,21 @@ title: Home
       }
       #cases_map {
          width: 20%;
+         /*margin-top: 30px*/
          /*border: solid red 1px;*/
       }
-      /*#rtTitle {*/
-      /*   width: 78%;*/
-      /*   float: right;*/
-         /*margin-right: 10px;*/
-         
-         /*border: none;*/
-      /*}*/
-
-      /*.card{*/
-         /*width: 78%;*/
-      /*}*/
+      .rt {
+         width: 80%;
+         float: right;
+      }
+      .cases {
+         width: 80%;
+         float: right;
+      }
+      .deaths {
+         width: 80%;
+         float: right;
+      }
 }
 
 
@@ -734,7 +736,7 @@ var countyMap = {
 	var projection = d3.geoAlbers()
 	                   .center([0, 38.82])
 	                   .rotate([89.5,0])
-	                   .scale( 1500 )
+	                   .scale( 1400 )
 	                   .translate([ map_wid / 2, map_hid / 2]);
 
 	var path = d3.geoPath()
@@ -1062,18 +1064,8 @@ var countyMap = {
        
       prev_deaths = d.Deaths;
       d.new_deaths = d.Deaths;
-      
-
-      
       prev_region = d.NOFO_Region;
-      
     } else {
-      //  d.new_cases = d.Positive_Cases - prev_cases;
-      //  prev_cases = d.Positive_Cases;
-       
-      //  d.new_deaths = d.Deaths - prev_deaths;
-      //  prev_deaths = d.Deaths;
-      //  prev_region = d.NOFO_Region;
       if (d.Positive_Cases < prev_cases) {
          d.new_cases = 0;
       } else {
@@ -1087,9 +1079,6 @@ var countyMap = {
          d.new_deaths = d.Deaths - prev_deaths;
          
       }
-      
-      
-      
       
       if( d.new_cases > cases_max_diff[d.NOFO_Region] ) {
          cases_max_diff[d.NOFO_Region] = d.new_cases;
@@ -1106,20 +1095,13 @@ var countyMap = {
        prev_region = d.NOFO_Region;
     }
     
-   if (d.new_cases < 0) {
-         console.log(d.update_date)
-         console.log(d.new_cases)
-   }
+   // if (d.new_cases < 0) {
+   //       console.log(d.update_date)
+   //       console.log(d.new_cases)
+   // }
     
   });
 
-// console.log(data)
-// console.log(cases_max_diff)
-// console.log(deaths_max_diff)
-// console.log(i)
-// regions = d3.map(data, function(d){return(d.NOFO_Region)}).keys();
-// console.log(regions)
-  
   data = data.filter(function(d){return d.NOFO_Region=="Illinois"})
   
   console.log(data)
@@ -1335,18 +1317,17 @@ var countyMap = {
        
        
 
-// d3.csv('https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long').then(function(data) {
-  d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv').then(function(data) {
+d3.csv('https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long').then(function(data) {
+//  d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv').then(function(data) {
   // console.log(data)
   
-  //add new_cases
-  //add new_deaths
-  //add new_cases_max
-  //add new_deaths_max 
-  
-  var first_iteration = true;
-  var prev_cases = 0;
+var prev_cases = 0;
+  var prev_region = "";
+  var prev_deaths = 0;
+  var cases_max_diff = {};
+  var deaths_max_diff = {};
   let parseDate = d3.timeParse("%Y-%m-%d");
+
   data.forEach((d) => {
     d.update_date = (d.update_date).substr(0,(d.update_date).indexOf(' '))
     d.update_date = parseDate(d.update_date);
@@ -1355,33 +1336,51 @@ var countyMap = {
     d.Deaths = +d.Deaths;
     d.new_cases = 0;
     d.new_deaths = 0;
-    d.new_deaths_max = 0;
-    d.new_cases_max = 0;
     
-    
-    if (first_iteration) {
-       //do stuff
+    if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
+       console.log(d.NOFO_Region)
+       cases_max_diff[d.NOFO_Region] = 0;
+       deaths_max_diff[d.NOFO_Region] = 0;
+       
        prev_cases = d.Positive_Cases;
-       first_iteration = false;
+       d.new_cases = d.Positive_Cases;
+       
+      prev_deaths = d.Deaths;
+      d.new_deaths = d.Deaths;
+      prev_region = d.NOFO_Region;
+    } else {
+      if (d.Positive_Cases < prev_cases) {
+         d.new_cases = 0;
+      } else {
+         d.new_cases = d.Positive_Cases - prev_cases;
+      }
+      
+      if (d.Deaths < prev_deaths) {
+         d.new_deaths = 0;
+         
+      } else {
+         d.new_deaths = d.Deaths - prev_deaths;
+         
+      }
+      
+      if( d.new_cases > cases_max_diff[d.NOFO_Region] ) {
+         cases_max_diff[d.NOFO_Region] = d.new_cases;
+         // console.log(d.update_date)
+         
+      } 
+      
+      if( d.new_deaths > deaths_max_diff[d.NOFO_Region] ) {
+         deaths_max_diff[d.NOFO_Region] = d.new_deaths;
+      } 
+       
+       prev_cases = d.Positive_Cases;
+       prev_deaths = d.Deaths;
+       prev_region = d.NOFO_Region;
     }
-    
-    //do stuff 
+
     
   });
-//  console.log(prev_cases)
-        
-        // ["Central", "Chicago", "Collar", "Illinois", "North Central", "Northeast Central", 
-        // "Northern", "Northwest", "Out Of State", "Southeast Central", "Southern", "Southwest Central", 
-        // "Suburban", "Unassigned", "West Central"]
-        
-//         regions = [
-//   ["ADAMS", 3  ]
-// }
 
-// let allGroup = ["illinois", "covidregion_1", "covidregion_2", 
-//   "covidregion_3", "covidregion_4", "covidregion_5", "covidregion_6", 
-//   "covidregion_7", "covidregion_8", "covidregion_9", "covidregion_10", "covidregion_11"]
-        
         // let regionMap = {};
         let dict = {};
         
@@ -1420,10 +1419,10 @@ var countyMap = {
       //                       .range(d3.schemePastel2);
                         
                         
-        y_cases.domain([0, d3.max(dataFilter, function(d) { return d.Positive_Cases })])
+        y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases })])
         y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
         
-        y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.Deaths })])
+        y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.new_deaths })])
         y_deaths_axis.call(d3.axisLeft(y_deaths).ticks(6));
         
         area_cases
@@ -1434,7 +1433,7 @@ var countyMap = {
         .attr("d", d3.area()
         .x(function(d) { return x_cases(d.update_date) })
         .y0(y_cases(0))
-        .y1(function(d) { return y_cases(d.Positive_Cases) })
+        .y1(function(d) { return y_cases(d.new_cases) })
         ).attr("stroke", function(d){ return myColor(selectedGroup) } )
         
         
@@ -1446,7 +1445,7 @@ var countyMap = {
         .attr("d", d3.area()
         .x(function(d) { return x_deaths(d.update_date) })
         .y0(y_deaths(0))
-        .y1(function(d) { return y_deaths(d.Deaths) })
+        .y1(function(d) { return y_deaths(d.new_deaths) })
         ).attr("stroke", function(d){ return myColor(selectedGroup) } )
         
       });
