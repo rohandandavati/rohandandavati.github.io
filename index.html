@@ -729,7 +729,7 @@ var countyMap = {
     		.on("resize", sizeChange);
 
 	var map_wid = document.getElementById("cases_map").offsetWidth;
-	var map_hid = map_wid *2.5;
+	var map_hid = map_wid *2;
 	
 	var projection = d3.geoAlbers()
 	                   .center([0, 38.82])
@@ -773,7 +773,7 @@ var countyMap = {
 	     .attr("transform", "scale(" + $("#cases_map").width()/150 + ")");
 	   
 	   $("#svg_id").height($("#cases_map")
-	           .width()*1.618)
+	           .width()*2)
 	}
 	
 	
