@@ -123,7 +123,7 @@
          padding-top: 100px;
       }
       #cases_map {
-         width: 22%;
+         width: 20%;
          /*border: solid red 1px;*/
       }
       /*#rtTitle {*/
@@ -142,7 +142,7 @@
 
 @media only screen and (min-width: 339px) {
       body {
-         padding-top: 80px;
+         padding-top: 75px;
          margin-right: 0%;
       }
       #cases_map {
@@ -209,6 +209,7 @@
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+      
       #cases_map {
          width: 15%;
       }
@@ -442,11 +443,17 @@ TODO:
 
 var hexColors = ["#69ef7b", "#4fa075", "#5ce8ef", "#4289c0", "#b1c8eb", "#8d4eb6", "#e4b5ff", "#e84fe1", "#6524ff", "#dbe9a8", "#59a20c", "#cfdf34"]
 
-var hexColorsLight = hexColors;
+var hexColorsLight = ["#55db67", "#3b8c61", "#48d4db", "#2e75ac", "#9db4d7", "#793aa2", "#d0a1eb", "#d43bcd", "#5110eb", "#c7d594", "#458e00", "#bbcb20"]
+// console.log(LightenDarkenColor(hexColors[0], -20))
 
-hexColors.forEach((color) => {
-     color = "#" + LightenDarkenColor(color, 10)
-  });
+// hexColors.forEach((color) => {
+//     LightenDarkenColor(color, 10)
+//  });
+
+// var i;
+// for (i = 0; i < hexColorsLight.length; i++) {
+//    hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -20)
+// }
  
 
 // Option 1: provide color names:
@@ -795,7 +802,7 @@ var countyMap = {
 	var projection = d3.geoAlbers()
 	                   .center([0, 38.82])
 	                   .rotate([89.5,0])
-	                   .scale(2000)
+	                   .scale( 1500 )
 	                   .translate([ map_wid / 2, map_hid / 2]);
 
 	var path = d3.geoPath()
@@ -831,7 +838,7 @@ var countyMap = {
 	   
 	   
 	   d3.select("#group")
-	     .attr("transform", "scale(" + $("#cases_map").width()/170 + ")");
+	     .attr("transform", "scale(" + $("#cases_map").width()/150 + ")");
 	   
 	   $("#svg_id").height($("#cases_map")
 	           .width()*1.618)
