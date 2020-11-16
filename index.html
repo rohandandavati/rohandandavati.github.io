@@ -9,17 +9,10 @@ title: Home
     .chart {
         z-index: 1;
     }
-    /*div {*/
-    /*    border: 1px solid black;*/
-    /*}*/
-    /*.selectNumber {*/
-    /*    padding-top: 50px;*/
-    /*}*/
     body {
         padding-top: 50px;
 }
 	.classy {
-      /*stroke: #fff;*/
       fill:#009DAA;
     } 
  
@@ -28,28 +21,7 @@ title: Home
       position: fixed;
       z-index: 2;
    }
-   /*#rtTitle {*/
-   /*   height: 200px;*/
-   /*}*/
-   /*.card {*/
-      /*position: relative;*/
-      /*z-index: 1;*/
-      /*position: relative;*/
-   /*   border: none;*/
-   /*   float: right;*/
-   /*   width: 100%;*/
-      
-   /*}*/
-   /*#rt_chart{*/
-   /*    display: inline-block;*/
-   /* position: relative;*/
-    /*width: 100%;*/
-   /* padding-bottom: 100%;*/
-   /* vertical-align: top;*/
-   /* overflow: hidden;*/
-   /* float:right;*/
-    
-   /* }*/
+
 @media only screen and (max-width: 339px) {
       body {
          padding-top: 100px;
@@ -95,21 +67,6 @@ title: Home
          width: 80%;
          float: right;
       }
-      
-      
-      /* #rtTitle {*/
-      /*   width: 80%;*/
-      /*   */
-         /*margin-right: 10px;*/
-         
-         /*border: none;*/
-      /*}*/
-      /*      .card{*/
-         /*width: 80%;*/
-      /*}*/
-      /*#selectButton {*/
-      /*   display: inline-block;*/
-      /*}*/
 
 }
 
@@ -161,15 +118,6 @@ title: Home
    #cases_map {
          width: 13%;
       }
-      /*#rtTitle {*/
-      /*   width: 84%;*/
-         
-      /*}*/
-      /*.card {*/
-      /*   width: 84%;*/
-      /*   margin-right: 5%;*/
-      /*}*/
-   
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -182,22 +130,6 @@ title: Home
    #cases_map {
          width: 10%;
       }
-      /*#rtTitle {*/
-      /*   width: 80%;*/
-         
-      /*}*/
-      /*      .card {*/
-      /*   width: 80%;*/
-      /*   margin-right: 5%;*/
-      /*}*/
-   /*}      #rt_chart {*/
-         /*width: 80%;*/
-         /*height: 800px;*/
-   
-      /*.rtBody {*/
-      /*   height: 400px;*/
-      /*}*/
-      
 }
 	.selected {
 	  
@@ -221,22 +153,6 @@ title: Home
           </div>
       </div>
   </div>
-  
-  <!--<div class = "container ">-->
-  <!--<div class="container jumbotron">-->
-  <!--                <h2>Transmission Status</h2>-->
-  <!--            <p> Example subtitle to label chart </p>-->
-  <!--            <br></br>-->
-  <!--      <div class = "row">-->
-  <!--  <div class="col-sm-12 col-md-4 col-lg-3 chart"> -->
-  <!--      <div class="chart" id = "cases_map"></div>-->
-  <!--  </div>-->
-  <!--  <div class="col-sm-12 col-md-8 col-lg-9 chart">-->
-  <!--      <div class="chart" id = "rt_chart">-->
-  <!--      </div>-->
-  <!--  </div>-->
-  <!--</div>-->
-  
 
   
   <div class = "container ">
@@ -265,475 +181,362 @@ title: Home
           </div>
       </div>
   </div>
-  
-  
-  
-  <!--<div id="my_dataviz"></div>-->
-  
-  
-  <!--<div class="container jumbotron">-->
-  <!--    <div class="row">-->
-  <!--        <div class="col">-->
-  <!--            <h2>Cases Map and Chart</h2>-->
-  <!--            <div class = "row"> -->
-  <!--                <div class="col-sm-12 col-md-4 col-lg-3 chart"> -->
-  <!--                    <div class="chart" id = "cases_map"></div>-->
-  <!--                </div>-->
-  <!--                <div class="col-sm-12 col-md-8 col-lg-9 chart">-->
-  <!--                    <div class="chart" id = "cases_chart">-->
-                          <!--<svg id="my_dataviz" width="440" height="300"></svg>-->
-  <!--                    </div>-->
-  <!--                </div>-->
-  <!--            </div>-->
-  <!--        </div>-->
-  <!--    </div>-->
-  <!--</div>-->
-  
-  
-<!--  <div class="container jumbotron">-->
-<!--      <div class="row">-->
-<!--          <div class="col">-->
-<!--              <h2>Deaths Map and Chart</h2>-->
-<!--              <div class = "row"> -->
-<!--                  <div class="col-sm-12 col-md-4 col-lg-3 chart"> -->
-<!--                      <div class="chart" id = "deaths_map"></div>-->
-<!--                  </div>-->
-<!--                  <div class="col-sm-12 col-md-8 col-lg-9 chart">-->
-<!--                      <div class="chart" id = "deaths_chart"></div>-->
-<!--                  </div>-->
-<!--              </div>-->
-<!--          </div>-->
-<!--      </div>-->
-<!--  </div>-->
-<!--</div>-->
-
 
 <script>
-
-
-
-
-
-/* 
-TODO:
-
--sort regions dropdown
--dotted rt line
--chart layout
--axis titles 
--hover detail
--cases/deaths to bar with average
--google sheets pull 
--multiple lines with legend 
--dropdown button stays to left 
--different color charts 
--reactive height
--remove axis lines - only ticks 
--axis tick labels bigger font 
--axis tick labels font size reactive 
--axis titles centered on axis range, not svg width/height
--import shape from file 
-
-
-*/
-
-  /* global d3 */
-    
-  function LightenDarkenColor(col,amt) {
-    var usePound = false;
-    if ( col[0] == "#" ) {
-        col = col.slice(1);
-        usePound = true;
-    }
-
-    var num = parseInt(col,16);
-
-    var r = (num >> 16) + amt;
-
-    if ( r > 255 ) r = 255;
-    else if  (r < 0) r = 0;
-
-    var b = ((num >> 8) & 0x00FF) + amt;
-
-    if ( b > 255 ) b = 255;
-    else if  (b < 0) b = 0;
-
-    var g = (num & 0x0000FF) + amt;
-
-    if ( g > 255 ) g = 255;
-    else if  ( g < 0 ) g = 0;
-
-    return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
-}
-
-
-  // array of regions - TODO: need to sort, move Illinois to front
-  let allGroup = ["illinois", "covidregion_1", "covidregion_2", 
-  "covidregion_3", "covidregion_4", "covidregion_5", "covidregion_6", 
-  "covidregion_7", "covidregion_8", "covidregion_9", "covidregion_10", "covidregion_11"]
-  
-  // Create data
-// var data = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
-
-//Jaline colors
-var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
-// var hexColors = ["#69ef7b", "#4fa075", "#5ce8ef", "#4289c0", "#b1c8eb", "#8d4eb6", "#e4b5ff", "#e84fe1", "#6524ff", "#dbe9a8", "#59a20c", "#cfdf34"]
-
-var hexColorsLight = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
-
-// var hexColorsLight = ["#69ef7b", "#4fa075", "#5ce8ef", "#4289c0", "#b1c8eb", "#8d4eb6", "#e4b5ff", "#e84fe1", "#6524ff", "#dbe9a8", "#59a20c", "#cfdf34"]
-// console.log(LightenDarkenColor(hexColors[0], -20))
-
-// hexColors.forEach((color) => {
-//     LightenDarkenColor(color, 10)
-//  });
-
-
-
-var i;
-for (i = 0; i < hexColorsLight.length; i++) {
-   hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -20)
-}
-
-console.log(hexColors)
-console.log(hexColorsLight)
-
-// Option 1: provide color names:
-var myColor = d3.scaleOrdinal().domain(allGroup)
-  .range(hexColors)
-  
-var lightColors = d3.scaleOrdinal().domain(allGroup)
-  .range(hexColorsLight)
-  
-  
-//  console.log(hexColors)
-//  console.log(hexColorsLight)
-
-
-
-  
-  
-//  ["#69ef7b", "#4fa075", "#5ce8ef", "#4289c0", "#b1c8eb", "#8d4eb6", "#e4b5ff", "#e84fe1", "#6524ff", "#dbe9a8", "#59a20c", "#cfdf34"]
-
-var countyMap = {
-   "ADAMS": {
-      "covid_region": 3
-   },
-   "ALEXANDER": {
-      "covid_region": 5
-   },
-   "BOND": {
-      "covid_region": 4
-   },
-   "BOONE": {
-      "covid_region": 1
-   },
-   "BROWN": {
-      "covid_region": 3
-   },
-   "BUREAU": {
-      "covid_region": 2
-   },
-   "CALHOUN": {
-      "covid_region": 3
-   },
-   "CARROLL": {
-      "covid_region": 1
-   },
-   "CASS": {
-      "covid_region": 3
-   },
-   "CHAMPAIGN": {
-      "covid_region": 6
-   },
-   "CHICAGO": {
-      "covid_region": 11
-   },
-   "CHRISTIAN": {
-      "covid_region": 3
-   },
-   "CLARK": {
-      "covid_region": 6
-   },
-   "CLAY": {
-      "covid_region": 6
-   },
-   "CLINTON": {
-      "covid_region": 4
-   },
-   "COLES": {
-      "covid_region": 6
-   },
-   "COOK": {
-      "covid_region": 10
-   },
-   "CRAWFORD": {
-      "covid_region": 6
-   },
-   "CUMBERLAND": {
-      "covid_region": 6
-   },
-   "DE WITT": {
-      "covid_region": 6
-   },
-   "DEKALB": {
-      "covid_region": 1
-   },
-   "DOUGLAS": {
-      "covid_region": 6
-   },
-   "DUPAGE": {
-      "covid_region": 8
-   },
-   "EDGAR": {
-      "covid_region": 6
-   },
-   "EDWARDS": {
-      "covid_region": 5
-   },
-   "EFFINGHAM": {
-      "covid_region": 6
-   },
-   "FAYETTE": {
-      "covid_region": 6
-   },
-   "FORD": {
-      "covid_region": 6
-   },
-   "FRANKLIN": {
-      "covid_region": 5
-   },
-   "FULTON": {
-      "covid_region": 2
-   },
-   "GALLATIN": {
-      "covid_region": 5
-   },
-   "GREENE": {
-      "covid_region": 3
-   },
-   "GRUNDY": {
-      "covid_region": 2
-   },
-   "HAMILTON": {
-      "covid_region": 5
-   },
-   "HANCOCK": {
-      "covid_region": 3
-   },
-   "HARDIN": {
-      "covid_region": 5
-   },
-   "HENDERSON": {
-      "covid_region": 2
-   },
-   "HENRY": {
-      "covid_region": 2
-   },
-   "IROQUOIS": {
-      "covid_region": 6
-   },
-   "JACKSON": {
-      "covid_region": 5
-   },
-   "JASPER": {
-      "covid_region": 6
-   },
-   "JEFFERSON": {
-      "covid_region": 5
-   },
-   "JERSEY": {
-      "covid_region": 3
-   },
-   "JO DAVIESS": {
-      "covid_region": 1
-   },
-   "JOHNSON": {
-      "covid_region": 5
-   },
-   "KANE": {
-      "covid_region": 8
-   },
-   "KANKAKEE": {
-      "covid_region": 7
-   },
-   "KENDALL": {
-      "covid_region": 2
-   },
-   "KNOX": {
-      "covid_region": 2
-   },
-   "LAKE": {
-      "covid_region": 9
-   },
-   "LASALLE": {
-      "covid_region": 2
-   },
-   "LAWRENCE": {
-      "covid_region": 6
-   },
-   "LEE": {
-      "covid_region": 1
-   },
-   "LIVINGSTON": {
-      "covid_region": 2
-   },
-   "LOGAN": {
-      "covid_region": 3
-   },
-   "MACON": {
-      "covid_region": 6
-   },
-   "MACOUPIN": {
-      "covid_region": 3
-   },
-   "MADISON": {
-      "covid_region": 4
-   },
-   "MARION": {
-      "covid_region": 5
-   },
-   "MARSHALL": {
-      "covid_region": 2
-   },
-   "MASON": {
-      "covid_region": 3
-   },
-   "MASSAC": {
-      "covid_region": 5
-   },
-   "MCDONOUGH": {
-      "covid_region": 2
-   },
-   "MCHENRY": {
-      "covid_region": 9
-   },
-   "MCLEAN": {
-      "covid_region": 2
-   },
-   "MENARD": {
-      "covid_region": 3
-   },
-   "MERCER": {
-      "covid_region": 2
-   },
-   "MONROE": {
-      "covid_region": 4
-   },
-   "MONTGOMERY": {
-      "covid_region": 3
-   },
-   "MORGAN": {
-      "covid_region": 3
-   },
-   "MOULTRIE": {
-      "covid_region": 6
-   },
-   "OGLE": {
-      "covid_region": 1
-   },
-   "PEORIA": {
-      "covid_region": 2
-   },
-   "PERRY": {
-      "covid_region": 5
-   },
-   "PIATT": {
-      "covid_region": 6
-   },
-   "PIKE": {
-      "covid_region": 3
-   },
-   "POPE": {
-      "covid_region": 5
-   },
-   "PULASKI": {
-      "covid_region": 5
-   },
-   "PUTNAM": {
-      "covid_region": 2
-   },
-   "RANDOLPH": {
-      "covid_region": 4
-   },
-   "RICHLAND": {
-      "covid_region": 6
-   },
-   "ROCK ISLAND": {
-      "covid_region": 2
-   },
-   "SALINE": {
-      "covid_region": 5
-   },
-   "SANGAMON": {
-      "covid_region": 3
-   },
-   "SCHUYLER": {
-      "covid_region": 3
-   },
-   "SCOTT": {
-      "covid_region": 3
-   },
-   "SHELBY": {
-      "covid_region": 6
-   },
-   "ST. CLAIR": {
-      "covid_region": 4
-   },
-   "STARK": {
-      "covid_region": 2
-   },
-   "STEPHENSON": {
-      "covid_region": 1
-   },
-   "TAZEWELL": {
-      "covid_region": 2
-   },
-   "UNION": {
-      "covid_region": 5
-   },
-   "VERMILION": {
-      "covid_region": 6
-   },
-   "WABASH": {
-      "covid_region": 5
-   },
-   "WARREN": {
-      "covid_region": 2
-   },
-   "WASHINGTON": {
-      "covid_region": 4
-   },
-   "WAYNE": {
-      "covid_region": 5
-   },
-   "WHITE": {
-      "covid_region": 5
-   },
-   "WHITESIDE": {
-      "covid_region": 1
-   },
-   "WILL": {
-      "covid_region": 7
-   },
-   "WILLIAMSON": {
-      "covid_region": 5
-   },
-   "WINNEBAGO": {
-      "covid_region": 1
-   },
-   "WOODFORD": {
-      "covid_region": 2
+   /* global d3 */
+   function LightenDarkenColor(col,amt) {
+      var usePound = false;
+      if ( col[0] == "#" ) {
+         col = col.slice(1);
+         usePound = true;
+      }
+      var num = parseInt(col,16);
+      
+      var r = (num >> 16) + amt;
+      if ( r > 255 ) r = 255;
+      else if  (r < 0) r = 0;
+      
+      var b = ((num >> 8) & 0x00FF) + amt;
+      if ( b > 255 ) b = 255;
+      else if  (b < 0) b = 0;
+      
+      var g = (num & 0x0000FF) + amt;
+      if ( g > 255 ) g = 255;
+      else if  ( g < 0 ) g = 0;
+      
+      return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
    }
-}
-
-
-   // var myColor = d3.scaleOrdinal()
-   //                 .domain(allGroup)
-   //                 .range(d3.schemeSet2);
-   // var lightColors = d3.scaleOrdinal()
-   //                      .domain(allGroup)
-   //                      .range(d3.schemePastel2);
+  
+   var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
+   var hexColorsLight = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
+   
+   console.log(hexColorsLight)
+   var i;
+   for (i = 0; i < hexColorsLight.length; i++) {
+      hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -30)
+   }
+   console.log(hexColorsLight)
+   
+   var myColor = d3.scaleOrdinal().domain(allGroup)
+     .range(hexColors)
+   var lightColors = d3.scaleOrdinal().domain(allGroup)
+     .range(hexColorsLight)
+   
+   var countyMap = {
+      "ADAMS": {
+         "covid_region": 3
+      },
+      "ALEXANDER": {
+         "covid_region": 5
+      },
+      "BOND": {
+         "covid_region": 4
+      },
+      "BOONE": {
+         "covid_region": 1
+      },
+      "BROWN": {
+         "covid_region": 3
+      },
+      "BUREAU": {
+         "covid_region": 2
+      },
+      "CALHOUN": {
+         "covid_region": 3
+      },
+      "CARROLL": {
+         "covid_region": 1
+      },
+      "CASS": {
+         "covid_region": 3
+      },
+      "CHAMPAIGN": {
+         "covid_region": 6
+      },
+      "CHICAGO": {
+         "covid_region": 11
+      },
+      "CHRISTIAN": {
+         "covid_region": 3
+      },
+      "CLARK": {
+         "covid_region": 6
+      },
+      "CLAY": {
+         "covid_region": 6
+      },
+      "CLINTON": {
+         "covid_region": 4
+      },
+      "COLES": {
+         "covid_region": 6
+      },
+      "COOK": {
+         "covid_region": 10
+      },
+      "CRAWFORD": {
+         "covid_region": 6
+      },
+      "CUMBERLAND": {
+         "covid_region": 6
+      },
+      "DE WITT": {
+         "covid_region": 6
+      },
+      "DEKALB": {
+         "covid_region": 1
+      },
+      "DOUGLAS": {
+         "covid_region": 6
+      },
+      "DUPAGE": {
+         "covid_region": 8
+      },
+      "EDGAR": {
+         "covid_region": 6
+      },
+      "EDWARDS": {
+         "covid_region": 5
+      },
+      "EFFINGHAM": {
+         "covid_region": 6
+      },
+      "FAYETTE": {
+         "covid_region": 6
+      },
+      "FORD": {
+         "covid_region": 6
+      },
+      "FRANKLIN": {
+         "covid_region": 5
+      },
+      "FULTON": {
+         "covid_region": 2
+      },
+      "GALLATIN": {
+         "covid_region": 5
+      },
+      "GREENE": {
+         "covid_region": 3
+      },
+      "GRUNDY": {
+         "covid_region": 2
+      },
+      "HAMILTON": {
+         "covid_region": 5
+      },
+      "HANCOCK": {
+         "covid_region": 3
+      },
+      "HARDIN": {
+         "covid_region": 5
+      },
+      "HENDERSON": {
+         "covid_region": 2
+      },
+      "HENRY": {
+         "covid_region": 2
+      },
+      "IROQUOIS": {
+         "covid_region": 6
+      },
+      "JACKSON": {
+         "covid_region": 5
+      },
+      "JASPER": {
+         "covid_region": 6
+      },
+      "JEFFERSON": {
+         "covid_region": 5
+      },
+      "JERSEY": {
+         "covid_region": 3
+      },
+      "JO DAVIESS": {
+         "covid_region": 1
+      },
+      "JOHNSON": {
+         "covid_region": 5
+      },
+      "KANE": {
+         "covid_region": 8
+      },
+      "KANKAKEE": {
+         "covid_region": 7
+      },
+      "KENDALL": {
+         "covid_region": 2
+      },
+      "KNOX": {
+         "covid_region": 2
+      },
+      "LAKE": {
+         "covid_region": 9
+      },
+      "LASALLE": {
+         "covid_region": 2
+      },
+      "LAWRENCE": {
+         "covid_region": 6
+      },
+      "LEE": {
+         "covid_region": 1
+      },
+      "LIVINGSTON": {
+         "covid_region": 2
+      },
+      "LOGAN": {
+         "covid_region": 3
+      },
+      "MACON": {
+         "covid_region": 6
+      },
+      "MACOUPIN": {
+         "covid_region": 3
+      },
+      "MADISON": {
+         "covid_region": 4
+      },
+      "MARION": {
+         "covid_region": 5
+      },
+      "MARSHALL": {
+         "covid_region": 2
+      },
+      "MASON": {
+         "covid_region": 3
+      },
+      "MASSAC": {
+         "covid_region": 5
+      },
+      "MCDONOUGH": {
+         "covid_region": 2
+      },
+      "MCHENRY": {
+         "covid_region": 9
+      },
+      "MCLEAN": {
+         "covid_region": 2
+      },
+      "MENARD": {
+         "covid_region": 3
+      },
+      "MERCER": {
+         "covid_region": 2
+      },
+      "MONROE": {
+         "covid_region": 4
+      },
+      "MONTGOMERY": {
+         "covid_region": 3
+      },
+      "MORGAN": {
+         "covid_region": 3
+      },
+      "MOULTRIE": {
+         "covid_region": 6
+      },
+      "OGLE": {
+         "covid_region": 1
+      },
+      "PEORIA": {
+         "covid_region": 2
+      },
+      "PERRY": {
+         "covid_region": 5
+      },
+      "PIATT": {
+         "covid_region": 6
+      },
+      "PIKE": {
+         "covid_region": 3
+      },
+      "POPE": {
+         "covid_region": 5
+      },
+      "PULASKI": {
+         "covid_region": 5
+      },
+      "PUTNAM": {
+         "covid_region": 2
+      },
+      "RANDOLPH": {
+         "covid_region": 4
+      },
+      "RICHLAND": {
+         "covid_region": 6
+      },
+      "ROCK ISLAND": {
+         "covid_region": 2
+      },
+      "SALINE": {
+         "covid_region": 5
+      },
+      "SANGAMON": {
+         "covid_region": 3
+      },
+      "SCHUYLER": {
+         "covid_region": 3
+      },
+      "SCOTT": {
+         "covid_region": 3
+      },
+      "SHELBY": {
+         "covid_region": 6
+      },
+      "ST. CLAIR": {
+         "covid_region": 4
+      },
+      "STARK": {
+         "covid_region": 2
+      },
+      "STEPHENSON": {
+         "covid_region": 1
+      },
+      "TAZEWELL": {
+         "covid_region": 2
+      },
+      "UNION": {
+         "covid_region": 5
+      },
+      "VERMILION": {
+         "covid_region": 6
+      },
+      "WABASH": {
+         "covid_region": 5
+      },
+      "WARREN": {
+         "covid_region": 2
+      },
+      "WASHINGTON": {
+         "covid_region": 4
+      },
+      "WAYNE": {
+         "covid_region": 5
+      },
+      "WHITE": {
+         "covid_region": 5
+      },
+      "WHITESIDE": {
+         "covid_region": 1
+      },
+      "WILL": {
+         "covid_region": 7
+      },
+      "WILLIAMSON": {
+         "covid_region": 5
+      },
+      "WINNEBAGO": {
+         "covid_region": 1
+      },
+      "WOODFORD": {
+         "covid_region": 2
+      }
+   }
+   
+   let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
+                   "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
+                   "covidregion_8", "covidregion_9", "covidregion_10", "covidregion_11"]
 
    d3.select(window)
     		.on("resize", sizeChange);
@@ -776,38 +579,25 @@ var countyMap = {
 	});
 	
 	function sizeChange() {
-	   
-	   
-	   
 	   d3.select("#group")
 	     .attr("transform", "scale(" + $("#cases_map").width()/150 + ")");
 	   
 	   $("#svg_id").height($("#cases_map")
 	           .width()*2)
 	}
-	
-	
-// 	END MAP //
-
-
-	
-	
-// 	END MAP //
-// console.log(countyMap["WOODFORD"].covid_region) // 2
-  // console.log(allGroup)
   
   d3.select("#selectButton")
     .selectAll('myOptions')
-   	.data(allGroup)
+    .data(allGroup)
     .enter()
-  	.append('option')
+    .append('option')
     .text(function (d) { 
-        if(d == "illinois" ||d == "Illinois" ) {
-            return "Illinois";
-        }
-        d = "Region " + d.substring( d.indexOf('_')+1);
-        return d; 
-    })
+                         if(d == "illinois" ||d == "Illinois" ) {
+                              return "Illinois";
+                          }
+                          d = "Region " + d.substring( d.indexOf('_')+1);
+                          return d; 
+                        })
     .attr("value", function (d) { return d; })
     .attr("class", "dropdown-item")
 
@@ -827,10 +617,7 @@ var countyMap = {
   
   var dataFilter = null;               
   
-  // d3.json("/data/rt.json").then(function(data) {
   d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv').then(function(data) {
-    // console.log(data);   
-    // filers NaN and converts strings
     let parseDate = d3.timeParse("%Y-%m-%d");
     let today = new Date();
     data = data.filter(function(d){
@@ -846,15 +633,6 @@ var countyMap = {
       d.date = parseDate(d.date);
       return true;
     });
-
-   //  var myColor = d3.scaleOrdinal()
-   //                 .domain(allGroup)
-   //                 .range(d3.schemeSet2);
-      
-   //  var lightColors = d3.scaleOrdinal()
-   //                      .domain(allGroup)
-   //                      .range(d3.schemePastel2);
-                        
             
 
     x_rt.domain(d3.extent(data, function(d) { return d.date}))
@@ -920,7 +698,7 @@ var countyMap = {
       .attr("alignment-baseline", "middle")
       .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  ); 
       
-          function mouseover() {
+   function mouseover() {
     focus.style("opacity", 1)
     focusText.style("opacity",1)
   }
@@ -935,7 +713,7 @@ var countyMap = {
     var i = bisect(data, x0, 1);
     // console.log(i)
     
-    selectedData = data[i]
+    var selectedData = data[i]
     focus
       .attr("cx", x_rt(selectedData.date))
       .attr("cy", y_rt(selectedData.rt_median))
@@ -1102,25 +880,13 @@ var countyMap = {
        prev_deaths = d.Deaths;
        prev_region = d.NOFO_Region;
     }
-    
-   // if (d.new_cases < 0) {
-   //       console.log(d.update_date)
-   //       console.log(d.new_cases)
-   // }
+
     
   });
 
   data = data.filter(function(d){return d.NOFO_Region=="Illinois"})
   
   console.log(data)
-     
-   //  var myColor = d3.scaleOrdinal()
-   //                 .domain(allGroup)
-   //                 .range(d3.schemeSet2);
-      
-   //  var lightColors = d3.scaleOrdinal()
-   //                      .domain(allGroup)
-   //                      .range(d3.schemePastel2);
 
       x_cases.domain(d3.extent(data, function(d) { return d.update_date; }))
 
@@ -1223,33 +989,6 @@ var countyMap = {
 
     // A function that updates the chart
     function update(selectedGroup) {
-        
-      //          //  console.log( parseInt(selectedGroup.split('_')[1]) )
-      //  d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-cousub.json').then(function(data) {
-        
-      // //  console.log(data)
-      //       svg_map_cases.append("g")
-      //           .selectAll("path")
-      //           .data(data.features)
-      //           .enter()
-      //           .append("path")
-      //           .attr( "d", geoPath )
-      //           .attr("class", function(d){
-      //              if (
-      //                 countyMap[(fipsmap[d.properties.COUNTYFP].county).toUpperCase()].covid_region ===
-      //                   parseInt(selectedGroup.split('_')[1])
-      //                   ) {
-                            
-      //                       return "classy"
-                        
-      //              }
-      //              else {
-      //                   return ""
-      //              }
-      //           })
-
-      //  });    
-
       
            
   d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv').then(function(data) {
@@ -1270,16 +1009,6 @@ var countyMap = {
       d.date = parseDate(d.date);
       return true;
     });
-
-        
-
-   //  var myColor = d3.scaleOrdinal()
-   //                 .domain(allGroup)
-   //                 .range(d3.schemeSet2);
-      
-   //  var lightColors = d3.scaleOrdinal()
-   //                      .domain(allGroup)
-   //                      .range(d3.schemePastel2);
                         
       dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
       // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
@@ -1407,25 +1136,10 @@ var prev_cases = 0;
         
         
         var selectedGroupCases = dict[selectedGroup]
-        // console.log(selectedGroup)
-        
-        // console.log(selectedGroupCases)
-        
-        // console.log(data);
         
         // allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
         
         dataFilter = data.filter(function(d){return d.NOFO_Region==selectedGroupCases})
-        // console.log(dataFilter);
-        
-      //  var myColor = d3.scaleOrdinal()
-      //                   .domain(allGroup)
-      //                   .range(d3.schemeSet2);
-          
-      //  var lightColors = d3.scaleOrdinal()
-      //                       .domain(allGroup)
-      //                       .range(d3.schemePastel2);
-                        
                         
         y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases })])
         y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
@@ -1469,12 +1183,7 @@ var prev_cases = 0;
       // run the updateChart function with this selected option
       // console.log(selectedOption)
       update(selectedOption)
-      
-      
-      
-      
-      // svg_map_cases.selectAll('path').attr('class','region');
-      // d3.select(this).attr('class','selected');
+
     })
     
 
