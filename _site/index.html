@@ -89,7 +89,10 @@
       position: fixed;
       z-index: 2;
    }
-
+   
+   .subtitle {
+      margin-bottom: 20px;
+   }
 @media only screen and (max-width: 339px) {
       body {
          padding-top: 100px;
@@ -208,48 +211,64 @@
 
 <div class="map" id = "cases_map"></div>
 
-<div class = "container ">
-   
-  <div class="container rt">
-      <div class="row">
-          <div class="col">
-              <h2>Transmission Status</h2>
-              <p> Example subtitle to label chart </p>
-              <br></br>
-              <div class="chart" id = "rt_chart"></div>
-              <text>RTLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
-          </div>
-      </div>
+<div class="card rt " id = "">
+  <div class="card-body">
+    <h2>Transmission Status</h2>
+    <text>Subtitle for rt chart: we believe 
+    the rt level is at this level and the text blah </text>
   </div>
+</div>
 
-  
-  <div class = "container ">
-  <div class="container jumbotron cases">
-      <div class="row">
-          <div class="col">
-              <h2>Cases</h2>
-              <p> Example subtitle to label chart </p>
-              <br></br>
-              <div class="chart" id = "cases_chart"></div>
-              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
-          </div>
-      </div>
-  </div>
-  
-  
-    <div class = "container ">
-  <div class="container jumbotron deaths">
-      <div class="row">
-          <div class="col">
-              <h2>Deaths</h2>
-              <p> Example subtitle to label chart </p>
-              <br></br>
-              <div class="chart" id = "deaths_chart"></div>
-              <text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</text>
-          </div>
-      </div>
-  </div>
 
+<div class = "card rt">
+   <div class="card-body" id = "rt_chart"> </div>
+</div>
+
+<div class="card rt subtitle" id = "">
+  <div class="card-body">
+    <text>Subtitle for rt chart: we believe 
+    the rt level is at this level and the text blah </text>
+  </div>
+</div>
+
+<!--<br></br>-->
+
+  <div class="card cases " id = "">
+  <div class="card-body">
+    <h2>Cases</h2>
+    <text>Subtitle for cases chart </text>
+  </div>
+</div>
+
+<div class = "card cases">
+   <div class="card-body" id = "cases_chart"> </div>
+</div>
+
+<div class="card cases subtitle" id = "">
+  <div class="card-body">
+    <text>Subtitle for cases chart: we believe 
+    the rt level is at this level and the text blah </text>
+  </div>
+</div>
+  <!--<br></br>-->
+<div class="card deaths " id = "">
+  <div class="card-body">
+    <h2>Deaths</h2>
+    <text>Subtitle for deaths chart </text>
+  </div>
+</div>
+
+<div class = "card deaths ">
+   <div class="card-body" id = "deaths_chart"> </div>
+</div>
+
+<div class="card deaths subtitle" id = "">
+  <div class="card-body">
+    <text>Subtitle for deaths chart: we believe 
+    the rt level is at this level and the text blah </text>
+  </div>
+</div>
+<!--<br></br>-->
 <script>
    /* global d3 */
    function LightenDarkenColor(col,amt) {
@@ -605,8 +624,6 @@
          "covid_region": 2
       }
    }
-   
-   
 
    d3.select(window)
     		.on("resize", sizeChange);
