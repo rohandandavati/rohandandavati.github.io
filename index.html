@@ -217,6 +217,10 @@ title: Home
    }
    console.log(hexColorsLight)
    
+   let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
+                   "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
+                   "covidregion_8", "covidregion_9", "covidregion_10", "covidregion_11"]
+                   
    var myColor = d3.scaleOrdinal().domain(allGroup)
      .range(hexColors)
    var lightColors = d3.scaleOrdinal().domain(allGroup)
@@ -534,9 +538,7 @@ title: Home
       }
    }
    
-   let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
-                   "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
-                   "covidregion_8", "covidregion_9", "covidregion_10", "covidregion_11"]
+   
 
    d3.select(window)
     		.on("resize", sizeChange);
