@@ -21,6 +21,9 @@ title: Home
       position: fixed;
       z-index: 2;
    }
+   .card-body {
+      width: 100%;
+   }
    
    .subtitle {
       margin-bottom: 20px;
@@ -143,6 +146,7 @@ title: Home
 
 <div class="map" id = "cases_map"></div>
 
+
 <div class="card rt " id = "">
   <div class="card-body">
     <h2>Transmission Status</h2>
@@ -150,7 +154,6 @@ title: Home
     the rt level is at this level and the text blah </text>
   </div>
 </div>
-
 
 <div class = "card rt">
    <div class="card-body" id = "rt_chart"> </div>
@@ -163,9 +166,9 @@ title: Home
   </div>
 </div>
 
-<!--<br></br>-->
 
-  <div class="card cases " id = "">
+
+<div class="card cases " id = "">
   <div class="card-body">
     <h2>Cases</h2>
     <text>Subtitle for cases chart </text>
@@ -182,7 +185,9 @@ title: Home
     the rt level is at this level and the text blah </text>
   </div>
 </div>
-  <!--<br></br>-->
+
+
+
 <div class="card deaths " id = "">
   <div class="card-body">
     <h2>Deaths</h2>
@@ -200,9 +205,23 @@ title: Home
     the rt level is at this level and the text blah </text>
   </div>
 </div>
-<!--<br></br>-->
+
 <script>
    /* global d3 */
+   
+   /*
+   init all chart variables
+   
+   drawCharts (on resize)
+    - get div widths 
+    - set div heights dep on wid
+   updateCharts (on dropdown)
+   
+   
+   
+   */
+   
+   
    function LightenDarkenColor(col,amt) {
       var usePound = false;
       if ( col[0] == "#" ) {
@@ -225,6 +244,7 @@ title: Home
       
       return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
    }
+   
   
    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
    var hexColorsLight = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
@@ -239,7 +259,7 @@ title: Home
    let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
                    "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
                    "covidregion_8", "covidregion_9", "covidregion_10", "covidregion_11"]
-                   
+
    var myColor = d3.scaleOrdinal().domain(allGroup)
      .range(hexColors)
    var lightColors = d3.scaleOrdinal().domain(allGroup)
@@ -562,16 +582,6 @@ title: Home
 
 	var map_wid = document.getElementById("cases_map").offsetWidth;
 	var map_hid = map_wid *2;
-	
-	var projection = d3.geoAlbers()
-	                   .center([0, 38.82])
-	                   .rotate([89.5,0])
-	                   .scale( 1400 )
-	                   .translate([ map_wid / 2, map_hid / 2]);
-
-	var path = d3.geoPath()
-	             .projection(projection);
-	             
 
 
 	var svg = d3.select("#cases_map")
@@ -582,6 +592,14 @@ title: Home
 	            .append("g").attr("id", "group");
 	
 	d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json').then(function(data) {
+	   
+	   
+   var projection = d3.geoAlbers().rotate([89.5,0]).fitSize([map_wid, map_hid], data);
+
+	var path = d3.geoPath()
+	             .projection(projection);
+	   
+	   
 	   svg.selectAll("path")
 	      .data(data.features)
 	      .enter().append("path")
