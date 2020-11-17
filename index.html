@@ -8,7 +8,7 @@ title: Home
     }
     .chart {
         z-index: 1;
-        margin-bottom: 20px;
+        /*margin-bottom: 1%;*/
         
     }
     body {
@@ -27,10 +27,11 @@ title: Home
       /*width: 100%;*/
       margin-right: 20px;
    }
-   
-   .subtitle {
-      margin-bottom: 20px;
-   }
+   /*.pos {*/
+   /*   float: right;*/
+   /*   position: relative;*/
+   /*}*/
+
 @media only screen and (max-width: 339px) {
       body {
          padding-top: 100px;
@@ -187,6 +188,17 @@ title: Home
    <div class="card-body" id = "deaths_chart"> </div>
 </div>
 
+
+<!--<div class="card pos " id = "">-->
+<!--  <div class="card-body">-->
+<!--    <h2>Test Positivity</h2>-->
+<!--    <text>Subtitle for deaths chart </text>-->
+<!--  </div>-->
+<!--</div>-->
+
+<!--<div class = "card pos chart">-->
+<!--   <div class="card-body" id = "pos_chart"> </div>-->
+<!--</div>-->
 
 <script>
    /* global d3 */
@@ -583,7 +595,7 @@ title: Home
 	var map_wid = document.getElementById("cases_map").offsetWidth;
 	var map_hid = map_wid *2;
 	
-	var margin_rt = {top: 10, right: 10, bottom: 50, left: 60};
+	var margin_rt = {top: 10, right: 10, bottom: 50, left: 50};
    var svg_rt = d3.select("#rt_chart").append("svg")
 
    var x_rt = d3.scaleTime();
@@ -597,8 +609,8 @@ title: Home
    
    var dataFilter = null; 
 
-  var margin_cases = {top: 15, right: 10, bottom: 50, left: 60};
-  var margin_deaths = {top: 15, right: 10, bottom: 50, left: 60};
+  var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
+  var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
   
   var svg_cases = d3.select("#cases_chart").append("svg")
   var svg_deaths = d3.select("#deaths_chart").append("svg")
@@ -733,7 +745,7 @@ title: Home
       
     var yTitle = svg_rt.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 6)
+      .attr("y", 4)
       // .attr("x",0 - (height / 2))
       .attr("dy", "1em")
       .style("text-anchor", "middle")
@@ -798,8 +810,19 @@ title: Home
       const currentWidth = document.getElementById("rt_chart").offsetWidth;
       
       const width = currentWidth- margin_rt.left - margin_rt.right;
-      const height = parseInt(currentWidth * 0.62 ) - margin_rt.top - margin_rt.bottom;
-      // console.log(currentWidth)
+      let height = parseInt(currentWidth * 0.52 ) - margin_rt.top - margin_rt.bottom;
+      console.log(height)
+      
+                  
+      if (parseInt(currentWidth) < 600) {
+         height = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
+         console.log("hi")
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
+      }
+      console.log(height)
+
       
       svg_rt.attr("width", width + margin_rt.left + margin_rt.right)
       .attr("height", height + margin_rt.top + margin_rt.bottom)
@@ -815,12 +838,15 @@ title: Home
       // .call(d3.axisBottom(x_rt).ticks(5));
       if (currentWidth < 600) {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
+         // x_rt_axis.call(d3.axisBottom(x_rt).ticks(d3.timeMonths, 1).tickFormat(d3.timeFormat("%b")));
+         
       }else {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
       }
            
       y_rt.range([ height, 0 ])
       y_rt_axis.call(d3.axisLeft(y_rt).ticks(6));
+      
       
 
       
@@ -967,7 +993,17 @@ title: Home
       
       const currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
-      const height_cases = parseInt(currentWidth * 0.45 ) - margin_cases.top - margin_cases.bottom;
+      let height_cases = parseInt(currentWidth * 0.52 ) - margin_cases.top - margin_cases.bottom;
+      
+      
+            
+      if (parseInt(currentWidth) < 600) {
+         height_cases = parseInt(currentWidth * .72) - margin_cases.top - margin_cases.bottom;
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_cases = parseInt(currentWidth * .62) - margin_cases.top - margin_cases.bottom;
+      }
+      
       
       svg_cases.attr("width", width_cases + margin_cases.left + margin_cases.right)
                .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
@@ -995,8 +1031,15 @@ title: Home
       
       
       const width_deaths = currentWidth- margin_deaths.left - margin_deaths.right;
-      const height_deaths = parseInt(currentWidth * 0.45 ) - margin_deaths.top - margin_deaths.bottom;
+      let height_deaths = parseInt(currentWidth * 0.52 ) - margin_deaths.top - margin_deaths.bottom;
       
+       if (parseInt(currentWidth) < 600) {
+         height_deaths = parseInt(currentWidth * .72) - margin_deaths.top - margin_deaths.bottom;
+         console.log("yo")
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_deaths = parseInt(currentWidth * .62) - margin_deaths.top - margin_deaths.bottom;
+      }
       
       svg_deaths.attr("width", width_deaths + margin_cases.left + margin_cases.right)
       svg_deaths.attr("height", height_deaths + margin_cases.top + margin_cases.bottom)
@@ -1006,7 +1049,7 @@ title: Home
       x_deaths_axis.attr("transform", "translate(" + margin_deaths.left + "," + height_deaths + ")")
       // .call(d3.axisBottom(x_deaths).ticks(5));
       
-            if (currentWidth < 600) {
+            if (parseInt(currentWidth) < 600) {
          x_deaths_axis.call(d3.axisBottom(x_deaths).ticks(3));
       }else {
          x_deaths_axis.call(d3.axisBottom(x_deaths).ticks(6));
