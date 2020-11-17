@@ -22,7 +22,7 @@ title: Reports
     }
     .card {
       width: 300px;
-      height: 600px;
+      height: 440px;
     }
      
      
@@ -34,9 +34,15 @@ title: Reports
     }
     .read {
       width: 80px;
+      margin: 20px;
+      float: bottom;
     }
-
-
+    /*.card-outer {*/
+    /*  height: 420px;*/
+    /*}*/
+    .class {
+      /*height: 100%;*/
+    }
     .d-flex > div {
       margin: 10px;
     }
@@ -50,17 +56,18 @@ title: Reports
   <div class = "d-flex justify-content-left flex-wrap">
     <!--<div class = "d-flex justify-content-center"  > -->
     {% for report in site.data.reports %}             
-    <div class="card mb-4 shadow-sm h-100 d-md-inline-flex card-outer">              
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">              
       <img class="card-img-top" src="{{ report.image_path }}" alt="{{ report.name }}">
-      <div class="card-body d-flex flex-column">
+      <div class="card-body d-flex flex-column class">
         <text class = "card-title ">{{ report.name }}</text>
         <text class = "card-subtitle">{{ report.date }}</text>
         <!--<br></br>-->
         <p class="card-text">{{ report.description }}</p> 
         <!--<div class= "btn-group read">-->
-          <a href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>
+          <!--<a href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>-->
         <!--</div>-->
       </div>
+      <a href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>
     </div>  
     {% endfor %}
     <!--</div>-->
