@@ -124,11 +124,16 @@ title: Home
 @media only screen and (min-width: 992px) {
    body{
       /*margin-left: 5%;*/
-      margin-right: 5%;
+      margin-right: 10%;
    }
    #cases_map {
-         width: 13%;
+         width: 10%;
+}
+      .card {
+         margin-right: 5%;
+         width: 80%;
       }
+      
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -857,7 +862,7 @@ title: Home
       const currentWidth = document.getElementById("rt_chart").offsetWidth;
       
       const width = currentWidth- margin_rt.left - margin_rt.right;
-      let height = parseInt(currentWidth * 0.42 ) - margin_rt.top - margin_rt.bottom;
+      let height = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
       // console.log(height)
       
                   
@@ -1042,7 +1047,7 @@ title: Home
       
       const currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
-      let height_cases = parseInt(currentWidth * 0.42 ) - margin_cases.top - margin_cases.bottom;
+      let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
       
       
             
@@ -1080,7 +1085,7 @@ title: Home
       
       
       const width_deaths = currentWidth- margin_deaths.left - margin_deaths.right;
-      let height_deaths = parseInt(currentWidth * 0.42 ) - margin_deaths.top - margin_deaths.bottom;
+      let height_deaths = parseInt(currentWidth * 0.35 ) - margin_deaths.top - margin_deaths.bottom;
       
        if (parseInt(currentWidth) < 600) {
          height_deaths = parseInt(currentWidth * .72) - margin_deaths.top - margin_deaths.bottom;
@@ -1270,7 +1275,7 @@ title: Home
       const currentWidth = document.getElementById("rt_chart").offsetWidth;
       
       const width = currentWidth- margin_rt.left - margin_rt.right;
-      let height = parseInt(currentWidth * 0.42 ) - margin_rt.top - margin_rt.bottom;
+      let height = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
       // console.log(height)
       
                   
