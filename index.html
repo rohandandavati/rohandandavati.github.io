@@ -857,7 +857,7 @@ title: Home
       const currentWidth = document.getElementById("rt_chart").offsetWidth;
       
       const width = currentWidth- margin_rt.left - margin_rt.right;
-      let height = parseInt(currentWidth * 0.52 ) - margin_rt.top - margin_rt.bottom;
+      let height = parseInt(currentWidth * 0.42 ) - margin_rt.top - margin_rt.bottom;
       // console.log(height)
       
                   
@@ -1018,8 +1018,8 @@ title: Home
       .call(d3.axisLeft(y_cases));
 
       area_cases.datum(data)
-      .attr("fill", function(d){ return lightColors(allGroup[0]) })
-      .attr("stroke", function(d){ return myColor(allGroup[0]) })
+      .attr("fill", function(d){ return myColor(allGroup[0]) })
+      .attr("stroke", function(d){ return lightColors(allGroup[0]) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_cases.left+1)+" ,0)");
       
@@ -1033,8 +1033,8 @@ title: Home
 
       area_deaths.datum(data)
       // .attr("fill", "#cce5df")
-      .attr("fill", function(d){ return lightColors(allGroup[0]) })
-      .attr("stroke", function(d){ return myColor(allGroup[0]) })
+      .attr("fill", function(d){ return myColor(allGroup[0]) })
+      .attr("stroke", function(d){ return lightColors(allGroup[0]) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");  
       
@@ -1042,7 +1042,7 @@ title: Home
       
       const currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
-      let height_cases = parseInt(currentWidth * 0.52 ) - margin_cases.top - margin_cases.bottom;
+      let height_cases = parseInt(currentWidth * 0.42 ) - margin_cases.top - margin_cases.bottom;
       
       
             
@@ -1080,7 +1080,7 @@ title: Home
       
       
       const width_deaths = currentWidth- margin_deaths.left - margin_deaths.right;
-      let height_deaths = parseInt(currentWidth * 0.52 ) - margin_deaths.top - margin_deaths.bottom;
+      let height_deaths = parseInt(currentWidth * 0.42 ) - margin_deaths.top - margin_deaths.bottom;
       
        if (parseInt(currentWidth) < 600) {
          height_deaths = parseInt(currentWidth * .72) - margin_deaths.top - margin_deaths.bottom;
@@ -1270,7 +1270,7 @@ title: Home
       const currentWidth = document.getElementById("rt_chart").offsetWidth;
       
       const width = currentWidth- margin_rt.left - margin_rt.right;
-      let height = parseInt(currentWidth * 0.52 ) - margin_rt.top - margin_rt.bottom;
+      let height = parseInt(currentWidth * 0.42 ) - margin_rt.top - margin_rt.bottom;
       // console.log(height)
       
                   
@@ -1416,24 +1416,24 @@ var prev_cases = 0;
         .datum(dataFilter)
         .transition()
         .duration(1000)
-        .attr("fill", function(d){ return lightColors(selectedGroup) })
+        .attr("fill", function(d){ return myColor(selectedGroup) })
         .attr("d", d3.area()
         .x(function(d) { return x_cases(d.update_date) })
         .y0(y_cases(0))
         .y1(function(d) { return y_cases(d.new_cases) })
-        ).attr("stroke", function(d){ return myColor(selectedGroup) } )
+        ).attr("stroke", function(d){ return lightColors(selectedGroup) } )
         
         
         area_deaths
         .datum(dataFilter)
         .transition()
         .duration(1000)
-        .attr("fill", function(d){ return lightColors(selectedGroup) })
+        .attr("fill", function(d){ return myColor(selectedGroup) })
         .attr("d", d3.area()
         .x(function(d) { return x_deaths(d.update_date) })
         .y0(y_deaths(0))
         .y1(function(d) { return y_deaths(d.new_deaths) })
-        ).attr("stroke", function(d){ return myColor(selectedGroup) } )
+        ).attr("stroke", function(d){ return lightColors(selectedGroup) } )
         
       });
        
