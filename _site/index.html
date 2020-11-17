@@ -71,8 +71,8 @@
 
   </nav>
     <style>
-    .jumbotron {
-    background-color:transparent !important;
+    .card {
+    border-color:transparent !important;
     }
     .chart {
         z-index: 1;
@@ -1125,27 +1125,19 @@
                         } else {
                            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
                         }
-	         
-	        // return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
 	      })
 	      .attr("stroke", function(d){ 
 	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
 	      })
-               //  .attr("class", function(d){
-                   
-               //     if (
-               //        countyMap[d.properties.COUNTY_NAM].covid_region ===
-               //          parseInt(selectedGroup.split('_')[1])
-               //          ) {
-                            
-               //              return "classy"
-                        
-               //     }
-               //     else {
-               //          return ""
-               //     }
-               //  })
-
+	     // .attr("stroke-width", function(d){ 
+	     //    if (countyMap[d.properties.COUNTY_NAM].covid_region ===
+      //                 parseInt(selectedGroup.split('_')[1])) {
+      //                    return "5px";
+      //                 }else {
+      //                    return "1px";
+      //                 }
+	         
+	     // })
        });    
 
       
