@@ -322,7 +322,7 @@
    
    var i;
    for (i = 0; i < hexColorsLight.length; i++) {
-      hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -30)
+      hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -60)
    }
    
    let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
@@ -835,13 +835,13 @@
     .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
     interval_rt.datum(data)
-                      .attr("fill", function(d){ return lightColors(allGroup[0]) })
+                      .attr("fill", function(d){ return myColor(allGroup[0]) })
                       .attr("stroke", "none")
                       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
 
     
     line_rt.datum(data)
-                  .attr("stroke", function(d){ return myColor(allGroup[0]) })
+                  .attr("stroke", function(d){ return lightColors(allGroup[0]) })
                   .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
                   .style("stroke-width", 2)
                   .style("fill", "none")
