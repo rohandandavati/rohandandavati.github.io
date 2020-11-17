@@ -1240,7 +1240,7 @@ title: Home
       .datum(dataFilter)
       .transition()
       .duration(1000)
-      .attr("fill", function(d){ return lightColors(selectedGroup) })
+      .attr("fill", function(d){ return myColor(selectedGroup) })
       .attr("stroke", "none")
       .attr("d", d3.area()
             .x(function(d) { return x_rt(d.date) })
@@ -1257,7 +1257,7 @@ title: Home
             .x(function(d) { return x_rt(d.date) })
             .y(function(d) { return y_rt(d.rt_median) })
             )
-            .attr("stroke", function(d){ return myColor(selectedGroup) })
+            .attr("stroke", function(d){ return lightColors(selectedGroup) })
     
            
       refLine
