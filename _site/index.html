@@ -76,6 +76,8 @@
     }
     .chart {
         z-index: 1;
+        margin-bottom: 20px;
+        
     }
     body {
         padding-top: 50px;
@@ -90,7 +92,8 @@
       z-index: 2;
    }
    .card-body {
-      width: 100%;
+      /*width: 100%;*/
+      margin-right: 20px;
    }
    
    .subtitle {
@@ -178,9 +181,10 @@
       #cases_map {
          width: 15%;
       }
-      /*#rtTitle {*/
-      /*   width: 85%;*/
-      /*}*/
+      .card {
+         margin-right: 5%;
+         width: 80%;
+      }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -223,17 +227,9 @@
   </div>
 </div>
 
-<div class = "card rt">
+<div class = "card rt chart">
    <div class="card-body" id = "rt_chart"> </div>
 </div>
-
-<div class="card rt subtitle" id = "">
-  <div class="card-body">
-    <text>Subtitle for rt chart: we believe 
-    the rt level is at this level and the text blah </text>
-  </div>
-</div>
-
 
 
 <div class="card cases " id = "">
@@ -243,17 +239,9 @@
   </div>
 </div>
 
-<div class = "card cases">
+<div class = "card cases chart">
    <div class="card-body" id = "cases_chart"> </div>
 </div>
-
-<div class="card cases subtitle" id = "">
-  <div class="card-body">
-    <text>Subtitle for cases chart: we believe 
-    the rt level is at this level and the text blah </text>
-  </div>
-</div>
-
 
 
 <div class="card deaths " id = "">
@@ -263,22 +251,20 @@
   </div>
 </div>
 
-<div class = "card deaths ">
+<div class = "card deaths chart">
    <div class="card-body" id = "deaths_chart"> </div>
 </div>
 
-<div class="card deaths subtitle" id = "">
-  <div class="card-body">
-    <text>Subtitle for deaths chart: we believe 
-    the rt level is at this level and the text blah </text>
-  </div>
-</div>
 
 <script>
    /* global d3 */
+   /* global $ */
    
    /*
    init all chart variables
+   manual first draw charts with Illinois
+   draw charts updates data 
+   
    
    drawCharts (on resize)
     - get div widths 
@@ -288,6 +274,9 @@
    
    
    */
+   
+   
+   //
    
    
    function LightenDarkenColor(col,amt) {
@@ -317,17 +306,31 @@
    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
    var hexColorsLight = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
    
-   console.log(hexColorsLight)
+   
    var i;
    for (i = 0; i < hexColorsLight.length; i++) {
       hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -30)
    }
-   console.log(hexColorsLight)
    
    let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
                    "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
                    "covidregion_8", "covidregion_9", "covidregion_10", "covidregion_11"]
 
+     d3.select("#selectButton")
+    .selectAll('myOptions')
+    .data(allGroup)
+    .enter()
+    .append('option')
+    .text(function (d) { 
+                         if(d == "illinois" ||d == "Illinois" ) {
+                              return "Illinois";
+                          }
+                          d = "Region " + d.substring( d.indexOf('_')+1);
+                          return d; 
+                        })
+    .attr("value", function (d) { return d; })
+    .attr("class", "dropdown-item")
+    
    var myColor = d3.scaleOrdinal().domain(allGroup)
      .range(hexColors)
    var lightColors = d3.scaleOrdinal().domain(allGroup)
@@ -645,11 +648,40 @@
       }
    }
 
-   d3.select(window)
-    		.on("resize", sizeChange);
-
 	var map_wid = document.getElementById("cases_map").offsetWidth;
 	var map_hid = map_wid *2;
+	
+	var margin_rt = {top: 10, right: 10, bottom: 50, left: 60};
+   var svg_rt = d3.select("#rt_chart").append("svg")
+
+   var x_rt = d3.scaleTime();
+   var x_rt_axis = svg_rt.append("g");
+   var y_rt = d3.scaleLinear();
+   var y_rt_axis = svg_rt.append("g");
+   
+   var interval_rt = svg_rt.append("path");
+   var line_rt = svg_rt.append('g').append("path");
+   var refLine = svg_rt.append('g').append("path")
+   
+   var dataFilter = null; 
+
+  var margin_cases = {top: 15, right: 10, bottom: 50, left: 60};
+  var margin_deaths = {top: 15, right: 10, bottom: 50, left: 60};
+  
+  var svg_cases = d3.select("#cases_chart").append("svg")
+  var svg_deaths = d3.select("#deaths_chart").append("svg")
+              
+    var x_cases = d3.scaleTime();
+    var x_cases_axis = svg_cases.append("g")
+    var y_cases = d3.scaleLinear()
+    var y_cases_axis = svg_cases.append("g")
+    var area_cases = svg_cases.append("path")
+    
+    var x_deaths = d3.scaleTime()
+    var x_deaths_axis = svg_deaths.append("g")
+    var y_deaths = d3.scaleLinear()
+    var y_deaths_axis = svg_deaths.append("g")
+    var area_deaths = svg_deaths.append("path")
 
 
 	var svg = d3.select("#cases_map")
@@ -659,13 +691,31 @@
 	            .attr("id", "svg_id")
 	            .append("g").attr("id", "group");
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	d3.select(window)
+    		.on("resize", sizeChange);
+   
+   		var projection = d3.geoAlbers()
+   		var path = d3.geoPath()
 	d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json').then(function(data) {
 	   
-	   
-   var projection = d3.geoAlbers().rotate([89.5,0]).fitSize([map_wid, map_hid], data);
+   projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data);
 
-	var path = d3.geoPath()
-	             .projection(projection);
+// 	var path = d3.geoPath()
+	             path.projection(projection);
 	   
 	   
 	   svg.selectAll("path")
@@ -683,45 +733,22 @@
 	      .attr("d", path);
 	});
 	
+	
+	
 	function sizeChange() {
 	   d3.select("#group")
 	     .attr("transform", "scale(" + $("#cases_map").width()/150 + ")");
 	   
-	   $("#svg_id").height($("#cases_map")
-	           .width()*2)
+	  // $("#svg_id").width($("#cases_map"))
+	   $("#svg_id").height($("#cases_map").width()*2)
 	}
   
-  d3.select("#selectButton")
-    .selectAll('myOptions')
-    .data(allGroup)
-    .enter()
-    .append('option')
-    .text(function (d) { 
-                         if(d == "illinois" ||d == "Illinois" ) {
-                              return "Illinois";
-                          }
-                          d = "Region " + d.substring( d.indexOf('_')+1);
-                          return d; 
-                        })
-    .attr("value", function (d) { return d; })
-    .attr("class", "dropdown-item")
+  
+
+    
 
   
-  var margin_rt = {top: 10, right: 10, bottom: 50, left: 60};
-  var svg_rt = d3.select("#rt_chart").append("svg")
 
-  var x_rt = d3.scaleTime();
-  var x_rt_axis = svg_rt.append("g");
-  var y_rt = d3.scaleLinear();
-  var y_rt_axis = svg_rt.append("g");
-  
-  var interval_rt = svg_rt.append("path");
-  var line_rt = svg_rt.append('g').append("path");
-                  
-  var refLine = svg_rt.append('g').append("path")
-  
-  var dataFilter = null;               
-  
   d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv').then(function(data) {
     let parseDate = d3.timeParse("%Y-%m-%d");
     let today = new Date();
@@ -761,7 +788,7 @@
                   
                   
                   
-        refLine.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
+   refLine.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                   .attr("stroke", "black")
                   .attr("transform", "translate(" +(margin_rt.left+1)+" ,0)") 
                   .style("stroke-width", 1)
@@ -878,20 +905,20 @@
       )
       
       refLine
-        .attr("d", d3.line()
-        .x(function(d) { return x_rt(d.date) })
-        .y(function(d) { return y_rt(1.0) }));
+       .attr("d", d3.line()
+       .x(function(d) { return x_rt(d.date) })
+       .y(function(d) { return y_rt(1.0) }));
       
       svg_rt
-        .append('rect')
-        .style("fill", "none")
-        .style("pointer-events", "all")
-        .attr('width', width)
-        .attr('height', height)
-        .on('mouseover', mouseover)
-        .on('mousemove', mousemove)
-        .on('mouseout', mouseout)
-        .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  ); 
+       .append('rect')
+       .style("fill", "none")
+       .style("pointer-events", "all")
+       .attr('width', width)
+       .attr('height', height)
+       .on('mouseover', mouseover)
+       .on('mousemove', mousemove)
+       .on('mouseout', mouseout)
+       .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  ); 
         
 
 
@@ -905,25 +932,6 @@
     
 });
 
-
-
-  var margin_cases = {top: 15, right: 10, bottom: 50, left: 60};
-  var margin_deaths = {top: 15, right: 10, bottom: 50, left: 60};
-  
-  var svg_cases = d3.select("#cases_chart").append("svg")
-  var svg_deaths = d3.select("#deaths_chart").append("svg")
-              
-    var x_cases = d3.scaleTime();
-    var x_cases_axis = svg_cases.append("g")
-    var y_cases = d3.scaleLinear()
-    var y_cases_axis = svg_cases.append("g")
-    var area_cases = svg_cases.append("path")
-    
-    var x_deaths = d3.scaleTime()
-    var x_deaths_axis = svg_deaths.append("g")
-    var y_deaths = d3.scaleLinear()
-    var y_deaths_axis = svg_deaths.append("g")
-    var area_deaths = svg_deaths.append("path")
     
     
 // d3.csv('https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long').then(function(data) {
@@ -946,7 +954,7 @@
     d.new_deaths = 0;
     
     if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
-       console.log(d.NOFO_Region)
+      //  console.log(d.NOFO_Region)
        cases_max_diff[d.NOFO_Region] = 0;
        deaths_max_diff[d.NOFO_Region] = 0;
        
@@ -991,7 +999,7 @@
 
   data = data.filter(function(d){return d.NOFO_Region=="Illinois"})
   
-  console.log(data)
+//  console.log(data)
 
       x_cases.domain(d3.extent(data, function(d) { return d.update_date; }))
 
@@ -1094,6 +1102,92 @@
 
     // A function that updates the chart
     function update(selectedGroup) {
+       
+         d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json').then(function(data) {
+        
+             projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data);
+
+	 
+	             path.projection(projection);
+	     
+      //  console.log(data)
+            svg.append("g")
+                .selectAll("path")
+                .data(data.features)
+                .enter()
+                .append("path")
+                .attr( "d", path )
+                .attr("fill", function(d){ 
+                   if (
+                      countyMap[d.properties.COUNTY_NAM].covid_region ===
+                      parseInt(selectedGroup.split('_')[1])) {
+                            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                        } else {
+                           return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                        }
+	         
+	        // return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+	      })
+	      .attr("stroke", function(d){ 
+	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+	      })
+               //  .attr("class", function(d){
+                   
+               //     if (
+               //        countyMap[d.properties.COUNTY_NAM].covid_region ===
+               //          parseInt(selectedGroup.split('_')[1])
+               //          ) {
+                            
+               //              return "classy"
+                        
+               //     }
+               //     else {
+               //          return ""
+               //     }
+               //  })
+
+       });    
+
+      
+//        d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json').then(function(data) {
+	   
+	   
+//     projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data);
+
+	 
+// 	             path.projection(projection);
+	     
+	   
+// 	   svg.selectAll("path")
+// 	      .data(data.features)
+// 	      .enter().append("path")
+// 	      //initial fill function
+// 	      .attr("fill", function(d){ 
+// 	         return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+// 	      })
+// 	      .attr("stroke", function(d){ 
+// 	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+// 	      })
+// 	     // .attr("stroke-width", "3px")
+	     
+// 	      .attr("d", path)
+// 	       .attr("class", function(d){
+// 	          console.log("ji")
+//                    if (
+//                       countyMap[d.properties.COUNTY_NAM].covid_region ===
+//                         parseInt(selectedGroup.split('_')[1])
+//                         ) {
+                            
+//                             return "classy"
+                        
+//                    }
+//                    else {
+//                         return ""
+//                    }
+// 	      })
+// 	});
+       
+       
       
            
   d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv').then(function(data) {
@@ -1117,7 +1211,7 @@
                         
       dataFilter = data.filter(function(d){return d.geography_modeled==selectedGroup})
       // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
-      console.log(dataFilter)
+      // console.log(dataFilter)
       
       y_rt.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
       y_rt_axis.transition()
@@ -1180,7 +1274,7 @@ var prev_cases = 0;
     d.new_deaths = 0;
     
     if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
-       console.log(d.NOFO_Region)
+      //  console.log(d.NOFO_Region)
        cases_max_diff[d.NOFO_Region] = 0;
        deaths_max_diff[d.NOFO_Region] = 0;
        
