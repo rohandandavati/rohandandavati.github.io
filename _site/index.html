@@ -905,7 +905,7 @@
       yTitle.attr("x",0 - (height / 2))
       
       x_rt.range([ 0, width ]);
-      x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + height + ")")
+      x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + (margin_rt.top + height) + ")")
       // .call(d3.axisBottom(x_rt).ticks(5));
       if (currentWidth < 600) {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
