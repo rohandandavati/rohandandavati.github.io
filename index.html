@@ -718,17 +718,17 @@ title: Home
    y_rt.domain([0, 2]);
         
     y_rt_axis.attr("class", "y axis")
-    .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  )
+    .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
     interval_rt.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                       .attr("fill", function(d){ return lightColors(allGroup[0]) })
                       .attr("stroke", "none")
-                      .attr("transform", "translate(" +(margin_rt.left+1)+" ,0)")  
+                      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
 
     
     line_rt.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                   .attr("stroke", function(d){ return myColor(allGroup[0]) })
-                  .attr("transform", "translate(" +(margin_rt.left+1)+" ,0)") 
+                  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
                   .style("stroke-width", 2)
                   .style("fill", "none")
                   
@@ -736,7 +736,7 @@ title: Home
                   
    refLine.datum(data.filter(function(d){return d.geography_modeled==allGroup[0]}))
                   .attr("stroke", "black")
-                  .attr("transform", "translate(" +(margin_rt.left+1)+" ,0)") 
+                  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
                   .style("stroke-width", 1)
                   .style("stroke-dasharray", ("3, 3"))
                   .style("fill", "none")              
@@ -765,7 +765,7 @@ title: Home
       .attr("stroke", "black")
       .attr('r', 4.5)
       .style("opacity", 0)
-      .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  ); 
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
   // Create the text that travels along the curve of chart
   var focusText = svg_rt
@@ -774,7 +774,7 @@ title: Home
       .style("opacity", 0)
       .attr("text-anchor", "left")
       .attr("alignment-baseline", "middle")
-      .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  ); 
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
       
    function mouseover() {
     focus.style("opacity", 1)
@@ -878,7 +878,7 @@ title: Home
        .on('mouseover', mouseover)
        .on('mousemove', mousemove)
        .on('mouseout', mouseout)
-       .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  ); 
+       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
         
 
 
