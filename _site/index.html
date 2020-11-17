@@ -782,7 +782,9 @@
 
     x_rt.domain(d3.extent(data, function(d) { return d.date}))
                   
-    y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
+   //  y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
+   
+   y_rt.domain([0, 2]);
         
     y_rt_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_rt.left +","+ 0  + ")"  )
@@ -1249,9 +1251,11 @@
       // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
       // console.log(dataFilter)
       
-      y_rt.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
-      y_rt_axis.transition()
-      .duration(1000).call(d3.axisLeft(y_rt).ticks(6))
+      // y_rt.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
+      y_rt.domain([0, 2])
+      // y_rt_axis.transition()
+      // .duration(1000)
+      .call(d3.axisLeft(y_rt).ticks(6))
       
       
       interval_rt
