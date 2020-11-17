@@ -1217,7 +1217,7 @@
                 .attr( "d", path )
                 .attr("fill", function(d){ 
                    if (
-                      countyMap[d.properties.COUNTY_NAM].covid_region ===
+                      countyMap[d.properties.COUNTY_NAM].covid_region !==
                       parseInt(selectedGroup.split('_')[1])) {
                             return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
                         } else {
@@ -1225,7 +1225,17 @@
                         }
 	      })
 	      .attr("stroke", function(d){ 
-	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+	                    if (
+                      countyMap[d.properties.COUNTY_NAM].covid_region !==
+                      parseInt(selectedGroup.split('_')[1])) {
+                            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                        } else {
+                           return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                        }
+	         
+	         
+	         
+	        // return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
 	      })
 	     // .attr("stroke-width", function(d){ 
 	     //    if (countyMap[d.properties.COUNTY_NAM].covid_region ===
