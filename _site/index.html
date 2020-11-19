@@ -785,10 +785,10 @@
 	      .enter().append("path")
 	      //initial fill function
 	      .attr("fill", function(d){ 
-	         return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
 	      })
 	      .attr("stroke", function(d){ 
-	         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+	         return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
 	      })
 	     // .attr("stroke-width", "3px")
 	      .attr("class", "")
@@ -1216,22 +1216,30 @@
                 .append("path")
                 .attr( "d", path )
                 .attr("fill", function(d){ 
-                   if (
-                      countyMap[d.properties.COUNTY_NAM].covid_region !==
-                      parseInt(selectedGroup.split('_')[1])) {
+                  if (selectedGroup.localeCompare("illinois") === 0) {
+                     // console.log('hi')
+                     return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+                  } else {
+                      if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedGroup.split('_')[1])) {
                             return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                        } else {
-                           return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                        }
+                     } else {
+                              return "#7E7E7E" 
+                     }
+                  }
 	      })
 	      .attr("stroke", function(d){ 
-	                    if (
-                      countyMap[d.properties.COUNTY_NAM].covid_region !==
+	                 
+	                 if (selectedGroup.localeCompare("illinois") === 0) {
+                     return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+                  } else {
+	                 if (
+                      countyMap[d.properties.COUNTY_NAM].covid_region ===
                       parseInt(selectedGroup.split('_')[1])) {
                             return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
                         } else {
-                           return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                           return "#AAAAAA" 
                         }
+                  }
 	         
 	         
 	         
