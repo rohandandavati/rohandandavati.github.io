@@ -1131,7 +1131,7 @@ Promise.all(promises).then(function(data) {
                   }
 	      })
 	      
-	     console.log(data[1]) 
+	     //console.log(data[1]) 
 	           //console.log(data);   
    //  filers NaN and converts strings
     let parseDate = d3.timeParse("%Y-%m-%d");
@@ -1156,7 +1156,7 @@ Promise.all(promises).then(function(data) {
                         
       dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedGroup})
       // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
-      console.log(dataFilter)
+      // console.log(dataFilter)
       
       // y_rt.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
       y_rt.domain([0, 2])
@@ -1244,69 +1244,14 @@ Promise.all(promises).then(function(data) {
        .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
 
 
-	      
-	      
-       }); //Promise.all(promises)
-       
-
-d3.csv('https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long').then(function(data) {
-//  d3.csv('https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv').then(function(data) {
-  // console.log(data)
-  
+	     
 var prev_cases = 0;
   var prev_region = "";
   var prev_deaths = 0;
   var cases_max_diff = {};
   var deaths_max_diff = {};
-  let parseDate = d3.timeParse("%Y-%m-%d");
+  parseDate = d3.timeParse("%Y-%m-%d");
 
-  data.forEach((d) => {
-    d.update_date = (d.update_date).substr(0,(d.update_date).indexOf(' '))
-    d.update_date = parseDate(d.update_date);
-    d.Positive_Cases = +d.Positive_Cases
-    d.Tested = +d.Tested
-    d.Deaths = +d.Deaths;
-    d.new_cases = 0;
-    d.new_deaths = 0;
-    
-    if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
-      //  console.log(d.NOFO_Region)
-       cases_max_diff[d.NOFO_Region] = 0;
-       deaths_max_diff[d.NOFO_Region] = 0;
-       
-       prev_cases = d.Positive_Cases;
-       d.new_cases = d.Positive_Cases;
-       
-      prev_deaths = d.Deaths;
-      d.new_deaths = d.Deaths;
-      prev_region = d.NOFO_Region;
-    } else {
-      if (d.Positive_Cases < prev_cases) {
-         d.new_cases = 0;
-      } else {
-         d.new_cases = d.Positive_Cases - prev_cases;
-      }
-      
-      if (d.Deaths < prev_deaths) {
-         d.new_deaths = 0;
-         
-      } else {
-         d.new_deaths = d.Deaths - prev_deaths;
-      }
-      
-      if( d.new_cases > cases_max_diff[d.NOFO_Region] ) {
-         cases_max_diff[d.NOFO_Region] = d.new_cases;
-      } 
-      if( d.new_deaths > deaths_max_diff[d.NOFO_Region] ) {
-         deaths_max_diff[d.NOFO_Region] = d.new_deaths;
-      } 
-       prev_cases = d.Positive_Cases;
-       prev_deaths = d.Deaths;
-       prev_region = d.NOFO_Region;
-    }
-
-    
-  });
 
         // let regionMap = {};
         let dict = {};
@@ -1329,7 +1274,9 @@ var prev_cases = 0;
         
         // allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
         
-        dataFilter = data.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+        dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
+         
+         console.log(dataFilter)            
                         
         y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases })])
         y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
@@ -1359,13 +1306,10 @@ var prev_cases = 0;
         .y0(y_deaths(0))
         .y1(function(d) { return y_deaths(d.new_deaths) })
         ).attr("stroke", function(d){ return lightColors(selectedGroup) } )
-        
-      });
-       
+
+       }); //Promise.all(promises)
     }
-    
-        
-        
+
       // When the button is changed, run the updateChart funso ction
     d3.select("#selectButton").on("change", function(d) {
       // recover the option that has been chosen
