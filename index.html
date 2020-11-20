@@ -726,20 +726,78 @@ Promise.all(promises).then(function(data) {
    
    let parseDate = d3.timeParse("%Y-%m-%d");
     let today = new Date();
-    data[1] = data[1].filter(function(d){
-      if(isNaN(d.rt_median) || 
-          d.scenario_name !== 'baseline' ||
-          parseDate(d.date) > today  
-          ){
-        return false;
-      }
-      d.rt_lower = +d.rt_lower;
-      d.rt_median = +d.rt_median;
-      d.rt_upper = +d.rt_upper;
-      d.date = parseDate(d.date);
-      return true;
-    });
+   //  data[1] = data[1].filter(function(d){
+   //    if(isNaN(d.rt_median) || 
+   //        d.scenario_name !== 'baseline' ||
+   //        parseDate(d.date) > today  
+   //        ){
+   //     return false;
+   //    }
+   //    d.rt_lower = +d.rt_lower;
+   //    d.rt_median = +d.rt_median;
+   //    d.rt_upper = +d.rt_upper;
+   //    d.date = parseDate(d.date);
+   //    return true;
+   //  });
     
+   //  data[1].forEach(function(d, index, object) { 
+   //    if(isNaN(d.rt_median) || 
+   //        d.scenario_name !== 'baseline' ||
+   //        parseDate(d.date) > today  
+   //    ){
+   //       object.splice(index, 1);
+   //    } else {
+   //    d.rt_lower = +d.rt_lower;
+   //    d.rt_median = +d.rt_median;
+   //    d.rt_upper = +d.rt_upper;
+   //    d.date = parseDate(d.date);
+   //    }
+   //  });
+   
+   
+// var review = ['a' ,'a', 'b', 'c', 'b', 'a', 'a'],
+var  index = data[1].length - 1;
+
+while (index >= 0) {
+   // console.log(data[1][index].date)
+   
+//  if (data[1][index] === 'a') {
+//     review.splice(index, 1);
+//  }
+// console.log( data[1][index])
+
+     if(isNaN(data[1][index].rt_median) || 
+          data[1][index].scenario_name !== 'baseline' ||
+          parseDate(data[1][index].date) > today  
+      ){
+         data[1].splice(index, 1);
+         // console.log("hi")
+      } else {
+         data[1][index].rt_lower = +data[1][index].rt_lower;
+         data[1][index].rt_median = +data[1][index].rt_median;
+         data[1][index].rt_upper = +data[1][index].rt_upper;
+         data[1][index].date = parseDate(data[1][index].date);
+      }
+      // console.log( data[1][index])
+     
+
+  index -= 1;
+}
+    
+   // data[1].forEach(function(d){
+
+   //           if (isNaN(d.rt_median)) {
+   //              console.log(d.rt_median)
+   //           } 
+   //           if (d.scenario_name !== 'baseline') {
+   //              console.log(d.scenario_name)
+   //           }
+   //           if (parseDate(d.date) > today) {
+   //              console.log(d.date)
+   //           }
+      
+   //    // return true;
+   //  });
    //  console.log(data[1])
 
            
@@ -1131,34 +1189,10 @@ Promise.all(promises).then(function(data) {
                   }
 	      })
 	      
-	     //console.log(data[1]) 
-	           //console.log(data);   
-   //  filers NaN and converts strings
-    let parseDate = d3.timeParse("%Y-%m-%d");
-    let today = new Date();
-    data[1] = data[1].filter(function(d){
-      if(isNaN(d.rt_median) || 
-          d.scenario_name !== 'baseline' ||
-          parseDate(d.date) > today  
-          ){
-       return false;
-      }
-      d.rt_lower = +d.rt_lower;
-      d.rt_median = +d.rt_median;
-      d.rt_upper = +d.rt_upper;
-      // console.log(d.date)
-      // d.date = parseDate(d.date);
-      // console.log(d.date)
-      return true;
-    });
-    
-   //  console.log(data[1]) 
+
                         
       dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedGroup})
-      // dataFilter.append(data.filter(function(d){return d.geography_modeled==selectedGroup}));
-      // console.log(dataFilter)
-      
-      // y_rt.domain([0, d3.max(dataFilter, function(d) { return d.rt_upper })])
+
       y_rt.domain([0, 2])
       // y_rt_axis.transition()
       // .duration(1000)
@@ -1244,15 +1278,6 @@ Promise.all(promises).then(function(data) {
        .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
 
 
-	     
-var prev_cases = 0;
-  var prev_region = "";
-  var prev_deaths = 0;
-  var cases_max_diff = {};
-  var deaths_max_diff = {};
-  parseDate = d3.timeParse("%Y-%m-%d");
-
-
         // let regionMap = {};
         let dict = {};
         
@@ -1276,7 +1301,7 @@ var prev_cases = 0;
         
         dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
          
-         console.log(dataFilter)            
+         // console.log(dataFilter)            
                         
         y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases })])
         y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
