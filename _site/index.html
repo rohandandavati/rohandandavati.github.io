@@ -846,6 +846,8 @@ data[2].forEach((d) => {
 
 
     function drawChart(selectedRegion = 'illinois') {
+       
+       
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
            
@@ -953,22 +955,40 @@ data[2].forEach((d) => {
    projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
    
    path.projection(projection);
-
-   
-   svg.selectAll("path")
-      .data(data[0].features)
-      .enter().append("path")
-      //initial fill function
-      .attr("fill", function(d){ 
-         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-      })
-      .attr("stroke", function(d){ 
-         return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-      })
-     // .attr("stroke-width", "3px")
-      .attr("class", "")
-      .attr("d", path);
       
+                  svg.append("g")
+                .selectAll("path")
+                .data(data[0].features)
+                .enter()
+                .append("path")
+                .attr( "d", path )
+                .attr("fill", function(d){ 
+                  if (selectedRegion.localeCompare("illinois") === 0) {
+                     // console.log('hi')
+                     return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+                  } else {
+                      if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
+                            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                     } else {
+                              return "#7E7E7E" 
+                     }
+                  }
+	      })
+	      .attr("stroke", function(d){ 
+	                 
+	                 if (selectedRegion.localeCompare("illinois") === 0) {
+                     return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+                  } else {
+	                 if (
+                      countyMap[d.properties.COUNTY_NAM].covid_region ===
+                      parseInt(selectedRegion.split('_')[1])) {
+                            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                        } else {
+                           return "#AAAAAA" 
+                        }
+                  }
+	      })
+	      
 
       
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
@@ -1123,8 +1143,6 @@ data[2].forEach((d) => {
       .y0(y_deaths(0))
       .y1(function(d) { return y_deaths(d.new_deaths) })
       )
-      
-
     }
     // Initialize the chart
     drawChart();
