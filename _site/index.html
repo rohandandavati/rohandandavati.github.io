@@ -688,37 +688,7 @@
 	            .append("g").attr("id", "group");
 	
 	
-	var bisect = d3.bisector(function(d) { return d.date; }).left;
-	
-		  // Create the circle that travels along the curve of chart
-  var focus = svg_rt
-    .append('g')
-    .append('circle')
-      .style("fill", "none")
-      .attr("stroke", "black")
-      .attr('r', 4.5)
-      .style("opacity", 0)
-      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-  // Create the text that travels along the curve of chart
-  var focusText = svg_rt
-    .append('g')
-    .append('text')
-      .style("opacity", 0)
-      .attr("text-anchor", "left")
-      .attr("alignment-baseline", "middle")
-      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
-	
-	
-
-	   function mouseover() {
-    focus.style("opacity", 1)
-    focusText.style("opacity",1)
-  }
-  function mouseout() {
-    focus.style("opacity", 0)
-    focusText.style("opacity", 0)
-  }
   
 		d3.select(window)
     		.on("resize", sizeChange);
@@ -868,26 +838,6 @@ data[2].forEach((d) => {
       .style("text-anchor", "middle")
       .text("Rt");     
 
-//  function mousemove() {
-//    //  data = data.filter(function(d){return d.geography_modeled==allGroup[0]})
-//     var formatTime = d3.timeFormat("%B %d")
-//     // recover coordinate we need
-//     // console.log(d3.mouse(this)[0])
-//     var x0 = x_rt.invert(d3.mouse(this)[0]);
-//     // console.log(x0);
-//     var i = bisect(dataFilter , x0, 1);
-//     // console.log(i)
-    
-//     var selectedData = dataFilter[i]
-    
-//     focus
-//       .attr("cx", x_rt(selectedData.date))
-//       .attr("cy", y_rt(selectedData.rt_median))
-//     focusText
-//       .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" +  parseFloat((selectedData.rt_median)).toFixed(2))
-//       .attr("x", x_rt(selectedData.date ))
-//       .attr("y", y_rt(selectedData.rt_median))
-//     }
 
     let dict = {};
         dict["illinois"] = "Illinois";
@@ -1040,18 +990,6 @@ data[2].forEach((d) => {
        .x(function(d) { return x_rt(d.date) })
        .y(function(d) { return y_rt(1.0) }));
       
-      svg_rt
-       .append('rect')
-       .style("fill", "none")
-       .style("pointer-events", "all")
-       .attr('width', width)
-       .attr('height', height)
-       .on('mouseover', mouseover)
-       .on('mousemove', mousemove)
-       .on('mouseout', mouseout)
-       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
-        
-
 
       
       currentWidth = document.getElementById("cases_chart").offsetWidth;
@@ -1135,7 +1073,7 @@ data[2].forEach((d) => {
     drawChart(selectedOption);
     // console.log("done")
     // Add an event listener that run the function when dimension change
-    window.addEventListener('resize', drawChart ); 
+    window.addEventListener('resize', drawChart(selectedOption) ); 
     // console.log("hi")
           // When the button is changed, run the updateChart funso ction
     d3.select("#selectButton").on("change", function(d) {
