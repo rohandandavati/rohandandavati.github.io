@@ -1,46 +1,43 @@
-- name: Surveillance to "restore Illinois"
+- name: Sentinel surveillance
   date: May 5th, 2020
   path: /reports/20200515_surveillance_to_restore_illinois.pdf
   image_path: /images/20200515_surveillance_to_restore_illinois.jpg
   description: >
-    Prerequisites for a safe reopening. Summary of 
-    suggested surveillance enhancements.
+    Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
 - name: Reduce time to diagnosis
   date: June 18th, 2020
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
   image_path: /images/20200618_reduce_time_to_diagnosis.jpg
   description: >
-    Investigating the effect of reducing time to diagnosis for COVID-19
-    in Illinois.
-- name: Second wave
+    Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
+- name: Second wave?
   date: July 6th, 2020
   path: /reports/20200706_second_wave.pdf
   image_path: /images/20200706_second_wave.jpg
   description: >
-    Is Illinois experiencing a second wave? Overall, cases are up slightly
-    while TPR is constant.
+    Is Illinois experiencing a second wave in summer 2020?
 - name: Contact tracing
   date: July 10th, 2020
   path: /reports/20200710_contact_tracing.pdf
   image_path: /images/20200710_contact_tracing.jpg
   description: >
-    How do contact tracing thresholds 
-    for Illinois vary across different reopening scenarios?
-- name: Overflow alerts v3
+    How do the performance requirements of contact tracing vary across different regions and transmission
+    scenarios?
+- name: NE Region hospital overflow
   date: July 14th, 2020
   path: /reports/20200714_overflow_alert_v3.pdf
   image_path: /images/20200714_overflow_alert_v3.jpg
   description: >
-    Early warning signs for exceeding hospital capacity in the Northeast
-    Restore Region.
-- name: Hospitalizations trigger analysis
+    How can we reliably tell that COVID-19 hospital needs in the Northeast
+    Restore Region are likely to exceed available capacity?
+- name: Hospital admissions as indicator
   date: August 4th, 2020
   path: /reports/20200804_hospitalizations_trigger_analysis.pdf
   image_path: /images/20200804_hospitalizations_trigger_analysis.jpg
   description: >
-    Using CLI admissions as an indicator: how reliable is it for COVID Regions
+    How reliable is COVID-like-illness (CLI) admissions as an indicator regions
     with fewer admissions?
-- name: Hospital census trigger analysis
+- name: Hospital census as indicator
   date: August 11th, 2020
   path: /reports/20200811_hospital_census_trigger_analysis.pdf
   image_path: /images/20200811_hospital_census_trigger_analysis.jpg
