@@ -847,37 +847,56 @@ data[2].forEach((d) => {
       .attr("y", y_rt(selectedData.rt_median))
     }
 
-    
-  
-  data[2] = data[2].filter(function(d){return d.NOFO_Region=="Illinois"})
+    let dict = {};
+        dict["illinois"] = "Illinois";
+        dict["covidregion_1"] = "Central";
+        dict["covidregion_2"] = "Chicago";
+        dict["covidregion_3"] = "Collar";
+        dict["covidregion_4"] = "West Central";
+        dict["covidregion_5"] = "North Central";
+        dict["covidregion_6"] = "Northern";
+        dict["covidregion_7"] = "Northwest";
+        dict["covidregion_8"] = "Southeast Central";
+        dict["covidregion_9"] = "Southern";
+        dict["covidregion_10"] = "Southwest Central";
+        dict["covidregion_11"] = "Suburban";
+        
+        
+        var selectedGroupCases = dict[selectedRegion]
+        
+        // allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+        
+        dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
+//  data[2] = data[2].filter(function(d){return d.NOFO_Region=="Illinois"})
   
       x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
 
       // y_cases.domain([0, d3.max(data, function(d) { return d.Positive_Cases; })])
-      y_cases.domain([0, d3.max(data[2], function(d) { return d.new_cases; })])
+      y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases; })])
       
     y_cases_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_cases.left +",0)")
       .call(d3.axisLeft(y_cases));
 
-      area_cases.datum(data[2])
-      .attr("fill", function(d){ return myColor(allGroup[0]) })
-      .attr("stroke", function(d){ return lightColors(allGroup[0]) })
+      area_cases.datum(dataFilter)
+      .attr("fill", function(d){ return myColor(selectedRegion) })
+      .attr("stroke", function(d){ return lightColors(selectedRegion) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_cases.left+1)+" ,0)");
       
-      x_deaths.domain(d3.extent(data[2], function(d) { return d.update_date; }))
+      x_deaths.domain(d3.extent(dataFilter, function(d) { return d.update_date; }))
       // y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })]) // Changed to the largest difference - save when reading in? 
-      y_deaths.domain([0, d3.max(data[2], function(d) { return d.new_deaths; })])
+      y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.new_deaths; })])
       
     y_deaths_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_deaths.left +",0)")
       .call(d3.axisLeft(y_deaths));
 
-      area_deaths.datum(data[2])
+      area_deaths.datum(dataFilter)
       // .attr("fill", "#cce5df")
-      .attr("fill", function(d){ return myColor(allGroup[0]) })
-      .attr("stroke", function(d){ return lightColors(allGroup[0]) })
+      
+      .attr("fill", function(d){ return myColor(selectedRegion) })
+      .attr("stroke", function(d){ return lightColors(selectedRegion) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");  
       
@@ -1034,6 +1053,8 @@ data[2].forEach((d) => {
       y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
       
       area_cases
+      .transition()
+      .duration(1000)
       .attr("d", d3.area()
       .x(function(d) { return x_cases(d.update_date) })
       .y0(y_cases(0))
@@ -1069,6 +1090,8 @@ data[2].forEach((d) => {
       y_deaths_axis.call(d3.axisLeft(y_deaths).ticks(6));
       
       area_deaths
+                  .transition()
+      .duration(1000)
       .attr("d", d3.area()
       .x(function(d) { return x_deaths(d.update_date) })
       .y0(y_deaths(0))
@@ -1093,7 +1116,6 @@ data[2].forEach((d) => {
 
     
 }); //Promise.all    
-
 	
 	function sizeChange() {
 	   d3.select("#group")
@@ -1102,210 +1124,7 @@ data[2].forEach((d) => {
 	  // $("#svg_id").width($("#cases_map"))
 	   $("#svg_id").height($("#cases_map").width()*2)
 	}
-  
-  
-
- 
-  
-
-    // A function that updates the chart
-    function update(selectedGroup) {
-       
-       Promise.all(promises).then(function(data) {
-                       projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
-
-	 
-	             path.projection(projection);
-	     
-      //  console.log(data)
-            svg.append("g")
-                .selectAll("path")
-                .data(data[0].features)
-                .enter()
-                .append("path")
-                .attr( "d", path )
-                .attr("fill", function(d){ 
-                  if (selectedGroup.localeCompare("illinois") === 0) {
-                     // console.log('hi')
-                     return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-                  } else {
-                      if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedGroup.split('_')[1])) {
-                            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                     } else {
-                              return "#7E7E7E" 
-                     }
-                  }
-	      })
-	      .attr("stroke", function(d){ 
-	                 
-	                 if (selectedGroup.localeCompare("illinois") === 0) {
-                     return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-                  } else {
-	                 if (
-                      countyMap[d.properties.COUNTY_NAM].covid_region ===
-                      parseInt(selectedGroup.split('_')[1])) {
-                            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                        } else {
-                           return "#AAAAAA" 
-                        }
-                  }
-	      })
-	      
-
-                        
-      dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedGroup})
-
-      y_rt.domain([0, 2])
-      // y_rt_axis.transition()
-      // .duration(1000)
-      .call(d3.axisLeft(y_rt).ticks(6))
-      
-      
-      interval_rt
-      .datum(dataFilter)
-      .transition()
-      .duration(1000)
-      .attr("fill", function(d){ return myColor(selectedGroup) })
-      .attr("stroke", "none")
-      .attr("d", d3.area()
-            .x(function(d) { return x_rt(d.date) })
-            .y0(function(d) { return y_rt(d.rt_lower) })
-            .y1(function(d) { return y_rt(d.rt_upper) })
-            )
-      
-      // Give these new data to update line
-      line_rt
-      .datum(dataFilter)
-      .transition()
-      .duration(1000)
-      .attr("d", d3.line()
-            .x(function(d) { return x_rt(d.date) })
-            .y(function(d) { return y_rt(d.rt_median) })
-            )
-            .attr("stroke", function(d){ return lightColors(selectedGroup) })
-    
-           
-      refLine
-      .transition()
-      .duration(1000)
-       .attr("d", d3.line()
-       .x(function(d) { return x_rt(d.date) })
-       .y(function(d) { return y_rt(1.0) }));
-        
-      const currentWidth = document.getElementById("rt_chart").offsetWidth;
-      
-      const width = currentWidth- margin_rt.left - margin_rt.right;
-      let height = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
-      // console.log(height)
-      
-                  
-      if (parseInt(currentWidth) < 600) {
-         height = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
-         console.log("hi")
-      }
-      else if (parseInt(currentWidth) < 900) {
-         height = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
-      }
-        
-        
-   function mousemove() {
-      
-    var formatTime = d3.timeFormat("%B %d")
-    // recover coordinate we need
-    // console.log(d3.mouse(this)[0])
-    var x0 = x_rt.invert(d3.mouse(this)[0]);
-    // console.log(x0);
-    var i = bisect(data[1], x0, 1);
-    // console.log(i)
-    
-    var selectedData = dataFilter[i]
-   //  console.log(dataFilter[i])
-    focus
-      .attr("cx", x_rt(selectedData.date))
-      .attr("cy", y_rt(selectedData.rt_median))
-    focusText
-      .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" + (selectedData.rt_median).toFixed(2))
-      .attr("x", x_rt(selectedData.date ))
-      .attr("y", y_rt(selectedData.rt_median))
-    } 
-      svg_rt
-       .append('rect')
-       .style("fill", "none")
-       .style("pointer-events", "all")
-       .attr('width', width)
-       .attr('height', height)
-       .on('mouseover', mouseover)
-       .on('mousemove', mousemove)
-       .on('mouseout', mouseout)
-       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
 
 
-        // let regionMap = {};
-        let dict = {};
-        
-        dict["illinois"] = "Illinois";
-        dict["covidregion_1"] = "Central";
-        dict["covidregion_2"] = "Chicago";
-        dict["covidregion_3"] = "Collar";
-        dict["covidregion_4"] = "West Central";
-        dict["covidregion_5"] = "North Central";
-        dict["covidregion_6"] = "Northern";
-        dict["covidregion_7"] = "Northwest";
-        dict["covidregion_8"] = "Southeast Central";
-        dict["covidregion_9"] = "Southern";
-        dict["covidregion_10"] = "Southwest Central";
-        dict["covidregion_11"] = "Suburban";
-        
-        
-        var selectedGroupCases = dict[selectedGroup]
-        
-        // allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
-        
-        dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
-         
-         // console.log(dataFilter)            
-                        
-        y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases })])
-        y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
-        
-        y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.new_deaths })])
-        y_deaths_axis.call(d3.axisLeft(y_deaths).ticks(6));
-        
-        area_cases
-        .datum(dataFilter)
-        .transition()
-        .duration(1000)
-        .attr("fill", function(d){ return myColor(selectedGroup) })
-        .attr("d", d3.area()
-        .x(function(d) { return x_cases(d.update_date) })
-        .y0(y_cases(0))
-        .y1(function(d) { return y_cases(d.new_cases) })
-        ).attr("stroke", function(d){ return lightColors(selectedGroup) } )
-        
-        
-        area_deaths
-        .datum(dataFilter)
-        .transition()
-        .duration(1000)
-        .attr("fill", function(d){ return myColor(selectedGroup) })
-        .attr("d", d3.area()
-        .x(function(d) { return x_deaths(d.update_date) })
-        .y0(y_deaths(0))
-        .y1(function(d) { return y_deaths(d.new_deaths) })
-        ).attr("stroke", function(d){ return lightColors(selectedGroup) } )
-
-       }); //Promise.all(promises)
-    }
-
-   //    // When the button is changed, run the updateChart funso ction
-   //  d3.select("#selectButton").on("change", function(d) {
-   //    // recover the option that has been chosen
-   //    var selectedOption = d3.select(this).property("value")
-   //    // run the updateChart function with this selected option
-   //    // console.log(selectedOption)
-   //    update(selectedOption)
-
-   //  })
-    
 
 </script>
