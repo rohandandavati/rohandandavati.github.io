@@ -216,11 +216,7 @@
          width: 10%;
       }
 }
-	.selected {
-	  
-	  fill: #20487c;
-	  
-	}
+
 </style>
 
 <div class="map" id = "cases_map"></div>
@@ -277,28 +273,7 @@
 <script>
    /* global d3 */
    /* global $ */
-   
-   /*
-   init all chart variables
-   manual first draw charts with Illinois
-   draw charts updates data 
-   
-   
-   drawCharts (on resize)
-    - get div widths 
-    - set div heights dep on wid
-   updateCharts (on dropdown)
-   
-   
-   
-   */
-   
-   
-   //
-   
-   
-   
-   
+
    
    function LightenDarkenColor(col,amt) {
       var usePound = false;
@@ -755,8 +730,7 @@
 	var files = ['https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv']
-	       
-	     //  var files = ["data1.json", "data2.json", "data3.json"];
+
 var promises = [];
 
 files.forEach(function(url) {
@@ -765,8 +739,6 @@ files.forEach(function(url) {
     }else{
        promises.push(d3.csv(url))
     }
-    
-    
 });
 
 Promise.all(promises).then(function(data) {
@@ -844,8 +816,9 @@ data[2].forEach((d) => {
     }  
   });
 
+ var selectedOption = 'illinois';
 
-    function drawChart(selectedRegion = 'illinois') {
+    function drawChart(selectedRegion) {
        
        
 
@@ -895,26 +868,26 @@ data[2].forEach((d) => {
       .style("text-anchor", "middle")
       .text("Rt");     
 
- function mousemove() {
-   //  data = data.filter(function(d){return d.geography_modeled==allGroup[0]})
-    var formatTime = d3.timeFormat("%B %d")
-    // recover coordinate we need
-    // console.log(d3.mouse(this)[0])
-    var x0 = x_rt.invert(d3.mouse(this)[0]);
-    // console.log(x0);
-    var i = bisect(dataFilter , x0, 1);
-    // console.log(i)
+//  function mousemove() {
+//    //  data = data.filter(function(d){return d.geography_modeled==allGroup[0]})
+//     var formatTime = d3.timeFormat("%B %d")
+//     // recover coordinate we need
+//     // console.log(d3.mouse(this)[0])
+//     var x0 = x_rt.invert(d3.mouse(this)[0]);
+//     // console.log(x0);
+//     var i = bisect(dataFilter , x0, 1);
+//     // console.log(i)
     
-    var selectedData = dataFilter[i]
+//     var selectedData = dataFilter[i]
     
-    focus
-      .attr("cx", x_rt(selectedData.date))
-      .attr("cy", y_rt(selectedData.rt_median))
-    focusText
-      .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" +  parseFloat((selectedData.rt_median)).toFixed(2))
-      .attr("x", x_rt(selectedData.date ))
-      .attr("y", y_rt(selectedData.rt_median))
-    }
+//     focus
+//       .attr("cx", x_rt(selectedData.date))
+//       .attr("cy", y_rt(selectedData.rt_median))
+//     focusText
+//       .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" +  parseFloat((selectedData.rt_median)).toFixed(2))
+//       .attr("x", x_rt(selectedData.date ))
+//       .attr("y", y_rt(selectedData.rt_median))
+//     }
 
     let dict = {};
         dict["illinois"] = "Illinois";
@@ -933,14 +906,8 @@ data[2].forEach((d) => {
         
         var selectedGroupCases = dict[selectedRegion]
         
-        // allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
-        
-        dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
-//  data[2] = data[2].filter(function(d){return d.NOFO_Region=="Illinois"})
-  
+      dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
       x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
-
-      // y_cases.domain([0, d3.max(data, function(d) { return d.Positive_Cases; })])
       y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases; })])
       
     y_cases_axis.attr("class", "y axis")
@@ -962,14 +929,11 @@ data[2].forEach((d) => {
       .call(d3.axisLeft(y_deaths));
 
       area_deaths.datum(dataFilter)
-      // .attr("fill", "#cce5df")
-      
       .attr("fill", function(d){ return myColor(selectedRegion) })
       .attr("stroke", function(d){ return lightColors(selectedRegion) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");  
       
-   //  function drawChart() {
           
    projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
    
@@ -1168,7 +1132,7 @@ data[2].forEach((d) => {
       )
     }
     // Initialize the chart
-    drawChart();
+    drawChart(selectedOption);
     // console.log("done")
     // Add an event listener that run the function when dimension change
     window.addEventListener('resize', drawChart ); 
@@ -1176,7 +1140,8 @@ data[2].forEach((d) => {
           // When the button is changed, run the updateChart funso ction
     d3.select("#selectButton").on("change", function(d) {
       // recover the option that has been chosen
-      var selectedOption = d3.select(this).property("value")
+      // var selectedOption = d3.select(this).property("value")
+       selectedOption = d3.select(this).property("value")
       // run the updateChart function with this selected option
       // console.log(selectedOption)
       drawChart(selectedOption)
