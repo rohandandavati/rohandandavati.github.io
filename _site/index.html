@@ -216,7 +216,11 @@
          width: 10%;
       }
 }
-
+	.selected {
+	  
+	  fill: #20487c;
+	  
+	}
 </style>
 
 <div class="map" id = "cases_map"></div>
@@ -273,7 +277,28 @@
 <script>
    /* global d3 */
    /* global $ */
-
+   
+   /*
+   init all chart variables
+   manual first draw charts with Illinois
+   draw charts updates data 
+   
+   
+   drawCharts (on resize)
+    - get div widths 
+    - set div heights dep on wid
+   updateCharts (on dropdown)
+   
+   
+   
+   */
+   
+   
+   //
+   
+   
+   
+   
    
    function LightenDarkenColor(col,amt) {
       var usePound = false;
@@ -678,7 +703,18 @@
    var y_deaths = d3.scaleLinear()
    var y_deaths_axis = svg_deaths.append("g")
    var area_deaths = svg_deaths.append("path")
-
+   
+       var xTitle = svg_rt.append("text")
+      .style("text-anchor", "middle")
+      .text("");
+      
+    var yTitle = svg_rt.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 4)
+      // .attr("x",0 - (height / 2))
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .text("Rt");   
 
 	var svg = d3.select("#cases_map")
 	            .append("svg")
@@ -686,7 +722,6 @@
 	            .attr("height", map_hid)
 	            .attr("id", "svg_id")
 	            .append("g").attr("id", "group");
-	
 	
 
   
@@ -700,7 +735,8 @@
 	var files = ['https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv']
-
+	       
+	     //  var files = ["data1.json", "data2.json", "data3.json"];
 var promises = [];
 
 files.forEach(function(url) {
@@ -709,6 +745,8 @@ files.forEach(function(url) {
     }else{
        promises.push(d3.csv(url))
     }
+    
+    
 });
 
 Promise.all(promises).then(function(data) {
@@ -786,11 +824,9 @@ data[2].forEach((d) => {
     }  
   });
 
- var selectedOption = 'illinois';
+      var selectedRegion = "illinois"
 
-    function drawChart(selectedRegion) {
-       
-       
+    function drawChart() {
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
            
@@ -825,103 +861,62 @@ data[2].forEach((d) => {
                   .style("stroke-width", 1)
                   .style("stroke-dasharray", ("3, 3"))
                   .style("fill", "none")              
-                  
-    var xTitle = svg_rt.append("text")
-      .style("text-anchor", "middle")
-      .text("");
-      
-    var yTitle = svg_rt.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 4)
-      // .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Rt");     
 
-
-    let dict = {};
-        dict["illinois"] = "Illinois";
-        dict["covidregion_1"] = "Central";
-        dict["covidregion_2"] = "Chicago";
-        dict["covidregion_3"] = "Collar";
-        dict["covidregion_4"] = "West Central";
-        dict["covidregion_5"] = "North Central";
-        dict["covidregion_6"] = "Northern";
-        dict["covidregion_7"] = "Northwest";
-        dict["covidregion_8"] = "Southeast Central";
-        dict["covidregion_9"] = "Southern";
-        dict["covidregion_10"] = "Southwest Central";
-        dict["covidregion_11"] = "Suburban";
-        
-        
-        var selectedGroupCases = dict[selectedRegion]
-        
-      dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
+    
+  
+  data[2] = data[2].filter(function(d){return d.NOFO_Region=="Illinois"})
+  
       x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
-      y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases; })])
+
+      // y_cases.domain([0, d3.max(data, function(d) { return d.Positive_Cases; })])
+      y_cases.domain([0, d3.max(data[2], function(d) { return d.new_cases; })])
       
     y_cases_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_cases.left +",0)")
       .call(d3.axisLeft(y_cases));
 
-      area_cases.datum(dataFilter)
-      .attr("fill", function(d){ return myColor(selectedRegion) })
-      .attr("stroke", function(d){ return lightColors(selectedRegion) })
+      area_cases.datum(data[2])
+      .attr("fill", function(d){ return myColor(allGroup[0]) })
+      .attr("stroke", function(d){ return lightColors(allGroup[0]) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_cases.left+1)+" ,0)");
       
-      x_deaths.domain(d3.extent(dataFilter, function(d) { return d.update_date; }))
+      x_deaths.domain(d3.extent(data[2], function(d) { return d.update_date; }))
       // y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })]) // Changed to the largest difference - save when reading in? 
-      y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.new_deaths; })])
+      y_deaths.domain([0, d3.max(data[2], function(d) { return d.new_deaths; })])
       
     y_deaths_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_deaths.left +",0)")
       .call(d3.axisLeft(y_deaths));
 
-      area_deaths.datum(dataFilter)
-      .attr("fill", function(d){ return myColor(selectedRegion) })
-      .attr("stroke", function(d){ return lightColors(selectedRegion) })
+      area_deaths.datum(data[2])
+      // .attr("fill", "#cce5df")
+      .attr("fill", function(d){ return myColor(allGroup[0]) })
+      .attr("stroke", function(d){ return lightColors(allGroup[0]) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");  
       
+   //  function drawChart() {
           
    projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
    
    path.projection(projection);
+
+   
+   svg.selectAll("path")
+      .data(data[0].features)
+      .enter().append("path")
+      //initial fill function
+      .attr("fill", function(d){ 
+         return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+      })
+      .attr("stroke", function(d){ 
+         return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+      })
+     // .attr("stroke-width", "3px")
+      .attr("class", "")
+      .attr("d", path);
       
-                  svg.append("g")
-                .selectAll("path")
-                .data(data[0].features)
-                .enter()
-                .append("path")
-                .attr( "d", path )
-                .attr("fill", function(d){ 
-                  if (selectedRegion.localeCompare("illinois") === 0) {
-                     // console.log('hi')
-                     return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-                  } else {
-                      if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
-                            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                     } else {
-                              return "#7E7E7E" 
-                     }
-                  }
-	      })
-	      .attr("stroke", function(d){ 
-	                 
-	                 if (selectedRegion.localeCompare("illinois") === 0) {
-                     return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-                  } else {
-	                 if (
-                      countyMap[d.properties.COUNTY_NAM].covid_region ===
-                      parseInt(selectedRegion.split('_')[1])) {
-                            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                        } else {
-                           return "#AAAAAA" 
-                        }
-                  }
-	      })
-	      
 
       
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
@@ -989,7 +984,7 @@ data[2].forEach((d) => {
        .attr("d", d3.line()
        .x(function(d) { return x_rt(d.date) })
        .y(function(d) { return y_rt(1.0) }));
-      
+
 
       
       currentWidth = document.getElementById("cases_chart").offsetWidth;
@@ -1024,8 +1019,6 @@ data[2].forEach((d) => {
       y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
       
       area_cases
-      .transition()
-      .duration(1000)
       .attr("d", d3.area()
       .x(function(d) { return x_cases(d.update_date) })
       .y0(y_cases(0))
@@ -1061,33 +1054,38 @@ data[2].forEach((d) => {
       y_deaths_axis.call(d3.axisLeft(y_deaths).ticks(6));
       
       area_deaths
-                  .transition()
-      .duration(1000)
       .attr("d", d3.area()
       .x(function(d) { return x_deaths(d.update_date) })
       .y0(y_deaths(0))
       .y1(function(d) { return y_deaths(d.new_deaths) })
       )
+      
+
     }
     // Initialize the chart
-    drawChart(selectedOption);
+    drawChart();
     // console.log("done")
     // Add an event listener that run the function when dimension change
-    window.addEventListener('resize', drawChart(selectedOption) ); 
+    window.addEventListener('resize', drawChart ); 
+   //  d3.select("#selectButton").on("change", function(d) {
     // console.log("hi")
+     
+      // var selectedOption = "illinois"
           // When the button is changed, run the updateChart funso ction
     d3.select("#selectButton").on("change", function(d) {
       // recover the option that has been chosen
       // var selectedOption = d3.select(this).property("value")
-       selectedOption = d3.select(this).property("value")
+       
+       selectedRegion = d3.select(this).property("value")
       // run the updateChart function with this selected option
       // console.log(selectedOption)
-      drawChart(selectedOption)
+      drawChart()
 
     })
 
     
 }); //Promise.all    
+
 	
 	function sizeChange() {
 	   d3.select("#group")
@@ -1096,8 +1094,179 @@ data[2].forEach((d) => {
 	  // $("#svg_id").width($("#cases_map"))
 	   $("#svg_id").height($("#cases_map").width()*2)
 	}
+  
+  
 
+ 
+  
 
+    // A function that updates the chart
+    function update(selectedGroup) {
+       
+       Promise.all(promises).then(function(data) {
+                       projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
+
+	 
+	             path.projection(projection);
+	     
+      //  console.log(data)
+            svg.append("g")
+                .selectAll("path")
+                .data(data[0].features)
+                .enter()
+                .append("path")
+                .attr( "d", path )
+                .attr("fill", function(d){ 
+                  if (selectedGroup.localeCompare("illinois") === 0) {
+                     // console.log('hi')
+                     return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+                  } else {
+                      if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedGroup.split('_')[1])) {
+                            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                     } else {
+                              return "#7E7E7E" 
+                     }
+                  }
+	      })
+	      .attr("stroke", function(d){ 
+	                 
+	                 if (selectedGroup.localeCompare("illinois") === 0) {
+                     return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+                  } else {
+	                 if (
+                      countyMap[d.properties.COUNTY_NAM].covid_region ===
+                      parseInt(selectedGroup.split('_')[1])) {
+                            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                        } else {
+                           return "#AAAAAA" 
+                        }
+                  }
+	      })
+	      
+
+                        
+      dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedGroup})
+
+      y_rt.domain([0, 2])
+      // y_rt_axis.transition()
+      // .duration(1000)
+      .call(d3.axisLeft(y_rt).ticks(6))
+      
+      
+      interval_rt
+      .datum(dataFilter)
+      .transition()
+      .duration(1000)
+      .attr("fill", function(d){ return myColor(selectedGroup) })
+      .attr("stroke", "none")
+      .attr("d", d3.area()
+            .x(function(d) { return x_rt(d.date) })
+            .y0(function(d) { return y_rt(d.rt_lower) })
+            .y1(function(d) { return y_rt(d.rt_upper) })
+            )
+      
+      // Give these new data to update line
+      line_rt
+      .datum(dataFilter)
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+            .x(function(d) { return x_rt(d.date) })
+            .y(function(d) { return y_rt(d.rt_median) })
+            )
+            .attr("stroke", function(d){ return lightColors(selectedGroup) })
+    
+           
+      refLine
+      .transition()
+      .duration(1000)
+       .attr("d", d3.line()
+       .x(function(d) { return x_rt(d.date) })
+       .y(function(d) { return y_rt(1.0) }));
+        
+      const currentWidth = document.getElementById("rt_chart").offsetWidth;
+      
+      const width = currentWidth- margin_rt.left - margin_rt.right;
+      let height = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
+      // console.log(height)
+      
+                  
+      if (parseInt(currentWidth) < 600) {
+         height = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
+         console.log("hi")
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
+      }
+        
+        
+        // let regionMap = {};
+        let dict = {};
+        
+        dict["illinois"] = "Illinois";
+        dict["covidregion_1"] = "Central";
+        dict["covidregion_2"] = "Chicago";
+        dict["covidregion_3"] = "Collar";
+        dict["covidregion_4"] = "West Central";
+        dict["covidregion_5"] = "North Central";
+        dict["covidregion_6"] = "Northern";
+        dict["covidregion_7"] = "Northwest";
+        dict["covidregion_8"] = "Southeast Central";
+        dict["covidregion_9"] = "Southern";
+        dict["covidregion_10"] = "Southwest Central";
+        dict["covidregion_11"] = "Suburban";
+        
+        
+        var selectedGroupCases = dict[selectedGroup]
+        
+        // allGroup = d3.map(data, function(d){return(d.geography_modeled)}).keys();
+        
+        dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
+         
+         // console.log(dataFilter)            
+                        
+        y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases })])
+        y_cases_axis.call(d3.axisLeft(y_cases).ticks(6));
+        
+        y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.new_deaths })])
+        y_deaths_axis.call(d3.axisLeft(y_deaths).ticks(6));
+        
+        area_cases
+        .datum(dataFilter)
+        .transition()
+        .duration(1000)
+        .attr("fill", function(d){ return myColor(selectedGroup) })
+        .attr("d", d3.area()
+        .x(function(d) { return x_cases(d.update_date) })
+        .y0(y_cases(0))
+        .y1(function(d) { return y_cases(d.new_cases) })
+        ).attr("stroke", function(d){ return lightColors(selectedGroup) } )
+        
+        
+        area_deaths
+        .datum(dataFilter)
+        .transition()
+        .duration(1000)
+        .attr("fill", function(d){ return myColor(selectedGroup) })
+        .attr("d", d3.area()
+        .x(function(d) { return x_deaths(d.update_date) })
+        .y0(y_deaths(0))
+        .y1(function(d) { return y_deaths(d.new_deaths) })
+        ).attr("stroke", function(d){ return lightColors(selectedGroup) } )
+
+       }); //Promise.all(promises)
+    }
+
+   //    // When the button is changed, run the updateChart funso ction
+   //  d3.select("#selectButton").on("change", function(d) {
+   //    // recover the option that has been chosen
+   //    var selectedOption = d3.select(this).property("value")
+   //    // run the updateChart function with this selected option
+   //    // console.log(selectedOption)
+   //    update(selectedOption)
+
+   //  })
+    
 
 </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
