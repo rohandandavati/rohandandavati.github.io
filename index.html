@@ -156,8 +156,9 @@ title: Home
 <div class="card rt " id = "">
   <div class="card-body">
     <h2>Transmission Status</h2>
-    <text>Subtitle for rt chart: we believe 
-    the rt level is at this level and the text blah </text>
+    <text>We estimate Rt is currently around 1.2 (95% CI 1.11-1.28) for the state of Illinois. Rt, the instantanous
+      reproductive number, tells us whether the epidemic is <i>growing</i> (Rt > 1), <i>shrinking</i> (Rt < 1), or
+      staying the same (Rt = 1).</text>
   </div>
 </div>
 
@@ -204,6 +205,22 @@ title: Home
 <script>
    /* global d3 */
    /* global $ */
+   
+   
+
+   /*
+   TODO
+   -organize drawChart - no need to set width at the end - make adding futher interaction easier
+   -rt hover detail to html- fix cutoff - move on if no luck 
+   -add case positivity rate chart 
+   -cases an deaths to bar charts 
+   -add moving avera
+   
+   */
+   
+   
+   
+   
 
    
    function LightenDarkenColor(col,amt) {
@@ -855,39 +872,6 @@ function drawChart() {
                   .style("stroke-width", 1)
                   .style("stroke-dasharray", ("3, 3"))
                   .style("fill", "none")              
-
-//  // Add the line
-//  svg_rt
-//     .append("path")
-//     .datum(data)
-//     .attr("fill", "none")
-//     .attr("stroke", "steelblue")
-//     .attr("stroke-width", 1.5)
-//     .attr("d", d3.line()
-//       .x(function(d) { return x(d.x) })
-//       .y(function(d) { return y(d.y) })
-//       )
-
-  // Create a rect on top of the svg area: this rectangle recovers mouse position
-//  svg_rt
-//     .append('rect')
-//     .style("fill", "none")
-//     .style("pointer-events", "all")
-//    //  .attr('width', width)
-//    //  .attr('height', height)
-//     .on('mouseover', mouseover)
-//     .on('mousemove', mousemove)
-//     .on('mouseout', mouseout);
-
-
-
-
-
-
-
-
-
-
 
    let dict = {};
       dict["illinois"] = "Illinois";
