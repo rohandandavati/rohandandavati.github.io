@@ -690,7 +690,6 @@
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("Rt");     
-      
 	var svg = d3.select("#cases_map")
 	            .append("svg")
 	            .attr("width", map_wid )
@@ -698,7 +697,26 @@
 	            .attr("id", "svg_id")
 	            .append("g").attr("id", "group");
 	
-	
+	 // This allows to find the closest X index of the mouse:
+  var bisect = d3.bisector(function(d) { return d.date; }).left;
+
+  // Create the circle that travels along the curve of chart
+  var focus = svg_rt
+    .append('g')
+    .append('circle')
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .attr('r', 8.5)
+      .style("opacity", 0).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+
+  // Create the text that travels along the curve of chart
+  var focusText = svg_rt
+    .append('g')
+    .append('text')
+      .style("opacity", 0)
+      .attr("text-anchor", "left")
+      .attr("alignment-baseline", "middle").attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+
 
   
 		d3.select(window)
@@ -797,32 +815,102 @@ data[2].forEach((d) => {
     }  
   });
 
- var selectedRegion = 'illinois';
+var selectedRegion = 'illinois';
 
-    function drawChart() {
-       
-       
+function drawChart() {
+   
+   
+   
+   
+
+  
+  
+   
+   projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
+   
+   path.projection(projection);
+      
+   svg.append("g")
+       .selectAll("path")
+       .data(data[0].features)
+       .enter()
+       .append("path")
+       .attr( "d", path )
+       .attr("fill", function(d){ 
+         if (selectedRegion.localeCompare("illinois") === 0) {
+            // console.log('hi')
+            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+         } else {
+             if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
+                   return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+            } else {
+                     return "#7E7E7E" 
+            }
+         }
+      })
+      .attr("stroke", function(d){ 
+	                 
+           if (selectedRegion.localeCompare("illinois") === 0) {
+               return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+            } else {
+           if (
+             countyMap[d.properties.COUNTY_NAM].covid_region ===
+             parseInt(selectedRegion.split('_')[1])) {
+                   return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+            } else {
+               return "#AAAAAA" 
+            }
+         }
+      })
+      
+ 
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
            
            
+        // What happens when the mouse move -> show the annotations at the right positions.
+  function mouseover() {
+    focus.style("opacity", 1)
+    focusText.style("opacity",1)
+  }
 
+  function mousemove() {
+    // recover coordinate we need
+    var formatTime = d3.timeFormat("%B %d")
+    var x0 = x_rt.invert(d3.mouse(this)[0]);
+    var i = bisect(dataFilter, x0, 1);
+    var selectedData = dataFilter[i]
+    console.log(selectedData)
+    focus
+      .attr("cx", x_rt(selectedData.date))
+      .attr("cy", y_rt(selectedData.rt_median))
+    focusText
+      .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" +  parseFloat((selectedData.rt_median)).toFixed(2))
+      .attr("x", x_rt(selectedData.date ))
+      .attr("y", y_rt(selectedData.rt_median))
+    }
+  function mouseout() {
+    focus.style("opacity", 0)
+    focusText.style("opacity", 0)
+  }
+  
+  
     x_rt.domain(d3.extent(data[1] , function(d) { return d.date}))
                   
-   //  y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
+   //y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
    
    y_rt.domain([0, 2]);
         
-    y_rt_axis.attr("class", "y axis")
+   y_rt_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-    interval_rt.datum(dataFilter)
+   interval_rt.datum(dataFilter)
                       .attr("fill", function(d){ return myColor(selectedRegion) })
                       .attr("stroke", "none")
                       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
 
     
-    line_rt.datum(dataFilter)
+   line_rt.datum(dataFilter)
                   .attr("stroke", function(d){ return lightColors(selectedRegion) })
                   .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
                   .style("stroke-width", 2)
@@ -836,101 +924,90 @@ data[2].forEach((d) => {
                   .style("stroke-width", 1)
                   .style("stroke-dasharray", ("3, 3"))
                   .style("fill", "none")              
-                  
+
+//  // Add the line
+//  svg_rt
+//     .append("path")
+//     .datum(data)
+//     .attr("fill", "none")
+//     .attr("stroke", "steelblue")
+//     .attr("stroke-width", 1.5)
+//     .attr("d", d3.line()
+//       .x(function(d) { return x(d.x) })
+//       .y(function(d) { return y(d.y) })
+//       )
+
+  // Create a rect on top of the svg area: this rectangle recovers mouse position
+//  svg_rt
+//     .append('rect')
+//     .style("fill", "none")
+//     .style("pointer-events", "all")
+//    //  .attr('width', width)
+//    //  .attr('height', height)
+//     .on('mouseover', mouseover)
+//     .on('mousemove', mousemove)
+//     .on('mouseout', mouseout);
 
 
-    let dict = {};
-        dict["illinois"] = "Illinois";
-        dict["covidregion_1"] = "Central";
-        dict["covidregion_2"] = "Chicago";
-        dict["covidregion_3"] = "Collar";
-        dict["covidregion_4"] = "West Central";
-        dict["covidregion_5"] = "North Central";
-        dict["covidregion_6"] = "Northern";
-        dict["covidregion_7"] = "Northwest";
-        dict["covidregion_8"] = "Southeast Central";
-        dict["covidregion_9"] = "Southern";
-        dict["covidregion_10"] = "Southwest Central";
-        dict["covidregion_11"] = "Suburban";
+
+
+
+
+
+
+
+
+
+   let dict = {};
+      dict["illinois"] = "Illinois";
+      dict["covidregion_1"] = "Central";
+      dict["covidregion_2"] = "Chicago";
+      dict["covidregion_3"] = "Collar";
+      dict["covidregion_4"] = "West Central";
+      dict["covidregion_5"] = "North Central";
+      dict["covidregion_6"] = "Northern";
+      dict["covidregion_7"] = "Northwest";
+      dict["covidregion_8"] = "Southeast Central";
+      dict["covidregion_9"] = "Southern";
+      dict["covidregion_10"] = "Southwest Central";
+      dict["covidregion_11"] = "Suburban";
+   
         
+   var selectedGroupCases = dict[selectedRegion]
         
-        var selectedGroupCases = dict[selectedRegion]
-        
-      dataFilter = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
+      var dataFilterCD = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
       x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
-      y_cases.domain([0, d3.max(dataFilter, function(d) { return d.new_cases; })])
+      y_cases.domain([0, d3.max(dataFilterCD, function(d) { return d.new_cases; })])
       
     y_cases_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_cases.left +",0)")
       .call(d3.axisLeft(y_cases));
 
-      area_cases.datum(dataFilter)
+      area_cases.datum(dataFilterCD)
       .attr("fill", function(d){ return myColor(selectedRegion) })
       .attr("stroke", function(d){ return lightColors(selectedRegion) })
       .attr("stroke-width", 2)
       .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_cases.left+1)+" ,0)");
       
-      x_deaths.domain(d3.extent(dataFilter, function(d) { return d.update_date; }))
+      x_deaths.domain(d3.extent(dataFilterCD, function(d) { return d.update_date; }))
       // y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })]) // Changed to the largest difference - save when reading in? 
-      y_deaths.domain([0, d3.max(dataFilter, function(d) { return d.new_deaths; })])
+      y_deaths.domain([0, d3.max(dataFilterCD, function(d) { return d.new_deaths; })])
       
     y_deaths_axis.attr("class", "y axis")
     .attr("transform", "translate("+ margin_deaths.left +",0)")
       .call(d3.axisLeft(y_deaths));
 
-      area_deaths.datum(dataFilter)
+      area_deaths.datum(dataFilterCD)
       .attr("fill", function(d){ return myColor(selectedRegion) })
       .attr("stroke", function(d){ return lightColors(selectedRegion) })
       .attr("stroke-width", 2)
-      .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");  
-      
-          
-   projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
-   
-   path.projection(projection);
-      
-                  svg.append("g")
-                .selectAll("path")
-                .data(data[0].features)
-                .enter()
-                .append("path")
-                .attr( "d", path )
-                .attr("fill", function(d){ 
-                  if (selectedRegion.localeCompare("illinois") === 0) {
-                     // console.log('hi')
-                     return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-                  } else {
-                      if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
-                            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                     } else {
-                              return "#7E7E7E" 
-                     }
-                  }
-	      })
-	      .attr("stroke", function(d){ 
-	                 
-	                 if (selectedRegion.localeCompare("illinois") === 0) {
-                     return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-                  } else {
-	                 if (
-                      countyMap[d.properties.COUNTY_NAM].covid_region ===
-                      parseInt(selectedRegion.split('_')[1])) {
-                            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-                        } else {
-                           return "#AAAAAA" 
-                        }
-                  }
-	      })
-	      
-
+      .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");
       
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
       
       const width = currentWidth- margin_rt.left - margin_rt.right;
       let height = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
-      // console.log(height)
-      
-                  
+
       if (parseInt(currentWidth) < 600) {
          height = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
          // console.log("hi")
@@ -938,7 +1015,6 @@ data[2].forEach((d) => {
       else if (parseInt(currentWidth) < 900) {
          height = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
       }
-      // console.log(height)
 
       
       svg_rt.attr("width", width + margin_rt.left + margin_rt.right)
@@ -990,6 +1066,16 @@ data[2].forEach((d) => {
        .x(function(d) { return x_rt(d.date) })
        .y(function(d) { return y_rt(1.0) }));
       
+        svg_rt
+    .append('rect')
+    .style("fill", "none")
+    .style("pointer-events", "all")
+    .attr('width', width)
+    .attr('height', height)
+    .on('mouseover', mouseover)
+    .on('mousemove', mousemove)
+    .on('mouseout', mouseout);
+
 
       
       currentWidth = document.getElementById("cases_chart").offsetWidth;
