@@ -259,7 +259,7 @@
    <div class="card-body" id = "deaths_chart"> </div>
 </div>
 
-
+<div id="my_dataviz"></div>
 <!--<div class="card pos " id = "">-->
 <!--  <div class="card-body">-->
 <!--    <h2>Test Positivity</h2>-->
@@ -707,13 +707,28 @@
       .attr("dy", "1em")
       .style("text-anchor", "middle")
       .text("Rt");     
-	var svg = d3.select("#cases_map")
+	var svg_map = d3.select("#cases_map")
 	            .append("svg")
 	            .attr("width", map_wid )
 	            .attr("height", map_hid)
 	            .attr("id", "svg_id")
 	            .append("g").attr("id", "group");
 	
+	
+	// set the dimensions and margins of the graph
+var margin = {top: 30, right: 30, bottom: 70, left: 60},
+    width = 1000 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+var svg = d3.select("#my_dataviz")
+  .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
+
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
@@ -785,7 +800,7 @@ while (index >= 0) {
   var prev_deaths = 0;
   var cases_max_diff = {};
   var deaths_max_diff = {};
-  parseDate = d3.timeParse("%Y-%m-%d");
+//   parseDate = d3.timeParse("%Y-%m-%d");
 
 data[2].forEach((d) => {
     d.update_date = (d.update_date).substr(0,(d.update_date).indexOf(' '))
@@ -836,18 +851,87 @@ var selectedRegion = 'illinois';
 
 function drawChart() {
    
+    // const parseTime = d3.timeParse("%b %d %Y");
    
+   var data_map = data[2].filter(function(d){return d.NOFO_Region=='Central'})
    
-   
+//   console.log(data_map)
+    //      x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
+    //   y_cases.domain([0, d3.max(dataFilterCD, function(d) { return d.new_cases; })])
+const formatTime = d3.timeFormat("%b. %Y");
+  const len = data.length - 1;
+const tickValuesForAxis = data_map.map((d, i) => {
+if (i % 30 == 0 || i == len) return d.update_date;
+});
 
+
+
+// X axis
+var x = d3.scaleBand()
+  .domain(data_map.map(function(d) { return d.update_date; }))
+//   .rangeRound([margin.left, width - margin.right])
+  .range([0,width])
+  .padding(0);
   
+svg.append("g")
+  .attr("transform", "translate(0," + height + ")")
+  .call(d3.axisBottom(x)
+    .tickValues(tickValuesForAxis)
+    .tickFormat((d, i) => {
+      var r = '';
+      var dt = d; console.log(d)
+      if (i % 30 == 0 || i == len) r = formatTime(dt);
+      return r;
+        })
+    );
+    //   .call(wrap, x.rangeBand());
+//   .selectAll("text")
+//     .attr("transform", "translate(-10,0)rotate(-45)")
+//     .style("text-anchor", "end");
+
+// Add Y axis
+var y = d3.scaleLinear()
+  .domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
+//   .domain([0, d3.max(data_map, d => d.new_cases)])
+//   .range([ height, 0]);
+  .range([height - margin.bottom, margin.top]);
+svg.append("g")
+  .call(d3.axisLeft(y));
+
+// Bars
+svg.selectAll("mybar")
+  .data(data_map)
+  .enter()
+  .append("rect")
+    .attr("x", function(d) { return x(d.update_date); })
+    .attr("y", function(d) { return y(d.new_cases); })
+    .attr("width", x.bandwidth())
+    .attr("height", function(d) { return height - y(d.new_cases); })
+    .attr("fill", "#69b3a2")
+
+    // .append('g')
+    // .attr('fill', '#fd4d61')
+    // .selectAll('rect')
+    // .data(data)
+    // .join('rect')
+    // .attr('x', d => x(d.date))
+    // .attr('y', d => y(d.count))
+    // .attr('height', d => y(0) - y(d.count))
+    // .attr('width', x.bandwidth());
   
+     
+
+
+
+
+
+
    
    projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
    
    path.projection(projection);
       
-   svg.append("g")
+   svg_map.append("g")
        .selectAll("path")
        .data(data[0].features)
        .enter()
@@ -989,29 +1073,29 @@ function drawChart() {
       
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
       
-      const width = currentWidth- margin_rt.left - margin_rt.right;
-      let height = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
+      const width_rt = currentWidth- margin_rt.left - margin_rt.right;
+      let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
 
       if (parseInt(currentWidth) < 600) {
-         height = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
+         height_rt = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
          // console.log("hi")
       }
       else if (parseInt(currentWidth) < 900) {
-         height = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
+         height_rt = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
       }
 
       
-      svg_rt.attr("width", width + margin_rt.left + margin_rt.right)
-      .attr("height", height + margin_rt.top + margin_rt.bottom)
+      svg_rt.attr("width", width_rt + margin_rt.left + margin_rt.right)
+      .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
       .append("g")
     .attr("transform",
           "translate(" + margin_rt.left + "," + margin_rt.top + ")");
       
-      xTitle.attr("transform", "translate(" + (currentWidth/2) + " ," + (height +30)+ ")")
-      yTitle.attr("x",0 - (height / 2))
+      xTitle.attr("transform", "translate(" + (currentWidth/2) + " ," + (height_rt +30)+ ")")
+      yTitle.attr("x",0 - (height_rt / 2))
       
-      x_rt.range([ 0, width ]);
-      x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + (margin_rt.top + height) + ")")
+      x_rt.range([ 0, width_rt ]);
+      x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + (margin_rt.top + height_rt) + ")")
       // .call(d3.axisBottom(x_rt).ticks(5));
       if (currentWidth < 600) {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
@@ -1021,7 +1105,7 @@ function drawChart() {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
       }
            
-      y_rt.range([ height, 0 ])
+      y_rt.range([ height_rt, 0 ])
       y_rt_axis.call(d3.axisLeft(y_rt).ticks(6));
       
       
@@ -1054,8 +1138,8 @@ function drawChart() {
     .append('rect')
     .style("fill", "none")
     .style("pointer-events", "all")
-    .attr('width', width)
-    .attr('height', height)
+    .attr('width', width_rt)
+    .attr('height', height_rt)
     .on('mouseover', mouseover)
     .on('mousemove', mousemove)
     .on('mouseout', mouseout);
