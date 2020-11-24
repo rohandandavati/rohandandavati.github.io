@@ -851,21 +851,42 @@ var selectedRegion = 'illinois';
 
 function drawChart() {
    
+      let dict = {};
+      dict["illinois"] = "Illinois";
+      dict["covidregion_1"] = "Central";
+      dict["covidregion_2"] = "Chicago";
+      dict["covidregion_3"] = "Collar";
+      dict["covidregion_4"] = "West Central";
+      dict["covidregion_5"] = "North Central";
+      dict["covidregion_6"] = "Northern";
+      dict["covidregion_7"] = "Northwest";
+      dict["covidregion_8"] = "Southeast Central";
+      dict["covidregion_9"] = "Southern";
+      dict["covidregion_10"] = "Southwest Central";
+      dict["covidregion_11"] = "Suburban";
+   
+        
+   var selectedGroupCases = dict[selectedRegion]
+   
+   
+   
+   
+   
     // const parseTime = d3.timeParse("%b %d %Y");
    
-   var data_map = data[2].filter(function(d){return d.NOFO_Region=='Central'})
+   var data_map = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
 //  console.log(data_map)
     //      x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
     //   y_cases.domain([0, d3.max(dataFilterCD, function(d) { return d.new_cases; })])
 const formatTime = d3.timeFormat("%b. %Y");
   const len = data.length - 1;
-const tickValuesForAxis = data_map.map((d, i) => {
-   console.log('ji')
-if (i % 30 == 0 || i == len) return d.update_date;
-});
+// const tickValuesForAxis = data_map.map((d, i) => {
+//    console.log('ji')
+// if (i % 30 == 0 || i == len) return d.update_date;
+// });
 
-console.log(tickValuesForAxis)
+// console.log(tickValuesForAxis)
 
 // X axis
 var x = d3.scaleBand()
@@ -909,7 +930,7 @@ svg.selectAll("mybar")
     .attr("y", function(d) { return y(d.new_cases); })
     .attr("width", x.bandwidth())
     .attr("height", function(d) { return height - y(d.new_cases); })
-    .attr("fill", "#69b3a2")
+    .attr("fill", function(d){ return myColor(selectedRegion) })
 
     // .append('g')
     // .attr('fill', '#fd4d61')
@@ -1056,22 +1077,7 @@ svg.selectAll("mybar")
                   .style("stroke-dasharray", ("3, 3"))
                   .style("fill", "none")              
 
-   let dict = {};
-      dict["illinois"] = "Illinois";
-      dict["covidregion_1"] = "Central";
-      dict["covidregion_2"] = "Chicago";
-      dict["covidregion_3"] = "Collar";
-      dict["covidregion_4"] = "West Central";
-      dict["covidregion_5"] = "North Central";
-      dict["covidregion_6"] = "Northern";
-      dict["covidregion_7"] = "Northwest";
-      dict["covidregion_8"] = "Southeast Central";
-      dict["covidregion_9"] = "Southern";
-      dict["covidregion_10"] = "Southwest Central";
-      dict["covidregion_11"] = "Suburban";
-   
-        
-   var selectedGroupCases = dict[selectedRegion]
+
         
       var dataFilterCD = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
       x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
