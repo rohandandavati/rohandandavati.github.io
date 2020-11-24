@@ -921,7 +921,7 @@ const formatTime = d3.timeFormat("%b. %Y");
 
   // Create the u variable
   var u = svg.selectAll("rect")
-    .data(data_map).attr("transform", "translate("+ margin.left +","+ margin.top  + ")"  )
+    .data(data_map)
 
   u
     .enter()
@@ -930,6 +930,7 @@ const formatTime = d3.timeFormat("%b. %Y");
     .transition() // and apply changes to all of them
     
     .duration(1000)
+    
       .attr("x", function(d) { return x(d.update_date); })
       .attr("y", function(d) { return y(d.new_cases); })
       .attr("width", x.bandwidth())
@@ -944,7 +945,8 @@ const formatTime = d3.timeFormat("%b. %Y");
     .exit()
     .remove()
     
-    
+   // u
+   svg.selectAll("rect").attr("transform", "translate("+ margin.left +","+margin.top + ")"  );
     
   const POINTS_AVERAGE = 6;
  var line = d3
