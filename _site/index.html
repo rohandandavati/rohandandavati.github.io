@@ -901,7 +901,8 @@ const formatTime = d3.timeFormat("%b. %Y");
   
 
 //  x_axis.attr("transform", "translate(0," + height + ")")
- x_axis.attr("transform", "translate(" + margin.left + "," + height + ")")
+ x_axis
+ .attr("transform", "translate(" + margin.left + "," + (height+margin.top) + ")")
   .call(d3.axisBottom(x)
   .tickValues(x.domain().filter(function(d,i){ return !(i%30)}))
    //  .tickValues(tickValuesForAxis)
@@ -915,9 +916,9 @@ const formatTime = d3.timeFormat("%b. %Y");
 
   y
   .domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
-  .range([height - margin.bottom, margin.top]);
+  .range([height, 0]);
 // var y_axis = svg.append("g")
- y_axis.attr("transform", "translate("+ margin.left +","+ margin.top  + ")"  ).call(d3.axisLeft(y));
+ y_axis.attr("transform", "translate("+ (margin.left-2) +","+ margin.top  + ")"  ).call(d3.axisLeft(y));
 
   // Create the u variable
   var u = svg.selectAll("rect")
