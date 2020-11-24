@@ -1,58 +1,58 @@
 - name: Sentinel surveillance
   date: May 5th, 2020
   path: /reports/20200515_surveillance_to_restore_illinois.pdf
-  image_path: /images/200505_sentinel_surveillance_Rt.jpg
+  image_path: /images/200505_sentinel_surveillance_Rt.png
   description: >
     Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
 - name: Reduce time to diagnosis
   date: June 18th, 2020
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
-  image_path: /images/200618_faster_testing_deaths_averted_per_day.jpg
+  image_path: /images/200618_faster_testing_deaths_averted_per_day.png
   description: >
     Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
 - name: Second wave?
   date: July 6th, 2020
   path: /reports/20200706_second_wave.pdf
-  image_path: /images/200706_second_wave_cases_by_age.jpg
+  image_path: /images/200706_second_wave_cases_by_age.png
   description: >
     Is Illinois experiencing a second wave in summer 2020?
 - name: Contact tracing
   date: July 10th, 2020
   path: /reports/20200710_contact_tracing.pdf
-  image_path: /images/200710_contact_tracing_heatmap.jpg
+  image_path: /images/200710_contact_tracing_heatmap.png
   description: >
     How do the performance requirements of contact tracing vary across different regions and transmission
     scenarios?
 - name: NE Region hospital overflow
   date: July 14th, 2020
   path: /reports/20200714_overflow_alert_v3.pdf
-  image_path: /images/200714_overflow_simulated_trajectories.jpg
+  image_path: /images/200714_overflow_simulated_trajectories.png
   description: >
     How can we reliably tell that COVID-19 hospital needs in the Northeast
     Restore Region are likely to exceed available capacity?
 - name: Hospital admissions as indicator
   date: August 4th, 2020
   path: /reports/20200804_hospitalizations_trigger_analysis.pdf
-  image_path: /images/200804_admissions_prob_of_trigger.jpg
+  image_path: /images/200804_admissions_prob_of_trigger.png
   description: >
     How reliable is COVID-like-illness (CLI) admissions as an indicator regions
     with fewer admissions?
 - name: Hospital census as indicator
   date: August 11th, 2020
   path: /reports/20200811_hospital_census_trigger_analysis.pdf
-  image_path: /images/200811_exponential_extrapolation.jpg
+  image_path: /images/200811_exponential_extrapolation.png
   description: >
     Can we predict ICU/hospital capacity overflow by fitting an exponential
     curve to recent data?
 - name: Assessing thresholds for action
   date: September 3rd, 2020
   path: /reports/20200903_assessing_thresholds_for_action.pdf
-  image_path: /images/200903_thresholds_for_action_risk_tolerance_curve.jpg
+  image_path: /images/200903_thresholds_for_action_risk_tolerance_curve.png
   description: >
     Defining thresholds occupancy of ICU beds to trigger mitigation actions
 - name: Prioritizing areas for expanding testing
   date: October 19th, 2020
   path: /reports/20201019_testing_expansion_priority.pdf
-  image_path: /images/201019_TEPI_chicago_zip_map.jpg
+  image_path: /images/201019_TEPI_chicago_zip_map.png
   description: >
     What areas in Chicago are most in need of expanded COVID-19 diagnostic testing?
