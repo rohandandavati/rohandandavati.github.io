@@ -784,6 +784,8 @@ var selectedRegion = 'illinois';
 var x = d3.scaleBand()
 var y = d3.scaleLinear()
 
+var x_axis = svg.append("g")
+
 function drawChart() {
    
       let dict = {};
@@ -835,8 +837,8 @@ const formatTime = d3.timeFormat("%b. %Y");
   .range([0,width])
   .padding(0);
   
-svg.append("g")
- .attr("transform", "translate(0," + height + ")")
+
+ x_axis.attr("transform", "translate(0," + height + ")")
   .call(d3.axisBottom(x)
   .tickValues(x.domain().filter(function(d,i){ return !(i%30)}))
    //  .tickValues(tickValuesForAxis)
@@ -917,8 +919,10 @@ svg.selectAll("mybar")
       return r;
     });
 
+svg.selectAll('path').remove();
+  
   svg
-    .selectAll('path')
+    .append('path')
     .datum(data_map)
     .attr('fill', 'none')
     .attr('stroke', '#000000')
