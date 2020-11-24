@@ -861,18 +861,18 @@ svg.append("g")
 svg.append("g")
   .call(d3.axisLeft(y));
 
-// svg.selectAll("mybar").remove();
+svg.selectAll("mybar").remove();
 
-// // Bars
-// svg.selectAll("mybar")
-//  .data(data_map)
-//  .enter()
-//  .append("rect")
-//     .attr("x", function(d) { return x(d.update_date); })
-//     .attr("y", function(d) { return y(d.new_cases); })
-//     .attr("width", x.bandwidth())
-//     .attr("height", function(d) { return height - y(d.new_cases); })
-//     .attr("fill", function(d){ return myColor(selectedRegion) })
+// Bars
+svg.selectAll("mybar")
+  .data(data_map)
+  .enter()
+  .append("rect")
+    .attr("x", function(d) { return x(d.update_date); })
+    .attr("y", function(d) { return y(d.new_cases); })
+    .attr("width", x.bandwidth())
+    .attr("height", function(d) { return height - y(d.new_cases); })
+    .attr("fill", function(d){ return myColor(selectedRegion) })
 
   // Create the u variable
   var u = svg.selectAll("rect")
@@ -918,7 +918,7 @@ svg.append("g")
     });
 
   svg
-    .append('path')
+    .selectAll('path')
     .datum(data_map)
     .attr('fill', 'none')
     .attr('stroke', '#000000')
