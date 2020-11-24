@@ -852,7 +852,35 @@ svg.selectAll("mybar")
   
      
 
+  const POINTS_AVERAGE = 6;
+  const line = d3
+    .line()
+    .x(d => x(d.update_date))
+    .y((d, i, data_map) => {
+      var r,
+        avg = 0;
+      for (let j = 0; j <= POINTS_AVERAGE; j++) {
+        if (i - j >= 0) {
+          avg += y(data_map[i - j].new_cases);
+          r = Math.floor(avg / (j + 1));
+        } else {
+          r = Math.floor(avg / j);
+          j = POINTS_AVERAGE + 1;
+        }
+      }
+    //   console.log(i, r, y(d.count));
+      return r;
+    });
 
+  svg
+    .append('path')
+    .datum(data_map)
+    .attr('fill', 'none')
+    .attr('stroke', '#000000')
+    .attr('stroke-width', 1.5)
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round')
+    .attr('d', line);
 
 
 
