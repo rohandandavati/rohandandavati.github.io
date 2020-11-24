@@ -652,13 +652,13 @@ var margin = {top: 30, right: 30, bottom: 70, left: 60},
     height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
-var svg = d3.select("#my_dataviz")
-  .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform",
-          "translate(" + margin.left + "," + margin.top + ")");
+var svg = d3.select("#my_dataviz").append("svg")
+//  .append("svg")
+//     .attr("width", width + margin.left + margin.right)
+//     .attr("height", height + margin.top + margin.bottom)
+//  .append("g")
+//     .attr("transform",
+//           "translate(" + margin.left + "," + margin.top + ")");
 
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
@@ -780,6 +780,10 @@ data[2].forEach((d) => {
 
 var selectedRegion = 'illinois';
 
+
+var x = d3.scaleBand()
+var y = d3.scaleLinear()
+
 function drawChart() {
    
       let dict = {};
@@ -800,7 +804,12 @@ function drawChart() {
    var selectedGroupCases = dict[selectedRegion]
    
    
-   
+   svg
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin.left + "," + margin.top + ")");
    
    
     // const parseTime = d3.timeParse("%b %d %Y");
@@ -820,8 +829,8 @@ const formatTime = d3.timeFormat("%b. %Y");
 // console.log(tickValuesForAxis)
 
 // X axis
-var x = d3.scaleBand()
-  .domain(data_map.map(function(d) { return d.update_date; }))
+// var x = d3.scaleBand()
+  x.domain(data_map.map(function(d) { return d.update_date; }))
 //   .rangeRound([margin.left, width - margin.right])
   .range([0,width])
   .padding(0);
@@ -844,39 +853,52 @@ svg.append("g")
 //     .style("text-anchor", "end");
 
 // Add Y axis
-var y = d3.scaleLinear()
-  .domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
+// var y = d3.scaleLinear()
+  y.domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
 //   .domain([0, d3.max(data_map, d => d.new_cases)])
 //   .range([ height, 0]);
   .range([height - margin.bottom, margin.top]);
 svg.append("g")
   .call(d3.axisLeft(y));
 
-// Bars
-svg.selectAll("mybar")
-  .data(data_map)
-  .enter()
-  .append("rect")
-    .attr("x", function(d) { return x(d.update_date); })
-    .attr("y", function(d) { return y(d.new_cases); })
-    .attr("width", x.bandwidth())
-    .attr("height", function(d) { return height - y(d.new_cases); })
-    .attr("fill", function(d){ return myColor(selectedRegion) })
+// svg.selectAll("mybar").remove();
 
-    // .append('g')
-    // .attr('fill', '#fd4d61')
-    // .selectAll('rect')
-    // .data(data)
-    // .join('rect')
-    // .attr('x', d => x(d.date))
-    // .attr('y', d => y(d.count))
-    // .attr('height', d => y(0) - y(d.count))
-    // .attr('width', x.bandwidth());
-  
-     
+// // Bars
+// svg.selectAll("mybar")
+//  .data(data_map)
+//  .enter()
+//  .append("rect")
+//     .attr("x", function(d) { return x(d.update_date); })
+//     .attr("y", function(d) { return y(d.new_cases); })
+//     .attr("width", x.bandwidth())
+//     .attr("height", function(d) { return height - y(d.new_cases); })
+//     .attr("fill", function(d){ return myColor(selectedRegion) })
 
+  // Create the u variable
+  var u = svg.selectAll("rect")
+    .data(data_map)
+
+  u
+    .enter()
+    .append("rect") // Add a new rect for each new elements
+    .merge(u) // get the already existing elements as well
+    .transition() // and apply changes to all of them
+    .duration(1000)
+      .attr("x", function(d) { return x(d.update_date); })
+      .attr("y", function(d) { return y(d.new_cases); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.new_cases); })
+      .attr("fill", function(d){ return myColor(selectedRegion) })
+
+  // If less group in the new dataset, I delete the ones not in use anymore
+  u
+    .exit()
+    .remove()
+    
+    
+    
   const POINTS_AVERAGE = 6;
-  const line = d3
+ var line = d3
     .line()
     .x(d => x(d.update_date))
     .y((d, i, data_map) => {
