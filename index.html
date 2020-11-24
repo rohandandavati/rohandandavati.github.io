@@ -786,16 +786,17 @@ function drawChart() {
    
    var data_map = data[2].filter(function(d){return d.NOFO_Region=='Central'})
    
-//   console.log(data_map)
+//  console.log(data_map)
     //      x_cases.domain(d3.extent(data[2], function(d) { return d.update_date; }))
     //   y_cases.domain([0, d3.max(dataFilterCD, function(d) { return d.new_cases; })])
 const formatTime = d3.timeFormat("%b. %Y");
   const len = data.length - 1;
 const tickValuesForAxis = data_map.map((d, i) => {
+   console.log('ji')
 if (i % 30 == 0 || i == len) return d.update_date;
 });
 
-
+console.log(tickValuesForAxis)
 
 // X axis
 var x = d3.scaleBand()
@@ -805,15 +806,16 @@ var x = d3.scaleBand()
   .padding(0);
   
 svg.append("g")
-  .attr("transform", "translate(0," + height + ")")
+ .attr("transform", "translate(0," + height + ")")
   .call(d3.axisBottom(x)
-    .tickValues(tickValuesForAxis)
+  .tickValues(x.domain().filter(function(d,i){ return !(i%30)}))
+   //  .tickValues(tickValuesForAxis)
     .tickFormat((d, i) => {
       var r = '';
-      var dt = d; console.log(d)
-      if (i % 30 == 0 || i == len) r = formatTime(dt);
+      var dt = d; //console.log(d)
+      if ((i%30) || i == len) r = formatTime(dt);
       return r;
-        })
+       })
     );
     //   .call(wrap, x.rangeBand());
 //   .selectAll("text")
