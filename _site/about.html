@@ -86,8 +86,14 @@
 <div class="jumbotron">
     <h1>About</h1>
     <!--<br></br>-->
-    <p>Illinois Covid Modeling is a joint effort between Northwestern University and University of Chicago, who have been modeling COVID-19 in Illinois since March 2020.
-    In partnership with the Illinois Department of Public Health, we use simulation models to predict trends in hospital usage and deaths at the Covid Region level.</p> 
+    <p>Illinois Covid Modeling is a joint effort between Northwestern University and the University of Chicago, who have been modeling COVID-19 in Illinois since March 2020.
+    In partnership with the Illinois Department of Public Health (IDPH), we use simulation models to predict trends in hospital usage and deaths at the COVID-19 Region level.
+    Both models are SEIR-based compartmental models that are calibrated to daily hospital census, ICU census, and death data collected by IDPH, and both teams have created a
+        suite of 11 models, one for each COVID-19 Region.</p>
+    <p>Code for University of Chicago's simulation model is available <a href="https://github.com/cobeylab/covid_IL">here</a>.</p>
+    <p>Code for Northwestern's simulation model is available <a href="https://github.com/numalariamodeling/covid-chicago">here</a>. Northwestern is estimating Rt by
+        applying the <a href="https://cran.r-project.org/web/packages/EpiEstim/index.html">EpiEstim package</a> to the timeseries of daily new infections inferred from the simulation models.</p>
+    <p>Case and death data shown on the landing page are aggregated from <a href="https://www.dph.illinois.gov/covid19/covid19-statistics"> county-level public data from IDPH </a>.</p>
 </div>
 </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

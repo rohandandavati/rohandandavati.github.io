@@ -667,8 +667,8 @@
       }
    }
 
-   var map_wid = document.getElementById("cases_map").offsetWidth;
-   var map_hid = map_wid *2;
+   // var map_wid = document.getElementById("cases_map").offsetWidth;
+   // var map_hid = map_wid *2;
    
    var margin_rt = {top: 10, right: 10, bottom: 50, left: 70};
    var svg_rt = d3.select("#rt_chart").append("svg")
@@ -715,10 +715,10 @@
       .text("Rt");     
 	var svg_map = d3.select("#cases_map")
 	            .append("svg")
-	            .attr("width", map_wid )
-	            .attr("height", map_hid)
-	            .attr("id", "svg_id")
-	            .append("g").attr("id", "group");
+	           // .attr("width", map_wid )
+	           // .attr("height", map_hid)
+	           // .attr("id", "svg_id")
+	           // .append("g").attr("id", "group");
 	
 
 
@@ -746,8 +746,8 @@ var svg_cases = d3.select("#cases_chart").append("svg")
 
 
   
-		d3.select(window)
-    		.on("resize", sizeChange);
+// 		d3.select(window)
+//     		.on("resize", sizeChange);
    
    		var projection = d3.geoAlbers()
    		var path = d3.geoPath()
@@ -860,18 +860,56 @@ var y_axis_deaths = svg_deaths.append("g")
 
 
 function drawChart() {
+//  var u = svg_cases.selectAll("rect")
+//     .data(data_map)
 
+//  u
+//     .enter()
+//     .append("rect") // Add a new rect for each new elements
+//     .merge(u) // get the already existing elements as well
+//     .transition() // and apply changes to all of them
+    
+//     .duration(1000)
+    
+//       .attr("x", function(d) { return x_cases(d.update_date); })
+//       .attr("y", function(d) { return y_cases(d.new_cases); })
+//       .attr("width", x_cases.bandwidth())
+//       // .attr("height", function(d) { return height - y(d.new_cases); })
+//       .attr("height", function(d) { return height_cases - y_cases(d.new_cases); })
+      
+//       .attr("fill", function(d){ return myColor(selectedRegion) })
+//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
+
+//  // If less group in the new dataset, I delete the ones not in use anymore
+//  u
+//     .exit()
+//     .remove()
+   var map_wid = document.getElementById("cases_map").offsetWidth;
+   var map_hid = map_wid *2;
    
-   projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
+   svg_map.attr("width", map_wid )
+	       .attr("height", map_hid)
+	       
+   // console.log(map_wid)
+   
+   // projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
+   projection.rotate([89.5,0]).fitWidth(map_wid, data[0]);
    
    path.projection(projection);
       
+      
+      
+   // var map = svg_map.append("g")
    svg_map.append("g")
-       .selectAll("path")
+   
+       var map = svg_map.selectAll("path")
        .data(data[0].features)
-       .enter()
+       
+       map.enter()
        .append("path")
+       .merge(map)
        .attr( "d", path )
+              
        .attr("fill", function(d){ 
          if (selectedRegion.localeCompare("illinois") === 0) {
             // console.log('hi')
@@ -897,7 +935,42 @@ function drawChart() {
                return "#AAAAAA" 
             }
          }
-      })
+      }) 
+      
+   map.exit()
+    .remove()
+   // svg_map.append("g")
+   //     .selectAll("path")
+   //     .data(data[0].features)
+   //     .enter()
+   //     .append("path")
+   //     .attr( "d", path )
+   //     .attr("fill", function(d){ 
+   //       if (selectedRegion.localeCompare("illinois") === 0) {
+   //          // console.log('hi')
+   //          return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+   //       } else {
+   //           if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
+   //                 return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+   //          } else {
+   //                   return "#7E7E7E" 
+   //          }
+   //       }
+   //    })
+   //    .attr("stroke", function(d){ 
+	                 
+   //        if (selectedRegion.localeCompare("illinois") === 0) {
+   //             return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+   //          } else {
+   //        if (
+   //           countyMap[d.properties.COUNTY_NAM].covid_region ===
+   //           parseInt(selectedRegion.split('_')[1])) {
+   //                 return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+   //          } else {
+   //             return "#AAAAAA" 
+   //          }
+   //       }
+   //    })
       
  
 
@@ -951,9 +1024,7 @@ function drawChart() {
                   .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
                   .style("stroke-width", 2)
                   .style("fill", "none")
-                  
-                  
-                  
+
    refLine.datum(dataFilter)
                   .attr("stroke", "black")
                   .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
@@ -961,24 +1032,6 @@ function drawChart() {
                   .style("stroke-dasharray", ("3, 3"))
                   .style("fill", "none")              
 
-
-        
-      // var dataFilterCD = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
-
-      
-      // x_deaths.domain(d3.extent(dataFilterCD, function(d) { return d.update_date; }))
-      // // y_deaths.domain([0, d3.max(data, function(d) { return d.Deaths; })]) // Changed to the largest difference - save when reading in? 
-      // y_deaths.domain([0, d3.max(dataFilterCD, function(d) { return d.new_deaths; })])
-      
-   //  y_deaths_axis.attr("class", "y axis")
-   //  .attr("transform", "translate("+ margin_deaths.left +",0)")
-   //    .call(d3.axisLeft(y_deaths));
-
-      // area_deaths.datum(dataFilterCD)
-      // .attr("fill", function(d){ return myColor(selectedRegion) })
-      // .attr("stroke", function(d){ return lightColors(selectedRegion) })
-      // .attr("stroke-width", 2)
-      // .attr("transform", "translate(2,-1)").attr("transform", "translate(" +(margin_deaths.left+1)+" ,0)");
       
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
       
