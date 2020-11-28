@@ -88,7 +88,7 @@
     } 
  
    #cases_map {
-      /*z-index: 2;*/
+      /*z-index: 2;*/   
       position: fixed;
       z-index: 2;
    }
@@ -218,9 +218,6 @@
       }
 }
 
-/*#my_dataviz {*/
-/*   margin-left: 5%;*/
-/*}*/
 </style>
 
 <div class="map" id = "cases_map"></div>
@@ -266,16 +263,7 @@
 <div class = "card deaths chart">
 <div id="my_dataviz"></div>
 </div>
-<!--<div class="card pos " id = "">-->
-<!--  <div class="card-body">-->
-<!--    <h2>Test Positivity</h2>-->
-<!--    <text>Subtitle for deaths chart </text>-->
-<!--  </div>-->
-<!--</div>-->
 
-<!--<div class = "card pos chart">-->
-<!--   <div class="card-body" id = "pos_chart"> </div>-->
-<!--</div>-->
 
 <script>
    /* global d3 */
@@ -323,13 +311,17 @@
    
   
    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
+   //old before lighten
    var hexColorsLight = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
    
+   //old after light
+   // hexColorsLight 
    
    var i;
    for (i = 0; i < hexColorsLight.length; i++) {
-      hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -60)
+      hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -70)
    }
+   console.log(hexColorsLight)
    
    let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
                    "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
@@ -686,21 +678,9 @@
    
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
-   
-   // var svg_cases = d3.select("#cases_chart").append("svg")
+
    var svg_deaths = d3.select("#deaths_chart").append("svg")
-        
-   // var x_cases = d3.scaleTime();
-   // var x_cases_axis = svg_cases.append("g")
-   // var y_cases = d3.scaleLinear()
-   // var y_cases_axis = svg_cases.append("g")
-   // var area_cases = svg_cases.append("path")
-   
-   // var x_deaths = d3.scaleTime()
-   // var x_deaths_axis = svg_deaths.append("g")
-   // var y_deaths = d3.scaleLinear()
-   // var y_deaths_axis = svg_deaths.append("g")
-   // var area_deaths = svg_deaths.append("path")
+
 
     var xTitle = svg_rt.append("text")
       .style("text-anchor", "middle")
@@ -715,11 +695,6 @@
       .text("Rt");     
 	var svg_map = d3.select("#cases_map")
 	            .append("svg")
-	           // .attr("width", map_wid )
-	           // .attr("height", map_hid)
-	           // .attr("id", "svg_id")
-	           // .append("g").attr("id", "group");
-	
 
 
 // append the svg object to the body of the page
@@ -744,10 +719,6 @@ var svg_cases = d3.select("#cases_chart").append("svg")
       .attr("text-anchor", "left")
       .attr("alignment-baseline", "middle").attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-
-  
-// 		d3.select(window)
-//     		.on("resize", sizeChange);
    
    		var projection = d3.geoAlbers()
    		var path = d3.geoPath()
@@ -860,30 +831,7 @@ var y_axis_deaths = svg_deaths.append("g")
 
 
 function drawChart() {
-//  var u = svg_cases.selectAll("rect")
-//     .data(data_map)
 
-//  u
-//     .enter()
-//     .append("rect") // Add a new rect for each new elements
-//     .merge(u) // get the already existing elements as well
-//     .transition() // and apply changes to all of them
-    
-//     .duration(1000)
-    
-//       .attr("x", function(d) { return x_cases(d.update_date); })
-//       .attr("y", function(d) { return y_cases(d.new_cases); })
-//       .attr("width", x_cases.bandwidth())
-//       // .attr("height", function(d) { return height - y(d.new_cases); })
-//       .attr("height", function(d) { return height_cases - y_cases(d.new_cases); })
-      
-//       .attr("fill", function(d){ return myColor(selectedRegion) })
-//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
-
-//  // If less group in the new dataset, I delete the ones not in use anymore
-//  u
-//     .exit()
-//     .remove()
    var map_wid = document.getElementById("cases_map").offsetWidth;
    var map_hid = map_wid *2;
    
@@ -896,9 +844,7 @@ function drawChart() {
    projection.rotate([89.5,0]).fitWidth(map_wid, data[0]);
    
    path.projection(projection);
-      
-      
-      
+  
    // var map = svg_map.append("g")
    svg_map.append("g")
    
@@ -939,39 +885,6 @@ function drawChart() {
       
    map.exit()
     .remove()
-   // svg_map.append("g")
-   //     .selectAll("path")
-   //     .data(data[0].features)
-   //     .enter()
-   //     .append("path")
-   //     .attr( "d", path )
-   //     .attr("fill", function(d){ 
-   //       if (selectedRegion.localeCompare("illinois") === 0) {
-   //          // console.log('hi')
-   //          return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-   //       } else {
-   //           if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
-   //                 return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-   //          } else {
-   //                   return "#7E7E7E" 
-   //          }
-   //       }
-   //    })
-   //    .attr("stroke", function(d){ 
-	                 
-   //        if (selectedRegion.localeCompare("illinois") === 0) {
-   //             return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
-   //          } else {
-   //        if (
-   //           countyMap[d.properties.COUNTY_NAM].covid_region ===
-   //           parseInt(selectedRegion.split('_')[1])) {
-   //                 return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
-   //          } else {
-   //             return "#AAAAAA" 
-   //          }
-   //       }
-   //    })
-      
  
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
@@ -1242,15 +1155,7 @@ svg_cases.selectAll('path').remove();
     .attr('stroke-linejoin', 'round')
     .attr('stroke-linecap', 'round')
     .attr('d', line).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
-    
-    
-    
-/////////
-    
-    
-    
-    
-    
+
    
    svg_deaths
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
@@ -1373,14 +1278,7 @@ svg_deaths.selectAll('path').remove();
 
     
 }); //Promise.all    
-	
-	function sizeChange() {
-	   d3.select("#group")
-	     .attr("transform", "scale(" + $("#cases_map").width()/150 + ")");
-	   
-	  // $("#svg_id").width($("#cases_map"))
-	   $("#svg_id").height($("#cases_map").width()*2)
-	}
+
 
 
 
