@@ -342,11 +342,13 @@
     .attr("value", function (d) { return d; })
     .attr("class", "dropdown-item")
     
-   var myColor = d3.scaleOrdinal().domain(allGroup)
-     .range(hexColorsLightest)
-   var lightColors = d3.scaleOrdinal().domain(allGroup)
+    var Colors = d3.scaleOrdinal().domain(allGroup)
    //  .range(hexColorsLight)
      .range(hexColors)
+     
+   var lightestColors = d3.scaleOrdinal().domain(allGroup)
+     .range(hexColorsLightest)
+  
    
    var countyMap = {
       "ADAMS": {
@@ -860,10 +862,10 @@ function drawChart() {
        .attr("fill", function(d){ 
          if (selectedRegion.localeCompare("illinois") === 0) {
             // console.log('hi')
-            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+            return Colors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
          } else {
              if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
-                   return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                   return Colors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
             } else {
                      return "#7E7E7E" 
             }
@@ -872,12 +874,12 @@ function drawChart() {
       .attr("stroke", function(d){ 
 	                 
            if (selectedRegion.localeCompare("illinois") === 0) {
-               return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+               return lightestColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
             } else {
            if (
              countyMap[d.properties.COUNTY_NAM].covid_region ===
              parseInt(selectedRegion.split('_')[1])) {
-                   return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                   return lightestColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
             } else {
                return "#AAAAAA" 
             }
@@ -928,13 +930,13 @@ function drawChart() {
     .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
    interval_rt.datum(dataFilter)
-                      .attr("fill", function(d){ return myColor(selectedRegion) })
+                      .attr("fill", function(d){ return lightestColors(selectedRegion) })
                       .attr("stroke", "none")
                       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
 
     
    line_rt.datum(dataFilter)
-                  .attr("stroke", function(d){ return lightColors(selectedRegion) })
+                  .attr("stroke", function(d){ return Colors(selectedRegion) })
                   .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
                   .style("stroke-width", 2)
                   .style("fill", "none")
@@ -1114,7 +1116,7 @@ const formatTime = d3.timeFormat("%b. %Y");
       // .attr("height", function(d) { return height - y(d.new_cases); })
       .attr("height", function(d) { return height_cases - y_cases(d.new_cases); })
       
-      .attr("fill", function(d){ return myColor(selectedRegion) })
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
       // .attr("transform", "translate(" + margin.left + "," + height + ")")
 
   // If less group in the new dataset, I delete the ones not in use anymore
@@ -1151,8 +1153,9 @@ svg_cases.selectAll('path').remove();
     .append('path')
     .datum(data_map)
     .attr('fill', 'none')
-    .attr('stroke', '#000000')
-    .attr('stroke-width', 1.5)
+   //  .attr('stroke', '#000000')
+   .attr("stroke", function(d){ return Colors(selectedRegion) })
+    .attr('stroke-width', 2.5)
     .attr('stroke-linejoin', 'round')
     .attr('stroke-linecap', 'round')
     .attr('d', line).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
@@ -1215,7 +1218,7 @@ svg_cases.selectAll('path').remove();
       // .attr("height", function(d) { return height - y(d.new_cases); })
       .attr("height", function(d) { return height_cases - y_deaths(d.new_deaths); })
       
-      .attr("fill", function(d){ return myColor(selectedRegion) })
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
       // .attr("transform", "translate(" + margin.left + "," + height + ")")
 
   // If less group in the new dataset, I delete the ones not in use anymore
@@ -1252,8 +1255,9 @@ svg_deaths.selectAll('path').remove();
     .append('path')
     .datum(data_map)
     .attr('fill', 'none')
-    .attr('stroke', '#000000')
-    .attr('stroke-width', 1.5)
+   //  .attr('stroke', '#000000')
+    .attr("stroke", function(d){ return Colors(selectedRegion) })
+    .attr('stroke-width', 2.5)
     .attr('stroke-linejoin', 'round')
     .attr('stroke-linecap', 'round')
     .attr('d', lineA).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
