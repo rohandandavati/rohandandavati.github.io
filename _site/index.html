@@ -309,19 +309,19 @@
       return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
    }
    
-  
+  //orginal colors sent
    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
-   //old before lighten
-   var hexColorsLight = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
    
-   //old after light
-   // hexColorsLight 
    
-   var i;
-   for (i = 0; i < hexColorsLight.length; i++) {
-      hexColorsLight[i] = LightenDarkenColor(hexColorsLight[i], -70)
-   }
-   console.log(hexColorsLight)
+   var hexColorsLight = ["#c0514c", "#c08bbe","#94d4ca", "#f9bc65", "#a0a0a0", "#c3c0df", "#f58b7c", "#8bb5e0", "#bad96f", "#f9cce0", "#ecd056", "#dfc8a5"]
+   
+   var hexColorsLighter = ["#c76460", "#c798c5","#a0d9d0", "#fac376", "#ababab", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#e3ceaf"]
+   
+   var hexColorsLightest = ["#ce7774", "#cea5cc","#acded6", "#facb87", "#b5b5b5", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#e6d4b9"]
+   
+   
+   
+   
    
    let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
                    "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
@@ -343,9 +343,10 @@
     .attr("class", "dropdown-item")
     
    var myColor = d3.scaleOrdinal().domain(allGroup)
-     .range(hexColors)
+     .range(hexColorsLightest)
    var lightColors = d3.scaleOrdinal().domain(allGroup)
-     .range(hexColorsLight)
+   //  .range(hexColorsLight)
+     .range(hexColors)
    
    var countyMap = {
       "ADAMS": {
@@ -859,10 +860,10 @@ function drawChart() {
        .attr("fill", function(d){ 
          if (selectedRegion.localeCompare("illinois") === 0) {
             // console.log('hi')
-            return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+            return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
          } else {
              if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
-                   return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                   return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
             } else {
                      return "#7E7E7E" 
             }
@@ -871,12 +872,12 @@ function drawChart() {
       .attr("stroke", function(d){ 
 	                 
            if (selectedRegion.localeCompare("illinois") === 0) {
-               return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+               return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
             } else {
            if (
              countyMap[d.properties.COUNTY_NAM].covid_region ===
              parseInt(selectedRegion.split('_')[1])) {
-                   return lightColors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                   return myColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
             } else {
                return "#AAAAAA" 
             }
