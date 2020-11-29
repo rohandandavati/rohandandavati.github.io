@@ -789,8 +789,10 @@ while (index >= 0) {
   var prev_cases = 0;
   var prev_region = "";
   var prev_deaths = 0;
+  var prev_test = 0;
   var cases_max_diff = {};
   var deaths_max_diff = {};
+  var tests_max_diff = {};
 //   parseDate = d3.timeParse("%Y-%m-%d");
 
 data[2].forEach((d) => {
@@ -801,24 +803,37 @@ data[2].forEach((d) => {
     d.Deaths = +d.Deaths;
     d.new_cases = 0;
     d.new_deaths = 0;
+    d.new_tests = 0;
     
+    //if it's a new region (different from last line)
     if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
       //  console.log(d.NOFO_Region)
+      
+      //set 
        cases_max_diff[d.NOFO_Region] = 0;
        deaths_max_diff[d.NOFO_Region] = 0;
+       tests_max_diff[d.NOFO_Region] = 0;
        
-       prev_cases = d.Positive_Cases;
-       d.new_cases = d.Positive_Cases;
+      prev_cases = d.Positive_Cases;
+      d.new_cases = d.Positive_Cases;
        
       prev_deaths = d.Deaths;
       d.new_deaths = d.Deaths;
+      
+      prev_test = d.Tested;
+      d.new_tests = d.Tested;
+      
       prev_region = d.NOFO_Region;
     } else {
+       
+       
       if (d.Positive_Cases < prev_cases) {
          d.new_cases = 0;
       } else {
          d.new_cases = d.Positive_Cases - prev_cases;
       }
+      
+      
       
       if (d.Deaths < prev_deaths) {
          d.new_deaths = 0;
@@ -826,14 +841,29 @@ data[2].forEach((d) => {
       } else {
          d.new_deaths = d.Deaths - prev_deaths;
       }
+      if (d.Tested < prev_test) {
+         d.new_tests = 0;
+         
+      } else {
+         d.new_tests = d.Tested - prev_test;
+      }
+      
+      
+      
       if( d.new_cases > cases_max_diff[d.NOFO_Region] ) {
          cases_max_diff[d.NOFO_Region] = d.new_cases;
       }
       if( d.new_deaths > deaths_max_diff[d.NOFO_Region] ) {
          deaths_max_diff[d.NOFO_Region] = d.new_deaths;
       } 
+      
+      if( d.new_tests > tests_max_diff[d.NOFO_Region] ) {
+         tests_max_diff[d.NOFO_Region] = d.new_tests;
+      } 
+      
        prev_cases = d.Positive_Cases;
        prev_deaths = d.Deaths;
+       prev_test = d.Tested;
        prev_region = d.NOFO_Region;
     }  
   });
@@ -1152,8 +1182,46 @@ const formatTime = d3.timeFormat("%b. %Y");
   .domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
   .range([height_cases, 0]);
   
+    y_test_pos
+  .domain([0, d3.max(data_map, function(d) { return d.new_tests; })])
+  .range([height_cases, 0]);
+  
 // var y_axis = svg.append("g")
  y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
+
+
+y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_test_pos));
+
+console.log(data_map)
+
+  var t = svg_test_pos.selectAll("rect")
+    .data(data_map)
+
+  t
+    .enter()
+    .append("rect") // Add a new rect for each new elements
+    .merge(t) // get the already existing elements as well
+    .transition() // and apply changes to all of them
+    
+    .duration(1000)
+    
+      .attr("x", function(d) { return x_test_pos(d.update_date); })
+      .attr("y", function(d) { return y_test_pos(d.new_tests); })
+      .attr("width", x_test_pos.bandwidth())
+      // .attr("height", function(d) { return height - y(d.new_cases); })
+      .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
+      
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      // .attr("transform", "translate(" + margin.left + "," + height + ")")
+
+  // If less group in the new dataset, I delete the ones not in use anymore
+  t
+    .exit()
+    .remove()
+    
+   // u
+   svg_test_pos.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+
 
   // Create the u variable
   var u = svg_cases.selectAll("rect")
