@@ -1150,8 +1150,38 @@ console.log(data_map)
     .exit()
     .remove()
     
+    
+//  var t = svg_test_pos.selectAll("rect")
+//     .data(data_map)
+
+  t
+    .enter()
+    .append("rect") // Add a new rect for each new elements
+    .merge(t) // get the already existing elements as well
+    .transition() // and apply changes to all of them
+    
+    .duration(1000)
+    
+      .attr("x", function(d) { return x_test_pos(d.update_date); })
+      .attr("y", function(d) { return y_test_pos(d.new_cases); })
+      .attr("width", x_test_pos.bandwidth())
+      // .attr("height", function(d) { return height - y(d.new_cases); })
+      .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
+      
+      .attr("fill", "#fed388")
+      // .attr("transform", "translate(" + margin.left + "," + height + ")")
+
+  // If less group in the new dataset, I delete the ones not in use anymore
+  t
+    .exit()
+    .remove()
+    
    // u
    svg_test_pos.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+
+
+
+
 
 
   // Create the u variable
