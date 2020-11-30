@@ -678,9 +678,15 @@ var svg_test_pos = d3.select("#test_pos").append("svg")
    		var path = d3.geoPath()
 	
 	
+// 	var files = ['https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
+// 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
+// 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv']
+
 	var files = ['https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
-	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv']
+	           'https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long']
+	           
+	           
 
 var promises = [];
 
@@ -825,7 +831,8 @@ var x_axis_tests = svg_test_pos.append("g")
 var y_axis_tests = svg_test_pos.append("g")
 
 function drawChart() {
-   
+   // console.log(data[1])
+   // console.log(data[2])
    
 
    var map_wid = document.getElementById("cases_map").offsetWidth;
@@ -898,7 +905,7 @@ function drawChart() {
     var x0 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataFilter, x0, 1);
     var selectedData = dataFilter[i]
-    console.log(selectedData)
+   //  console.log(selectedData)
     focus
       .attr("cx", x_rt(selectedData.date))
       .attr("cy", y_rt(selectedData.rt_median))
@@ -1123,7 +1130,7 @@ const formatTime = d3.timeFormat("%b. %Y");
 
 y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_test_pos));
 
-console.log(data_map)
+// console.log(data_map)
 
   var t = svg_test_pos.selectAll("rect")
     .data(data_map)
@@ -1132,9 +1139,9 @@ console.log(data_map)
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(t) // get the already existing elements as well
-    .transition() // and apply changes to all of them
+   //  .transition() // and apply changes to all of them
     
-    .duration(1000)
+   //  .duration(1000)
     
       .attr("x", function(d) { return x_test_pos(d.update_date); })
       .attr("y", function(d) { return y_test_pos(d.new_tests); })
@@ -1157,10 +1164,10 @@ console.log(data_map)
   t
     .enter()
     .append("rect") // Add a new rect for each new elements
-    .merge(t) // get the already existing elements as well
-    .transition() // and apply changes to all of them
+   //  .merge(t) // get the already existing elements as well
+   //  .transition() // and apply changes to all of them
     
-    .duration(1000)
+   //  .duration(1000)
     
       .attr("x", function(d) { return x_test_pos(d.update_date); })
       .attr("y", function(d) { return y_test_pos(d.new_cases); })
@@ -1172,9 +1179,9 @@ console.log(data_map)
       // .attr("transform", "translate(" + margin.left + "," + height + ")")
 
   // If less group in the new dataset, I delete the ones not in use anymore
-  t
-    .exit()
-    .remove()
+//  t
+//     .exit()
+//     .remove()
     
    // u
    svg_test_pos.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
@@ -1192,9 +1199,9 @@ console.log(data_map)
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(u) // get the already existing elements as well
-    .transition() // and apply changes to all of them
+   //  .transition() // and apply changes to all of them
     
-    .duration(1000)
+   //  .duration(1000)
     
       .attr("x", function(d) { return x_cases(d.update_date); })
       .attr("y", function(d) { return y_cases(d.new_cases); })
@@ -1294,9 +1301,9 @@ svg_cases.selectAll('path').remove();
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(i) // get the already existing elements as well
-    .transition() // and apply changes to all of them
+   //  .transition() // and apply changes to all of them
     
-    .duration(1000)
+   //  .duration(1000)
     
       .attr("x", function(d) { return x_deaths(d.update_date); })
       .attr("y", function(d) { return y_deaths(d.new_deaths); })
