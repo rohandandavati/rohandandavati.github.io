@@ -656,22 +656,25 @@ var svg_test_pos = d3.select("#test_pos").append("svg")
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
-  // Create the circle that travels along the curve of chart
-  var focus = svg_rt
-    .append('g')
-    .append('circle')
-      .style("fill", "none")
-      .attr("stroke", "black")
-      .attr('r', 8.5)
-      .style("opacity", 0).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+//  // Create the circle that travels along the curve of chart
+//  var focus = svg_rt
+//     .append('g')
+//     .append('circle')
+//       .style("fill", "none")
+//       .attr("stroke", "black")
+//       .attr('r', 4.5)
+//       .style("opacity", 0).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-  // Create the text that travels along the curve of chart
-  var focusText = svg_rt
-    .append('g')
-    .append('text')
-      .style("opacity", 0)
-      .attr("text-anchor", "left")
-      .attr("alignment-baseline", "middle").attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+//  // Create the text that travels along the curve of chart
+//  var focusText = svg_rt
+//     .append('g')
+//     .append('text')
+//       .style("opacity", 0)
+//       .attr("text-anchor", "left")
+//       .attr("alignment-baseline", "middle").attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+      
+
+   
 
    
    		var projection = d3.geoAlbers()
@@ -893,31 +896,69 @@ function drawChart() {
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
            
            
-        // What happens when the mouse move -> show the annotations at the right positions.
-  function mouseover() {
-    focus.style("opacity", 1)
-    focusText.style("opacity",1)
+           
+        var Tooltip = d3.select("#rt_chart")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+     // Three function that change the tooltip when user hover / move / leave a cell
+  var mouseover = function(d) {
+    Tooltip
+      .style("opacity", 1)
+    d3.select(this)
+      .style("stroke", "black")
+      .style("opacity", 1)
   }
-
-  function mousemove() {
-    // recover coordinate we need
-    var formatTime = d3.timeFormat("%B %d")
+  var mousemove = function(d) {
+         var formatTime = d3.timeFormat("%B %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataFilter, x0, 1);
     var selectedData = dataFilter[i]
-   //  console.log(selectedData)
-    focus
-      .attr("cx", x_rt(selectedData.date))
-      .attr("cy", y_rt(selectedData.rt_median))
-    focusText
-      .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" +  parseFloat((selectedData.rt_median)).toFixed(2))
-      .attr("x", x_rt(selectedData.date ))
-      .attr("y", y_rt(selectedData.rt_median))
-    }
-  function mouseout() {
-    focus.style("opacity", 0)
-    focusText.style("opacity", 0)
+    Tooltip
+      .html("The exact value of<br>this cell is: " + selectedData.rt_median)
+      // .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("left", x_rt(selectedData.date) + "px")
+      .style("top",  y_rt(selectedData.rt_median) + "px")
   }
+  var mouseleave = function(d) {
+    Tooltip
+      .style("opacity", 0)
+    d3.select(this)
+      .style("stroke", "none")
+      .style("opacity", 0.8)
+  }
+           
+//        // What happens when the mouse move -> show the annotations at the right positions.
+//  function mouseover() {
+//     focus.style("opacity", 1)
+//     focusText.style("opacity",1)
+//  }
+
+//  function mousemove() {
+//     // recover coordinate we need
+//     var formatTime = d3.timeFormat("%B %d")
+//     var x0 = x_rt.invert(d3.mouse(this)[0]);
+//     var i = bisect(dataFilter, x0, 1);
+//     var selectedData = dataFilter[i]
+//    //  console.log(selectedData)
+//     focus
+//       .attr("cx", x_rt(selectedData.date))
+//       .attr("cy", y_rt(selectedData.rt_median))
+//     focusText
+//       .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" +  parseFloat((selectedData.rt_median)).toFixed(2))
+      
+//       .attr("x", x_rt(selectedData.date ))
+//       .attr("y", y_rt(selectedData.rt_median))
+//     }
+//  function mouseout() {
+//     focus.style("opacity", 0)
+//     focusText.style("opacity", 0)
+//  }
   
   
     x_rt.domain(d3.extent(data[1] , function(d) { return d.date}))
@@ -1018,9 +1059,12 @@ function drawChart() {
     .style("pointer-events", "all")
     .attr('width', width_rt)
     .attr('height', height_rt)
-    .on('mouseover', mouseover)
-    .on('mousemove', mousemove)
-    .on('mouseout', mouseout);
+   //  .on('mouseover', mouseover)
+   //  .on('mousemove', mousemove)
+   //  .on('mouseout', mouseout);
+       .on("mouseover", mouseover)
+    .on("mousemove", mousemove)
+    .on("mouseleave", mouseleave)
 
 
       
