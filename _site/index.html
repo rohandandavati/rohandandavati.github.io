@@ -990,7 +990,7 @@ function drawChart() {
     var i = bisect(dataFilter, x0, 1);
     var selectedData = dataFilter[i]
     Tooltip
-      .html("The exact value of<br>this cell is: " + selectedData.rt_median)
+      .html("The exact value of<br>this cell is: " + parseFloat((selectedData.rt_median)).toFixed(2))
       // .style("left", (d3.mouse(this)[0]+70) + "px")
       .style("left", (x_rt(selectedData.date)+90) + "px")
       .style("top",  (y_rt(selectedData.rt_median)+40) + "px")
