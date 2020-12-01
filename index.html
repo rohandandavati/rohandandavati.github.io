@@ -656,14 +656,14 @@ var svg_test_pos = d3.select("#test_pos").append("svg")
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
-//  // Create the circle that travels along the curve of chart
-//  var focus = svg_rt
-//     .append('g')
-//     .append('circle')
-//       .style("fill", "none")
-//       .attr("stroke", "black")
-//       .attr('r', 4.5)
-//       .style("opacity", 0).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+ // Create the circle that travels along the curve of chart
+ var focus = d3.select("#rt_chart")
+    .append('g')
+    .append('circle')
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .attr('r', 4.5)
+      .style("opacity", 0).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
 //  // Create the text that travels along the curve of chart
 //  var focusText = svg_rt
@@ -908,11 +908,12 @@ function drawChart() {
     .style("padding", "5px")
      // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function(d) {
+     focus.style("opacity", 1)
     Tooltip
       .style("opacity", 1)
-    d3.select(this)
-      .style("stroke", "black")
-      .style("opacity", 1)
+   //  d3.select(this)
+   //    .style("stroke", "black")
+   //    .style("opacity", 1)
   }
   var mousemove = function(d) {
          var formatTime = d3.timeFormat("%B %d")
@@ -922,15 +923,19 @@ function drawChart() {
     Tooltip
       .html("The exact value of<br>this cell is: " + selectedData.rt_median)
       // .style("left", (d3.mouse(this)[0]+70) + "px")
-      .style("left", x_rt(selectedData.date) + "px")
-      .style("top",  y_rt(selectedData.rt_median) + "px")
+      .style("left", (x_rt(selectedData.date)+90) + "px")
+      .style("top",  (y_rt(selectedData.rt_median)+40) + "px")
+   focus
+      .attr("cx", x_rt(selectedData.date))
+      .attr("cy", y_rt(selectedData.rt_median))
   }
   var mouseleave = function(d) {
+     focus.style("opacity", 0)
     Tooltip
       .style("opacity", 0)
-    d3.select(this)
-      .style("stroke", "none")
-      .style("opacity", 0.8)
+   //  d3.select(this)
+   //    .style("stroke", "none")
+   //    .style("opacity", 0.8)
   }
            
 //        // What happens when the mouse move -> show the annotations at the right positions.
@@ -1015,6 +1020,7 @@ function drawChart() {
       
       x_rt.range([ 0, width_rt ]);
       x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + (margin_rt.top + height_rt) + ")")
+      // x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top+ ")")
       // .call(d3.axisBottom(x_rt).ticks(5));
       if (currentWidth < 600) {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
@@ -1064,7 +1070,7 @@ function drawChart() {
    //  .on('mouseout', mouseout);
        .on("mouseover", mouseover)
     .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave)
+    .on("mouseleave", mouseleave).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
 
       
@@ -1397,7 +1403,8 @@ svg_deaths.selectAll('path').remove();
     .attr('stroke-width', 2.5)
     .attr('stroke-linejoin', 'round')
     .attr('stroke-linecap', 'round')
-    .attr('d', lineA).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
+    .attr('d', lineA)
+    .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
     
 
     }
