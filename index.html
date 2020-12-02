@@ -285,7 +285,7 @@ title: Home
    //  .range(hexColorsLight)
      .range(mapFill)
      
-    var Colors = d3.scaleOrdinal().domain(allGroup)
+    var colors = d3.scaleOrdinal().domain(allGroup)
    //  .range(hexColorsLight)
      .range(hexColors)
      
@@ -865,10 +865,10 @@ function drawChart() {
        .attr("fill", function(d){ 
          if (selectedRegion.localeCompare("illinois") === 0) {
             // console.log('hi')
-            return Colors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
+            return colors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
          } else {
              if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
-                   return Colors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
+                   return colors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) 
             } else {
                      return "#7E7E7E" 
             }
@@ -982,7 +982,7 @@ function drawChart() {
 
     
    line_rt.datum(dataFilter)
-                  .attr("stroke", function(d){ return Colors(selectedRegion) })
+                  .attr("stroke", function(d){ return colors(selectedRegion) })
                   .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
                   .style("stroke-width", 2)
                   .style("fill", "none")
@@ -1182,51 +1182,144 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
 
 // console.log(data_map)
 
-  var t = svg_test_pos.selectAll("rect")
-    .data(data_map)
-
-  t
-    .enter()
-    .append("rect") // Add a new rect for each new elements
-    .merge(t) // get the already existing elements as well
-   //  .transition() // and apply changes to all of them
-    
-   //  .duration(1000)
-    
-      .attr("x", function(d) { return x_test_pos(d.update_date); })
-      .attr("y", function(d) { return y_test_pos(d.new_tests); })
-      .attr("width", x_test_pos.bandwidth())
-      // .attr("height", function(d) { return height - y(d.new_cases); })
-      .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
-      
-      .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      // .attr("transform", "translate(" + margin.left + "," + height + ")")
-
-  // If less group in the new dataset, I delete the ones not in use anymore
-  t
-    .exit()
-    .remove()
-    
-    
 //  var t = svg_test_pos.selectAll("rect")
 //     .data(data_map)
 
-  t
-    .enter()
-    .append("rect") // Add a new rect for each new elements
-   //  .merge(t) // get the already existing elements as well
-   //  .transition() // and apply changes to all of them
+//  t
+//     .enter()
+//     .append("rect") // Add a new rect for each new elements
+//     .merge(t) // get the already existing elements as well
+//    //  .transition() // and apply changes to all of them
     
-   //  .duration(1000)
+//    //  .duration(1000)
     
-      .attr("x", function(d) { return x_test_pos(d.update_date); })
-      .attr("y", function(d) { return y_test_pos(d.new_cases); })
-      .attr("width", x_test_pos.bandwidth())
-      // .attr("height", function(d) { return height - y(d.new_cases); })
-      .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
+//       .attr("x", function(d) { return x_test_pos(d.update_date); })
+//       .attr("y", function(d) { return y_test_pos(d.new_tests); })
+//       .attr("width", x_test_pos.bandwidth())
+//       // .attr("height", function(d) { return height - y(d.new_cases); })
+//       .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
       
-      .attr("fill", "#fed388")
-      // .attr("transform", "translate(" + margin.left + "," + height + ")")
+//       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      
+//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
+
+//  // If less group in the new dataset, I delete the ones not in use anymore
+//  t
+//     .exit()
+//     .remove()
+
+   //  var t = svg_test_pos.selectAll(".bar1")
+   //  .data(data_map)
+    
+   //  t.enter().append("rect").merge(t)
+   //    .attr("class", "bar1")
+   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
+   //    .attr("y", function(d) { return y_test_pos(d.new_tests); })
+   //    .attr("width",  x_test_pos.bandwidth())
+   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
+   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      
+   //     t
+   //  .exit()
+   //  .remove()
+    
+   //  svg_test_pos.selectAll(".bar1")
+   //  .data(data_map)
+   //  .enter().append("rect")
+   //    .attr("class", "bar1")
+   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
+   //    .attr("y", function(d) { return y_test_pos(d.new_tests); })
+   //    .attr("width",  x_test_pos.bandwidth())
+   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
+   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      
+   //     svg_test_pos.selectAll(".bar2")
+   //  .data(data_map)
+   //  .enter().append("rect")
+   //    .attr("class", "bar2")
+   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
+   //    .attr("y", function(d) { return y_test_pos(d.new_cases); })
+   //    .attr("width",  x_test_pos.bandwidth())
+   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
+   //    .attr("fill", function(d){ return colors(selectedRegion) })   
+   //        var d = svg_test_pos.selectAll("rect")
+   //  .data(data_map)
+      
+       var t = svg_test_pos.selectAll(".bar1")
+    .data(data_map)
+   
+   // svg_test_pos.selectAll(".bar1")
+   //  .data(data_map)
+    t.enter().append("rect").merge(t)
+      .attr("class", "bar1")
+      .attr("x", function(d) { return x_test_pos(d.update_date)})
+      .attr("y", function(d) { return y_test_pos(d.new_tests); })
+      .attr("width",  x_test_pos.bandwidth())
+      .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      
+      t
+    .exit()
+    .remove()
+    
+      var b =  svg_test_pos.selectAll(".bar2")
+    .data(data_map)
+    
+    b.enter().append("rect").merge(b)
+      .attr("class", "bar2")
+      .attr("x", function(d) { return x_test_pos(d.update_date)})
+      .attr("y", function(d) { return y_test_pos(d.new_cases); })
+      .attr("width",  x_test_pos.bandwidth())
+      .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
+      .attr("fill", function(d){ return colors(selectedRegion) })   
+      
+   b
+    .exit()
+    .remove()
+      
+      
+   //  d.exit()
+   //  .remove()
+      
+      
+      //       .attr("x", function(d) { return x_test_pos(d.update_date); })
+//       .attr("y", function(d) { return y_test_pos(d.new_cases); })
+//       .attr("width", x_test_pos.bandwidth())
+//       // .attr("height", function(d) { return height - y(d.new_cases); })
+//       .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
+      
+//       .attr("fill", "#fed388")
+//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
+
+//  svg_test_pos.selectAll(".bar2")
+//     .data(data)
+//     .enter().append("rect")
+//       .attr("class", "bar2")
+//       .attr("x", 0)
+//       .attr("y", function(d) { return y(d.letter); })
+//       .attr("width", function(d) { return x(d.col2); })
+//       .attr("height", y.bandwidth());
+
+
+//  var t = svg_test_pos.selectAll("rect")
+//     .data(data_map)
+
+//  t
+//     .enter()
+//     .append("rect") // Add a new rect for each new elements
+//    //  .merge(t) // get the already existing elements as well
+//    //  .transition() // and apply changes to all of them
+    
+//    //  .duration(1000)
+    
+//       .attr("x", function(d) { return x_test_pos(d.update_date); })
+//       .attr("y", function(d) { return y_test_pos(d.new_cases); })
+//       .attr("width", x_test_pos.bandwidth())
+//       // .attr("height", function(d) { return height - y(d.new_cases); })
+//       .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
+      
+//       .attr("fill", "#fed388")
+//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
 
   // If less group in the new dataset, I delete the ones not in use anymore
 //  t
@@ -1297,7 +1390,7 @@ svg_cases.selectAll('path').remove();
     .datum(data_map)
     .attr('fill', 'none')
    //  .attr('stroke', '#000000')
-   .attr("stroke", function(d){ return Colors(selectedRegion) })
+   .attr("stroke", function(d){ return colors(selectedRegion) })
     .attr('stroke-width', 2.5)
     .attr('stroke-linejoin', 'round')
     .attr('stroke-linecap', 'round')
@@ -1399,7 +1492,7 @@ svg_deaths.selectAll('path').remove();
     .datum(data_map)
     .attr('fill', 'none')
    //  .attr('stroke', '#000000')
-    .attr("stroke", function(d){ return Colors(selectedRegion) })
+    .attr("stroke", function(d){ return colors(selectedRegion) })
     .attr('stroke-width', 2.5)
     .attr('stroke-linejoin', 'round')
     .attr('stroke-linecap', 'round')
