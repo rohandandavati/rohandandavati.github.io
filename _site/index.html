@@ -312,17 +312,48 @@
       return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
    }
    
-  //orginal colors sent
-   var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
+//  //orginal colors sent
+//    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
+   
+//    // var mapFill = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
+//    var mapFill = ["#740000", "#743971", "#438a7f", "#b36f0e", "#505050", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#967c56"]
+   
+//    var hexColorsLight = ["#c0514c", "#c08bbe","#94d4ca", "#f9bc65", "#a0a0a0", "#c3c0df", "#f58b7c", "#8bb5e0", "#bad96f", "#f9cce0", "#ecd056", "#dfc8a5"]
+   
+//    var hexColorsLighter = ["#c76460", "#c798c5","#a0d9d0", "#fac376", "#ababab", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#e3ceaf"]
+   
+//    var hexColorsLightest = ["#ce7774", "#cea5cc","#acded6", "#facb87", "#b5b5b5", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#e6d4b9"]
+   
+   //region color swap issue #29
+     //orginal colors sent
+   //  "#BA3E39"
+   //  "#969696"
+   //  "#DCC29C"
+   var hexColors = ["#969696", "#BA7FB7","#89D0C5", "#F9B554", "#DCC29C", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#BA3E39"] 
    
    // var mapFill = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
-   var mapFill = ["#740000", "#743971", "#438a7f", "#b36f0e", "#505050", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#967c56"]
    
-   var hexColorsLight = ["#c0514c", "#c08bbe","#94d4ca", "#f9bc65", "#a0a0a0", "#c3c0df", "#f58b7c", "#8bb5e0", "#bad96f", "#f9cce0", "#ecd056", "#dfc8a5"]
+   // "#740000"
+   // "#505050"
+   // "#967c56"
+   var mapFill = ["#505050", "#743971", "#438a7f", "#b36f0e", "#967c56", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#740000"]
+   // "#c0514c"
+   // "#a0a0a0"
+   //  "#dfc8a5"
+   var hexColorsLight = ["#a0a0a0", "#c08bbe","#94d4ca", "#f9bc65", "#dfc8a5", "#c3c0df", "#f58b7c", "#8bb5e0", "#bad96f", "#f9cce0", "#ecd056", "#c0514c"]
+   // "#c76460"
+   // "#ababab"
+   // "#e3ceaf"
+   var hexColorsLighter = ["#ababab", "#c798c5","#a0d9d0", "#fac376", "#e3ceaf", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#c76460"]
+   // ce7774
+   // b5b5b5
+   // e6d4b9
+   var hexColorsLightest = ["#b5b5b5", "#cea5cc","#acded6", "#facb87", "#e6d4b9", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#ce7774"]
    
-   var hexColorsLighter = ["#c76460", "#c798c5","#a0d9d0", "#fac376", "#ababab", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#e3ceaf"]
    
-   var hexColorsLightest = ["#ce7774", "#cea5cc","#acded6", "#facb87", "#b5b5b5", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#e6d4b9"]
+   
+   
+   
    
    
    // var i;
@@ -734,16 +765,6 @@ var svg_test_pos = d3.select("#test_pos").append("svg")
       .attr('r', 4.5)
       .style("opacity", 0).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-//  // Create the text that travels along the curve of chart
-//  var focusText = svg_rt
-//     .append('g')
-//     .append('text')
-//       .style("opacity", 0)
-//       .attr("text-anchor", "left")
-//       .attr("alignment-baseline", "middle").attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
-      
-
-   
 
    
    		var projection = d3.geoAlbers()
@@ -906,6 +927,48 @@ function drawChart() {
    // console.log(data[1])
    // console.log(data[2])
    
+   let dict = {};
+      dict["illinois"] = "Illinois";
+      dict["covidregion_1"] = "Central";
+      dict["covidregion_2"] = "Chicago";
+      dict["covidregion_3"] = "Collar";
+      dict["covidregion_4"] = "West Central";
+      dict["covidregion_5"] = "North Central";
+      dict["covidregion_6"] = "Northern";
+      dict["covidregion_7"] = "Northwest";
+      dict["covidregion_8"] = "Southeast Central";
+      dict["covidregion_9"] = "Southern";
+      dict["covidregion_10"] = "Southwest Central";
+      dict["covidregion_11"] = "Suburban";
+      
+      var currentWidth = document.getElementById("rt_chart").offsetWidth;
+      
+      const width_rt = currentWidth- margin_rt.left - margin_rt.right;
+      let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
+
+      if (parseInt(currentWidth) < 600) {
+         height_rt = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
+         // console.log("hi")
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_rt = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
+      }
+
+         
+      currentWidth = document.getElementById("cases_chart").offsetWidth;
+      const width_cases = currentWidth- margin_cases.left - margin_cases.right;
+      let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
+      
+      
+            
+      if (parseInt(currentWidth) < 600) {
+         height_cases = parseInt(currentWidth * .72) - margin_cases.top - margin_cases.bottom;
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_cases = parseInt(currentWidth * .62) - margin_cases.top - margin_cases.bottom;
+      }
+      
+
 
    var map_wid = document.getElementById("cases_map").offsetWidth;
    var map_hid = map_wid *2;
@@ -963,9 +1026,7 @@ function drawChart() {
  
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
-           
-           
-           
+
         var Tooltip = d3.select("#rt_chart")
     .append("div")
     .style("opacity", 0)
@@ -1006,33 +1067,6 @@ function drawChart() {
    //    .style("stroke", "none")
    //    .style("opacity", 0.8)
   }
-           
-//        // What happens when the mouse move -> show the annotations at the right positions.
-//  function mouseover() {
-//     focus.style("opacity", 1)
-//     focusText.style("opacity",1)
-//  }
-
-//  function mousemove() {
-//     // recover coordinate we need
-//     var formatTime = d3.timeFormat("%B %d")
-//     var x0 = x_rt.invert(d3.mouse(this)[0]);
-//     var i = bisect(dataFilter, x0, 1);
-//     var selectedData = dataFilter[i]
-//    //  console.log(selectedData)
-//     focus
-//       .attr("cx", x_rt(selectedData.date))
-//       .attr("cy", y_rt(selectedData.rt_median))
-//     focusText
-//       .html("<br>" + formatTime(selectedData.date) + "  " + "Rt:" +  parseFloat((selectedData.rt_median)).toFixed(2))
-      
-//       .attr("x", x_rt(selectedData.date ))
-//       .attr("y", y_rt(selectedData.rt_median))
-//     }
-//  function mouseout() {
-//     focus.style("opacity", 0)
-//     focusText.style("opacity", 0)
-//  }
   
   
     x_rt.domain(d3.extent(data[1] , function(d) { return d.date}))
@@ -1063,19 +1097,6 @@ function drawChart() {
                   .style("stroke-dasharray", ("3, 3"))
                   .style("fill", "none")              
 
-      
-      var currentWidth = document.getElementById("rt_chart").offsetWidth;
-      
-      const width_rt = currentWidth- margin_rt.left - margin_rt.right;
-      let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
-
-      if (parseInt(currentWidth) < 600) {
-         height_rt = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
-         // console.log("hi")
-      }
-      else if (parseInt(currentWidth) < 900) {
-         height_rt = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
-      }
 
       
       svg_rt.attr("width", width_rt + margin_rt.left + margin_rt.right)
@@ -1134,45 +1155,11 @@ function drawChart() {
     .style("pointer-events", "all")
     .attr('width', width_rt)
     .attr('height', height_rt)
-   //  .on('mouseover', mouseover)
-   //  .on('mousemove', mousemove)
-   //  .on('mouseout', mouseout);
        .on("mouseover", mouseover)
     .on("mousemove", mousemove)
     .on("mouseleave", mouseleave).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
 
-      
-      currentWidth = document.getElementById("cases_chart").offsetWidth;
-      const width_cases = currentWidth- margin_cases.left - margin_cases.right;
-      let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
-      
-      
-            
-      if (parseInt(currentWidth) < 600) {
-         height_cases = parseInt(currentWidth * .72) - margin_cases.top - margin_cases.bottom;
-      }
-      else if (parseInt(currentWidth) < 900) {
-         height_cases = parseInt(currentWidth * .62) - margin_cases.top - margin_cases.bottom;
-      }
-      
-      
-      // svg_cases.attr("width", width_cases + margin_cases.left + margin_cases.right)
-      //          .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
-
-      let dict = {};
-      dict["illinois"] = "Illinois";
-      dict["covidregion_1"] = "Central";
-      dict["covidregion_2"] = "Chicago";
-      dict["covidregion_3"] = "Collar";
-      dict["covidregion_4"] = "West Central";
-      dict["covidregion_5"] = "North Central";
-      dict["covidregion_6"] = "Northern";
-      dict["covidregion_7"] = "Northwest";
-      dict["covidregion_8"] = "Southeast Central";
-      dict["covidregion_9"] = "Southern";
-      dict["covidregion_10"] = "Southwest Central";
-      dict["covidregion_11"] = "Suburban";
    
         
    var selectedGroupCases = dict[selectedRegion]
@@ -1249,70 +1236,7 @@ const formatTime = d3.timeFormat("%b. %Y");
 
 y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_test_pos));
 
-// console.log(data_map)
 
-//  var t = svg_test_pos.selectAll("rect")
-//     .data(data_map)
-
-//  t
-//     .enter()
-//     .append("rect") // Add a new rect for each new elements
-//     .merge(t) // get the already existing elements as well
-//    //  .transition() // and apply changes to all of them
-    
-//    //  .duration(1000)
-    
-//       .attr("x", function(d) { return x_test_pos(d.update_date); })
-//       .attr("y", function(d) { return y_test_pos(d.new_tests); })
-//       .attr("width", x_test_pos.bandwidth())
-//       // .attr("height", function(d) { return height - y(d.new_cases); })
-//       .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
-      
-//       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      
-//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
-
-//  // If less group in the new dataset, I delete the ones not in use anymore
-//  t
-//     .exit()
-//     .remove()
-
-   //  var t = svg_test_pos.selectAll(".bar1")
-   //  .data(data_map)
-    
-   //  t.enter().append("rect").merge(t)
-   //    .attr("class", "bar1")
-   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
-   //    .attr("y", function(d) { return y_test_pos(d.new_tests); })
-   //    .attr("width",  x_test_pos.bandwidth())
-   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
-   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      
-   //     t
-   //  .exit()
-   //  .remove()
-    
-   //  svg_test_pos.selectAll(".bar1")
-   //  .data(data_map)
-   //  .enter().append("rect")
-   //    .attr("class", "bar1")
-   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
-   //    .attr("y", function(d) { return y_test_pos(d.new_tests); })
-   //    .attr("width",  x_test_pos.bandwidth())
-   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
-   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      
-   //     svg_test_pos.selectAll(".bar2")
-   //  .data(data_map)
-   //  .enter().append("rect")
-   //    .attr("class", "bar2")
-   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
-   //    .attr("y", function(d) { return y_test_pos(d.new_cases); })
-   //    .attr("width",  x_test_pos.bandwidth())
-   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
-   //    .attr("fill", function(d){ return colors(selectedRegion) })   
-   //        var d = svg_test_pos.selectAll("rect")
-   //  .data(data_map)
       
        var t = svg_test_pos.selectAll(".bar1")
     .data(data_map)
@@ -1346,61 +1270,9 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
     .exit()
     .remove()
       
-      
-   //  d.exit()
-   //  .remove()
-      
-      
-      //       .attr("x", function(d) { return x_test_pos(d.update_date); })
-//       .attr("y", function(d) { return y_test_pos(d.new_cases); })
-//       .attr("width", x_test_pos.bandwidth())
-//       // .attr("height", function(d) { return height - y(d.new_cases); })
-//       .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
-      
-//       .attr("fill", "#fed388")
-//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
-
-//  svg_test_pos.selectAll(".bar2")
-//     .data(data)
-//     .enter().append("rect")
-//       .attr("class", "bar2")
-//       .attr("x", 0)
-//       .attr("y", function(d) { return y(d.letter); })
-//       .attr("width", function(d) { return x(d.col2); })
-//       .attr("height", y.bandwidth());
-
-
-//  var t = svg_test_pos.selectAll("rect")
-//     .data(data_map)
-
-//  t
-//     .enter()
-//     .append("rect") // Add a new rect for each new elements
-//    //  .merge(t) // get the already existing elements as well
-//    //  .transition() // and apply changes to all of them
-    
-//    //  .duration(1000)
-    
-//       .attr("x", function(d) { return x_test_pos(d.update_date); })
-//       .attr("y", function(d) { return y_test_pos(d.new_cases); })
-//       .attr("width", x_test_pos.bandwidth())
-//       // .attr("height", function(d) { return height - y(d.new_cases); })
-//       .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
-      
-//       .attr("fill", "#fed388")
-//       // .attr("transform", "translate(" + margin.left + "," + height + ")")
-
-  // If less group in the new dataset, I delete the ones not in use anymore
-//  t
-//     .exit()
-//     .remove()
     
    // u
    svg_test_pos.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
-
-
-
-
 
 
   // Create the u variable
@@ -1473,12 +1345,7 @@ svg_cases.selectAll('path').remove();
   
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
-   
-   
-//    var data_map = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
-   
-// const formatTime = d3.timeFormat("%b. %Y");
-//  const len = data.length - 1;
+
 
   x_deaths.domain(data_map.map(function(d) { return d.update_date; }))
   .range([0,width_cases])
@@ -1513,10 +1380,6 @@ svg_cases.selectAll('path').remove();
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(i) // get the already existing elements as well
-   //  .transition() // and apply changes to all of them
-    
-   //  .duration(1000)
-    
       .attr("x", function(d) { return x_deaths(d.update_date); })
       .attr("y", function(d) { return y_deaths(d.new_deaths); })
       .attr("width", x_deaths.bandwidth())
