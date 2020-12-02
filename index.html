@@ -199,6 +199,11 @@ title: Home
 <div class = "card deaths chart">
 <div id="test_pos"></div>
 </div>
+
+
+<div class = "card deaths chart">
+<div id="tests"></div>
+</div>
 <script>
    /* global d3 */
    /* global $ */
@@ -245,48 +250,23 @@ title: Home
    
 //  //orginal colors sent
 //    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
-   
-//    // var mapFill = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
 //    var mapFill = ["#740000", "#743971", "#438a7f", "#b36f0e", "#505050", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#967c56"]
-   
 //    var hexColorsLight = ["#c0514c", "#c08bbe","#94d4ca", "#f9bc65", "#a0a0a0", "#c3c0df", "#f58b7c", "#8bb5e0", "#bad96f", "#f9cce0", "#ecd056", "#dfc8a5"]
-   
 //    var hexColorsLighter = ["#c76460", "#c798c5","#a0d9d0", "#fac376", "#ababab", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#e3ceaf"]
-   
 //    var hexColorsLightest = ["#ce7774", "#cea5cc","#acded6", "#facb87", "#b5b5b5", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#e6d4b9"]
    
    //region color swap issue #29
-     //orginal colors sent
-   //  "#BA3E39"
-   //  "#969696"
-   //  "#DCC29C"
    var hexColors = ["#969696", "#BA7FB7","#89D0C5", "#F9B554", "#DCC29C", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#BA3E39"] 
    
-   // var mapFill = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
-   
-   // "#740000"
-   // "#505050"
-   // "#967c56"
    var mapFill = ["#505050", "#743971", "#438a7f", "#b36f0e", "#967c56", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#740000"]
-   // "#c0514c"
-   // "#a0a0a0"
-   //  "#dfc8a5"
+
    var hexColorsLight = ["#a0a0a0", "#c08bbe","#94d4ca", "#f9bc65", "#dfc8a5", "#c3c0df", "#f58b7c", "#8bb5e0", "#bad96f", "#f9cce0", "#ecd056", "#c0514c"]
-   // "#c76460"
-   // "#ababab"
-   // "#e3ceaf"
+
    var hexColorsLighter = ["#ababab", "#c798c5","#a0d9d0", "#fac376", "#e3ceaf", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#c76460"]
-   // ce7774
-   // b5b5b5
-   // e6d4b9
+
    var hexColorsLightest = ["#b5b5b5", "#cea5cc","#acded6", "#facb87", "#e6d4b9", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#ce7774"]
-   
-   
-   
-   
-   
-   
-   
+
+   var firstIteration = true;
    // var i;
    // for (i = 0; i < mapFill.length; i++) {
    //    mapFill[i] = LightenDarkenColor(mapFill[i], -70)
@@ -662,6 +642,7 @@ title: Home
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 40};
+   var margin_tests = {top: 15, right: 10, bottom: 50, left: 40};
    var svg_deaths = d3.select("#deaths_chart").append("svg")
 
 
@@ -684,6 +665,7 @@ title: Home
 var svg_cases = d3.select("#cases_chart").append("svg")
 
 var svg_test_pos = d3.select("#test_pos").append("svg")
+var svg_tests = d3.select("#tests").append("svg")
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
@@ -724,7 +706,7 @@ files.forEach(function(url) {
 
 Promise.all(promises).then(function(data) {
    
-   console.log(data[2])
+   // console.log(data[2])
  
 //clean rt    
 let parseDate = d3.timeParse("%Y-%m-%d");
@@ -851,8 +833,14 @@ var y_axis_deaths = svg_deaths.append("g")
 var x_test_pos= d3.scaleBand()
 var y_test_pos = d3.scaleLinear()
 
-var x_axis_tests = svg_test_pos.append("g")
-var y_axis_tests = svg_test_pos.append("g")
+var x_axis_tests_pos = svg_test_pos.append("g")
+var y_axis_tests_pos = svg_test_pos.append("g")
+
+
+var x_tests= d3.scaleBand()
+var y_tests = d3.scaleLinear()
+var x_axis_tests = svg_tests.append("g")
+var y_axis_tests = svg_tests.append("g")
 
 function drawChart() {
    // console.log(data[1])
@@ -1111,6 +1099,14 @@ function drawChart() {
   
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+          
+   svg_tests
+    .attr("width", width_cases + margin_tests.left + margin_tests.right)
+    .attr("height", height_cases + margin_tests.top + margin_tests.bottom)
+  .append("g")
+  
+    .attr("transform",
+          "translate(" + margin_tests.left + "," + margin_tests.top + ")");
    
    
    var data_map = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
@@ -1123,6 +1119,10 @@ const formatTime = d3.timeFormat("%b. %Y");
   .padding(0);
   
   x_test_pos.domain(data_map.map(function(d) { return d.update_date; }))
+  .range([0,width_cases])
+  .padding(0);
+  
+    x_tests.domain(data_map.map(function(d) { return d.update_date; }))
   .range([0,width_cases])
   .padding(0);
   
@@ -1140,7 +1140,7 @@ const formatTime = d3.timeFormat("%b. %Y");
        })
     );
     
- x_axis_tests
+ x_axis_tests_pos
  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
   .call(d3.axisBottom(x_test_pos)
   .tickValues(x_test_pos.domain().filter(function(d,i){ return !(i%30)}))
@@ -1152,7 +1152,20 @@ const formatTime = d3.timeFormat("%b. %Y");
       return r;
        })
     );
-
+    
+ x_axis_tests
+ .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+  .call(d3.axisBottom(x_tests)
+  .tickValues(x_tests.domain().filter(function(d,i){ return !(i%30)}))
+   //  .tickValues(tickValuesForAxis)
+    .tickFormat((d, i) => {
+      var r = '';
+      var dt = d; //console.log(d)
+      if ((i%30) || i == len) r = formatTime(dt);
+      return r;
+       })
+    );
+    
   y_cases
   .domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
   .range([height_cases, 0]);
@@ -1161,13 +1174,39 @@ const formatTime = d3.timeFormat("%b. %Y");
   .domain([0, d3.max(data_map, function(d) { return d.new_tests; })])
   .range([height_cases, 0]);
   
+      y_tests
+  .domain([0, d3.max(data_map, function(d) { return d.new_tests; })])
+  .range([height_cases, 0]);
+  
 // var y_axis = svg.append("g")
  y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
 
 
-y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_test_pos));
+y_axis_tests_pos.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_test_pos));
 
 
+y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_tests));
+
+
+       var s = svg_tests.selectAll(".bar1")
+    .data(data_map)
+   
+   // svg_test_pos.selectAll(".bar1")
+   //  .data(data_map)
+    s.enter().append("rect").merge(s)
+   //  .transition()
+   //  .duration(1000)
+      .attr("class", "bar1")
+      .attr("x", function(d) { return x_tests(d.update_date)})
+      .attr("y", function(d) { return y_tests(d.new_tests); })
+      .attr("width",  x_tests.bandwidth())
+      .attr("height", function(d) { return height_cases - y_tests(d.new_tests); })
+      .attr("fill", function(d){ return lightestColors(selectedRegion) }).attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+      
+
+      s
+    .exit()
+    .remove()
       
        var t = svg_test_pos.selectAll(".bar1")
     .data(data_map)
@@ -1175,6 +1214,8 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
    // svg_test_pos.selectAll(".bar1")
    //  .data(data_map)
     t.enter().append("rect").merge(t)
+   //  .transition()
+   //  .duration(1000)
       .attr("class", "bar1")
       .attr("x", function(d) { return x_test_pos(d.update_date)})
       .attr("y", function(d) { return y_test_pos(d.new_tests); })
@@ -1182,6 +1223,7 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
       .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
       
+
       t
     .exit()
     .remove()
@@ -1190,6 +1232,8 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
     .data(data_map)
     
     b.enter().append("rect").merge(b)
+   //  .transition()
+   //  .duration(1000)
       .attr("class", "bar2")
       .attr("x", function(d) { return x_test_pos(d.update_date)})
       .attr("y", function(d) { return y_test_pos(d.new_cases); })
@@ -1214,10 +1258,6 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(u) // get the already existing elements as well
-   //  .transition() // and apply changes to all of them
-    
-   //  .duration(1000)
-    
       .attr("x", function(d) { return x_cases(d.update_date); })
       .attr("y", function(d) { return y_cases(d.new_cases); })
       .attr("width", x_cases.bandwidth())
@@ -1258,6 +1298,7 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
 svg_cases.selectAll('path').remove();
   
   svg_cases
+  
     .append('path')
     .datum(data_map)
     .attr('fill', 'none')
