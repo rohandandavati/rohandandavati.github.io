@@ -276,22 +276,6 @@
 <script>
    /* global d3 */
    /* global $ */
-   
-   
-
-   /*
-   TODO
-   -organize drawChart - no need to set width at the end - make adding futher interaction easier
-   -rt hover detail to html- fix cutoff - move on if no luck - done
-   -add case positivity rate chart 
-   -cases an deaths to bar charts 
-   -add moving average
-   
-   */
-   
-   
-   
-   
 
    
    function LightenDarkenColor(col,amt) {
@@ -690,51 +674,60 @@
          "covid_region": 2
       }
    }
+   
+      var margin_rt = {top: 10, right: 10, bottom: 50, left: 80};
+   var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
+   var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
+   var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 40};
+   var margin_tests = {top: 15, right: 10, bottom: 50, left: 40};
+   
 
    // var map_wid = document.getElementById("cases_map").offsetWidth;
    // var map_hid = map_wid *2;
    
-   var margin_rt = {top: 10, right: 10, bottom: 50, left: 70};
-   var svg_rt = d3.select("#rt_chart").append("svg")
+   
+   var svg_rt = d3.select("#rt_chart").append("svg")    
+   .style("fill", "none")
+    .style("pointer-events", "all")
+    .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
    
    var x_rt = d3.scaleTime();
    var x_rt_axis = svg_rt.append("g");
    var y_rt = d3.scaleLinear();
    var y_rt_axis = svg_rt.append("g");
    
-   var interval_rt = svg_rt.append("path");
-   var line_rt = svg_rt.append('g').append("path");
-   var refLine = svg_rt.append('g').append("path")
+   var interval_rt = svg_rt.append("path")
+      .attr("stroke", "none")
+      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+   
+   var line_rt = svg_rt.append('g').append("path")  
+   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+      // .attr("transform", "translate("+ (margin_rt.left+2) +","+ margin_rt.top  + ")"  )
+      .style("stroke-width", 2)
+      .style("fill", "none");
+      
+   var refLine = svg_rt.append('g').append("path")      .attr("stroke", "black")
+   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+      // .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
+      .style("stroke-width", 1)
+      .style("stroke-dasharray", ("3, 3"))
+      .style("fill", "none")
    
    var dataFilter = null; 
    
-   var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_tests = {top: 15, right: 10, bottom: 50, left: 40};
+
+   
    var svg_deaths = d3.select("#deaths_chart").append("svg")
-
-
-    var xTitle = svg_rt.append("text")
-      .style("text-anchor", "middle")
-      .text("");
-      
-    var yTitle = svg_rt.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 4)
-      // .attr("x",0 - (height / 2))
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .text("Rt");     
-	var svg_map = d3.select("#cases_map")
-	            .append("svg")
+	var svg_map = d3.select("#cases_map").append("svg")
+	var svg_cases = d3.select("#cases_chart").append("svg")
+	var svg_test_pos = d3.select("#test_pos").append("svg")
+	var svg_tests = d3.select("#tests").append("svg")
 
 
 // append the svg object to the body of the page
-var svg_cases = d3.select("#cases_chart").append("svg")
 
-var svg_test_pos = d3.select("#test_pos").append("svg")
-var svg_tests = d3.select("#tests").append("svg")
+
+
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
@@ -745,22 +738,63 @@ var svg_tests = d3.select("#tests").append("svg")
       .style("fill", "none")
       .attr("stroke", "black")
       .attr('r', 4.5)
-      .style("opacity", 0).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+      .style("opacity", 0)
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-
+   var Tooltip = d3.select("#rt_chart")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
    
    		var projection = d3.geoAlbers()
    		var path = d3.geoPath()
 	
+	var selectedRegion = 'illinois';
+
+
+var x_cases = d3.scaleBand()
+var y_cases = d3.scaleLinear()
+
+var x_axis = svg_cases.append("g")
+var y_axis = svg_cases.append("g")
+
+
+
+var x_deaths= d3.scaleBand()
+var y_deaths = d3.scaleLinear()
+
+var x_axis_deaths = svg_deaths.append("g")
+var y_axis_deaths = svg_deaths.append("g")
+
+
+
+var x_test_pos= d3.scaleBand()
+var y_test_pos = d3.scaleLinear()
+
+var x_axis_tests_pos = svg_test_pos.append("g")
+var y_axis_tests_pos = svg_test_pos.append("g")
+
+
+var x_tests= d3.scaleBand()
+var y_tests = d3.scaleLinear()
+var x_axis_tests = svg_tests.append("g")
+var y_axis_tests = svg_tests.append("g")
 	
 // 	var files = ['https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
 // 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
 // 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv']
 
-	var files = ['https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
-	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
-	           'https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long']
-	           
+var files = [
+             'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
+             'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
+             'https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long'
+            ]
+             
 	           
 
 var promises = [];
@@ -818,17 +852,14 @@ data[2].forEach((d) => {
     d.new_tests = 0;
     
     //if it's a new region (different from last line)
-    if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
-      //  console.log(d.NOFO_Region)
+   if ((prev_region.localeCompare(d.NOFO_Region)) !== 0) {
+      cases_max_diff[d.NOFO_Region] = 0;
+      deaths_max_diff[d.NOFO_Region] = 0;
+      tests_max_diff[d.NOFO_Region] = 0;
       
-      //set 
-       cases_max_diff[d.NOFO_Region] = 0;
-       deaths_max_diff[d.NOFO_Region] = 0;
-       tests_max_diff[d.NOFO_Region] = 0;
-       
       prev_cases = d.Positive_Cases;
       d.new_cases = d.Positive_Cases;
-       
+      
       prev_deaths = d.Deaths;
       d.new_deaths = d.Deaths;
       
@@ -838,29 +869,21 @@ data[2].forEach((d) => {
       prev_region = d.NOFO_Region;
     } else {
        
-       
       if (d.Positive_Cases < prev_cases) {
          d.new_cases = 0;
       } else {
          d.new_cases = d.Positive_Cases - prev_cases;
       }
-      
-      
-      
       if (d.Deaths < prev_deaths) {
          d.new_deaths = 0;
-         
       } else {
          d.new_deaths = d.Deaths - prev_deaths;
       }
       if (d.Tested < prev_test) {
          d.new_tests = 0;
-         
       } else {
          d.new_tests = d.Tested - prev_test;
       }
-      
-      
       
       if( d.new_cases > cases_max_diff[d.NOFO_Region] ) {
          cases_max_diff[d.NOFO_Region] = d.new_cases;
@@ -868,48 +891,16 @@ data[2].forEach((d) => {
       if( d.new_deaths > deaths_max_diff[d.NOFO_Region] ) {
          deaths_max_diff[d.NOFO_Region] = d.new_deaths;
       } 
-      
       if( d.new_tests > tests_max_diff[d.NOFO_Region] ) {
          tests_max_diff[d.NOFO_Region] = d.new_tests;
       } 
       
-       prev_cases = d.Positive_Cases;
-       prev_deaths = d.Deaths;
-       prev_test = d.Tested;
-       prev_region = d.NOFO_Region;
+      prev_cases = d.Positive_Cases;
+      prev_deaths = d.Deaths;
+      prev_test = d.Tested;
+      prev_region = d.NOFO_Region;
     }  
   });
-
-var selectedRegion = 'illinois';
-
-
-var x_cases = d3.scaleBand()
-var y_cases = d3.scaleLinear()
-
-var x_axis = svg_cases.append("g")
-var y_axis = svg_cases.append("g")
-
-
-
-var x_deaths= d3.scaleBand()
-var y_deaths = d3.scaleLinear()
-
-var x_axis_deaths = svg_deaths.append("g")
-var y_axis_deaths = svg_deaths.append("g")
-
-
-
-var x_test_pos= d3.scaleBand()
-var y_test_pos = d3.scaleLinear()
-
-var x_axis_tests_pos = svg_test_pos.append("g")
-var y_axis_tests_pos = svg_test_pos.append("g")
-
-
-var x_tests= d3.scaleBand()
-var y_tests = d3.scaleLinear()
-var x_axis_tests = svg_tests.append("g")
-var y_axis_tests = svg_tests.append("g")
 
 function drawChart() {
    // console.log(data[1])
@@ -928,7 +919,7 @@ function drawChart() {
       dict["covidregion_9"] = "Southern";
       dict["covidregion_10"] = "Southwest Central";
       dict["covidregion_11"] = "Suburban";
-      
+
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
       
       const width_rt = currentWidth- margin_rt.left - margin_rt.right;
@@ -942,13 +933,10 @@ function drawChart() {
          height_rt = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
       }
 
-         
       currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
       let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
       
-      
-            
       if (parseInt(currentWidth) < 600) {
          height_cases = parseInt(currentWidth * .72) - margin_cases.top - margin_cases.bottom;
       }
@@ -956,17 +944,12 @@ function drawChart() {
          height_cases = parseInt(currentWidth * .62) - margin_cases.top - margin_cases.bottom;
       }
       
-
-
    var map_wid = document.getElementById("cases_map").offsetWidth;
    var map_hid = map_wid *2;
    
    svg_map.attr("width", map_wid )
 	       .attr("height", map_hid)
 	       
-   // console.log(map_wid)
-   
-   // projection.rotate([89.5,0]).fitSize([map_wid, map_hid], data[0]);
    projection.rotate([89.5,0]).fitWidth(map_wid, data[0]);
    
    path.projection(projection);
@@ -981,7 +964,6 @@ function drawChart() {
        .append("path")
        .merge(map)
        .attr( "d", path )
-              
        .attr("fill", function(d){ 
          if (selectedRegion.localeCompare("illinois") === 0) {
             // console.log('hi')
@@ -1009,21 +991,14 @@ function drawChart() {
          }
       }) 
       
-   map.exit()
-    .remove()
+   map
+   .exit()
+   .remove()
  
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
 
-        var Tooltip = d3.select("#rt_chart")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")
-    .style("padding", "5px")
+
      // Three function that change the tooltip when user hover / move / leave a cell
   var mouseover = function(d) {
      focus.style("opacity", 1)
@@ -1058,106 +1033,87 @@ function drawChart() {
   
   
     x_rt.domain(d3.extent(data[1] , function(d) { return d.date}))
+   //  .range([ margin_rt.left, width_rt-margin_rt.left ]);
+    .range([ margin_rt.left, width_rt-margin_rt.left ]);
                   
    //y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
    
    y_rt.domain([0, 2]);
-        
-   y_rt_axis.attr("class", "y axis")
-    .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
-
-   interval_rt.datum(dataFilter)
-                      .attr("fill", function(d){ return lightestColors(selectedRegion) })
-                      .attr("stroke", "none")
-                      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  ); 
-
-    
-   line_rt.datum(dataFilter)
-                  .attr("stroke", function(d){ return colors(selectedRegion) })
-                  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
-                  .style("stroke-width", 2)
-                  .style("fill", "none")
-
-   refLine.datum(dataFilter)
-                  .attr("stroke", "black")
-                  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
-                  .style("stroke-width", 1)
-                  .style("stroke-dasharray", ("3, 3"))
-                  .style("fill", "none")              
-
-
-      
-      svg_rt.attr("width", width_rt + margin_rt.left + margin_rt.right)
+   
+         svg_rt.attr("width", width_rt + margin_rt.left + margin_rt.right)
       .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
       .append("g")
     .attr("transform",
           "translate(" + margin_rt.left + "," + margin_rt.top + ")");
       
-      xTitle.attr("transform", "translate(" + (currentWidth/2) + " ," + (height_rt +30)+ ")")
-      yTitle.attr("x",0 - (height_rt / 2))
+      // xTitle.attr("transform", "translate(" + (currentWidth/2) + " ," + (height_rt +30)+ ")")
+      // yTitle.attr("x",0 - (height_rt / 2))
       
-      x_rt.range([ 0, width_rt ]);
-      x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + (margin_rt.top + height_rt) + ")")
-      // x_rt_axis.attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top+ ")")
-      // .call(d3.axisBottom(x_rt).ticks(5));
+      // x_rt.range([ 0, width_rt ]);
+      
+      x_rt_axis
+      // .attr("transform", "translate("+ (margin_rt.left) +","+ height_rt  + ")"  )
+      // .attr("transform", "translate(" + margin_rt.left + "," + (margin_rt.top + height_rt) + ")")
+       .attr("transform", "translate(" + 0 + "," + height_rt + ")")
+      
       if (currentWidth < 600) {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
-         // x_rt_axis.call(d3.axisBottom(x_rt).ticks(d3.timeMonths, 1).tickFormat(d3.timeFormat("%b")));
-         
       }else {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
       }
            
       y_rt.range([ height_rt, 0 ])
-      y_rt_axis.call(d3.axisLeft(y_rt).ticks(6));
-      
-      
+      y_rt_axis.call(d3.axisLeft(y_rt).ticks(6))
+        
+   y_rt_axis.attr("class", "y axis")
+   .attr("transform", "translate("+ (margin_rt.left) +","+ 0  + ")"  )
+   
+   
+   //  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-      
-      interval_rt
-            .transition()
+   interval_rt
+      .datum(dataFilter)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .transition()
       .duration(1000)
       .attr("d", d3.area()
       .x(function(d) { return x_rt(d.date) })
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
-      
-      line_rt
-            .transition()
+   
+   line_rt
+      .datum(dataFilter)
+      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .transition()
       .duration(1000)
       .attr("d", d3.line()
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(d.rt_median) })
       )
-      
-      refLine
-            .transition()
+   
+   refLine
+      .datum(dataFilter)
+      .transition()
       .duration(1000)
-       .attr("d", d3.line()
-       .x(function(d) { return x_rt(d.date) })
-       .y(function(d) { return y_rt(1.0) }));
-      
-        svg_rt
-    .append('rect')
-    .style("fill", "none")
-    .style("pointer-events", "all")
-    .attr('width', width_rt)
-    .attr('height', height_rt)
-       .on("mouseover", mouseover)
-    .on("mousemove", mousemove)
-    .on("mouseleave", mouseleave).attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+      .attr("d", d3.line()
+      .x(function(d) { return x_rt(d.date) })
+      .y(function(d) { return y_rt(1.0) }));
 
-
+   svg_rt
+      .append('rect')
+      .attr('width', width_rt)
+      .attr('height', height_rt)
+      .on("mouseover", mouseover)
+      .on("mousemove", mousemove)
+      .on("mouseleave", mouseleave)
    
-        
+
    var selectedGroupCases = dict[selectedRegion]
-   
    
    svg_cases
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
     .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
   .append("g")
-  
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
    
@@ -1165,7 +1121,6 @@ function drawChart() {
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
     .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
   .append("g")
-  
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
           
@@ -1173,7 +1128,6 @@ function drawChart() {
     .attr("width", width_cases + margin_tests.left + margin_tests.right)
     .attr("height", height_cases + margin_tests.top + margin_tests.bottom)
   .append("g")
-  
     .attr("transform",
           "translate(" + margin_tests.left + "," + margin_tests.top + ")");
    
@@ -1198,6 +1152,7 @@ const formatTime = d3.timeFormat("%b. %Y");
 //  x_axis.attr("transform", "translate(0," + height + ")")
  x_axis
  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+//  .attr("transform", "translate(" + 0 + "," + height_cases + ")")
   .call(d3.axisBottom(x_cases)
   .tickValues(x_cases.domain().filter(function(d,i){ return !(i%30)}))
    //  .tickValues(tickValuesForAxis)
@@ -1248,11 +1203,9 @@ const formatTime = d3.timeFormat("%b. %Y");
   .range([height_cases, 0]);
   
 // var y_axis = svg.append("g")
- y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
-
+y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
 
 y_axis_tests_pos.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_test_pos));
-
 
 y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_tests));
 
@@ -1488,14 +1441,8 @@ svg_deaths.selectAll('path').remove();
       // run the updateChart function with this selected option
       // console.log(selectedOption)
       drawChart()
-
     })
-
-    
 }); //Promise.all    
-
-
-
 
 </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
