@@ -675,7 +675,7 @@
       }
    }
    
-      var margin_rt = {top: 10, right: 10, bottom: 50, left: 80};
+      var margin_rt = {top: 15, right: 10, bottom: 50, left: 80};
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 40};
@@ -1038,7 +1038,7 @@ function drawChart() {
                   
    //y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
    
-   y_rt.domain([0, 2]);
+   y_rt.domain([0, 2.1]);
    
          svg_rt.attr("width", width_rt + margin_rt.left + margin_rt.right)
       .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
