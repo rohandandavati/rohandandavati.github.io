@@ -919,12 +919,12 @@ data[2].forEach((d) => {
       if (d.new_tests > d.new_cases) {
          d.test_positivity = d.new_cases / d.new_tests
       } else if (d.new_tests < d.new_cases){
-        d.test_positivity = 1
+        d.test_positivity = .18
       } else {
          d.test_positivity = 0
       }
       
-      d.test_positivity = parseFloat((d.test_positivity)).toFixed(6)
+      // d.test_positivity = parseFloat((d.test_positivity)).toFixed(6)
       
       
       
@@ -1237,11 +1237,15 @@ const formatTime = d3.timeFormat("%b. %Y");
   .range([height_cases, 0]);
   
     y_test_pos
-  .domain([0, d3.max(data_map, function(d) { return d.new_tests; })])
+//  .domain([0, d3.max(data_map, function(d) { return d.new_tests; })])
+  .domain([0, 120000])
+  
   .range([height_cases, 0]);
   
       y_test_pos2
   .domain([0, d3.max(data_map, function(d) { return d.test_positivity; })])
+  .domain([0, .20])
+  
   .range([height_cases, 0]);
   
       y_tests
