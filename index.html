@@ -882,6 +882,8 @@ data[2].forEach((d) => {
   });
 
 function drawChart() {
+   
+   
    // console.log(data[1])
    // console.log(data[2])
    
@@ -1019,6 +1021,9 @@ function drawChart() {
    
    y_rt.domain([0, 2.1]);
    
+   
+   
+   
          svg_rt.attr("width", width_rt + margin_rt.left + margin_rt.right)
       .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
       .append("g")
@@ -1037,9 +1042,12 @@ function drawChart() {
       y_rt.range([ height_rt, 0 ])
       y_rt_axis.attr("transform", "translate("+ margin_rt.left +","+ 0 + ")"  ).call(d3.axisLeft(y_rt).ticks(6))
 
+
+   svg_rt.select(".xLabel").remove()
+   svg_rt.select(".yLabel").remove()
    
    svg_rt.append("text")
-    .attr("class", "y label")
+    .attr("class", "yLabel")
     .attr("text-anchor", "end")
     .attr("y", 6)
             .attr("transform",
@@ -1054,6 +1062,7 @@ function drawChart() {
         
         
         svg_rt.append("text") 
+        .attr("class", "xLabel")
         .attr("transform",
             "translate(" + (width_rt/2) + " ," + 
                            (height_rt + margin_rt.top + 30) + ")")
@@ -1154,8 +1163,10 @@ const formatTime = d3.timeFormat("%b. %Y");
        })
     );
     
+       svg_cases.select(".xLabel").remove()
+   
+    
        svg_cases.append("text")
-    .attr("class", "y label")
     .attr("text-anchor", "end")
     .attr("y", 6)
    //  .attr("opacity", .8)
@@ -1167,6 +1178,7 @@ const formatTime = d3.timeFormat("%b. %Y");
         
         
         svg_cases.append("text") 
+        .attr("class", "xLabel")
         .attr("transform",
             "translate(" + (width_cases/2) + " ," + 
                            (height_cases + margin_cases.top+40) + ")")
@@ -1188,8 +1200,10 @@ const formatTime = d3.timeFormat("%b. %Y");
        })
     );
     
+           svg_deaths.select(".xLabel").remove()
     
             svg_deaths.append("text") 
+            .attr("class", "xLabel")
         .attr("transform",
             "translate(" + (width_cases/2) + " ," + 
                            (height_cases + margin_cases.top+40) + ")")
@@ -1209,16 +1223,21 @@ const formatTime = d3.timeFormat("%b. %Y");
       return r;
        })
     );
+    svg_tests.select(".xLabel").remove()
     
                 svg_tests.append("text") 
+                .attr("class", "xLabel")
         .attr("transform",
             "translate(" + (width_cases/2) + " ," + 
                            (height_cases + margin_cases.top+40) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
       .text("Date") 
+      
+      svg_test_pos.select(".xLabel").remove()
     
                 svg_test_pos.append("text") 
+                .attr("class", "xLabel")
         .attr("transform",
             "translate(" + (width_cases/2) + " ," + 
                            (height_cases + margin_cases.top+40) + ")")
@@ -1511,6 +1530,8 @@ svg_deaths.selectAll('path').remove();
     .attr('stroke-linecap', 'round')
     .attr('d', lineA)
     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
+    
+    
     
 
     }
