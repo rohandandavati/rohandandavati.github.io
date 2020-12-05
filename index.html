@@ -607,9 +607,9 @@ title: Home
    }
    
       var margin_rt = {top: 15, right: 10, bottom: 50, left: 55};
-   var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
+   var margin_cases = {top: 15, right: 10, bottom: 50, left: 60};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 60};
+   var margin_test_pos = {top: 15, right: 20, bottom: 50, left: 60};
    var margin_tests = {top: 15, right: 10, bottom: 50, left: 60};
    
 
@@ -842,19 +842,6 @@ data[2].forEach((d) => {
          // console.log(d.new_tests)
          d.new_tests = 0;
       }
-      
-      // if (d.new_tests > 0) {
-      //    d.test_positivity = d.new_cases / d.new_tests
-      // } else {
-      //    d.test_positivity = 1.0
-      // }
-      
-      // if (d.new_tests > d.new_cases) {
-      //    d.test_positivity = d.new_cases / d.new_tests
-      // } else {
-      //    d.test_positivity = 1.0
-      // }
-      
       if (d.new_tests > d.new_cases) {
          d.test_positivity = d.new_cases / d.new_tests
       } else if (d.new_tests < d.new_cases){
@@ -862,17 +849,6 @@ data[2].forEach((d) => {
       } else {
          d.test_positivity = 0
       }
-      
-      // d.test_positivity = parseFloat((d.test_positivity)).toFixed(6)
-      
-      
-      
-      // if (d.test_positivity > 1 ) console.log(d.test_positivity)
-      
-      // if (isNaN(d.test_positivity)) {
-      //    console.log(d.new_cases)
-      //    console.log(d.new_tests)
-      // }
 
       prev_cases = d.Positive_Cases;
       prev_deaths = d.Deaths;
@@ -1026,16 +1002,9 @@ function drawChart() {
       .append("g")
     .attr("transform",
           "translate(" + margin_rt.left + "," + margin_rt.top + ")");
-      
-      //  yTitle.attr("x",0 - (height_rt / 2))
-      // xTitle.attr("transform", "translate(" + (currentWidth/2) + " ," + (height_rt +30)+ ")")
-      // yTitle.attr("x",0 - (height_rt / 2))
-      
-      // x_rt.range([ 0, width_rt ]);
+   
       
       x_rt_axis
-      // .attr("transform", "translate("+ (margin_rt.left) +","+ height_rt  + ")"  )
-      // .attr("transform", "translate(" + margin_rt.left + "," + (margin_rt.top + height_rt) + ")")
        .attr("transform", "translate(" + 0 + "," + height_rt + ")")
       
       if (currentWidth < 600) {
@@ -1043,10 +1012,6 @@ function drawChart() {
       }else {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
       }
-          
-
-          
-           
       y_rt.range([ height_rt, 0 ])
       y_rt_axis.attr("transform", "translate("+ margin_rt.left +","+ 0 + ")"  ).call(d3.axisLeft(y_rt).ticks(6))
 
@@ -1066,21 +1031,10 @@ function drawChart() {
         svg_rt.append("text") 
         .attr("transform",
             "translate(" + (width_rt/2) + " ," + 
-                           (height_rt + margin_rt.top + 20) + ")")
+                           (height_rt + margin_rt.top + 30) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
       .text("Date") 
-   
-   //     svg_rt.append("text")
-   //  .attr("class", "x label")
-   //  .attr("text-anchor", "middle")
-   // //  .attr("y", 6)
-   // //  .attr("opacity", .8)
-   // //  .attr("dy", ".75em")
-   //  .style("fill", "#242526")
-    
-   //  .attr("transform", "rotate(-90)")
-   //  .text("Rate of Transmission (Rt)") 
 
    interval_rt
       .datum(dataFilter)
@@ -1175,6 +1129,27 @@ const formatTime = d3.timeFormat("%b. %Y");
        })
     );
     
+       svg_cases.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+   //  .attr("opacity", .8)
+    .attr("dy", ".75em")
+    .style("fill", "#242526")
+    
+    .attr("transform", "rotate(-90)")
+   //  .text("Number") 
+        
+        
+        svg_cases.append("text") 
+        .attr("transform",
+            "translate(" + (width_cases/2) + " ," + 
+                           (height_cases + margin_cases.top+40) + ")")
+      .style("text-anchor", "middle")
+      .style("fill", "#242526")
+      .text("Date") 
+
+    
  x_axis_tests_pos
  .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
   .call(d3.axisBottom(x_test_pos)
@@ -1188,6 +1163,15 @@ const formatTime = d3.timeFormat("%b. %Y");
        })
     );
     
+    
+            svg_deaths.append("text") 
+        .attr("transform",
+            "translate(" + (width_cases/2) + " ," + 
+                           (height_cases + margin_cases.top+40) + ")")
+      .style("text-anchor", "middle")
+      .style("fill", "#242526")
+      .text("Date") 
+
  x_axis_tests
  .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
   .call(d3.axisBottom(x_tests)
@@ -1200,6 +1184,22 @@ const formatTime = d3.timeFormat("%b. %Y");
       return r;
        })
     );
+    
+                svg_tests.append("text") 
+        .attr("transform",
+            "translate(" + (width_cases/2) + " ," + 
+                           (height_cases + margin_cases.top) + ")")
+      .style("text-anchor", "middle")
+      .style("fill", "#242526")
+      .text("Date") 
+    
+                svg_test_pos.append("text") 
+        .attr("transform",
+            "translate(" + (width_cases/2) + " ," + 
+                           (height_cases + margin_cases.top+40) + ")")
+      .style("text-anchor", "middle")
+      .style("fill", "#242526")
+      .text("Date") 
     
   y_cases
   .domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
