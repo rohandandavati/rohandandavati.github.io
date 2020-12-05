@@ -75,6 +75,10 @@
 /*div {*/
 /*   border: 1px solid red;*/
 /*}*/
+/*.bottom {*/
+/*   height: 200px;*/
+/*   position: relative;*/
+/*}*/
     .card {
     border-color:transparent !important;
     }
@@ -85,6 +89,7 @@
     }
     body {
         padding-top: 50px;
+        padding-bottom:300px;
 }
 	.classy {
       fill:#009DAA;
@@ -261,18 +266,35 @@
    <div class="card-body" id = "deaths_chart"> </div>
 </div>
 
-<div class = "card deaths chart">
-<div id="my_dataviz"></div>
+<div class="card cases " id = "">
+  <div class="card-body">
+    <h2>Test Positivity</h2>
+    <text>Subtitle for test chart </text>
+  </div>
 </div>
+
+<!--<div class = "card deaths chart">-->
+<!--<div id="my_dataviz"></div>-->
+<!--</div>-->
+
 
 <div class = "card deaths chart">
 <div id="test_pos"></div>
+</div>
+<div class="card cases " id = "">
+  <div class="card-body">
+    <h2>Tests</h2>
+    <text>Subtitle for test chart </text>
+  </div>
 </div>
 
 
 <div class = "card deaths chart">
 <div id="tests"></div>
 </div>
+
+
+<div id="bottom"></div>
 <script>
    /* global d3 */
    /* global $ */
@@ -675,10 +697,10 @@
       }
    }
    
-      var margin_rt = {top: 15, right: 10, bottom: 50, left: 55};
+      var margin_rt = {top: 15, right: 10, bottom: 50, left: 45};
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 60};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_test_pos = {top: 15, right: 20, bottom: 50, left: 60};
+   var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
    var margin_tests = {top: 15, right: 10, bottom: 50, left: 60};
    
 
@@ -1089,6 +1111,9 @@ function drawChart() {
     .attr("class", "y label")
     .attr("text-anchor", "end")
     .attr("y", 6)
+            .attr("transform",
+            "translate(" + -10 + " ," + 
+                           0 + ")")
    //  .attr("opacity", .8)
     .attr("dy", ".75em")
     .style("fill", "#242526")
@@ -1152,11 +1177,11 @@ function drawChart() {
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
    
       svg_test_pos
-    .attr("width", width_cases + margin_tests.left + margin_tests.right)
-    .attr("height", height_cases + margin_tests.top + margin_tests.bottom)
+    .attr("width", width_cases + margin_test_pos.left + margin_test_pos.right)
+    .attr("height", height_cases + margin_test_pos.top + margin_test_pos.bottom)
   .append("g")
     .attr("transform",
-          "translate(" + margin_tests.left + "," + margin_tests.top + ")");
+          "translate(" + margin_test_pos.left + "," + margin_test_pos.top + ")");
           
    svg_tests
     .attr("width", width_cases + margin_tests.left + margin_tests.right)
@@ -1220,7 +1245,7 @@ const formatTime = d3.timeFormat("%b. %Y");
 
     
  x_axis_tests_pos
- .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
+ .attr("transform", "translate(" + margin_test_pos.left + "," + (height_cases+margin_test_pos.top) + ")")
   .call(d3.axisBottom(x_test_pos)
   .tickValues(x_test_pos.domain().filter(function(d,i){ return !(i%30)}))
    //  .tickValues(tickValuesForAxis)
@@ -1257,7 +1282,7 @@ const formatTime = d3.timeFormat("%b. %Y");
                 svg_tests.append("text") 
         .attr("transform",
             "translate(" + (width_cases/2) + " ," + 
-                           (height_cases + margin_cases.top) + ")")
+                           (height_cases + margin_cases.top+40) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
       .text("Date") 
@@ -1295,7 +1320,7 @@ y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.
 
 y_axis_tests_pos.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_test_pos));
 var formatPercent = d3.format(".0%");
-y_axis_tests_pos2.attr("transform", "translate("+ (width_cases+ margin_tests.left-21) +","+ margin_tests.top  + ")"  ).call(d3.axisRight(y_test_pos2).tickFormat(formatPercent))
+y_axis_tests_pos2.attr("transform", "translate("+ (width_cases+ margin_test_pos.left+2) +","+ margin_test_pos.top  + ")"  ).call(d3.axisRight(y_test_pos2).tickFormat(formatPercent))
 
 y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_tests));
 
