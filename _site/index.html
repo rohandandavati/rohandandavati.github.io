@@ -921,15 +921,19 @@ data[2].forEach((d) => {
       } else if (d.new_tests < d.new_cases){
         d.test_positivity = 1
       } else {
-         d.test_positivity =0
+         d.test_positivity = 0
       }
       
-      console.log(d.test_positivity)
+      d.test_positivity = parseFloat((d.test_positivity)).toFixed(6)
       
-      if (isNaN(d.test_positivity)) {
-         console.log(d.new_cases)
-         console.log(d.new_tests)
-      }
+      
+      
+      // if (d.test_positivity > 1 ) console.log(d.test_positivity)
+      
+      // if (isNaN(d.test_positivity)) {
+      //    console.log(d.new_cases)
+      //    console.log(d.new_tests)
+      // }
 
       prev_cases = d.Positive_Cases;
       prev_deaths = d.Deaths;
@@ -1332,14 +1336,17 @@ y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_
           j = POINTS_AVERAGE + 1;
        }
       }
-    //   console.log(i, r, y(d.count));
+       console.log(i, r, y_test_pos2(d.test_positivity));
+       
+       if (isNaN(r)) r = 0
       return r;
     });
+
+// console.log(line_tests)
 
 svg_test_pos.selectAll('path').remove();
   
  svg_test_pos
-  
     .append('path')
     .datum(data_map)
     .attr('fill', 'none')
@@ -1395,7 +1402,7 @@ svg_test_pos.selectAll('path').remove();
           j = POINTS_AVERAGE + 1;
         }
       }
-    //   console.log(i, r, y(d.count));
+      //  console.log(i, r, y(d.count));
       return r;
     });
 
