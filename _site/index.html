@@ -675,7 +675,7 @@
       }
    }
    
-      var margin_rt = {top: 15, right: 10, bottom: 50, left: 23};
+      var margin_rt = {top: 15, right: 10, bottom: 50, left: 55};
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 60};
@@ -724,7 +724,15 @@
 	var svg_tests = d3.select("#tests").append("svg")
 
 
-// append the svg object to the body of the page
+// // append the svg object to the body of the page
+//     var yTitle = svg_rt.append("text")
+//       .attr("transform", "rotate(-90)")
+//       .attr("y", 4)
+//       // .attr("x",0 - (height / 2))
+//       .attr("dy", "1em")
+//       .style("text-anchor", "middle")
+//       .text("Rt");    
+
 
 
 
@@ -946,7 +954,7 @@ data[2].forEach((d) => {
 
 function drawChart() {
    // console.log(data[1])
-   console.log(data[2])
+   // console.log(data[2])
    
    let dict = {};
       dict["illinois"] = "Illinois";
@@ -1088,6 +1096,7 @@ function drawChart() {
     .attr("transform",
           "translate(" + margin_rt.left + "," + margin_rt.top + ")");
       
+      //  yTitle.attr("x",0 - (height_rt / 2))
       // xTitle.attr("transform", "translate(" + (currentWidth/2) + " ," + (height_rt +30)+ ")")
       // yTitle.attr("x",0 - (height_rt / 2))
       
@@ -1103,15 +1112,30 @@ function drawChart() {
       }else {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
       }
+          
+
+          
            
       y_rt.range([ height_rt, 0 ])
-      y_rt_axis.call(d3.axisLeft(y_rt).ticks(6))
+      y_rt_axis.attr("transform", "translate("+ margin_rt.left +","+ 0 + ")"  ).call(d3.axisLeft(y_rt).ticks(6))
+      
+   // y_rt_axis.attr("class", "y axis")
+   // .attr("transform", "translate("+ (margin_rt.left) +","+ 0  + ")"  )
+   
+   
+                svg_rt.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", 6)
+   //  .attr("opacity", .8)
+    .attr("dy", ".75em")
+    .style("fill", "#242526")
+    
+    .attr("transform", "rotate(-90)")
+    .text("Rate of Transmission (Rt)") 
         
-   y_rt_axis.attr("class", "y axis")
-   .attr("transform", "translate("+ (margin_rt.left) +","+ 0  + ")"  )
    
-   
-   //  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+    
 
    interval_rt
       .datum(dataFilter)
@@ -1340,7 +1364,7 @@ y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_
           j = POINTS_AVERAGE + 1;
        }
       }
-       console.log(i, r, y_test_pos2(d.test_positivity));
+      //  console.log(i, r, y_test_pos2(d.test_positivity));
        
        if (isNaN(r)) r = 0
       return r;
