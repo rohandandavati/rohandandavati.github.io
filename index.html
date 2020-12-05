@@ -706,9 +706,11 @@ var y_axis_deaths = svg_deaths.append("g")
 
 var x_test_pos= d3.scaleBand()
 var y_test_pos = d3.scaleLinear()
+var y_test_pos2 = d3.scaleLinear()
 
 var x_axis_tests_pos = svg_test_pos.append("g")
 var y_axis_tests_pos = svg_test_pos.append("g")
+var y_axis_tests_pos2 = svg_test_pos.append("g")
 
 
 var x_tests= d3.scaleBand()
@@ -831,6 +833,33 @@ data[2].forEach((d) => {
       if (d.new_tests === 137404) {
          // console.log(d.new_tests)
          d.new_tests = 0;
+      }
+      
+      // if (d.new_tests > 0) {
+      //    d.test_positivity = d.new_cases / d.new_tests
+      // } else {
+      //    d.test_positivity = 1.0
+      // }
+      
+      // if (d.new_tests > d.new_cases) {
+      //    d.test_positivity = d.new_cases / d.new_tests
+      // } else {
+      //    d.test_positivity = 1.0
+      // }
+      
+      if (d.new_tests > d.new_cases) {
+         d.test_positivity = d.new_cases / d.new_tests
+      } else if (d.new_tests < d.new_cases){
+        d.test_positivity = 1
+      } else {
+         d.test_positivity =0
+      }
+      
+      console.log(d.test_positivity)
+      
+      if (isNaN(d.test_positivity)) {
+         console.log(d.new_cases)
+         console.log(d.new_tests)
       }
 
       prev_cases = d.Positive_Cases;
@@ -1138,6 +1167,10 @@ const formatTime = d3.timeFormat("%b. %Y");
   .domain([0, d3.max(data_map, function(d) { return d.new_tests; })])
   .range([height_cases, 0]);
   
+      y_test_pos2
+  .domain([0, d3.max(data_map, function(d) { return d.test_positivity; })])
+  .range([height_cases, 0]);
+  
       y_tests
   .domain([0, d3.max(data_map, function(d) { return d.new_tests; })])
   .range([height_cases, 0]);
@@ -1146,6 +1179,8 @@ const formatTime = d3.timeFormat("%b. %Y");
 y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
 
 y_axis_tests_pos.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_test_pos));
+var formatPercent = d3.format(".0%");
+y_axis_tests_pos2.attr("transform", "translate("+ (width_cases+ margin_tests.left-21) +","+ margin_tests.top  + ")"  ).call(d3.axisRight(y_test_pos2).tickFormat(formatPercent))
 
 y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_tests));
 
@@ -1212,6 +1247,44 @@ y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_
    svg_test_pos.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
+ const POINTS_AVERAGE = 6;
+ var line_tests = d3
+    .line()
+    .x(d => x_test_pos(d.update_date))
+    .y((d, i, data_map) => {
+      var r,
+       avg = 0;
+      for (let j = 0; j <= POINTS_AVERAGE; j++) {
+       if (i - j >= 0) {
+          avg += y_test_pos2(data_map[i - j].test_positivity);
+          r = Math.floor(avg / (j + 1));
+       } else {
+          r = Math.floor(avg / j);
+          j = POINTS_AVERAGE + 1;
+       }
+      }
+    //   console.log(i, r, y(d.count));
+      return r;
+    });
+
+svg_test_pos.selectAll('path').remove();
+  
+ svg_test_pos
+  
+    .append('path')
+    .datum(data_map)
+    .attr('fill', 'none')
+   //  .attr('stroke', '#000000')
+   .attr("stroke", function(d){ return colors(selectedRegion) })
+    .attr('stroke-width', 2.5)
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round')
+    .attr('d', line_tests).attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top  + ")"  );
+
+
+
+
+
   // Create the u variable
   var u = svg_cases.selectAll("rect")
     .data(data_map)
@@ -1237,7 +1310,7 @@ y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_
    // u
    svg_cases.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
     
-  const POINTS_AVERAGE = 6;
+//  const POINTS_AVERAGE = 6;
  var line = d3
     .line()
     .x(d => x_cases(d.update_date))
