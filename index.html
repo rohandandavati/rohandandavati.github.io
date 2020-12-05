@@ -609,8 +609,8 @@ title: Home
       var margin_rt = {top: 15, right: 10, bottom: 50, left: 23};
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_tests = {top: 15, right: 10, bottom: 50, left: 40};
+   var margin_test_pos = {top: 15, right: 10, bottom: 50, left: 60};
+   var margin_tests = {top: 15, right: 10, bottom: 50, left: 60};
    
 
    // var map_wid = document.getElementById("cases_map").offsetWidth;
@@ -771,7 +771,7 @@ while (index >= 0) {
   var deaths_max_diff = {};
   var tests_max_diff = {};
 //   parseDate = d3.timeParse("%Y-%m-%d");
-
+var a = true;
 data[2].forEach((d) => {
     d.update_date = (d.update_date).substr(0,(d.update_date).indexOf(' '))
     d.update_date = parseDate(d.update_date);
@@ -805,11 +805,13 @@ data[2].forEach((d) => {
       } else {
          d.new_cases = d.Positive_Cases - prev_cases;
       }
+      
       if (d.Deaths < prev_deaths) {
          d.new_deaths = 0;
       } else {
          d.new_deaths = d.Deaths - prev_deaths;
       }
+      
       if (d.Tested < prev_test) {
          d.new_tests = 0;
       } else {
@@ -825,17 +827,24 @@ data[2].forEach((d) => {
       if( d.new_tests > tests_max_diff[d.NOFO_Region] ) {
          tests_max_diff[d.NOFO_Region] = d.new_tests;
       } 
-      
+      //get rid of initial backlog 
+      if (d.new_tests === 137404) {
+         // console.log(d.new_tests)
+         d.new_tests = 0;
+      }
+
       prev_cases = d.Positive_Cases;
       prev_deaths = d.Deaths;
       prev_test = d.Tested;
       prev_region = d.NOFO_Region;
-    }  
+    }
+    
+    
   });
 
 function drawChart() {
    // console.log(data[1])
-   // console.log(data[2])
+   console.log(data[2])
    
    let dict = {};
       dict["illinois"] = "Illinois";
@@ -1049,11 +1058,11 @@ function drawChart() {
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
    
       svg_test_pos
-    .attr("width", width_cases + margin_cases.left + margin_cases.right)
-    .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
+    .attr("width", width_cases + margin_tests.left + margin_tests.right)
+    .attr("height", height_cases + margin_tests.top + margin_tests.bottom)
   .append("g")
     .attr("transform",
-          "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+          "translate(" + margin_tests.left + "," + margin_tests.top + ")");
           
    svg_tests
     .attr("width", width_cases + margin_tests.left + margin_tests.right)
@@ -1096,7 +1105,7 @@ const formatTime = d3.timeFormat("%b. %Y");
     );
     
  x_axis_tests_pos
- .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+ .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
   .call(d3.axisBottom(x_test_pos)
   .tickValues(x_test_pos.domain().filter(function(d,i){ return !(i%30)}))
    //  .tickValues(tickValuesForAxis)
@@ -1109,7 +1118,7 @@ const formatTime = d3.timeFormat("%b. %Y");
     );
     
  x_axis_tests
- .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+ .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
   .call(d3.axisBottom(x_tests)
   .tickValues(x_tests.domain().filter(function(d,i){ return !(i%30)}))
    //  .tickValues(tickValuesForAxis)
@@ -1136,9 +1145,9 @@ const formatTime = d3.timeFormat("%b. %Y");
 // var y_axis = svg.append("g")
 y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
 
-y_axis_tests_pos.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_test_pos));
+y_axis_tests_pos.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_test_pos));
 
-y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_tests));
+y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_tests));
 
 
        var s = svg_tests.selectAll(".bar1")
@@ -1154,7 +1163,7 @@ y_axis_tests.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_
       .attr("y", function(d) { return y_tests(d.new_tests); })
       .attr("width",  x_tests.bandwidth())
       .attr("height", function(d) { return height_cases - y_tests(d.new_tests); })
-      .attr("fill", function(d){ return lightestColors(selectedRegion) }).attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+      .attr("fill", function(d){ return lightestColors(selectedRegion) }).attr("transform", "translate("+ margin_tests.left +","+margin_tests.top + ")"  );
       
 
       s
