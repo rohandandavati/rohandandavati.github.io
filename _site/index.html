@@ -268,7 +268,7 @@
 
 <div class="card cases " id = "">
   <div class="card-body">
-    <h2>Test Positivity</h2>
+    <h2>Cases per Test (case positivity rate)</h2>
     <text>Subtitle for test chart </text>
   </div>
 </div>
@@ -1059,7 +1059,8 @@ function drawChart() {
    //    .style("opacity", 1)
   }
   var mousemove = function(d) {
-         var formatTime = d3.timeFormat("%B %d")
+         // var formatTime = d3.timeFormat("%b %d")"%b %Y"
+         var formatTime = d3.timeFormat("%b %Y")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataFilter, x0, 1);
     var selectedData = dataFilter[i]
@@ -1081,8 +1082,10 @@ function drawChart() {
    //    .style("opacity", 0.8)
   }
   
-  
+  console.log (dataFilter)
     x_rt.domain(d3.extent(data[1] , function(d) { return d.date}))
+   //  x_rt.domain(dataFilter.map(function(d) { return d.date; }))
+    
    //  .range([ margin_rt.left, width_rt-margin_rt.left ]);
     .range([ margin_rt.left, width_rt-margin_rt.left ]);
                   
@@ -1108,6 +1111,11 @@ function drawChart() {
       }else {
          x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
       }
+      
+      
+      
+      
+      
       y_rt.range([ height_rt, 0 ])
       y_rt_axis.attr("transform", "translate("+ margin_rt.left +","+ 0 + ")"  ).call(d3.axisLeft(y_rt).ticks(6))
 
@@ -1202,7 +1210,7 @@ function drawChart() {
    
    var data_map = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
-const formatTime = d3.timeFormat("%b. %Y");
+const formatTime = d3.timeFormat("%b %Y");
   const len = data.length - 1;
 
   x_cases.domain(data_map.map(function(d) { return d.update_date; }))
@@ -1337,9 +1345,10 @@ const formatTime = d3.timeFormat("%b. %Y");
 // var y_axis = svg.append("g")
 y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
 
-y_axis_tests_pos.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_test_pos));
+// y_axis_tests_pos.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_test_pos));
 var formatPercent = d3.format(".0%");
-y_axis_tests_pos2.attr("transform", "translate("+ (width_cases+ margin_test_pos.left+2) +","+ margin_test_pos.top  + ")"  ).call(d3.axisRight(y_test_pos2).tickFormat(formatPercent))
+// y_axis_tests_pos2.attr("transform", "translate("+ (width_cases+ margin_test_pos.left+2) +","+ margin_test_pos.top  + ")"  ).call(d3.axisRight(y_test_pos2).tickFormat(formatPercent))
+y_axis_tests_pos2.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_test_pos2).tickFormat(formatPercent))
 
 y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_tests));
 
@@ -1364,49 +1373,86 @@ y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_
     .exit()
     .remove()
       
-       var t = svg_test_pos.selectAll(".bar1")
-    .data(data_map)
-   
-   // svg_test_pos.selectAll(".bar1")
+      
+       const POINTS_AVERAGE = 6;
+ var line_test_daily = d3
+    .line()
+    .x(d => x_tests(d.update_date))
+    .y((d, i, data_map) => {
+      var r,
+       avg = 0;
+      for (let j = 0; j <= POINTS_AVERAGE; j++) {
+       if (i - j >= 0) {
+          avg += y_tests(data_map[i - j].new_tests);
+          r = Math.floor(avg / (j + 1));
+       } else {
+          r = Math.floor(avg / j);
+          j = POINTS_AVERAGE + 1;
+       }
+      }
+      //  console.log(i, r, y_test_pos2(d.test_positivity));
+       
+      //  if (isNaN(r)) r = 0
+      return r;
+    });
+
+// console.log(line_tests)
+
+svg_tests.selectAll('path').remove();
+  
+ svg_tests
+    .append('path')
+    .datum(data_map)
+    .attr('fill', 'none')
+   //  .attr('stroke', '#000000')
+   .attr("stroke", function(d){ return colors(selectedRegion) })
+    .attr('stroke-width', 2.5)
+    .attr('stroke-linejoin', 'round')
+    .attr('stroke-linecap', 'round')
+    .attr('d', line_test_daily).attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top  + ")"  );
+   //     var t = svg_test_pos.selectAll(".bar1")
    //  .data(data_map)
-    t.enter().append("rect").merge(t)
-   //  .transition()
-   //  .duration(1000)
-      .attr("class", "bar1")
-      .attr("x", function(d) { return x_test_pos(d.update_date)})
-      .attr("y", function(d) { return y_test_pos(d.new_tests); })
-      .attr("width",  x_test_pos.bandwidth())
-      .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
-      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+   
+   // // svg_test_pos.selectAll(".bar1")
+   // //  .data(data_map)
+   //  t.enter().append("rect").merge(t)
+   // //  .transition()
+   // //  .duration(1000)
+   //    .attr("class", "bar1")
+   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
+   //    .attr("y", function(d) { return y_test_pos(d.new_tests); })
+   //    .attr("width",  x_test_pos.bandwidth())
+   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
+   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
       
 
-      t
-    .exit()
-    .remove()
+   //    t
+   //  .exit()
+   //  .remove()
     
-      var b =  svg_test_pos.selectAll(".bar2")
-    .data(data_map)
+   //    var b =  svg_test_pos.selectAll(".bar2")
+   //  .data(data_map)
     
-    b.enter().append("rect").merge(b)
-   //  .transition()
-   //  .duration(1000)
-      .attr("class", "bar2")
-      .attr("x", function(d) { return x_test_pos(d.update_date)})
-      .attr("y", function(d) { return y_test_pos(d.new_cases); })
-      .attr("width",  x_test_pos.bandwidth())
-      .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
-      .attr("fill", function(d){ return colors(selectedRegion) })   
+   //  b.enter().append("rect").merge(b)
+   // //  .transition()
+   // //  .duration(1000)
+   //    .attr("class", "bar2")
+   //    .attr("x", function(d) { return x_test_pos(d.update_date)})
+   //    .attr("y", function(d) { return y_test_pos(d.new_cases); })
+   //    .attr("width",  x_test_pos.bandwidth())
+   //    .attr("height", function(d) { return height_cases - y_test_pos(d.new_cases); })
+   //    .attr("fill", function(d){ return colors(selectedRegion) })   
       
-   b
-    .exit()
-    .remove()
+   // b
+   //  .exit()
+   //  .remove()
       
     
-   // u
-   svg_test_pos.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+   // // u
+   // svg_test_pos.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
- const POINTS_AVERAGE = 6;
+//  const POINTS_AVERAGE = 6;
  var line_tests = d3
     .line()
     .x(d => x_test_pos(d.update_date))
