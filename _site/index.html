@@ -780,6 +780,18 @@
     .style("border-width", "2px")
     .style("border-radius", "5px")
     .style("padding", "5px")
+    
+    
+var Tooltip_cases_line = d3.select("#cases_chart")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+   
    
    		var projection = d3.geoAlbers()
    		var path = d3.geoPath()
@@ -1050,17 +1062,24 @@ function drawChart() {
 
 
      // Three function that change the tooltip when user hover / move / leave a cell
-  var mouseover = function(d) {
+//  var mouseover = function(d) {
+//     focus.style("opacity", 1)
+//     Tooltip
+//       .style("opacity", 1)
+//    //  d3.select(this)
+//    //    .style("stroke", "black")
+//    //    .style("opacity", 1)
+//  }
+    var mouseover_cases = function(d) {
      focus.style("opacity", 1)
     Tooltip
       .style("opacity", 1)
-   //  d3.select(this)
-   //    .style("stroke", "black")
-   //    .style("opacity", 1)
+
   }
+  
   var mousemove = function(d) {
          // var formatTime = d3.timeFormat("%b %d")"%b %Y"
-         var formatTime = d3.timeFormat("%b %Y")
+         var formatTime = d3.timeFormat("%b %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataFilter, x0, 1);
     var selectedData = dataFilter[i]
@@ -1073,14 +1092,13 @@ function drawChart() {
       .attr("cx", x_rt(selectedData.date))
       .attr("cy", y_rt(selectedData.rt_median))
   }
-  var mouseleave = function(d) {
-     focus.style("opacity", 0)
-    Tooltip
-      .style("opacity", 0)
-   //  d3.select(this)
-   //    .style("stroke", "none")
-   //    .style("opacity", 0.8)
-  }
+  
+  
+//  var mouseleave = function(d) {
+//     focus.style("opacity", 0)
+//     Tooltip
+//       .style("opacity", 0)
+//  }
   
   console.log (dataFilter)
     x_rt.domain(d3.extent(data[1] , function(d) { return d.date}))
@@ -1179,9 +1197,17 @@ function drawChart() {
       .append('rect')
       .attr('width', width_rt)
       .attr('height', height_rt)
-      .on("mouseover", mouseover)
+      .on("mouseover", function(d) {
+     focus.style("opacity", 1)
+    Tooltip
+      .style("opacity", 1)
+  })
       .on("mousemove", mousemove)
-      .on("mouseleave", mouseleave)
+      .on("mouseleave", function(d) {
+     focus.style("opacity", 0)
+    Tooltip
+      .style("opacity", 0)
+  })
    
 
    var selectedGroupCases = dict[selectedRegion]
