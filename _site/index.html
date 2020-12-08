@@ -232,7 +232,7 @@
 <div class="card rt " id = "">
   <div class="card-body">
     <h2>Transmission Status</h2>
-    <text>We estimate Rt is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for the state of Illinois. Rt, the instantanous
+    <text>We estimate Rt is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text id = "rt_text_region"></text> of Illinois. Rt, the instantanous
       reproductive number, tells us whether the epidemic is <i>growing</i> (Rt > 1), <i>shrinking</i> (Rt < 1), or
       staying the same (Rt = 1).</text>
   </div>
@@ -1067,8 +1067,17 @@ function drawChart() {
     document.getElementById('rt_text').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_median).toFixed(2);
     document.getElementById('rt_text_lower').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_lower).toFixed(2);
     document.getElementById('rt_text_upper').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_upper).toFixed(2);
-    
-    
+    var region = ""
+    if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
+         // return "Illinois";
+        region = "the state";
+     } else {
+        region = "Region " + selectedRegion.substring( selectedRegion.indexOf('_')+1);
+     }
+     
+     document.getElementById('rt_text_region').innerHTML = region;
+     
+
     
      // Three function that change the tooltip when user hover / move / leave a cell
 //  var mouseover = function(d) {
