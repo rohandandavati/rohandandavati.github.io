@@ -163,7 +163,7 @@ title: Home
 <div class="card rt " id = "">
   <div class="card-body">
     <h2>Transmission Status</h2>
-    <text>We estimate Rt is currently around 1.2 (95% CI 1.11-1.28) for the state of Illinois. Rt, the instantanous
+    <text>We estimate Rt is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for the state of Illinois. Rt, the instantanous
       reproductive number, tells us whether the epidemic is <i>growing</i> (Rt > 1), <i>shrinking</i> (Rt < 1), or
       staying the same (Rt = 1).</text>
   </div>
@@ -815,7 +815,7 @@ while (index >= 0) {
   var deaths_max_diff = {};
   var tests_max_diff = {};
 //   parseDate = d3.timeParse("%Y-%m-%d");
-var a = true;
+// var a = true;
 data[2].forEach((d) => {
     d.update_date = (d.update_date).substr(0,(d.update_date).indexOf(' '))
     d.update_date = parseDate(d.update_date);
@@ -894,6 +894,10 @@ data[2].forEach((d) => {
   });
 
 function drawChart() {
+   
+
+
+
    
    
    // console.log(data[1])
@@ -991,7 +995,12 @@ function drawChart() {
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
 
-
+    document.getElementById('rt_text').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_median).toFixed(2);
+    document.getElementById('rt_text_lower').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_lower).toFixed(2);
+    document.getElementById('rt_text_upper').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_upper).toFixed(2);
+    
+    
+    
      // Three function that change the tooltip when user hover / move / leave a cell
 //  var mouseover = function(d) {
 //     focus.style("opacity", 1)
@@ -1168,7 +1177,7 @@ function drawChart() {
    var data_map = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
 const formatTime = d3.timeFormat("%b %Y");
-  const len = data.length - 1;
+  const len = data_map.length - 1;
 
   x_cases.domain(data_map.map(function(d) { return d.update_date; }))
   .range([0,width_cases])
