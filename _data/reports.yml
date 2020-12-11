@@ -4,12 +4,12 @@
   image_path: /images/200505_sentinel_surveillance_Rt.png
   description: >
     Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
-- name: Estimating Rt
+- name: Estimating R_t
   date: June 23rd, 2020
   path: https://journals.plos.org/ploscompbiol/article/comments?id=10.1371/journal.pcbi.1008409
   image_path: /images/200623_rt_lags.png
   description: >
-    Practical considerations for measuring the effective reproductive number, Rt
+    Practical considerations for measuring the effective reproductive number, $R_t$
 - name: Reduce time to diagnosis
   date: June 18th, 2020
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
@@ -22,6 +22,12 @@
   image_path: /images/200706_second_wave_cases_by_age.png
   description: >
     Is Illinois experiencing a second wave in summer 2020?
+- name: Vaccine prioritization
+  date: September 10th, 2020
+  path: https://www.medrxiv.org/content/10.1101/2020.09.08.20190629v2
+  image_path: /images/200907_vax_prioritization.png
+  description: >
+    Model-informed COVID-19 vaccine prioritization strategies by age and serostatus
 - name: Contact tracing
   date: July 10th, 2020
   path: /reports/20200710_contact_tracing.pdf
