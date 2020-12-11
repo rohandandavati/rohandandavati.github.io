@@ -1064,12 +1064,18 @@ function drawChart() {
 //       .style("opacity", 0)
 //  }
   
-  console.log (dataFilter)
-    x_rt.domain(d3.extent(data[1] , function(d) { return d.date}))
+//  console.log (dataFilter)
+    x_rt.domain(d3.extent(dataFilter , function(d) { return d.date}))
+   //  x_rt.domain(dataFilter.map(function(d) { return d.date; }))
+   //    .range([0,width_rt])
+//  .padding(0);
+  
+   //  console.log(dataFilter.map(function(d) { return d.date; }))
+    
    //  x_rt.domain(dataFilter.map(function(d) { return d.date; }))
     
-   //  .range([ margin_rt.left, width_rt-margin_rt.left ]);
     .range([ margin_rt.left, width_rt-margin_rt.left ]);
+   //  .range([ margin_rt.left, width_rt-margin_rt.left ]);
                   
    //y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
    
@@ -1084,18 +1090,27 @@ function drawChart() {
     .attr("transform",
           "translate(" + margin_rt.left + "," + margin_rt.top + ")");
    
+            const formatTime = d3.timeFormat("%b %Y");
+      // x_rt_axis
+      //  .attr("transform", "translate(" + 0 + "," + height_rt + ")")
       
+      // if (currentWidth < 600) {
+      //    x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
+      // }else {
+      //    x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
+      // }
+      
+      const lenrt = dataFilter.length - 1;
       x_rt_axis
        .attr("transform", "translate(" + 0 + "," + height_rt + ")")
       
-      if (currentWidth < 600) {
-         x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
-      }else {
-         x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
-      }
-      
-      
-      
+      //  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+//  .attr("transform", "translate(" + 0 + "," + height_cases + ")")
+  .call(d3.axisBottom(x_rt)
+//  .tickValues(x_rt.domain().filter(function(d,i){ return !(i%30)}))
+   //  .tickValues(tickValuesForAxis)
+    .tickFormat(d3.timeFormat("%b %Y"))
+    );
       
       
       y_rt.range([ height_rt, 0 ])
@@ -1105,18 +1120,6 @@ function drawChart() {
    svg_rt.select(".xLabel").remove()
    svg_rt.select(".yLabel").remove()
    
-   // svg_rt.append("text")
-   //  .attr("class", "yLabel")
-   //  .attr("text-anchor", "end")
-   //  .attr("y", 6)
-   //          .attr("transform",
-   //          "translate(" + -10 + " ," + 
-   //                         0 + ")")
-   //  .attr("dy", ".75em")
-   //  .style("fill", "#242526")
-    
-   //  .attr("transform", "rotate(-90)")
-   //  .html("<text>Reproductive Number (R)</text>") 
    
 svg_rt
 .append('text')
@@ -1220,7 +1223,7 @@ svg_rt
    
    var data_map = data[2].filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
-const formatTime = d3.timeFormat("%b %Y");
+// const formatTime = d3.timeFormat("%b %Y");
   const len = data_map.length - 1;
 
   x_cases.domain(data_map.map(function(d) { return d.update_date; }))
@@ -1576,6 +1579,7 @@ svg_cases.selectAll('path').remove();
   .range([0,width_cases])
   .padding(0);
   
+
 
 //  x_axis.attr("transform", "translate(0," + height + ")")
  x_axis_deaths
