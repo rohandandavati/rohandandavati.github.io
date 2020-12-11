@@ -1219,7 +1219,7 @@ svg_rt
                            (height_rt + margin_rt.top + 30) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
-      .text("Date") 
+      // .text("Date") 
 
    interval_rt
       .datum(dataFilter)
@@ -1343,7 +1343,7 @@ svg_rt
                            (height_cases + margin_cases.top+40) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
-      .text("Date") 
+      // .text("Date") 
 
     
  x_axis_tests_pos
@@ -1368,7 +1368,7 @@ svg_rt
                            (height_cases + margin_cases.top+40) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
-      .text("Date") 
+      // .text("Date") 
 
  x_axis_tests
  .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
@@ -1391,7 +1391,7 @@ svg_rt
                            (height_cases + margin_cases.top+40) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
-      .text("Date") 
+      // .text("Date") 
       
       svg_test_pos.select(".xLabel").remove()
     
@@ -1402,7 +1402,7 @@ svg_rt
                            (height_cases + margin_cases.top+40) + ")")
       .style("text-anchor", "middle")
       .style("fill", "#242526")
-      .text("Date") 
+      // .text("Date") 
     
   y_cases
   .domain([0, d3.max(data_map, function(d) { return d.new_cases; })])
