@@ -692,18 +692,6 @@ title: Home
 	var svg_tests = d3.select("#tests").append("svg")
 
 
-// // append the svg object to the body of the page
-//     var yTitle = svg_rt.append("text")
-//       .attr("transform", "rotate(-90)")
-//       .attr("y", 4)
-//       // .attr("x",0 - (height / 2))
-//       .attr("dy", "1em")
-//       .style("text-anchor", "middle")
-//       .text("Rt");    
-
-
-
-
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
@@ -910,13 +898,6 @@ data[2].forEach((d) => {
 
 function drawChart() {
    
-
-
-
-   
-   
-   // console.log(data[1])
-   // console.log(data[2])
    
    let dict = {};
       dict["illinois"] = "Illinois";
@@ -1024,16 +1005,6 @@ function drawChart() {
      document.getElementById('rt_text_region').innerHTML = region;
      
 
-    
-     // Three function that change the tooltip when user hover / move / leave a cell
-//  var mouseover = function(d) {
-//     focus.style("opacity", 1)
-//     Tooltip
-//       .style("opacity", 1)
-//    //  d3.select(this)
-//    //    .style("stroke", "black")
-//    //    .style("opacity", 1)
-//  }
     var mouseover_cases = function(d) {
      focus.style("opacity", 1)
     Tooltip
@@ -1058,26 +1029,9 @@ function drawChart() {
   }
   
   
-//  var mouseleave = function(d) {
-//     focus.style("opacity", 0)
-//     Tooltip
-//       .style("opacity", 0)
-//  }
-  
-//  console.log (dataFilter)
     x_rt.domain(d3.extent(dataFilter , function(d) { return d.date}))
-   //  x_rt.domain(dataFilter.map(function(d) { return d.date; }))
-   //    .range([0,width_rt])
-//  .padding(0);
-  
-   //  console.log(dataFilter.map(function(d) { return d.date; }))
-    
-   //  x_rt.domain(dataFilter.map(function(d) { return d.date; }))
-    
     .range([ margin_rt.left, width_rt-margin_rt.left ]);
-   //  .range([ margin_rt.left, width_rt-margin_rt.left ]);
-                  
-   //y_rt.domain([0, d3.max(data.filter(function(d){return d.geography_modeled==allGroup[0]}), function(d) { return d.rt_upper })])
+
    
    y_rt.domain([0, 2.1]);
    
@@ -1091,24 +1045,13 @@ function drawChart() {
           "translate(" + margin_rt.left + "," + margin_rt.top + ")");
    
             const formatTime = d3.timeFormat("%b %Y");
-      // x_rt_axis
-      //  .attr("transform", "translate(" + 0 + "," + height_rt + ")")
-      
-      // if (currentWidth < 600) {
-      //    x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
-      // }else {
-      //    x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
-      // }
       
       const lenrt = dataFilter.length - 1;
       x_rt_axis
        .attr("transform", "translate(" + 0 + "," + height_rt + ")")
       
-      //  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
-//  .attr("transform", "translate(" + 0 + "," + height_cases + ")")
+
   .call(d3.axisBottom(x_rt)
-//  .tickValues(x_rt.domain().filter(function(d,i){ return !(i%30)}))
-   //  .tickValues(tickValuesForAxis)
     .tickFormat(d3.timeFormat("%b %Y"))
     );
       
@@ -1241,16 +1184,9 @@ svg_rt
 //  x_axis.attr("transform", "translate(0," + height + ")")
  x_axis
  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
-//  .attr("transform", "translate(" + 0 + "," + height_cases + ")")
   .call(d3.axisBottom(x_cases)
   .tickValues(x_cases.domain().filter(function(d,i){ return !(i%30)}))
-   //  .tickValues(tickValuesForAxis)
-    .tickFormat((d, i) => {
-      var r = '';
-      var dt = d; //console.log(d)
-      if ((i%30) || i == len) r = formatTime(dt);
-      return r;
-       })
+    .tickFormat(d3.timeFormat("%b %Y"))
     );
     
        svg_cases.select(".xLabel").remove()
@@ -1276,19 +1212,14 @@ svg_rt
       .style("fill", "#242526")
       // .text("Date") 
 
-    
- x_axis_tests_pos
+
+     x_axis_tests_pos
  .attr("transform", "translate(" + margin_test_pos.left + "," + (height_cases+margin_test_pos.top) + ")")
   .call(d3.axisBottom(x_test_pos)
   .tickValues(x_test_pos.domain().filter(function(d,i){ return !(i%30)}))
-   //  .tickValues(tickValuesForAxis)
-    .tickFormat((d, i) => {
-      var r = '';
-      var dt = d; //console.log(d)
-      if ((i%30) || i == len) r = formatTime(dt);
-      return r;
-       })
+    .tickFormat(d3.timeFormat("%b %Y"))
     );
+    
     
            svg_deaths.select(".xLabel").remove()
     
@@ -1301,18 +1232,15 @@ svg_rt
       .style("fill", "#242526")
       // .text("Date") 
 
- x_axis_tests
+
+     x_axis_tests
  .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
   .call(d3.axisBottom(x_tests)
   .tickValues(x_tests.domain().filter(function(d,i){ return !(i%30)}))
-   //  .tickValues(tickValuesForAxis)
-    .tickFormat((d, i) => {
-      var r = '';
-      var dt = d; //console.log(d)
-      if ((i%30) || i == len) r = formatTime(dt);
-      return r;
-       })
+    .tickFormat(d3.timeFormat("%b %Y"))
     );
+
+
     svg_tests.select(".xLabel").remove()
     
                 svg_tests.append("text") 
@@ -1344,6 +1272,7 @@ svg_rt
   .domain([0, 120000])
   
   .range([height_cases, 0]);
+//  console.log("check")
   
       y_test_pos2
   .domain([0, d3.max(data_map, function(d) { return d.test_positivity; })])
@@ -1578,21 +1507,13 @@ svg_cases.selectAll('path').remove();
   x_deaths.domain(data_map.map(function(d) { return d.update_date; }))
   .range([0,width_cases])
   .padding(0);
-  
+ 
 
-
-//  x_axis.attr("transform", "translate(0," + height + ")")
- x_axis_deaths
+     x_axis_deaths
  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
   .call(d3.axisBottom(x_deaths)
   .tickValues(x_deaths.domain().filter(function(d,i){ return !(i%30)}))
-   //  .tickValues(tickValuesForAxis)
-    .tickFormat((d, i) => {
-      var r = '';
-      var dt = d; //console.log(d)
-      if ((i%30) || i == len) r = formatTime(dt);
-      return r;
-       })
+    .tickFormat(d3.timeFormat("%b %Y"))
     );
 
   y_deaths
