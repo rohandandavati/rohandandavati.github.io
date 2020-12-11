@@ -712,7 +712,7 @@
       }
    }
    
-      var margin_rt = {top: 15, right: 10, bottom: 50, left: 45};
+      var margin_rt = {top: 15, right: 10, bottom: 50, left: 50};
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -1174,22 +1174,42 @@ function drawChart() {
    svg_rt.select(".xLabel").remove()
    svg_rt.select(".yLabel").remove()
    
-   svg_rt.append("text")
-    .attr("class", "yLabel")
+   // svg_rt.append("text")
+   //  .attr("class", "yLabel")
+   //  .attr("text-anchor", "end")
+   //  .attr("y", 6)
+   //          .attr("transform",
+   //          "translate(" + -10 + " ," + 
+   //                         0 + ")")
+   //  .attr("dy", ".75em")
+   //  .style("fill", "#242526")
+    
+   //  .attr("transform", "rotate(-90)")
+   //  .html("<text>Reproductive Number (R)</text>") 
+   
+svg_rt
+.append('text')
+   .attr("class", "yLabel")
     .attr("text-anchor", "end")
     .attr("y", 6)
             .attr("transform",
             "translate(" + -10 + " ," + 
                            0 + ")")
-   //  .attr("opacity", .8)
     .attr("dy", ".75em")
     .style("fill", "#242526")
-    
     .attr("transform", "rotate(-90)")
-    .text("Reproductive Number (Rt)") 
+  .html('Reproductive Number - R')
+  .style('font-size', '1rem')
+  
+ .append('tspan')
+    .text('t')
+    .style('font-size', '.8rem')
+   //  .style('font-weight', 'bold')
+    .attr('dx', '.1em')
+    .attr('dy', '.3em')
+
         
-        
-        svg_rt.append("text") 
+   svg_rt.append("text") 
         .attr("class", "xLabel")
         .attr("transform",
             "translate(" + (width_rt/2) + " ," + 
