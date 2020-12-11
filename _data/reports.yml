@@ -4,12 +4,12 @@
   image_path: /images/200505_sentinel_surveillance_Rt.png
   description: >
     Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
-- name: Estimating R_t
+- name: Estimating Rt
   date: June 23rd, 2020
   path: https://journals.plos.org/ploscompbiol/article/comments?id=10.1371/journal.pcbi.1008409
   image_path: /images/200623_rt_lags.png
   description: >
-    Practical considerations for measuring the effective reproductive number, $R_t$
+    Practical considerations for measuring the effective reproductive number, Rt
 - name: Reduce time to diagnosis
   date: June 18th, 2020
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
