@@ -1115,13 +1115,22 @@ function drawChart() {
    
             const formatTime = d3.timeFormat("%b %Y");
       
-      const lenrt = dataFilter.length - 1;
+      // const lenrt = dataFilter.length - 1;
+      let ticks = 0
+      if (currentWidth < 600) {
+         // x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
+         ticks = 5
+         
+      }else {
+         // x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
+         ticks = 6
+      }
+      
       x_rt_axis
        .attr("transform", "translate(" + 0 + "," + height_rt + ")")
-      
 
   .call(d3.axisBottom(x_rt)
-    .tickFormat(d3.timeFormat("%b %Y"))
+    .tickFormat(d3.timeFormat("%b %Y")).ticks(ticks)
     );
       
       
@@ -1136,7 +1145,7 @@ function drawChart() {
 svg_rt
 .append('text')
    .attr("class", "yLabel")
-    .attr("text-anchor", "end")
+    .attr("text-anchor", "end") 
     .attr("y", 6)
             .attr("transform",
             "translate(" + -10 + " ," + 
@@ -1251,10 +1260,25 @@ svg_rt
   .padding(0);
   
 //  x_axis.attr("transform", "translate(0," + height + ")")
+ var tickVals = x_cases.domain().filter(function(d,i){ return !(i%30)})
+ 
+ if (currentWidth < 500) {
+    
+    var index = tickVals.length -1
+    while (index >= 0) {
+     if(index % 2 == 0  ){
+         tickVals.splice(index, 1);
+      }
+  index -= 1;
+}
+ }
+ console.log(tickVals)
+ 
  x_axis
  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
   .call(d3.axisBottom(x_cases)
-  .tickValues(x_cases.domain().filter(function(d,i){ return !(i%30)}))
+//  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
+.tickValues(tickVals)
     .tickFormat(d3.timeFormat("%b %Y"))
     );
     
@@ -1285,7 +1309,8 @@ svg_rt
      x_axis_tests_pos
  .attr("transform", "translate(" + margin_test_pos.left + "," + (height_cases+margin_test_pos.top) + ")")
   .call(d3.axisBottom(x_test_pos)
-  .tickValues(x_test_pos.domain().filter(function(d,i){ return !(i%30)}))
+//  .tickValues(x_test_pos.domain().filter(function(d,i){ return !(i%30)}))
+.tickValues(tickVals)
     .tickFormat(d3.timeFormat("%b %Y"))
     );
     
@@ -1305,7 +1330,8 @@ svg_rt
      x_axis_tests
  .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
   .call(d3.axisBottom(x_tests)
-  .tickValues(x_tests.domain().filter(function(d,i){ return !(i%30)}))
+//  .tickValues(x_tests.domain().filter(function(d,i){ return !(i%30)}))
+.tickValues(tickVals)
     .tickFormat(d3.timeFormat("%b %Y"))
     );
 
@@ -1581,7 +1607,8 @@ svg_cases.selectAll('path').remove();
      x_axis_deaths
  .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
   .call(d3.axisBottom(x_deaths)
-  .tickValues(x_deaths.domain().filter(function(d,i){ return !(i%30)}))
+//  .tickValues(x_deaths.domain().filter(function(d,i){ return !(i%30)}))
+.tickValues(tickVals)
     .tickFormat(d3.timeFormat("%b %Y"))
     );
 
