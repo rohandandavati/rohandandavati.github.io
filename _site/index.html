@@ -232,7 +232,7 @@
 <div class="card rt " id = "">
   <div class="card-body">
     <h2>Transmission Status</h2>
-    <text>We estimate Rt is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text id = "rt_text_region"></text> of Illinois. Rt, the instantanous
+    <text>We estimate Rt is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text id = "rt_text_region"></text> of Illinois. Rt, the instantaneous
       reproductive number, tells us whether the epidemic is <i>growing</i> (Rt > 1), <i>shrinking</i> (Rt < 1), or
       staying the same (Rt = 1).</text>
   </div>
@@ -246,7 +246,10 @@
 <div class="card cases " id = "">
   <div class="card-body">
     <h2>Cases</h2>
-    <text>Subtitle for cases chart </text>
+    <text>This is the number of new cases discovered daily by diagnostic testing, as reported by the
+      Illinois Department of Public Health. Individuals who receive multiple positive test results only count for one
+      case. Bars show daily cases, and the line is a 7-day moving average.
+      As of [last update date], an average of [X] cases of SARS-CoV-2 infection are discovered daily in [Region]. </text>
   </div>
 </div>
 
@@ -258,7 +261,11 @@
 <div class="card deaths " id = "">
   <div class="card-body">
     <h2>Deaths</h2>
-    <text>Subtitle for deaths chart </text>
+    <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
+      Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
+      but are likely within two weeks. Bars show daily deaths, and the line is a 7-day moving average.
+      As of [last update date], an average of [X] confirmed COVID-19 deaths
+      occur daily in [Region]. </text>
   </div>
 </div>
 
@@ -269,7 +276,10 @@
 <div class="card cases " id = "">
   <div class="card-body">
     <h2>Cases per Test (case positivity rate)</h2>
-    <text>Subtitle for test chart </text>
+    <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
+      is not the same as the test positivity rate, which measures the number of positive tests per every test
+      administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
+      As of [last update date], an average of [X] cases are discovered per test in [Region]. </text>
   </div>
 </div>
 
@@ -284,7 +294,12 @@
 <div class="card cases " id = "">
   <div class="card-body">
     <h2>Tests</h2>
-    <text>Subtitle for test chart </text>
+    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in [Region]. This count includes only
+      molecular tests up to October 14, 2020 and includes both molecular and antigen tests after October 14, 2020.
+      This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
+      test for past SARS-CoV-2 infection, are not included in this count. Bars show daily tests, and the line
+      is a 7-day moving average. As of [last update date], an average of [X] tests are conducted daily in [Region].
+</text>
   </div>
 </div>
 
@@ -639,7 +654,7 @@
          "covid_region": 3
       },
       "SCHUYLER": {
-         "covid_region": 3
+         "covid_region": 3 
       },
       "SCOTT": {
          "covid_region": 3
@@ -1171,7 +1186,7 @@ function drawChart() {
     .style("fill", "#242526")
     
     .attr("transform", "rotate(-90)")
-    .text("Rate of Transmission (Rt)") 
+    .text("Reproductive Number (Rt)") 
         
         
         svg_rt.append("text") 
@@ -1712,6 +1727,7 @@ svg_deaths.selectAll('path').remove();
 }); //Promise.all    
 
 </script>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
