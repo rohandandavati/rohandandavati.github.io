@@ -7,7 +7,7 @@
 - name: Estimating Rt
   date: June 23rd, 2020
   path: https://journals.plos.org/ploscompbiol/article/comments?id=10.1371/journal.pcbi.1008409
-  image_path: 
+  image_path: /images/200623_rt_lags.png
   description: >
     Practical considerations for measuring the effective reproductive number, Rt
 - name: Reduce time to diagnosis
