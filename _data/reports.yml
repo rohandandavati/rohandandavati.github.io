@@ -13,7 +13,7 @@
 - name: First wave mobility
   date: Novemver 10th, 2020
   path: https://www.nature.com/articles/s41586-020-2923-3
-  image_path: /images/201110_mobility_paper_poi_by_full_reopen_risk.png
+  image_path: /images/201110_mobility_poi_by_full_reopen_risk.png
   description: >
     Mobility network models of COVID-19 explain inequities and inform reopening
 - name: Reduce time to diagnosis
