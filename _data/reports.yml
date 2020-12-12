@@ -10,6 +10,12 @@
   image_path: /images/200623_rt_lags.png
   description: >
     Practical considerations for measuring the effective reproductive number, Rt
+- name: First wave mobility
+  date: Novemver 10th, 2020
+  path: https://www.nature.com/articles/s41586-020-2923-3
+  image_path: /images/201110_mobility_paper_poi_by_full_reopen_risk.png
+  description: >
+    Mobility network models of COVID-19 explain inequities and inform reopening
 - name: Reduce time to diagnosis
   date: June 18th, 2020
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
