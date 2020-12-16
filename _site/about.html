@@ -90,13 +90,20 @@
     <p>Illinois Covid Modeling is a joint effort between Northwestern University and the University of Chicago, who have been modeling COVID-19 in Illinois since March 2020.
     In partnership with the Illinois Department of Public Health (IDPH), we use simulation models to predict trends in hospital usage and deaths at the COVID-19 Region level.
     Both models are SEIR-based compartmental models that are calibrated to daily hospital census, ICU census, and death data collected by IDPH, and both teams have created a
-        suite of 11 models, one for each COVID-19 Region.</p>
-    <p>Code for University of Chicago's simulation model is available <a href="https://github.com/cobeylab/covid_IL">here</a>.</p>
-    <p>Code for Northwestern's simulation model is available <a href="https://github.com/numalariamodeling/covid-chicago">here</a>. Northwestern is estimating Rt by
+        suite of 11 models, one for each COVID-19 Region.
+    We continuously perform other analyses of pandemic dynamics, some of which are featured on the Reports page.</p>
+    <p>Code for University of Chicago's simulation model is available <a href="https://github.com/cobeylab/covid_IL">here</a>. The University of Chicago group is estimating \(R_t\) using methods in <a href="https://github.com/epiforecasts/EpiNow2">EpiNow2</a> to hospital admissions with COVID-like illness, which have tracked actual COVID-19 admissions very well. These estimates are checked against the \(R_t\) derived from the infection rates that are inferred from the dynamical model.</p>
+    <p>Code for Northwestern's simulation model is available <a href="https://github.com/numalariamodeling/covid-chicago">here</a>. Northwestern is estimating \(R_t\) by
         applying the <a href="https://cran.r-project.org/web/packages/EpiEstim/index.html">EpiEstim package</a> to the timeseries of daily new infections inferred from the simulation models.</p>
     <p>Case and death data shown on the landing page are aggregated from <a href="https://www.dph.illinois.gov/covid19/covid19-statistics"> county-level public data from IDPH </a>.</p>
+    <h2>About the modeling teams</h2>
+    <p>The <a href="https://cobeylab.uchicago.edu/">Cobey Lab</a> at the University of Chicago is an infectious disease modeling group with expertise in respiratory pathogens.
+    In addition to their COVID-19 work, they study how the host adaptive immune response coevolves with pathogens, especially in ways relevant to epidemiological and evolutionary forecasting, vaccine design, and pathogen diversity.</p>
+    <p>COVID-19 modeling at Northwestern is led by the <a href="https://www.numalariamodeling.org/">Malaria Modeling Team</a>, an infectious disease modeling group with expertise in using models to inform policy. In addition to their COVID-19 work, they
+    work with malaria-endemic countries to develop data-driven national strategic plans to reduce malaria morbidity and mortality.</p>
 </div>
 </div>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
