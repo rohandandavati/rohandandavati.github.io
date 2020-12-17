@@ -876,30 +876,6 @@ let dailyRegionCount = {}
       dailyRegionCount["Southwest Central"] = {cases: 0, deaths: 0, tests: 0};
       dailyRegionCount["Suburban"] = {cases: 0, deaths: 0, tests: 0};
       
-      dailyRegionCount["Illinois"].cases = 0
-      dailyRegionCount["Illinois"].deaths = 0
-      dailyRegionCount["Central"].cases = 0
-      dailyRegionCount["Central"].deaths = 0
-      dailyRegionCount["Chicago"].cases  = 0
-      dailyRegionCount["Chicago"].deaths = 0
-      dailyRegionCount["Collar"].cases = 0
-      dailyRegionCount["Collar"].deaths
-      dailyRegionCount["West Central"].cases = 0
-      dailyRegionCount["West Central"].deaths = 0
-      dailyRegionCount["North Central"].cases = 0
-      dailyRegionCount["North Central"].deaths = 0
-      dailyRegionCount["Northern"].cases = 0
-      dailyRegionCount["Northern"].deaths = 0
-      dailyRegionCount["Northwest"].cases = 0
-      dailyRegionCount["Northwest"].deaths = 0
-      dailyRegionCount["Southeast Central"].cases = 0
-      dailyRegionCount["Southeast Central"].deaths = 0
-      dailyRegionCount["Southern"].cases = 0
-      dailyRegionCount["Southern"].deaths = 0
-      dailyRegionCount["Southwest Central"].cases = 0
-      dailyRegionCount["Southwest Central"].deaths = 0
-      dailyRegionCount["Suburban"].cases = 0
-      dailyRegionCount["Suburban"].deaths = 0
       
       
       // console.log(dailyRegionCount)
@@ -942,28 +918,40 @@ let dailyRegionCount = {}
             //clear dictionary 
       dailyRegionCount["Illinois"].cases = 0
       dailyRegionCount["Illinois"].deaths = 0
+      dailyRegionCount["Illinois"].tests = 0
       dailyRegionCount["Central"].cases = 0
       dailyRegionCount["Central"].deaths = 0
+      dailyRegionCount["Central"].tests = 0
       dailyRegionCount["Chicago"].cases  = 0
       dailyRegionCount["Chicago"].deaths = 0
+      dailyRegionCount["Chicago"].tests = 0
       dailyRegionCount["Collar"].cases = 0
-      dailyRegionCount["Collar"].deaths
+      dailyRegionCount["Collar"].deaths = 0
+      dailyRegionCount["Collar"].tests = 0
       dailyRegionCount["West Central"].cases = 0
       dailyRegionCount["West Central"].deaths = 0
+      dailyRegionCount["West Central"].tests = 0
       dailyRegionCount["North Central"].cases = 0
       dailyRegionCount["North Central"].deaths = 0
+      dailyRegionCount["North Central"].tests = 0
       dailyRegionCount["Northern"].cases = 0
       dailyRegionCount["Northern"].deaths = 0
+      dailyRegionCount["Northern"].tests = 0
       dailyRegionCount["Northwest"].cases = 0
       dailyRegionCount["Northwest"].deaths = 0
+      dailyRegionCount["Northwest"].tests = 0
       dailyRegionCount["Southeast Central"].cases = 0
       dailyRegionCount["Southeast Central"].deaths = 0
+      dailyRegionCount["Southeast Central"].tests = 0
       dailyRegionCount["Southern"].cases = 0
       dailyRegionCount["Southern"].deaths = 0
+      dailyRegionCount["Southern"].tests = 0
       dailyRegionCount["Southwest Central"].cases = 0
       dailyRegionCount["Southwest Central"].deaths = 0
+      dailyRegionCount["Southwest Central"].tests = 0
       dailyRegionCount["Suburban"].cases = 0
       dailyRegionCount["Suburban"].deaths = 0
+      dailyRegionCount["Suburban"].tests = 0
       
       //filter county array 
       var values = (value.values).filter(function(d){return !(d.County==="Out Of State" || d.County==="Unassigned")})
@@ -1438,8 +1426,8 @@ svg_rt
 //  console.log("check")
   
       y_test_pos2
- .domain([0, d3.max(data_map, function(d) { return d.test_positivity; })])
-//  .domain([0, .20])
+//  .domain([0, d3.max(data_map, function(d) { return d.test_positivity; })])
+ .domain([0, .20])
   
  .range([height_cases, 0]);
   
@@ -1520,37 +1508,37 @@ svg_tests.selectAll('path').remove();
    
    // svg_test_pos.selectAll(".bar1")
    //  .data(data_map)
-    t.enter().append("rect").merge(t)
-   //  .transition()
-   //  .duration(1000)
-      .attr("class", "bar1")
-      .attr("x", function(d) { return x_test_pos(d.update_date)})
-      .attr("y", function(d) { return y_test_pos(d.new_tests); })
-      .attr("width",  x_test_pos.bandwidth())
-      .attr("height", function(d) { return height_cases - y_test_pos(d.new_tests); })
-      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+   //  t.enter().append("rect").merge(t)
+   // //  .transition()
+   // //  .duration(1000)
+   //    .attr("class", "bar1")
+   //    .attr("x", function(d) { return x_test_pos(d.date)})
+   //    .attr("y", function(d) { return y_test_pos(d.tested); })
+   //    .attr("width",  x_test_pos.bandwidth())
+   //    .attr("height", function(d) { return height_cases - y_test_pos(d.tested); })
+   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
       
 
-      t
-    .exit()
-    .remove()
+   //    t
+   //  .exit()
+   //  .remove()
     
-      var b =  svg_test_pos.selectAll(".bar2")
-    .data(data_map)
+   //    var b =  svg_test_pos.selectAll(".bar2")
+   //  .data(data_map)
     
-    b.enter().append("rect").merge(b)
-   //  .transition()
-   //  .duration(1000)
-      .attr("class", "bar2")
-      .attr("x", function(d) { return x_test_pos(d.date)})
-      .attr("y", function(d) { return y_test_pos(d.cases); })
-      .attr("width",  x_test_pos.bandwidth())
-      .attr("height", function(d) { return height_cases - y_test_pos(d.cases); })
-      .attr("fill", function(d){ return colors(selectedRegion) })   
+   //  b.enter().append("rect").merge(b)
+   // //  .transition()
+   // //  .duration(1000)
+   //    .attr("class", "bar2")
+   //    .attr("x", function(d) { return x_test_pos(d.date)})
+   //    .attr("y", function(d) { return y_test_pos(d.cases); })
+   //    .attr("width",  x_test_pos.bandwidth())
+   //    .attr("height", function(d) { return height_cases - y_test_pos(d.cases); })
+   //    .attr("fill", function(d){ return colors(selectedRegion) })   
       
-   b
-    .exit()
-    .remove()
+   // b
+   //  .exit()
+   //  .remove()
       
     
    // u
