@@ -1483,7 +1483,8 @@ svg_rt
       .style("text-anchor", "middle")
       .style("fill", "#242526")
       // .text("Date") 
-    
+
+
   y_cases
   .domain([0, d3.max(data_map, function(d) { return d.cases; })])
   .range([height_cases, 0]);
@@ -1492,18 +1493,18 @@ svg_rt
  .domain([0, d3.max(data_map, function(d) { return d.tested; })])
 //  .domain([0, 120000])
   
- .range([height_cases, 0]);
+  .range([height_cases, 0]);
 //  console.log("check")
   
       y_test_pos2
 //  .domain([0, d3.max(data_map, function(d) { return d.test_positivity; })])
- .domain([0, .20])
+ .domain([0, .30])
   
- .range([height_cases, 0]);
+  .range([height_cases, 0]);
   
       y_tests
- .domain([0, d3.max(data_map, function(d) { return d.tested; })])
- .range([height_cases, 0]);
+  .domain([0, d3.max(data_map, function(d) { return d.tested; })])
+  .range([height_cases, 0]);
   
 // var y_axis = svg.append("g")
 y_axis.attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  ).call(d3.axisLeft(y_cases));
@@ -1513,7 +1514,17 @@ var formatPercent = d3.format(".0%");
 // y_axis_tests_pos2.attr("transform", "translate("+ (width_cases+ margin_test_pos.left+2) +","+ margin_test_pos.top  + ")"  ).call(d3.axisRight(y_test_pos2).tickFormat(formatPercent))
 y_axis_tests_pos2.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_test_pos2).tickFormat(formatPercent))
 
-// y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_tests));
+y_axis_tests.attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  ).call(d3.axisLeft(y_tests));
+
+
+
+
+
+
+
+
+
+
 
 
        var s = svg_tests.selectAll(".bar1")
