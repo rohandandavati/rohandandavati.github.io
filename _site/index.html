@@ -1169,10 +1169,6 @@ function drawChart() {
       .attr("class", "yLabel")
        .attr("text-anchor", "end") 
        .attr("y", 5)
-               // .attr("transform",
-               // "translate(" + -10 + " ," + 
-               //                0 + ")")
-      //  .attr("dy", ".75em")
        .attr("dy", ".40em")
        .style("fill", "#242526")
        .attr("transform", "rotate(-90)")
@@ -1298,7 +1294,7 @@ console.log("hi")
  
  x_axis
 //    .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
-.attr("transform", "translate(" + margin_cases.left + "," + height_cases + ")")
+.attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
    .call(d3.axisBottom(x_cases)
    //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
    .tickValues(tickVals)
@@ -1309,7 +1305,7 @@ console.log("hi")
    //test pos chart x axis    
    x_axis_tests_pos
       // .attr("transform", "translate(" + margin_test_pos.left + "," + (height_cases+margin_test_pos.top) + ")")
-      .attr("transform", "translate(" +  margin_cases.left + "," + height_cases + ")")
+      .attr("transform", "translate(" +  margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
       .call(d3.axisBottom(x_test_pos)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1319,7 +1315,7 @@ console.log("hi")
    //tests chart x axis
    x_axis_tests
       // .attr("transform", "translate(" + margin_tests.left + "," + 0 + ")")
-      .attr("transform", "translate(" + margin_cases.left + "," + height_cases + ")")
+      .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
       .call(d3.axisBottom(x_tests)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1337,17 +1333,17 @@ console.log("hi")
       .range([height_cases, 0]);
      
    y_axis
-      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       .call(d3.axisLeft(y_cases));
 
    var formatPercent = d3.format(".0%");
    
    y_axis_tests_pos
-      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       .call(d3.axisLeft(y_test_pos).tickFormat(formatPercent))
    
    y_axis_tests
-      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       .call(d3.axisLeft(y_tests));
    
    var s = svg_tests.selectAll(".bar1")
@@ -1362,7 +1358,7 @@ console.log("hi")
       .attr("width",  x_tests.bandwidth())
       .attr("height", function(d) { return height_cases - y_tests(d.tested); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
+      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
    s
@@ -1398,13 +1394,13 @@ console.log("hi")
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line_test_daily).attr("transform", "translate("+ margin_cases.left +","+ 0 + ")"  );
+      .attr('d', line_test_daily).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  );
 
     
    // u
    svg_test_pos
       .selectAll("rect")
-      .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
+      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
 //  const POINTS_AVERAGE = 6;
@@ -1439,7 +1435,7 @@ console.log("hi")
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
       .attr('d', line_tests)
-      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  );
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
 
   // Create the u variable
   var u = svg_cases.selectAll("rect").data(data_map)
@@ -1453,7 +1449,7 @@ console.log("hi")
       .attr("width", x_cases.bandwidth())
       .attr("height", function(d) { return height_cases - y_cases(d.cases); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-   .attr("transform", "translate("+ margin_cases.left +","+ 0 + ")");
+   .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")");
 
   u
     .exit()
@@ -1494,7 +1490,7 @@ console.log("hi")
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
       .attr('d', line)
-      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  );
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
 
    
 
@@ -1507,7 +1503,7 @@ console.log("hi")
 
 
    x_axis_deaths
-      .attr("transform", "translate(" + margin_cases.left + "," + height_cases + ")")
+      .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
       .call(d3.axisBottom(x_deaths)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1517,7 +1513,7 @@ console.log("hi")
       .range([height_cases, 0]);
 
    y_axis_deaths
-      .attr("transform", "translate("+ margin_cases.left +","+ 0 + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
       .call(d3.axisLeft(y_deaths));
 
   // Create the u variable
@@ -1542,7 +1538,7 @@ console.log("hi")
    svg_deaths
    .selectAll("rect")
    // .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
-   .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
+   .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
     
    //  const POINTS_AVERAGE = 6;
     var lineA = d3
@@ -1575,7 +1571,7 @@ console.log("hi")
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
       .attr('d', lineA)
-      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       
       
     }
