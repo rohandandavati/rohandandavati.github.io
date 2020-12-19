@@ -1127,9 +1127,10 @@ function drawChart() {
   
     x_rt
       .domain(d3.extent(dataFilter , function(d) { return d.date}))
-      .range([ margin_rt.left, width_rt-margin_rt.left ]);
+      .range([ 0, width_rt]);
    
-   y_rt.domain([0, 2.1]);
+   y_rt
+   .domain([0, 2.0]);
    
    svg_rt
       .attr("width", width_rt + margin_rt.left + margin_rt.right)
@@ -1147,7 +1148,7 @@ function drawChart() {
    }
    
    x_rt_axis
-      .attr("transform", "translate(" + 0 + "," + height_rt + ")")
+      .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
       .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks));
       
       
@@ -1155,8 +1156,9 @@ function drawChart() {
       .range([ height_rt, 0 ])
    
    y_rt_axis
-      .attr("transform", "translate("+ margin_rt.left +","+ 0 + ")"  )
-      .call(d3.axisLeft(y_rt).ticks(6))
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      // .call(d3.axisLeft(y_rt).ticks(6))
+      .call(d3.axisLeft(y_rt))
 
    
    svg_rt
@@ -1182,6 +1184,8 @@ function drawChart() {
        .attr('dy', '.3em')
 
 
+   interval_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   
    interval_rt
       .datum(dataFilter)
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
@@ -1192,6 +1196,8 @@ function drawChart() {
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
    
+   line_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   
    line_rt
       .datum(dataFilter)
       .attr("stroke", function(d){ return colors(selectedRegion) })
@@ -1201,6 +1207,8 @@ function drawChart() {
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(d.rt_median) })
       )
+   
+   refLine.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    refLine
       .datum(dataFilter)
@@ -1214,6 +1222,7 @@ function drawChart() {
       .append('rect')
       .attr('width', width_rt)
       .attr('height', height_rt)
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .on("mouseover", function(d) {
      focus.style("opacity", 1)
     Tooltip
@@ -1257,8 +1266,6 @@ function drawChart() {
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
           
-
-console.log("hi")
    var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
   const len = data_map.length - 1;
