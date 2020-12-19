@@ -230,7 +230,7 @@
 <div class="map" id = "cases_map"></div>
 
 
-<div class="card rt " id = "">
+<div class="card cases " id = "">
   <div class="card-body">
     <h2>Transmission Status</h2>
     <text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text id = "rt_text_region"></text> of Illinois. \(R_t\), the instantaneous
@@ -239,7 +239,7 @@
   </div>
 </div>
 
-<div class = "card rt chart">
+<div class = "card cases chart">
    <div class="card-body" id = "rt_chart"> </div>
 </div>
 
@@ -719,7 +719,7 @@
       }
    }
    
-      var margin_rt = {top: 15, right: 10, bottom: 50, left: 50};
+   var margin_rt = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_cases = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -733,7 +733,7 @@
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
     .style("pointer-events", "all")
-    .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
+   //  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
    
    var x_rt = d3.scaleTime();
    var x_rt_axis = svg_rt.append("g");
@@ -826,7 +826,6 @@ var y_axis_deaths = svg_deaths.append("g")
 
 
 var x_test_pos= d3.scaleBand()
-// var y_test_pos = d3.scaleLinear()
 var y_test_pos = d3.scaleLinear()
 
 var x_axis_tests_pos = svg_test_pos.append("g")
@@ -837,10 +836,6 @@ var x_tests= d3.scaleBand()
 var y_tests = d3.scaleLinear()
 var x_axis_tests = svg_tests.append("g")
 var y_axis_tests = svg_tests.append("g")
-	
-// 	var files = ['https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
-// 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
-// 	           'https://raw.githubusercontent.com/samhovie/sitefiles/main/NOFO_long.csv']
 
 var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
@@ -850,7 +845,6 @@ var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json'
             //  ,'https://idph.illinois.gov/DPHPublicInformation/api/covidexport/GetCountyHistoricalTestResults?reportDate=10/10/2020'
             ]
-//http://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json?nocache=1
 
    let map = {};
       map["illinois"] = "Illinois";
@@ -930,10 +924,7 @@ let dailyRegionCount = {}
       dailyRegionCount["Southern"] = {cases: 0, deaths: 0, tests: 0};
       dailyRegionCount["Southwest Central"] = {cases: 0, deaths: 0, tests: 0};
       dailyRegionCount["Suburban"] = {cases: 0, deaths: 0, tests: 0};
-      
-      
-      
-      // console.log(dailyRegionCount)
+
 
    let parDate = d3.timeParse("%m/%d/%Y");
    // console.log(data[4])
@@ -960,13 +951,11 @@ let dailyRegionCount = {}
    var prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    
    c.forEach( value => {
-
       //clear dictionary
       regionArray.forEach(region => {
          dailyRegionCount[region].cases = 0;
          dailyRegionCount[region].deaths = 0;
          dailyRegionCount[region].tests = 0;
-         
       })
       
       //filter county array 
@@ -1057,7 +1046,6 @@ function drawChart() {
    
    path.projection(projection);
   
-   // var map = svg_map.append("g")
    svg_map.append("g")
    
        var map = svg_map.selectAll("path")
@@ -1080,7 +1068,6 @@ function drawChart() {
          }
       })
       .attr("stroke", function(d){ 
-	                 
            if (selectedRegion.localeCompare("illinois") === 0) {
                return mapFillColor(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
             } else {
@@ -1115,7 +1102,7 @@ function drawChart() {
      document.getElementById('rt_text_region').innerHTML = region;
      
 
-    var mouseover_cases = function(d) {
+   var mouseover_cases = function(d) {
      focus.style("opacity", 1)
     Tooltip
       .style("opacity", 1)
@@ -1136,34 +1123,26 @@ function drawChart() {
    focus
       .attr("cx", x_rt(selectedData.date))
       .attr("cy", y_rt(selectedData.rt_median))
-  }
+   }
   
-  
-    x_rt.domain(d3.extent(dataFilter , function(d) { return d.date}))
-    .range([ margin_rt.left, width_rt-margin_rt.left ]);
-
+    x_rt
+      .domain(d3.extent(dataFilter , function(d) { return d.date}))
+      .range([ margin_rt.left, width_rt-margin_rt.left ]);
    
    y_rt.domain([0, 2.1]);
    
-   
-   
-
-svg_rt
-   .attr("width", width_rt + margin_rt.left + margin_rt.right)
-   .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
-.append("g")
-   .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
-   
+   svg_rt
+      .attr("width", width_rt + margin_rt.left + margin_rt.right)
+      .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
+   .append("g")
+      .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
+      
    const formatTime = d3.timeFormat("%b %Y");
       
-   // const lenrt = dataFilter.length - 1;
    let ticks = 0
    if (currentWidth < 600) {
-      // x_rt_axis.call(d3.axisBottom(x_rt).ticks(3));
       ticks = 5
-      
    }else {
-      // x_rt_axis.call(d3.axisBottom(x_rt).ticks(6));
       ticks = 6
    }
    
@@ -1172,45 +1151,40 @@ svg_rt
       .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks));
       
       
-   y_rt.range([ height_rt, 0 ])
+   y_rt
+      .range([ height_rt, 0 ])
    
-   y_rt_axis.attr("transform", "translate("+ margin_rt.left +","+ 0 + ")"  ).call(d3.axisLeft(y_rt).ticks(6))
+   y_rt_axis
+      .attr("transform", "translate("+ margin_rt.left +","+ 0 + ")"  )
+      .call(d3.axisLeft(y_rt).ticks(6))
 
-
-   svg_rt.select(".xLabel").remove()
-   svg_rt.select(".yLabel").remove()
    
+   svg_rt
+      .select(".yLabel")
+      .remove()
    
-svg_rt
-.append('text')
-   .attr("class", "yLabel")
-    .attr("text-anchor", "end") 
-    .attr("y", 6)
-            .attr("transform",
-            "translate(" + -10 + " ," + 
-                           0 + ")")
-    .attr("dy", ".75em")
-    .style("fill", "#242526")
-    .attr("transform", "rotate(-90)")
-  .html('Reproductive Number - R')
-  .style('font-size', '1rem')
-  
- .append('tspan')
-    .text('t')
-    .style('font-size', '.8rem')
-   //  .style('font-weight', 'bold')
-    .attr('dx', '.1em')
-    .attr('dy', '.3em')
+   //rt y label 
+   svg_rt
+   .append('text')
+      .attr("class", "yLabel")
+       .attr("text-anchor", "end") 
+       .attr("y", 5)
+               // .attr("transform",
+               // "translate(" + -10 + " ," + 
+               //                0 + ")")
+      //  .attr("dy", ".75em")
+       .attr("dy", ".40em")
+       .style("fill", "#242526")
+       .attr("transform", "rotate(-90)")
+     .html('Reproductive Number - R')
+     .style('font-size', '1rem')
+    .append('tspan')
+       .text('t')
+       .style('font-size', '.8rem')
+      //  .style('font-weight', 'bold')
+       .attr('dx', '.1em')
+       .attr('dy', '.3em')
 
-        
-   svg_rt.append("text") 
-        .attr("class", "xLabel")
-        .attr("transform",
-            "translate(" + (width_rt/2) + " ," + 
-                           (height_rt + margin_rt.top + 30) + ")")
-      .style("text-anchor", "middle")
-      .style("fill", "#242526")
-      // .text("Date") 
 
    interval_rt
       .datum(dataFilter)
@@ -1266,21 +1240,29 @@ svg_rt
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
    
+   svg_deaths
+      .attr("width", width_cases + margin_cases.left + margin_cases.right)
+      .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
+   .append("g")
+      .attr("transform", "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+      
+      
       svg_test_pos
-    .attr("width", width_cases + margin_test_pos.left + margin_test_pos.right)
-    .attr("height", height_cases + margin_test_pos.top + margin_test_pos.bottom)
+    .attr("width", width_cases + margin_cases.left + margin_cases.right)
+    .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
  .append("g")
     .attr("transform",
-          "translate(" + margin_test_pos.left + "," + margin_test_pos.top + ")");
+          "translate(" + margin_cases.left + "," + margin_cases.top + ")");
           
    svg_tests
-    .attr("width", width_cases + margin_tests.left + margin_tests.right)
-    .attr("height", height_cases + margin_tests.top + margin_tests.bottom)
+    .attr("width", width_cases + margin_cases.left + margin_cases.right)
+    .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
  .append("g")
     .attr("transform",
-          "translate(" + margin_tests.left + "," + margin_tests.top + ")");
-   
-   
+          "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+          
+
+console.log("hi")
    var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
   const len = data_map.length - 1;
@@ -1315,7 +1297,8 @@ svg_rt
    }
  
  x_axis
-   .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+//    .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+.attr("transform", "translate(" + margin_cases.left + "," + height_cases + ")")
    .call(d3.axisBottom(x_cases)
    //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
    .tickValues(tickVals)
@@ -1325,7 +1308,8 @@ svg_rt
       
    //test pos chart x axis    
    x_axis_tests_pos
-      .attr("transform", "translate(" + margin_test_pos.left + "," + (height_cases+margin_test_pos.top) + ")")
+      // .attr("transform", "translate(" + margin_test_pos.left + "," + (height_cases+margin_test_pos.top) + ")")
+      .attr("transform", "translate(" +  margin_cases.left + "," + height_cases + ")")
       .call(d3.axisBottom(x_test_pos)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1334,7 +1318,8 @@ svg_rt
 
    //tests chart x axis
    x_axis_tests
-      .attr("transform", "translate(" + margin_tests.left + "," + (height_cases+margin_tests.top) + ")")
+      // .attr("transform", "translate(" + margin_tests.left + "," + 0 + ")")
+      .attr("transform", "translate(" + margin_cases.left + "," + height_cases + ")")
       .call(d3.axisBottom(x_tests)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1352,17 +1337,17 @@ svg_rt
       .range([height_cases, 0]);
      
    y_axis
-      .attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
       .call(d3.axisLeft(y_cases));
 
    var formatPercent = d3.format(".0%");
    
    y_axis_tests_pos
-      .attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
       .call(d3.axisLeft(y_test_pos).tickFormat(formatPercent))
    
    y_axis_tests
-      .attr("transform", "translate("+ (margin_tests.left-2) +","+ margin_tests.top  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
       .call(d3.axisLeft(y_tests));
    
    var s = svg_tests.selectAll(".bar1")
@@ -1376,7 +1361,8 @@ svg_rt
       .attr("y", function(d) { return y_tests(d.tested); })
       .attr("width",  x_tests.bandwidth())
       .attr("height", function(d) { return height_cases - y_tests(d.tested); })
-      .attr("fill", function(d){ return lightestColors(selectedRegion) }).attr("transform", "translate("+ margin_tests.left +","+margin_tests.top + ")"  );
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
 
 
    s
@@ -1412,13 +1398,13 @@ svg_rt
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line_test_daily).attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top  + ")"  );
+      .attr('d', line_test_daily).attr("transform", "translate("+ margin_cases.left +","+ 0 + ")"  );
 
     
    // u
    svg_test_pos
       .selectAll("rect")
-      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+      .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
 
 
 //  const POINTS_AVERAGE = 6;
@@ -1452,7 +1438,8 @@ svg_rt
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line_tests).attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top  + ")"  );
+      .attr('d', line_tests)
+      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  );
 
   // Create the u variable
   var u = svg_cases.selectAll("rect").data(data_map)
@@ -1466,13 +1453,16 @@ svg_rt
       .attr("width", x_cases.bandwidth())
       .attr("height", function(d) { return height_cases - y_cases(d.cases); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+   .attr("transform", "translate("+ margin_cases.left +","+ 0 + ")");
 
   u
     .exit()
     .remove()
     
    // u
-   svg_cases.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+   svg_cases
+   .selectAll("rect")
+   // .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")");
    
    //  const POINTS_AVERAGE = 6;
    var line = d3.line()
@@ -1503,14 +1493,11 @@ svg_rt
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
+      .attr('d', line)
+      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  );
 
    
-   svg_deaths
-      .attr("width", width_cases + margin_cases.left + margin_cases.right)
-      .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
-   .append("g")
-      .attr("transform", "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+
 
 
    x_deaths
@@ -1520,7 +1507,7 @@ svg_rt
 
 
    x_axis_deaths
-      .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+      .attr("transform", "translate(" + margin_cases.left + "," + height_cases + ")")
       .call(d3.axisBottom(x_deaths)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1530,7 +1517,7 @@ svg_rt
       .range([height_cases, 0]);
 
    y_axis_deaths
-      .attr("transform", "translate("+ (margin_cases.left-2) +","+ margin_cases.top  + ")"  )
+      .attr("transform", "translate("+ margin_cases.left +","+ 0 + ")"  )
       .call(d3.axisLeft(y_deaths));
 
   // Create the u variable
@@ -1544,15 +1531,18 @@ svg_rt
       .attr("y", function(d) { return y_deaths(d.deaths); })
       .attr("width", x_deaths.bandwidth())
       .attr("height", function(d) { return height_cases - y_deaths(d.deaths); })
-      
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      // .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
   i
     .exit()
     .remove()
     
    // u
-   svg_deaths.selectAll("rect").attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+   svg_deaths
+   .selectAll("rect")
+   // .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
+   .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
     
    //  const POINTS_AVERAGE = 6;
     var lineA = d3
@@ -1585,7 +1575,7 @@ svg_rt
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
       .attr('d', lineA)
-      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
+      .attr("transform", "translate("+ margin_cases.left +","+ 0  + ")"  )
       
       
     }
