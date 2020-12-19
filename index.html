@@ -917,8 +917,6 @@ let dailyRegionCount = {}
          
       })
       
-      // prev_dict = dailyRegionCount
-      // prev_dict = {...dailyRegionCount};
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
       
    });
@@ -1079,7 +1077,8 @@ function drawChart() {
    
    x_rt_axis
       .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
-      .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks));
+      .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks))
+      .call(x_rt_axis => x_rt_axis.select(".domain").remove())
       
       
    y_rt
@@ -1089,6 +1088,7 @@ function drawChart() {
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       // .call(d3.axisLeft(y_rt).ticks(6))
       .call(d3.axisLeft(y_rt))
+      .call(y_rt_axis => y_rt_axis.select(".domain").remove())
 
    
    svg_rt
