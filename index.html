@@ -10,6 +10,36 @@ title: Home
 /*   height: 200px;*/
 /*   position: relative;*/
 /*}*/
+
+.d3-tip {
+   z-index: 2;
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  /*box-sizing: border-box;*/
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
     .card {
     border-color:transparent !important;
     }
@@ -722,15 +752,6 @@ title: Home
     .style("padding", "5px")
     
     
-var Tooltip_cases_line = d3.select("#cases_chart")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")
-    .style("padding", "5px")
    
    
    		var projection = d3.geoAlbers()
@@ -1030,12 +1051,12 @@ function drawChart() {
      document.getElementById('rt_text_region').innerHTML = region;
      
 
-   var mouseover_cases = function(d) {
-     focus.style("opacity", 1)
-    Tooltip
-      .style("opacity", 1)
+//    var mouseover_cases = function(d) {
+//     focus.style("opacity", 1)
+//     Tooltip
+//       .style("opacity", 1)
 
-  }
+//  }
   
   var mousemove = function(d) {
          // var formatTime = d3.timeFormat("%b %d")"%b %Y"
@@ -1168,6 +1189,28 @@ function drawChart() {
 
    var selectedGroupCases = selectToRegion[selectedRegion]
    
+   var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Cases:</strong> <span style='color:red'>" + d.cases + "</span>";
+  })
+  
+  
+     var tip_deaths = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Deaths:</strong> <span style='color:red'>" + d.deaths + "</span>";
+  })
+  
+       var tip_tests = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Tests:</strong> <span style='color:red'>" + d.tested + "</span>";
+  })
+   
    svg_cases
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
     .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
@@ -1175,13 +1218,16 @@ function drawChart() {
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
    
+   svg_cases.call(tip)
+   
    svg_deaths
       .attr("width", width_cases + margin_cases.left + margin_cases.right)
       .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
    .append("g")
       .attr("transform", "translate(" + margin_cases.left + "," + margin_cases.top + ")");
       
-      
+   svg_deaths.call(tip_deaths)
+   
       svg_test_pos
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
     .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
@@ -1195,6 +1241,8 @@ function drawChart() {
  .append("g")
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+          
+          svg_tests.call(tip_tests)
           
    var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
@@ -1295,6 +1343,9 @@ function drawChart() {
       .attr("width",  x_tests.bandwidth())
       .attr("height", function(d) { return height_cases - y_tests(d.tested); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+            .on('mouseover', tip_tests.show)
+      .on('mouseout', tip_tests.hide)
+      
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
@@ -1386,7 +1437,9 @@ function drawChart() {
       .attr("width", x_cases.bandwidth())
       .attr("height", function(d) { return height_cases - y_cases(d.cases); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-   .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")");
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")")
 
   u
     .exit()
@@ -1465,6 +1518,8 @@ function drawChart() {
       .attr("width", x_deaths.bandwidth())
       .attr("height", function(d) { return height_cases - y_deaths(d.deaths); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+            .on('mouseover', tip_deaths.show)
+      .on('mouseout', tip_deaths.hide)
       // .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
   i
