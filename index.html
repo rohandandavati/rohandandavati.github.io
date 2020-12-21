@@ -992,7 +992,8 @@ function drawChart() {
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>County:</strong> <span style='color:red'>" + d.properties.COUNTY_NAM + "</span> " ;
+    return "<strong>County:</strong> <span style='color:red'>" + d.properties.COUNTY_NAM + "</span> <br></br>" + 
+    "<strong>Region:</strong> <span style='color:red'>" + countyMap[d.properties.COUNTY_NAM].covid_region + "</span> " ;
   })
    
    svg_map.attr("width", map_wid )
