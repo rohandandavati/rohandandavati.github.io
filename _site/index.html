@@ -1114,6 +1114,13 @@ function drawChart() {
       }) 
       .on('mouseover', tip_map.show)
       .on('mouseout', tip_map.hide)
+      .on('click', function(d) {
+         tip_map.hide
+         selectedRegion = allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]
+         drawChart()
+      
+      
+    })
       
    map
    .exit()
