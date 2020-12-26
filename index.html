@@ -11,7 +11,7 @@ title: Home
 /*   position: relative;*/
 /*}*/
 
-.d3-tip {
+.d3-tip, .tooltip {
    z-index: 2;
   line-height: 1;
   font-weight: bold;
@@ -710,6 +710,19 @@ title: Home
       .style("stroke-width", 2)
       .style("fill", "none");
       
+      
+      
+      var interval_rt2 = svg_rt.append("path")
+      .attr("stroke", "none")
+      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+   
+   var line_rt2 = svg_rt.append('g').append("path")  
+   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+      // .attr("transform", "translate("+ (margin_rt.left+2) +","+ margin_rt.top  + ")"  )
+      .style("stroke-width", 2)
+      .style("fill", "none");
+      
+      
    var refLine = svg_rt.append('g').append("path")      .attr("stroke", "black")
    .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       // .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
@@ -743,15 +756,18 @@ title: Home
 
    var Tooltip = d3.select("#rt_chart")
     .append("div")
-    .style("opacity", 0)
+   //  .style("opacity", 0)
     .attr("class", "tooltip")
-    .style("background-color", "white")
-    .style("border", "solid")
-    .style("border-width", "2px")
-    .style("border-radius", "5px")
-    .style("padding", "5px")
+   //  .style("background-color", "white")
+   //  .style("border", "solid")
+   //  .style("border-width", "2px")
+   //  .style("border-radius", "5px")
+   //  .style("padding", "5px")
     
-    
+   //    var Tooltip = d3.select("#rt_chart")
+   //  .append("div")
+   // //  .style("opacity", 0)
+   //  .attr("class", "tooltip") 
    
    
    		var projection = d3.geoAlbers()
@@ -793,7 +809,9 @@ var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
             //  'https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long',
             //  'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv',
-             'https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json'
+            //  'https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json'
+            'https://cors-anywhere.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json'
+            ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR4NYAQPXFUEAEU7NWS76CISQ'
             //  ,'https://idph.illinois.gov/DPHPublicInformation/api/covidexport/GetCountyHistoricalTestResults?reportDate=10/10/2020'
             ]
 
@@ -840,6 +858,42 @@ files.forEach(function(url) {
 });
 
 Promise.all(promises).then(function(data) {
+   // console.log(data[3])
+   // let rtDateParse = d3.timeParse("%m/%d/%Y");
+   // data[3].forEach(d => {
+      
+   //    d.rt_median = +d.rt_median
+   //    d.rt_lower = +d.rt_lower
+   //    d.rt_upper = +d.rt_upper
+      
+   //    d.date = rtDateParse(d.date)
+      
+   //    d.model_date = rtDateParse(d.model_date)
+   // })
+   
+   
+   let parseDate2 = d3.timeParse("%m/%d/%Y");
+// let today = new Date();
+var index = data[3].length - 1;
+
+while (index >= 0) {
+    if(isNaN(data[3][index].rt_median) || 
+          parseDate2(data[3][index].date) > today  
+      ){
+         data[3].splice(index, 1);
+      } else {
+         data[3][index].rt_lower = +data[3][index].rt_lower;
+         data[3][index].rt_median = +data[3][index].rt_median;
+         data[3][index].rt_upper = +data[3][index].rt_upper;
+         data[3][index].date = parseDate2(data[3][index].date);
+         data[3][index].model_date = parseDate2(data[3][index].model_date);
+      }
+ index -= 1;
+}
+   console.log(data[3])
+   
+   
+   // console.log(data[3])
  
 //clean rt    
 let parseDate = d3.timeParse("%Y-%m-%d");
@@ -941,7 +995,7 @@ let dailyRegionCount = {}
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
       
    });
-
+// console.log(historical_county)
 
 function drawChart() {
    
@@ -992,8 +1046,9 @@ function drawChart() {
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>County:</strong> <span style='color:red'>" + d.properties.COUNTY_NAM + "</span> <br></br>" + 
-    "<strong>Region:</strong> <span style='color:red'>" + countyMap[d.properties.COUNTY_NAM].covid_region + "</span> " ;
+    return "County: <span style='color:red'>" + d.properties.COUNTY_NAM + "</span> <br></br>" + 
+   // return "County: <span style='color:red'>" + (d.properties.COUNTY_NAM).charAt(0).toUpperCase() + (d.properties.COUNTY_NAM).substr(1).toLowerCase() + "</span> <br></br>" + 
+    "Region:<span style='color:red'> " + countyMap[d.properties.COUNTY_NAM].covid_region + "</span> " ;
   })
    Array.prototype.forEach.call(document.querySelectorAll('.d3-tip'), (t) => t.parentNode.removeChild(t));
       
@@ -1058,6 +1113,7 @@ function drawChart() {
  
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
+   var dataFilter = data[3].filter(function(d){return d.model_date==selectedRegion}) 
 
     document.getElementById('rt_text').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_median).toFixed(2);
     document.getElementById('rt_text_lower').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_lower).toFixed(2);
@@ -1073,12 +1129,6 @@ function drawChart() {
      document.getElementById('rt_text_region').innerHTML = region;
      
 
-//    var mouseover_cases = function(d) {
-//     focus.style("opacity", 1)
-//     Tooltip
-//       .style("opacity", 1)
-
-//  }
   
   var mousemove = function(d) {
          // var formatTime = d3.timeFormat("%b %d")"%b %Y"
@@ -1087,7 +1137,9 @@ function drawChart() {
     var i = bisect(dataFilter, x0, 1);
     var selectedData = dataFilter[i]
     Tooltip
-      .html("<h6>"+ formatTime(selectedData.date) +"<br>" +"R<sub>t</sub>: "+  parseFloat((selectedData.rt_median)).toFixed(2) +"</h6>")
+      // .html(tickTimeFormat(d.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
+      .html( formatTime(selectedData.date) +"<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'> "+  parseFloat((selectedData.rt_median)).toFixed(2) + "</span>")
+      
       // .style("left", (d3.mouse(this)[0]+70) + "px")
       .style("left", (x_rt(selectedData.date)+90) + "px")
       .style("top",  (y_rt(selectedData.rt_median)+40) + "px")
@@ -1158,6 +1210,8 @@ function drawChart() {
 
 
    interval_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   interval_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   
    
    interval_rt
       .datum(dataFilter)
@@ -1168,12 +1222,34 @@ function drawChart() {
       .x(function(d) { return x_rt(d.date) })
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
+      
+      
+   interval_rt2
+      .datum(data[3])
+      .attr("fill", function(d){ return lightestColors('illinois') })
+      .transition()
+      .duration(1000)
+      .attr("d", d3.area()
+      .x(function(d) { return x_rt(d.date) })
+      .y0(function(d) { return y_rt(d.rt_lower) })
+      .y1(function(d) { return y_rt(d.rt_upper) }))
    
    line_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   line_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    line_rt
       .datum(dataFilter)
       .attr("stroke", function(d){ return colors(selectedRegion) })
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+      .x(function(d) { return x_rt(d.date) })
+      .y(function(d) { return y_rt(d.rt_median) })
+      )
+   
+      line_rt2
+      .datum(data[3])
+      .attr("stroke", function(d){ return colors('illinois') })
       .transition()
       .duration(1000)
       .attr("d", d3.line()
@@ -1210,28 +1286,39 @@ function drawChart() {
    
 
    var selectedGroupCases = selectToRegion[selectedRegion]
-   
+    var tickTimeFormat = d3.timeFormat("%b %d")
    var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>Cases:</strong> <span style='color:red'>" + d.cases + "</span>";
+         // return tickTimeFormat(d.date) + "<br></br><strong>Cases:</strong> <span style='color:red'>" + d.cases + "</span>" ;
+     return tickTimeFormat(d.date) + "<br></br>Cases:<span style='color:red'>" + d.cases + "</span><br></br>" +
+     "7-Day Average: <span style='color:red'>" + d.cases_avg;
   })
+//     return "<strong>Cases:</strong> <span style='color:red'>" + d.cases + "</span><br></br>" + 
+//     tickTimeFormat(d.date) + "</span> " ;
+//  })
   
   
      var tip_deaths = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>Deaths:</strong> <span style='color:red'>" + d.deaths + "</span>";
+     return tickTimeFormat(d.date) + "<br></br>Deaths: <span style='color:red'>" + d.deaths + "</span><br></br>" +
+     "7-Day Average: <span style='color:red'>" + d.deaths_avg;
   })
+//     return "<strong>Deaths:</strong> <span style='color:red'>" + d.deaths + "</span>";
+//  })
   
        var tip_tests = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>Tests:</strong> <span style='color:red'>" + d.tested + "</span>";
+     return tickTimeFormat(d.date) + "<br></br>Tests:<span style='color:red'>" + d.tested + "</span><br></br>" +
+     "7-Day Average: <span style='color:red'>" + d.tests_avg;
   })
+//     return "<strong>Tests:</strong> <span style='color:red'>" + d.tested + "</span>";
+//  })
    
    svg_cases
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
@@ -1390,6 +1477,7 @@ function drawChart() {
             j = POINTS_AVERAGE + 1;
          }
       }
+      d.tests_avg = r;
       return r;
    });
 
@@ -1406,8 +1494,10 @@ function drawChart() {
       .attr('stroke-linecap', 'round')
       .attr('d', line_test_daily).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  );
 
-    
-   // u
+//  console.log(data_map)  
+   
+   
+   
    svg_test_pos
       .selectAll("rect")
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
@@ -1431,6 +1521,7 @@ function drawChart() {
       }
        
        if (isNaN(r)) r = 0
+       d.test_pos_avg = r;
       return r;
     });
 
@@ -1446,6 +1537,7 @@ function drawChart() {
       .attr('stroke-linecap', 'round')
       .attr('d', line_tests)
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
+
 
   // Create the u variable
   var u = svg_cases.selectAll("rect").data(data_map)
@@ -1488,6 +1580,7 @@ function drawChart() {
      }
    }
    //  console.log(i, r, y(d.count));
+   d.cases_avg = r;
    return r;
    });
 
@@ -1571,6 +1664,7 @@ function drawChart() {
            }
          }
        //   console.log(i, r, y(d.count));
+       d.deaths_avg = r;
          return r;
        });
 

@@ -1,36 +1,36 @@
 
   <style>
 
-.navbar {
-  z-index: 1;
-}
-  .hi {
-    width:500px;
-  }
-
-  </style>
-  
-  <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed">
-    <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse buttons hi" id="navbarNav">
-      <ul class="navbar-nav list "id = "navList">
-        {% for item in site.data.navigation %}
-           <li class="nav-item">
-              <a class="nav-link" href="{{ item.link }}" {% if page.url == item.link %} class="current" {% endif %}>{{ item.name }}</a>
-            </li>
-        {% endfor %}
-      </ul>
-    </div>
-    
-    <div class = "container position-relative ">
-    <div class = "row">
-        <div class = "col drop ">
-            <select id="selectButton" class = "dropdown "  ></select>
-        </div>
-    </div>
-</div>
-
-  </nav>
+   .navbar {
+     z-index: 2;
+   }
+     .hi {
+       width:500px;
+     }
+   
+     </style>
+     
+     <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed">
+       <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse buttons hi" id="navbarNav">
+         <ul class="navbar-nav list "id = "navList">
+           {% for item in site.data.navigation %}
+              <li class="nav-item">
+                 <a class="nav-link" href="{{ item.link }}" {% if page.url == item.link %} class="current" {% endif %}>{{ item.name }}</a>
+               </li>
+           {% endfor %}
+         </ul>
+       </div>
+       
+       <div class = "container position-relative ">
+       <div class = "row">
+           <div class = "col drop ">
+               <select id="selectButton" class = "dropdown "  ></select>
+           </div>
+       </div>
+   </div>
+   
+     </nav>
