@@ -920,6 +920,7 @@ var files = [
 
 var promises = [];
 let today = new Date();
+let parDate = d3.timeParse("%m/%d/%Y");
 
 
 files.forEach(function(url) {
@@ -963,11 +964,23 @@ while (index >= 0) {
       }
  index -= 1;
 }
-   console.log(data[3])
-   
-   
    // console.log(data[3])
- 
+   var prev_date = parDate('11/11/1997')
+   var region = 0;
+   data[3].forEach(d => {
+      //if date is increasing
+      if( (d.date).getTime() > prev_date.getTime() ){
+         d.geography_modeled = allGroup[region];
+      }
+      //date is less or eq, new region
+      else {
+         region += 1;
+         d.geography_modeled = allGroup[region];
+      }
+      prev_date = d.date;
+   });
+   
+//  console.log(data[3])
 //clean rt    
 let parseDate = d3.timeParse("%Y-%m-%d");
 // let today = new Date();
@@ -1004,7 +1017,7 @@ let dailyRegionCount = {}
       dailyRegionCount["Suburban"] = {cases: 0, deaths: 0, tests: 0};
 
 
-   let parDate = d3.timeParse("%m/%d/%Y");
+   // let parDate = d3.timeParse("%m/%d/%Y");
    // console.log(data[4])
    
    var c = data[2].historical_county.values
@@ -1047,26 +1060,20 @@ let dailyRegionCount = {}
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].cases += county.confirmed_cases
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].deaths += county.deaths
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].tests += county.total_tested
-
       })
 
       regionArray.forEach( region => {
-
-         //substract from prev sum 
          historical_county.push({
             date: date,
             NOFO_Region: region,
             cases:  dailyRegionCount[region].cases - prev_dict[region].cases,
             deaths: dailyRegionCount[region].deaths - prev_dict[region].deaths,
             tested: dailyRegionCount[region].tests - prev_dict[region].tests,
-            test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / (dailyRegionCount[region].tests - prev_dict[region].tests)
-            
+            test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / 
+                             (dailyRegionCount[region].tests - prev_dict[region].tests)
          });
-         
       })
-      
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
-      
    });
 // console.log(historical_county)
 
@@ -1123,6 +1130,7 @@ function drawChart() {
    // return "County: <span style='color:red'>" + (d.properties.COUNTY_NAM).charAt(0).toUpperCase() + (d.properties.COUNTY_NAM).substr(1).toLowerCase() + "</span> <br></br>" + 
     "Region:<span style='color:red'> " + countyMap[d.properties.COUNTY_NAM].covid_region + "</span> " ;
   })
+  
    Array.prototype.forEach.call(document.querySelectorAll('.d3-tip'), (t) => t.parentNode.removeChild(t));
       
    svg_map.attr("width", map_wid )
@@ -1186,7 +1194,7 @@ function drawChart() {
  
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
-   var dataFilter = data[3].filter(function(d){return d.model_date==selectedRegion}) 
+   var dataFilter2 = data[3].filter(function(d){return d.geography_modeled==selectedRegion}) 
 
     document.getElementById('rt_text').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_median).toFixed(2);
     document.getElementById('rt_text_lower').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_lower).toFixed(2);
@@ -1298,8 +1306,8 @@ function drawChart() {
       
       
    interval_rt2
-      .datum(data[3])
-      .attr("fill", function(d){ return lightestColors('illinois') })
+      .datum(dataFilter2)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
       .transition()
       .duration(1000)
       .attr("d", d3.area()
@@ -1321,8 +1329,8 @@ function drawChart() {
       )
    
       line_rt2
-      .datum(data[3])
-      .attr("stroke", function(d){ return colors('illinois') })
+      .datum(dataFilter2)
+      .attr("stroke", function(d){ return colors(selectedRegion) })
       .transition()
       .duration(1000)
       .attr("d", d3.line()
