@@ -210,7 +210,7 @@ title: Home
     <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
       Illinois Department of Public Health. Individuals who receive multiple positive test results only count as one
       case. Bars show daily cases, and the line is a 7-day moving average.
-      As of [last update date], an average of [X] cases of SARS-CoV-2 infection are discovered daily in [Region]. </text>
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases of SARS-CoV-2 infection are discovered daily in in <text class = "rt_text_region"></text> of Illinois. </text>
   </div>
 </div>
 
@@ -225,7 +225,7 @@ title: Home
     <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
       Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
       but are likely within two weeks. Bars show daily deaths, and the line is a 7-day moving average.
-      As of [last update date], an average of [X] confirmed COVID-19 deaths
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_deaths"></text> confirmed COVID-19 deaths
       occur daily in <text id = "rt_text_region"></text> of Illinois. </text>
   </div>
 </div>
@@ -240,14 +240,9 @@ title: Home
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
       is not the same as the test positivity rate, which measures the number of positive tests per every test
       administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
-      As of [last update date], an average of [X] cases are discovered per test in <text id = "rt_text_region"></text> of Illinois. </text>
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> cases are discovered per test in <text class = "rt_text_region"></text> of Illinois. </text>
   </div>
 </div>
-
-<!--<div class = "card deaths chart">-->
-<!--<div id="my_dataviz"></div>-->
-<!--</div>-->
-
 
 <div class = "card deaths chart">
 <div id="test_pos"></div>
@@ -255,11 +250,11 @@ title: Home
 <div class="card cases " id = "">
   <div class="card-body">
     <h2>Tests</h2>
-    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in [Region]. This count includes only
+    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "rt_text_region"></text> of Illinois. This count includes only
       molecular tests up to October 14, 2020 and includes both molecular and antigen tests after October 14, 2020.
       This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
       test for past SARS-CoV-2 infection, are not included in this count. Bars show daily tests, and the line
-      is a 7-day moving average. As of [last update date], an average of [X] tests are conducted daily in <text id = "rt_text_region"></text> of Illinois.
+      is a 7-day moving average. As of <text class = "last_update_date"></text>, an average of <text id = "avg_trip"></text> tests are conducted daily in <text class = "rt_text_region"></text> of Illinois.
 </text>
   </div>
 </div>
@@ -318,11 +313,6 @@ title: Home
    var hexColorsLightest = ["#b5b5b5", "#cea5cc","#acded6", "#facb87", "#e6d4b9", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#ce7774"]
 
    var firstIteration = true;
-   // var i;
-   // for (i = 0; i < mapFill.length; i++) {
-   //    mapFill[i] = LightenDarkenColor(mapFill[i], -70)
-   // }
-   // console.log(mapFill)
    
    let allGroup = ["illinois", "covidregion_1", "covidregion_2", "covidregion_3", 
                    "covidregion_4", "covidregion_5", "covidregion_6", "covidregion_7", 
@@ -344,11 +334,9 @@ title: Home
     .attr("class", "dropdown-item")
     
     var mapFillColor = d3.scaleOrdinal().domain(allGroup)
-   //  .range(hexColorsLight)
      .range(mapFill)
      
     var colors = d3.scaleOrdinal().domain(allGroup)
-   //  .range(hexColorsLight)
      .range(hexColors)
      
    var lightColors = d3.scaleOrdinal().domain(allGroup)
@@ -685,15 +673,9 @@ title: Home
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
    var margin_tests = {top: 15, right: 10, bottom: 50, left: 60};
    
-
-   // var map_wid = document.getElementById("cases_map").offsetWidth;
-   // var map_hid = map_wid *2;
-   
-   
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
     .style("pointer-events", "all")
-   //  .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
    
    var x_rt = d3.scaleTime();
    var x_rt_axis = svg_rt.append("g");
@@ -706,11 +688,8 @@ title: Home
    
    var line_rt = svg_rt.append('g').append("path")  
    .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
-      // .attr("transform", "translate("+ (margin_rt.left+2) +","+ margin_rt.top  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
-      
-      
       
       var interval_rt2 = svg_rt.append("path")
       .attr("stroke", "none")
@@ -718,21 +697,17 @@ title: Home
    
    var line_rt2 = svg_rt.append('g').append("path")  
    .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
-      // .attr("transform", "translate("+ (margin_rt.left+2) +","+ margin_rt.top  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
       
-      
-   var refLine = svg_rt.append('g').append("path")      .attr("stroke", "black")
+   var refLine = svg_rt.append('g').append("path")
+   .attr("stroke", "black")
    .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
-      // .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  )
       .style("stroke-width", 1)
       .style("stroke-dasharray", ("3, 3"))
       .style("fill", "none")
    
    var dataFilter = null; 
-   
-
    
    var svg_deaths = d3.select("#deaths_chart").append("svg")
 	var svg_map = d3.select("#cases_map").append("svg")
@@ -754,26 +729,15 @@ title: Home
       .style("opacity", 0)
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-   var Tooltip = d3.select("#rt_chart")
+var Tooltip = d3.select("#rt_chart")
     .append("div")
-   //  .style("opacity", 0)
     .attr("class", "tooltip")
-   //  .style("background-color", "white")
-   //  .style("border", "solid")
-   //  .style("border-width", "2px")
-   //  .style("border-radius", "5px")
-   //  .style("padding", "5px")
-    
-   //    var Tooltip = d3.select("#rt_chart")
-   //  .append("div")
-   // //  .style("opacity", 0)
-   //  .attr("class", "tooltip") 
    
    
-   		var projection = d3.geoAlbers()
-   		var path = d3.geoPath()
-	
-	var selectedRegion = 'illinois';
+var projection = d3.geoAlbers()
+var path = d3.geoPath()
+
+var selectedRegion = 'illinois';
 
 
 var x_cases = d3.scaleBand()
@@ -860,19 +824,7 @@ files.forEach(function(url) {
 
 Promise.all(promises).then(function(data) {
    // console.log(data[3])
-   // let rtDateParse = d3.timeParse("%m/%d/%Y");
-   // data[3].forEach(d => {
-      
-   //    d.rt_median = +d.rt_median
-   //    d.rt_lower = +d.rt_lower
-   //    d.rt_upper = +d.rt_upper
-      
-   //    d.date = rtDateParse(d.date)
-      
-   //    d.model_date = rtDateParse(d.model_date)
-   // })
-   
-   
+
    let parseDate2 = d3.timeParse("%m/%d/%Y");
 // let today = new Date();
 var index = data[3].length - 1;
@@ -1122,19 +1074,13 @@ function drawChart() {
 
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
    var dataFilter2 = data[3].filter(function(d){return d.geography_modeled==selectedRegion}) 
+   
+      var selectedGroupCases = selectToRegion[selectedRegion]
+    var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+   var formatDate = d3.timeFormat("%b %d")
+   
+   // console.log(formatDate(data_map[data_map.length - 1 ].date))
 
-    document.getElementById('rt_text').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_median).toFixed(2);
-    document.getElementById('rt_text_lower').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_lower).toFixed(2);
-    document.getElementById('rt_text_upper').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_upper).toFixed(2);
-    var region = ""
-    if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
-         // return "Illinois";
-        region = "the state";
-     } else {
-        region = "Region " + selectedRegion.substring( selectedRegion.indexOf('_')+1);
-     }
-     
-     document.getElementById('rt_text_region').innerHTML = region;
      
 
   
@@ -1293,7 +1239,7 @@ function drawChart() {
   })
    
 
-   var selectedGroupCases = selectToRegion[selectedRegion]
+
     var tickTimeFormat = d3.timeFormat("%b %d")
    var tip = d3.tip()
   .attr('class', 'd3-tip')
@@ -1361,7 +1307,7 @@ function drawChart() {
           
           svg_tests.call(tip_tests)
           
-   var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+   // var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    
   const len = data_map.length - 1;
 
@@ -1462,7 +1408,6 @@ function drawChart() {
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
             .on('mouseover', tip_tests.show)
       .on('mouseout', tip_tests.hide)
-      
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
@@ -1500,11 +1445,8 @@ function drawChart() {
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line_test_daily).attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  );
-
-//  console.log(data_map)  
-   
-   
+      .attr('d', line_test_daily)
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  );
    
    svg_test_pos
       .selectAll("rect")
@@ -1689,6 +1631,32 @@ function drawChart() {
       .attr('d', lineA)
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       
+     
+         document.getElementById('rt_text').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_median).toFixed(2);
+    document.getElementById('rt_text_lower').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_lower).toFixed(2);
+    document.getElementById('rt_text_upper').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_upper).toFixed(2);
+   //  document.getElementsByClassName('last_update_date').innerHTML = formatDate(data_map[data_map.length - 1 ].date)
+    
+   //  console.log(data_map[data_map.length - 1 ].cases)
+    document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
+    document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
+    document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
+    
+    var region = ""
+    if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
+         // return "Illinois";
+        region = "the state";
+     } else {
+        region = "Region " + selectedRegion.substring( selectedRegion.indexOf('_')+1);
+     }
+     
+     document.getElementById('rt_text_region').innerHTML = region;
+     
+         var divs = document.getElementsByClassName( 'last_update_date' );
+
+[].slice.call( divs ).forEach(function ( div ) {
+    div.innerHTML = formatDate(data_map[data_map.length - 1 ].date)
+});
       
     }
     // Initialize the chart
