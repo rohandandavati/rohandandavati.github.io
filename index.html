@@ -193,7 +193,7 @@ title: Home
 <div class="card cases " id = "">
   <div class="card-body">
     <h2>Transmission Status</h2>
-    <text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text id = "rt_text_region"></text> of Illinois. \(R_t\), the instantaneous
+    <text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
       reproductive number, tells us whether the epidemic is <i>growing</i> (\(R_t\) > 1), <i>shrinking</i> (\(R_t\) < 1), or
       staying the same (\(R_t\) = 1).</text>
   </div>
@@ -210,7 +210,7 @@ title: Home
     <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
       Illinois Department of Public Health. Individuals who receive multiple positive test results only count as one
       case. Bars show daily cases, and the line is a 7-day moving average.
-      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases of SARS-CoV-2 infection are discovered daily in in <text class = "rt_text_region"></text> of Illinois. </text>
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases of SARS-CoV-2 infection are discovered daily in <text class = "region_text"></text>  of Illinois. </text>
   </div>
 </div>
 
@@ -226,7 +226,7 @@ title: Home
       Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
       but are likely within two weeks. Bars show daily deaths, and the line is a 7-day moving average.
       As of <text class = "last_update_date"></text>, an average of <text id = "avg_deaths"></text> confirmed COVID-19 deaths
-      occur daily in <text id = "rt_text_region"></text> of Illinois. </text>
+      occur daily in <text class = "region_text"></text> of Illinois. </text>
   </div>
 </div>
 
@@ -240,7 +240,7 @@ title: Home
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
       is not the same as the test positivity rate, which measures the number of positive tests per every test
       administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
-      As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> cases are discovered per test in <text class = "rt_text_region"></text> of Illinois. </text>
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
   </div>
 </div>
 
@@ -250,11 +250,11 @@ title: Home
 <div class="card cases " id = "">
   <div class="card-body">
     <h2>Tests</h2>
-    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "rt_text_region"></text> of Illinois. This count includes only
+    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois. This count includes only
       molecular tests up to October 14, 2020 and includes both molecular and antigen tests after October 14, 2020.
       This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
       test for past SARS-CoV-2 infection, are not included in this count. Bars show daily tests, and the line
-      is a 7-day moving average. As of <text class = "last_update_date"></text>, an average of <text id = "avg_trip"></text> tests are conducted daily in <text class = "rt_text_region"></text> of Illinois.
+      is a 7-day moving average. As of <text class = "last_update_date"></text>, an average of <text id = "avg_trip"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
 </text>
   </div>
 </div>
@@ -1650,13 +1650,20 @@ function drawChart() {
         region = "Region " + selectedRegion.substring( selectedRegion.indexOf('_')+1);
      }
      
-     document.getElementById('rt_text_region').innerHTML = region;
+   //  document.getElementById('rt_text_region').innerHTML = region;
      
-         var divs = document.getElementsByClassName( 'last_update_date' );
-
-[].slice.call( divs ).forEach(function ( div ) {
-    div.innerHTML = formatDate(data_map[data_map.length - 1 ].date)
-});
+   var date_divs = document.getElementsByClassName( 'last_update_date' );
+   var formatHTMLDate = d3.timeFormat("%B %d");
+   
+   [].slice.call( date_divs ).forEach(function ( div ) {
+      div.innerHTML = formatHTMLDate(data_map[data_map.length - 1 ].date)
+   });
+   
+   var reg_divs = document.getElementsByClassName( 'region_text' );
+   
+   [].slice.call( reg_divs ).forEach(function ( div ) {
+      div.innerHTML = region
+   });
       
     }
     // Initialize the chart
