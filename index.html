@@ -1000,15 +1000,14 @@ function drawChart() {
       
    var map_wid = document.getElementById("cases_map").offsetWidth;
    var map_hid = map_wid *2;
-   
-      var tip_map = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    return "County: <span style='color:red'>" + d.properties.COUNTY_NAM + "</span> <br></br>" + 
-   // return "County: <span style='color:red'>" + (d.properties.COUNTY_NAM).charAt(0).toUpperCase() + (d.properties.COUNTY_NAM).substr(1).toLowerCase() + "</span> <br></br>" + 
-    "Region:<span style='color:red'> " + countyMap[d.properties.COUNTY_NAM].covid_region + "</span> " ;
-  })
+
+   var tip_map = d3.tip()
+                   .attr('class', 'd3-tip')
+                   .offset([-10, 0])
+                   .html(function(d) {
+                     return "County: <span style='color:red'>" + d.properties.COUNTY_NAM + "</span> <br></br>" + 
+                     "Region:<span style='color:red'> " + countyMap[d.properties.COUNTY_NAM].covid_region + "</span> " ;
+                  })
   
    Array.prototype.forEach.call(document.querySelectorAll('.d3-tip'), (t) => t.parentNode.removeChild(t));
       
@@ -1059,9 +1058,12 @@ function drawChart() {
       .on('mouseout', tip_map.hide)
       .on('click', function(d) {
          // tip_map.hide
-         selectedRegion = allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]
+         if (selectedRegion.localeCompare(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]) === 0 ) {
+            selectedRegion = 'illinois'
+         } else {
+            selectedRegion = allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]
+         }
          drawChart()
-      
     })
       
    map
@@ -1329,7 +1331,6 @@ function drawChart() {
    var tickVals = x_cases.domain().filter(function(d,i){ return !(i%30)})
  
    if (currentWidth < 500) {
-   
       var index = tickVals.length -1
       
       while (index >= 0) {
@@ -1512,7 +1513,6 @@ function drawChart() {
    // u
    svg_cases
    .selectAll("rect")
-   // .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")");
    
    //  const POINTS_AVERAGE = 6;
    var line = d3.line()
