@@ -240,7 +240,7 @@ title: Home
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
       is not the same as the test positivity rate, which measures the number of positive tests per every test
       administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
-      As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
   </div>
 </div>
 
@@ -254,7 +254,7 @@ title: Home
       molecular tests up to October 14, 2020 and includes both molecular and antigen tests after October 14, 2020.
       This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
       test for past SARS-CoV-2 infection, are not included in this count. Bars show daily tests, and the line
-      is a 7-day moving average. As of <text class = "last_update_date"></text>, an average of <text id = "avg_trip"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
+      is a 7-day moving average. As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
 </text>
   </div>
 </div>
@@ -940,6 +940,11 @@ let dailyRegionCount = {}
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].deaths += county.deaths
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].tests += county.total_tested
       })
+      
+      
+      
+      
+      
 
       regionArray.forEach( region => {
          historical_county.push({
@@ -954,7 +959,31 @@ let dailyRegionCount = {}
       })
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
+   
+   
 // console.log(historical_county)
+   // const POINTS_AVERAGE = 6;
+   // var line_test_daily = d3.line()
+   // .x(d => x_tests(d.date))
+   // .y((d, i, data_map) => {
+   //    console.log(data_map)
+   //    var r,
+   //    avg = 0;
+   //    for (let j = 0; j <= POINTS_AVERAGE; j++) {
+   //       if (i - j >= 0) {
+   //          avg += y_tests(data_map[i - j].tested);
+   //          r = Math.floor(avg / (j + 1));
+   //       } else {
+   //          r = Math.floor(avg / j);
+   //          j = POINTS_AVERAGE + 1;
+   //       }
+   //    }
+   //    d.tests_avg = r;
+   //    return r;
+   // });
+
+
+
 
 function drawChart() {
    
@@ -1081,6 +1110,22 @@ function drawChart() {
     var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    var formatDate = d3.timeFormat("%b %d")
    
+      const POINTS_AVERAGE = 6;
+   data_map.forEach((d, i, obj) => {
+      
+      var r,
+      avg = 0;
+      for (let j = 0; j <= POINTS_AVERAGE; j++) {
+         if (i - j >= 0) {
+            avg += y_tests(obj[i - j].tested);
+            r = Math.floor(avg / (j + 1));
+         } else {
+            r = Math.floor(avg / j);
+            j = POINTS_AVERAGE + 1;
+         }
+      }
+      d.tests_avg = r;
+   })
    // console.log(formatDate(data_map[data_map.length - 1 ].date))
 
      
@@ -1410,30 +1455,29 @@ function drawChart() {
             .on('mouseover', tip_tests.show)
       .on('mouseout', tip_tests.hide)
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
-
-
    s
       .exit()
       .remove()
 
-   const POINTS_AVERAGE = 6;
-   var line_test_daily = d3.line()
-   .x(d => x_tests(d.date))
-   .y((d, i, data_map) => {
-      var r,
-      avg = 0;
-      for (let j = 0; j <= POINTS_AVERAGE; j++) {
-         if (i - j >= 0) {
-            avg += y_tests(data_map[i - j].tested);
-            r = Math.floor(avg / (j + 1));
-         } else {
-            r = Math.floor(avg / j);
-            j = POINTS_AVERAGE + 1;
-         }
-      }
-      d.tests_avg = r;
-      return r;
-   });
+   // const POINTS_AVERAGE = 6;
+   // var line_test_daily = d3.line()
+   // .x(d => x_tests(d.date))
+   // .y((d, i, data_map) => {
+   //    console.log(data_map)
+   //    var r,
+   //    avg = 0;
+   //    for (let j = 0; j <= POINTS_AVERAGE; j++) {
+   //       if (i - j >= 0) {
+   //          avg += y_tests(data_map[i - j].tested);
+   //          r = Math.floor(avg / (j + 1));
+   //       } else {
+   //          r = Math.floor(avg / j);
+   //          j = POINTS_AVERAGE + 1;
+   //       }
+   //    }
+   //    d.tests_avg = r;
+   //    return r;
+   // });
 
    svg_tests
       .selectAll('path').remove();
@@ -1446,7 +1490,11 @@ function drawChart() {
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line_test_daily)
+      // .attr('d', line_test_daily)
+            .attr("d", d3.line()
+      .x(function(d) { return x_tests(d.date) })
+      .y(function(d) { return y_tests(d.tests_avg) })
+      )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  );
    
    svg_test_pos
@@ -1641,6 +1689,8 @@ function drawChart() {
     document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
     document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
     document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
+    
+    console.log(data_map[data_map.length - 1 ].tests_avg)
     
     var region = ""
     if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
