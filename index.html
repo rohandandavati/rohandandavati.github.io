@@ -775,7 +775,8 @@ var files = [
             //  'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv',
             //  'https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json'
             'https://cors-anywhere.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json'
-            ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR4NYAQPXFUEAEU7NWS76CISQ'
+            // ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR4NYAQPXFUEAEU7NWS76CISQ'
+            ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR63LU42JKEC45HUMEK77HNBC'
             //  ,'https://idph.illinois.gov/DPHPublicInformation/api/covidexport/GetCountyHistoricalTestResults?reportDate=10/10/2020'
             ]
 
@@ -919,7 +920,7 @@ let dailyRegionCount = {}
    var historical_county = []
 
    var prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
-   
+   var i = 0;
    c.forEach( value => {
       //clear dictionary
       regionArray.forEach(region => {
@@ -940,12 +941,6 @@ let dailyRegionCount = {}
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].deaths += county.deaths
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].tests += county.total_tested
       })
-      
-      
-      
-      
-      
-
       regionArray.forEach( region => {
          historical_county.push({
             date: date,
@@ -957,6 +952,25 @@ let dailyRegionCount = {}
                              (dailyRegionCount[region].tests - prev_dict[region].tests)
          });
       })
+            const POINTS_AVERAGE = 6;
+      var pos = historical_county.length-1;
+      //for each region at the end of array 
+      for (let k = 0; k < 12; k++) {
+         var r,
+         avg = 0;
+         for (let j = 0; j <= POINTS_AVERAGE; j++) {
+            if (i - j >= 0) {
+               var jump = j * 12; 
+               avg += y_tests(historical_county[pos - k - jump].tested);
+               r = Math.floor(avg / (j + 1));
+            } else {
+               r = Math.floor(avg / j);
+               j = POINTS_AVERAGE + 1;
+            }
+         }
+         historical_county[pos-k].tests_avg = r;
+      }
+      i += 1;
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
    
@@ -1110,22 +1124,28 @@ function drawChart() {
     var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    var formatDate = d3.timeFormat("%b %d")
    
-      const POINTS_AVERAGE = 6;
-   data_map.forEach((d, i, obj) => {
+
       
-      var r,
-      avg = 0;
-      for (let j = 0; j <= POINTS_AVERAGE; j++) {
-         if (i - j >= 0) {
-            avg += y_tests(obj[i - j].tested);
-            r = Math.floor(avg / (j + 1));
-         } else {
-            r = Math.floor(avg / j);
-            j = POINTS_AVERAGE + 1;
-         }
-      }
-      d.tests_avg = r;
-   })
+   //    var temp = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+   // var data_map = temp.map((x) => x);   
+   
+console.log(data_map)
+      
+   // data_map.forEach((d, i, obj) => {
+      
+   //    var r,
+   //    avg = 0;
+   //    for (let j = 0; j <= POINTS_AVERAGE; j++) {
+   //       if (i - j >= 0) {
+   //          avg += y_tests(obj[i - j].tested);
+   //          r = Math.floor(avg / (j + 1));
+   //       } else {
+   //          r = Math.floor(avg / j);
+   //          j = POINTS_AVERAGE + 1;
+   //       }
+   //    }
+   //    d.tests_avg = r;
+   // })
    // console.log(formatDate(data_map[data_map.length - 1 ].date))
 
      
@@ -1502,7 +1522,7 @@ function drawChart() {
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
-//  const POINTS_AVERAGE = 6;
+ const POINTS_AVERAGE = 6;
  var line_tests = d3
     .line()
     .x(d => x_test_pos(d.date))
@@ -1690,7 +1710,7 @@ function drawChart() {
     document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
     document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
     
-    console.log(data_map[data_map.length - 1 ].tests_avg)
+   //  console.log(data_map[data_map.length - 1 ].tests_avg)
     
     var region = ""
     if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
