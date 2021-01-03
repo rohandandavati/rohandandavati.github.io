@@ -844,11 +844,10 @@ var y_axis_tests = svg_tests.append("g")
 var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
-            //  'https://docs.google.com/spreadsheets/d/1MWNebArAjjTTtJdxQcnUakShSbADhccx3xw28L2Nflo/gviz/tq?tqx=out:csv&sheet=NOFO_long',
-            //  'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv',
             //  'https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json'
             'https://cors-anywhere.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json'
             // ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR4NYAQPXFUEAEU7NWS76CISQ'
+            
             ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR63LU42JKEC45HUMEK77HNBC'
             //  ,'https://idph.illinois.gov/DPHPublicInformation/api/covidexport/GetCountyHistoricalTestResults?reportDate=10/10/2020'
             ]
@@ -882,13 +881,17 @@ var files = [
       regionArray[10] = "Southwest Central";
       regionArray[11] = "Suburban";
 
-
 var promises = [];
 let today = new Date();
 let parDate = d3.timeParse("%m/%d/%Y");
 
+// d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json').then(function(error, data) { 
+//  if (error) throw error;
+//  // Normal handling beyond this point.
+// });
 
 files.forEach(function(url) {
+   // console.log(url)
     if (url.slice(-1) === 'n'){
        promises.push(d3.json(url))
     }else{
@@ -896,8 +899,11 @@ files.forEach(function(url) {
     }
 });
 
+// console.log(promises)
+
+
 Promise.all(promises).then(function(data) {
-   // console.log(data[3])
+   
 
    let parseDate2 = d3.timeParse("%m/%d/%Y");
 // let today = new Date();
@@ -973,8 +979,15 @@ let dailyRegionCount = {}
    // let parDate = d3.timeParse("%m/%d/%Y");
    // console.log(data[4])
    
+   // data[2].historical_county.values[0]
+   
+   data[2].historical_county.values[0].testDate = '1/1/2021'
+   data[2].historical_county.values[1].testDate = '1/2/2021'
+   
+   
    var c = data[2].historical_county.values
 
+console.log(data[2].historical_county.values)
    
    c.sort(function(a, b) {
    //if (a is less than b by some ordering criterion) {
@@ -989,6 +1002,7 @@ let dailyRegionCount = {}
       return 0;
    }
 })
+   
    
    var historical_county = []
 
@@ -1014,7 +1028,23 @@ let dailyRegionCount = {}
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].deaths += county.deaths
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].tests += county.total_tested
       })
+      
+      
+      
+      
+      
       regionArray.forEach( region => {
+      //    var cases = dailyRegionCount[region].cases - prev_dict[region].cases
+      //    var deaths = dailyRegionCount[region].deaths - prev_dict[region].deaths
+      //    var tests = dailyRegionCount[region].tests - prev_dict[region].tests
+         
+      //  var test_pos =  (dailyRegionCount[region].cases - prev_dict[region].cases) / 
+      //                       (dailyRegionCount[region].tests - prev_dict[region].tests)
+                            
+      //    if (cases < 0 ) {
+      //       console.log(region, date)
+      //    }
+         
          historical_county.push({
             date: date,
             NOFO_Region: region,
@@ -1022,30 +1052,74 @@ let dailyRegionCount = {}
             deaths: dailyRegionCount[region].deaths - prev_dict[region].deaths,
             tested: dailyRegionCount[region].tests - prev_dict[region].tests,
             test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / 
-                             (dailyRegionCount[region].tests - prev_dict[region].tests)
+                            (dailyRegionCount[region].tests - prev_dict[region].tests)
          });
+         
+         
       })
-            const POINTS_AVERAGE = 6;
-      var pos = historical_county.length-1;
+      
+      
+                  const POINTS_AVERAGE = 6;
+            var pos = historical_county.length-1;
       //for each region at the end of array 
       for (let k = 0; k < 12; k++) {
-         var r,
-         avg = 0;
+         var 
+         cases_r,
+         cases_avg,
+         deaths_r,
+         deaths_avg,
+         test_pos_r,
+         test_pos_avg,
+         tests_r,
+         tests_avg = 0;
          for (let j = 0; j <= POINTS_AVERAGE; j++) {
             if (i - j >= 0) {
                var jump = j * 12; 
-               avg += y_tests(historical_county[pos - k - jump].tested);
-               r = Math.floor(avg / (j + 1));
+               cases_avg += y_cases(historical_county[pos - k - jump].cases);
+               deaths_avg += y_deaths(historical_county[pos - k - jump].deaths);
+               test_pos_avg += y_test_pos(historical_county[pos - k - jump].test_positivity);
+               tests_avg += y_tests(historical_county[pos - k - jump].tested);
+               cases_r = Math.floor(cases_avg / (j + 1));
+               deaths_r = Math.floor(deaths_avg / (j + 1));
+               test_pos_r = Math.floor(test_pos_avg / (j + 1));
+               tests_r = Math.floor(tests_avg / (j + 1));
             } else {
-               r = Math.floor(avg / j);
+               cases_r = Math.floor(cases_avg / j);
+               deaths_r = Math.floor(deaths_avg / j);
+               test_pos_r = Math.floor(test_pos_r / j);
+               tests_r = Math.floor(tests_avg / j);
                j = POINTS_AVERAGE + 1;
             }
          }
-         historical_county[pos-k].tests_avg = r;
+         historical_county[pos-k].cases_avg = cases_r;
+         historical_county[pos-k].deaths_avg = deaths_r;
+         historical_county[pos-k].test_pos_avg = test_pos_r;
+         historical_county[pos-k].tests_avg = tests_r;
       }
       i += 1;
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
+console.log(historical_county)
+   //    var pos = historical_county.length-1;
+   //    //for each region at the end of array 
+   //    for (let k = 0; k < 12; k++) {
+   //       var r,
+   //       avg = 0;
+   //       for (let j = 0; j <= POINTS_AVERAGE; j++) {
+   //          if (i - j >= 0) {
+   //             var jump = j * 12; 
+   //             avg += y_tests(historical_county[pos - k - jump].tested);
+   //             r = Math.floor(avg / (j + 1));
+   //          } else {
+   //             r = Math.floor(avg / j);
+   //             j = POINTS_AVERAGE + 1;
+   //          }
+   //       }
+   //       historical_county[pos-k].tests_avg = r;
+   //    }
+   //    i += 1;
+   //    prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
+   // });
    
    
 // console.log(historical_county)
@@ -1179,6 +1253,8 @@ function drawChart() {
          } else {
             selectedRegion = allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]
          }
+         // console.log(allGroup[selectedRegion])
+         d3.select('#selectButton').property('value', selectedRegion);
          drawChart()
     })
       
@@ -1202,7 +1278,7 @@ function drawChart() {
    //    var temp = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    // var data_map = temp.map((x) => x);   
    
-console.log(data_map)
+// console.log(data_map)
       
    // data_map.forEach((d, i, obj) => {
       
@@ -1595,27 +1671,27 @@ console.log(data_map)
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
 
- const POINTS_AVERAGE = 6;
- var line_tests = d3
-    .line()
-    .x(d => x_test_pos(d.date))
-    .y((d, i, data_map) => {
-      var r,
-       avg = 0;
-      for (let j = 0; j <= POINTS_AVERAGE; j++) {
-       if (i - j >= 0) {
-          avg += y_test_pos(data_map[i - j].test_positivity);
-          r = Math.floor(avg / (j + 1));
-       } else {
-          r = Math.floor(avg / j);
-          j = POINTS_AVERAGE + 1;
-       }
-      }
+//  const POINTS_AVERAGE = 6;
+//  var line_tests = d3
+//     .line()
+//     .x(d => x_test_pos(d.date))
+//     .y((d, i, data_map) => {
+//       var r,
+//        avg = 0;
+//       for (let j = 0; j <= POINTS_AVERAGE; j++) {
+//        if (i - j >= 0) {
+//           avg += y_test_pos(data_map[i - j].test_positivity);
+//           r = Math.floor(avg / (j + 1));
+//        } else {
+//           r = Math.floor(avg / j);
+//           j = POINTS_AVERAGE + 1;
+//        }
+//       }
        
-       if (isNaN(r)) r = 0
-       d.test_pos_avg = r;
-      return r;
-    });
+//        if (isNaN(r)) r = 0
+//        d.test_pos_avg = r;
+//       return r;
+//     });
 
    svg_test_pos.selectAll('path').remove();
      
@@ -1627,7 +1703,11 @@ console.log(data_map)
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line_tests)
+      // .attr('d', line_tests)
+                  .attr("d", d3.line()
+      .x(function(d) { return x_test_pos(d.date) })
+      .y(function(d) { return y_test_pos(d.test_pos_avg) })
+      )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
 
 
@@ -1655,25 +1735,25 @@ console.log(data_map)
    svg_cases
    .selectAll("rect")
    
-   //  const POINTS_AVERAGE = 6;
-   var line = d3.line()
-   .x(d => x_cases(d.date))
-   .y((d, i, data_map) => {
-   var r,
-     avg = 0;
-   for (let j = 0; j <= POINTS_AVERAGE; j++) {
-     if (i - j >= 0) {
-       avg += y_cases(data_map[i - j].cases);
-       r = Math.floor(avg / (j + 1));
-     } else {
-       r = Math.floor(avg / j);
-       j = POINTS_AVERAGE + 1;
-     }
-   }
-   //  console.log(i, r, y(d.count));
-   d.cases_avg = r;
-   return r;
-   });
+   // //  const POINTS_AVERAGE = 6;
+   // var line = d3.line()
+   // .x(d => x_cases(d.date))
+   // .y((d, i, data_map) => {
+   // var r,
+   //  avg = 0;
+   // for (let j = 0; j <= POINTS_AVERAGE; j++) {
+   //  if (i - j >= 0) {
+   //     avg += y_cases(data_map[i - j].cases);
+   //     r = Math.floor(avg / (j + 1));
+   //  } else {
+   //     r = Math.floor(avg / j);
+   //     j = POINTS_AVERAGE + 1;
+   //  }
+   // }
+   // //  console.log(i, r, y(d.count));
+   // d.cases_avg = r;
+   // return r;
+   // });
 
    svg_cases.selectAll('path').remove();
   
@@ -1685,7 +1765,11 @@ console.log(data_map)
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', line)
+      // .attr('d', line)
+                        .attr("d", d3.line()
+      .x(function(d) { return x_cases(d.date) })
+      .y(function(d) { return y_cases(d.cases_avg) })
+      )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
 
    
@@ -1738,26 +1822,26 @@ console.log(data_map)
    // .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
    .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
     
-   //  const POINTS_AVERAGE = 6;
-    var lineA = d3
-       .line()
-       .x(d => x_deaths(d.date))
-       .y((d, i, data_map) => {
-         var r,
-           avg = 0;
-         for (let j = 0; j <= POINTS_AVERAGE; j++) {
-           if (i - j >= 0) {
-             avg += y_deaths(data_map[i - j].deaths);
-             r = Math.floor(avg / (j + 1));
-           } else {
-             r = Math.floor(avg / j);
-             j = POINTS_AVERAGE + 1;
-           }
-         }
-       //   console.log(i, r, y(d.count));
-       d.deaths_avg = r;
-         return r;
-       });
+   // //  const POINTS_AVERAGE = 6;
+   //  var lineA = d3
+   //     .line()
+   //     .x(d => x_deaths(d.date))
+   //     .y((d, i, data_map) => {
+   //       var r,
+   //        avg = 0;
+   //       for (let j = 0; j <= POINTS_AVERAGE; j++) {
+   //        if (i - j >= 0) {
+   //           avg += y_deaths(data_map[i - j].deaths);
+   //           r = Math.floor(avg / (j + 1));
+   //        } else {
+   //           r = Math.floor(avg / j);
+   //           j = POINTS_AVERAGE + 1;
+   //        }
+   //       }
+   //     //   console.log(i, r, y(d.count));
+   //     d.deaths_avg = r;
+   //       return r;
+   //     });
 
    svg_deaths.selectAll('path').remove();
    
@@ -1769,7 +1853,11 @@ console.log(data_map)
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      .attr('d', lineA)
+      // .attr('d', lineA)
+      .attr("d", d3.line()
+      .x(function(d) { return x_deaths(d.date) })
+      .y(function(d) { return y_deaths(d.deaths_avg) })
+      )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       
      
@@ -1824,7 +1912,7 @@ console.log(data_map)
       // console.log(selectedOption)
       drawChart()
     })
-}); //Promise.all    
+})
 
 </script>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
