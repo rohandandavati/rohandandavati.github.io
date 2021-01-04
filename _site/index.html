@@ -1153,13 +1153,7 @@ var promises = [];
 let today = new Date();
 let parDate = d3.timeParse("%m/%d/%Y");
 
-// d3.json('https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json').then(function(error, data) { 
-//  if (error) throw error;
-//  // Normal handling beyond this point.
-// });
-
 files.forEach(function(url) {
-   // console.log(url)
     if (url.slice(-1) === 'n'){
        promises.push(d3.json(url))
     }else{
@@ -1167,7 +1161,6 @@ files.forEach(function(url) {
     }
 });
 
-// console.log(promises)
 
 
 Promise.all(promises).then(function(data) {
@@ -1191,7 +1184,7 @@ while (index >= 0) {
       }
  index -= 1;
 }
-   // console.log(data[3])
+
    var prev_date = parDate('11/11/1997')
    var region = 0;
    data[3].forEach(d => {
@@ -1207,7 +1200,7 @@ while (index >= 0) {
       prev_date = d.date;
    });
    
-//  console.log(data[3])
+
 //clean rt    
 let parseDate = d3.timeParse("%Y-%m-%d");
 // let today = new Date();
@@ -1289,7 +1282,6 @@ let dailyRegionCount = {}
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].tests += county.total_tested
       })
       
-
       regionArray.forEach( region => {
       
       var cases = dailyRegionCount[region].cases - prev_dict[region].cases
@@ -1305,7 +1297,6 @@ let dailyRegionCount = {}
             cases = 0;
          }
          
-         
          historical_county.push({
             date: date,
             NOFO_Region: region,
@@ -1319,8 +1310,8 @@ let dailyRegionCount = {}
          });
       })
       
-                  const POINTS_AVERAGE = 6;
-            var pos = historical_county.length-1;
+      const POINTS_AVERAGE = 6;
+      var pos = historical_county.length-1;
       //for each region at the end of array 
       for (let k = 0; k < 12; k++) {
          var cases_r = 0
@@ -1343,7 +1334,6 @@ let dailyRegionCount = {}
                deaths_r = Math.floor(deaths_avg / (j + 1));
                test_pos_r = test_pos_avg / (j + 1);
                tests_r = Math.floor(tests_avg / (j + 1));
-               // console.log(cases_avg, cases_r)
             } else {
                cases_r = Math.floor(cases_avg / j);
                deaths_r = Math.floor(deaths_avg / j);
@@ -1351,9 +1341,7 @@ let dailyRegionCount = {}
                tests_r = Math.floor(tests_avg / j);
                j = POINTS_AVERAGE + 1;
             }
-
          }
-
          historical_county[pos-k].cases_avg = cases_r;
          historical_county[pos-k].deaths_avg = deaths_r;
          historical_county[pos-k].test_pos_avg = test_pos_r;
@@ -1362,57 +1350,8 @@ let dailyRegionCount = {}
       i += 1;
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
-   
-   // console.log(historical_county)
-// console.log(historical_county)
-   //    var pos = historical_county.length-1;
-   //    //for each region at the end of array 
-   //    for (let k = 0; k < 12; k++) {
-   //       var r,
-   //       avg = 0;
-   //       for (let j = 0; j <= POINTS_AVERAGE; j++) {
-   //          if (i - j >= 0) {
-   //             var jump = j * 12; 
-   //             avg += y_tests(historical_county[pos - k - jump].tested);
-   //             r = Math.floor(avg / (j + 1));
-   //          } else {
-   //             r = Math.floor(avg / j);
-   //             j = POINTS_AVERAGE + 1;
-   //          }
-   //       }
-   //       historical_county[pos-k].tests_avg = r;
-   //    }
-   //    i += 1;
-   //    prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
-   // });
-   
-   
-// console.log(historical_county)
-   // const POINTS_AVERAGE = 6;
-   // var line_test_daily = d3.line()
-   // .x(d => x_tests(d.date))
-   // .y((d, i, data_map) => {
-   //    console.log(data_map)
-   //    var r,
-   //    avg = 0;
-   //    for (let j = 0; j <= POINTS_AVERAGE; j++) {
-   //       if (i - j >= 0) {
-   //          avg += y_tests(data_map[i - j].tested);
-   //          r = Math.floor(avg / (j + 1));
-   //       } else {
-   //          r = Math.floor(avg / j);
-   //          j = POINTS_AVERAGE + 1;
-   //       }
-   //    }
-   //    d.tests_avg = r;
-   //    return r;
-   // });
-
-
-
 
 function drawChart() {
-   
    
    let selectToRegion = {};
       selectToRegion["illinois"] = "Illinois";
@@ -1435,7 +1374,6 @@ function drawChart() {
 
       if (parseInt(currentWidth) < 600) {
          height_rt = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
-         // console.log("hi")
       }
       else if (parseInt(currentWidth) < 900) {
          height_rt = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
@@ -1486,7 +1424,6 @@ function drawChart() {
        .attr( "d", path )
        .attr("fill", function(d){ 
          if (selectedRegion.localeCompare("illinois") === 0) {
-            // console.log('hi')
             return colors(allGroup[countyMap[d.properties.COUNTY_NAM].covid_region])
          } else {
              if (countyMap[d.properties.COUNTY_NAM].covid_region === parseInt(selectedRegion.split('_')[1])) {
@@ -1518,7 +1455,6 @@ function drawChart() {
          } else {
             selectedRegion = allGroup[countyMap[d.properties.COUNTY_NAM].covid_region]
          }
-         // console.log(allGroup[selectedRegion])
          d3.select('#selectButton').property('value', selectedRegion);
          drawChart()
     })
@@ -1534,30 +1470,6 @@ function drawChart() {
     var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    var formatDate = d3.timeFormat("%b %d")
    
-   
-   //    var temp = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
-   // var data_map = temp.map((x) => x);   
-   
-// console.log(data_map)
-      
-   // data_map.forEach((d, i, obj) => {
-   //    var r,
-   //    avg = 0;
-   //    for (let j = 0; j <= POINTS_AVERAGE; j++) {
-   //       if (i - j >= 0) {
-   //          avg += y_tests(obj[i - j].tested);
-   //          r = Math.floor(avg / (j + 1));
-   //       } else {
-   //          r = Math.floor(avg / j);
-   //          j = POINTS_AVERAGE + 1;
-   //       }
-   //    }
-   //    d.tests_avg = r;
-   // })
-   // console.log(formatDate(data_map[data_map.length - 1 ].date))
-
-     
-
   
   var mousemove = function(d) {
          // var formatTime = d3.timeFormat("%b %d")"%b %Y"
@@ -1603,7 +1515,6 @@ function drawChart() {
       .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
       .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks))
       .call(x_rt_axis => x_rt_axis.select(".domain").remove())
-      
       
    y_rt
       .range([ height_rt, 0 ])
@@ -1713,8 +1624,6 @@ function drawChart() {
       .style("opacity", 0)
   })
    
-
-
     var tickTimeFormat = d3.timeFormat("%b %d")
    var tip = d3.tip()
   .attr('class', 'd3-tip')
@@ -1887,26 +1796,6 @@ function drawChart() {
       .exit()
       .remove()
 
-   // const POINTS_AVERAGE = 6;
-   // var line_test_daily = d3.line()
-   // .x(d => x_tests(d.date))
-   // .y((d, i, data_map) => {
-   //    console.log(data_map)
-   //    var r,
-   //    avg = 0;
-   //    for (let j = 0; j <= POINTS_AVERAGE; j++) {
-   //       if (i - j >= 0) {
-   //          avg += y_tests(data_map[i - j].tested);
-   //          r = Math.floor(avg / (j + 1));
-   //       } else {
-   //          r = Math.floor(avg / j);
-   //          j = POINTS_AVERAGE + 1;
-   //       }
-   //    }
-   //    d.tests_avg = r;
-   //    return r;
-   // });
-
    svg_tests
       .selectAll('path').remove();
    
@@ -1929,28 +1818,6 @@ function drawChart() {
       .selectAll("rect")
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
-
-//  const POINTS_AVERAGE = 6;
-//  var line_tests = d3
-//     .line()
-//     .x(d => x_test_pos(d.date))
-//     .y((d, i, data_map) => {
-//       var r,
-//        avg = 0;
-//       for (let j = 0; j <= POINTS_AVERAGE; j++) {
-//        if (i - j >= 0) {
-//           avg += y_test_pos(data_map[i - j].test_positivity);
-//           r = Math.floor(avg / (j + 1));
-//        } else {
-//           r = Math.floor(avg / j);
-//           j = POINTS_AVERAGE + 1;
-//        }
-//       }
-       
-//        if (isNaN(r)) r = 0
-//        d.test_pos_avg = r;
-//       return r;
-//     });
 
    svg_test_pos.selectAll('path').remove();
      
@@ -1993,26 +1860,6 @@ function drawChart() {
    // u
    svg_cases
    .selectAll("rect")
-   
-   // //  const POINTS_AVERAGE = 6;
-   // var line = d3.line()
-   // .x(d => x_cases(d.date))
-   // .y((d, i, data_map) => {
-   // var r,
-   //  avg = 0;
-   // for (let j = 0; j <= POINTS_AVERAGE; j++) {
-   //  if (i - j >= 0) {
-   //     avg += y_cases(data_map[i - j].cases);
-   //     r = Math.floor(avg / (j + 1));
-   //  } else {
-   //     r = Math.floor(avg / j);
-   //     j = POINTS_AVERAGE + 1;
-   //  }
-   // }
-   // //  console.log(i, r, y(d.count));
-   // d.cases_avg = r;
-   // return r;
-   // });
 
    svg_cases.selectAll('path').remove();
   
@@ -2030,9 +1877,6 @@ function drawChart() {
       .y(function(d) { return y_cases(d.cases_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
-
-   
-
 
 
    x_deaths
@@ -2081,26 +1925,7 @@ function drawChart() {
    // .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
    .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
     
-   // //  const POINTS_AVERAGE = 6;
-   //  var lineA = d3
-   //     .line()
-   //     .x(d => x_deaths(d.date))
-   //     .y((d, i, data_map) => {
-   //       var r,
-   //        avg = 0;
-   //       for (let j = 0; j <= POINTS_AVERAGE; j++) {
-   //        if (i - j >= 0) {
-   //           avg += y_deaths(data_map[i - j].deaths);
-   //           r = Math.floor(avg / (j + 1));
-   //        } else {
-   //           r = Math.floor(avg / j);
-   //           j = POINTS_AVERAGE + 1;
-   //        }
-   //       }
-   //     //   console.log(i, r, y(d.count));
-   //     d.deaths_avg = r;
-   //       return r;
-   //     });
+
 
    svg_deaths.selectAll('path').remove();
    
@@ -2124,13 +1949,10 @@ function drawChart() {
     document.getElementById('rt_text_lower').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_lower).toFixed(2);
     document.getElementById('rt_text_upper').innerHTML = (dataFilter[dataFilter.length - 1 ].rt_upper).toFixed(2);
    //  document.getElementsByClassName('last_update_date').innerHTML = formatDate(data_map[data_map.length - 1 ].date)
-    
-   //  console.log(data_map[data_map.length - 1 ].cases)
+
     document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
     document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
     document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
-    
-   //  console.log(data_map[data_map.length - 1 ].tests_avg)
     
     var region = ""
     if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
@@ -2158,17 +1980,14 @@ function drawChart() {
     }
     // Initialize the chart
     drawChart();
-    // console.log("done")
     // Add an event listener that run the function when dimension change
     window.addEventListener('resize', drawChart ); 
-    // console.log("hi")
           // When the button is changed, run the updateChart funso ction
     d3.select("#selectButton").on("change", function(d) {
       // recover the option that has been chosen
       // var selectedOption = d3.select(this).property("value")
        selectedRegion = d3.select(this).property("value")
       // run the updateChart function with this selected option
-      // console.log(selectedOption)
       drawChart()
     })
 })
