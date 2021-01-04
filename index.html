@@ -266,6 +266,274 @@ title: Home
 
 
 <div id="bottom"></div>
+---
+layout: default
+title: Home
+---
+<style>
+/*div {*/
+/*   border: 1px solid red;*/
+/*}*/
+/*.bottom {*/
+/*   height: 200px;*/
+/*   position: relative;*/
+/*}*/
+
+.d3-tip, .tooltip {
+   z-index: 2;
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  /*box-sizing: border-box;*/
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+    .card {
+    border-color:transparent !important;
+    }
+    .chart {
+        z-index: 1;
+        /*margin-bottom: 1%;*/
+        
+    }
+    body {
+        padding-top: 50px;
+        padding-bottom:300px;
+}
+	.classy {
+      fill:#009DAA;
+    } 
+ 
+   #cases_map {
+      /*z-index: 2;*/   
+      position: fixed;
+      z-index: 2;
+   }
+   .card-body {
+      /*width: 100%;*/
+      margin-right: 20px;
+   }
+   /*.pos {*/
+   /*   float: right;*/
+   /*   position: relative;*/
+   /*}*/
+
+@media only screen and (max-width: 339px) {
+      body {
+         padding-top: 110px;
+      }
+      #cases_map {
+         width: 20%;
+         /*padding-top: 10px;*/
+         /*border: solid red 1px;*/
+      }
+      .rt {
+         width: 100%;
+         float: right;
+      }
+      .cases {
+         width: 100%;
+         float: right;
+      }
+      .deaths {
+         width: 100%;
+         float: right;
+      }
+}
+
+
+@media only screen and (min-width: 339px) {
+      body {
+         padding-top: 90px;
+         margin-right: 0%;
+      }
+      #cases_map {
+         width: 20%;
+         /*border: solid red 1px;*/
+      }
+      .rt {
+         width: 100%;
+         float: right;
+      }
+      .cases {
+         width: 100%;
+         float: right;
+      }
+      .deaths {
+         width: 100%;
+         float: right;
+      }
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+      #cases_map {
+         width: 18%;
+      }
+      body {
+         padding-top: 70px;
+      }
+      #cases_map {
+         width: 15%;
+         /*border: solid red 1px;*/
+      }
+      .rt {
+         width: 100%;
+         float: right;
+         margin-right: 0%;
+      }
+      .cases {
+         width: 100%;
+         float: right;
+      }
+      .deaths {
+         width: 100%;
+         float: right;
+      }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+      
+      #cases_map {
+         width: 15%;
+      }
+      .card {
+         margin-right: 5%;
+         width: 80%;
+      }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+   body{
+      /*margin-left: 5%;*/
+      margin-right: 10%;
+   }
+   #cases_map {
+      margin-left: 1%;
+         width: 10%;
+}
+      .card {
+         margin-right: 5%;
+         width: 80%;
+      }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+   
+      body{
+      /*margin-left: 5%;*/
+      margin-right: 12%;
+   }
+   #cases_map {
+         width: 10%;
+      }
+}
+
+</style>
+
+<div class="map" id = "cases_map"></div>
+
+
+<div class="card cases " id = "">
+  <div class="card-body">
+    <h2>Transmission Status</h2>
+    <text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
+      reproductive number, tells us whether the epidemic is <i>growing</i> (\(R_t\) > 1), <i>shrinking</i> (\(R_t\) < 1), or
+      staying the same (\(R_t\) = 1).</text>
+  </div>
+</div>
+
+<div class = "card cases chart">
+   <div class="card-body" id = "rt_chart"> </div>
+</div>
+
+
+<div class="card cases " id = "">
+  <div class="card-body">
+    <h2>Cases</h2>
+    <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
+      Illinois Department of Public Health. Individuals who receive multiple positive test results only count as one
+      case. Bars show daily cases, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases of SARS-CoV-2 infection are discovered daily in <text class = "region_text"></text>  of Illinois. </text>
+  </div>
+</div>
+
+<div class = "card cases chart">
+   <div class="card-body" id = "cases_chart"> </div>
+</div>
+
+
+<div class="card deaths " id = "">
+  <div class="card-body">
+    <h2>Deaths</h2>
+    <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
+      Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
+      but are likely within two weeks. Bars show daily deaths, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_deaths"></text> confirmed COVID-19 deaths
+      occur daily in <text class = "region_text"></text> of Illinois. </text>
+  </div>
+</div>
+
+<div class = "card deaths chart">
+   <div class="card-body" id = "deaths_chart"> </div>
+</div>
+
+<div class="card cases " id = "">
+  <div class="card-body">
+    <h2>Cases per Test (case positivity rate)</h2>
+    <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
+      is not the same as the test positivity rate, which measures the number of positive tests per every test
+      administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
+  </div>
+</div>
+
+<div class = "card deaths chart">
+<div id="test_pos"></div>
+</div>
+<div class="card cases " id = "">
+  <div class="card-body">
+    <h2>Tests</h2>
+    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois. This count includes only
+      molecular tests up to October 14, 2020 and includes both molecular and antigen tests after October 14, 2020.
+      This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
+      test for past SARS-CoV-2 infection, are not included in this count. Bars show daily tests, and the line
+      is a 7-day moving average. As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
+</text>
+  </div>
+</div>
+
+
+<div class = "card deaths chart">
+<div id="tests"></div>
+</div>
+
+
+<div id="bottom"></div>
 <script>
    /* global d3 */
    /* global $ */
@@ -902,20 +1170,9 @@ let dailyRegionCount = {}
       dailyRegionCount["Southwest Central"] = {cases: 0, deaths: 0, tests: 0};
       dailyRegionCount["Suburban"] = {cases: 0, deaths: 0, tests: 0};
 
-
-   // let parDate = d3.timeParse("%m/%d/%Y");
-   // console.log(data[4])
-   
-   // data[2].historical_county.values[0]
-   
-   data[2].historical_county.values[0].testDate = '1/1/2021'
-   data[2].historical_county.values[1].testDate = '1/2/2021'
-   
    
    var c = data[2].historical_county.values
 
-console.log(data[2].historical_county.values)
-   
    c.sort(function(a, b) {
    //if (a is less than b by some ordering criterion) {
    if (parDate(a.testDate).getTime() < parDate(b.testDate).getTime()) {
@@ -934,6 +1191,7 @@ console.log(data[2].historical_county.values)
    var historical_county = []
 
    var prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
+   
    var i = 0;
    c.forEach( value => {
       //clear dictionary
@@ -946,8 +1204,10 @@ console.log(data[2].historical_county.values)
       //filter county array 
       var values = (value.values).filter(function(d){return !(d.County==="Out Of State" || d.County==="Unassigned")})
       //remember date
-      var date = parDate(value.testDate)
       
+      
+      var date = parDate(value.testDate)
+
       //loop county array for that day
       values.forEach( county => {
          //sum for that day
@@ -956,60 +1216,61 @@ console.log(data[2].historical_county.values)
          dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].tests += county.total_tested
       })
       
-      
-      
-      
-      
+
       regionArray.forEach( region => {
-      //    var cases = dailyRegionCount[region].cases - prev_dict[region].cases
-      //    var deaths = dailyRegionCount[region].deaths - prev_dict[region].deaths
-      //    var tests = dailyRegionCount[region].tests - prev_dict[region].tests
+      
+      var cases = dailyRegionCount[region].cases - prev_dict[region].cases
+       var test_pos = 0;
+             
+      if ((dailyRegionCount[region].tests - prev_dict[region].tests) > 0)    {
+
+         test_pos =  (dailyRegionCount[region].cases - prev_dict[region].cases) / 
+                            (dailyRegionCount[region].tests - prev_dict[region].tests)
+      } 
+         //if overcounted                   
+         if (cases < 0 || isNaN(cases)) {
+            cases = 0;
+         }
          
-      //  var test_pos =  (dailyRegionCount[region].cases - prev_dict[region].cases) / 
-      //                       (dailyRegionCount[region].tests - prev_dict[region].tests)
-                            
-      //    if (cases < 0 ) {
-      //       console.log(region, date)
-      //    }
          
          historical_county.push({
             date: date,
             NOFO_Region: region,
-            cases:  dailyRegionCount[region].cases - prev_dict[region].cases,
+            // cases:  dailyRegionCount[region].cases - prev_dict[region].cases,
+            cases: cases,
             deaths: dailyRegionCount[region].deaths - prev_dict[region].deaths,
             tested: dailyRegionCount[region].tests - prev_dict[region].tests,
-            test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / 
-                            (dailyRegionCount[region].tests - prev_dict[region].tests)
+            // test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / 
+            //                 (dailyRegionCount[region].tests - prev_dict[region].tests)
+            test_positivity: test_pos
          });
-         
-         
       })
-      
       
                   const POINTS_AVERAGE = 6;
             var pos = historical_county.length-1;
       //for each region at the end of array 
       for (let k = 0; k < 12; k++) {
-         var 
-         cases_r,
-         cases_avg,
-         deaths_r,
-         deaths_avg,
-         test_pos_r,
-         test_pos_avg,
-         tests_r,
-         tests_avg = 0;
+         var cases_r = 0
+         var cases_avg = 0
+         var deaths_r = 0
+         var deaths_avg = 0
+         var test_pos_r =0
+         var test_pos_avg =0
+         var tests_r =0
+         var tests_avg = 0;
+         
          for (let j = 0; j <= POINTS_AVERAGE; j++) {
             if (i - j >= 0) {
                var jump = j * 12; 
-               cases_avg += y_cases(historical_county[pos - k - jump].cases);
-               deaths_avg += y_deaths(historical_county[pos - k - jump].deaths);
-               test_pos_avg += y_test_pos(historical_county[pos - k - jump].test_positivity);
-               tests_avg += y_tests(historical_county[pos - k - jump].tested);
+               cases_avg += historical_county[pos - k - jump].cases;
+               deaths_avg += historical_county[pos - k - jump].deaths;
+               test_pos_avg += historical_county[pos - k - jump].test_positivity;
+               tests_avg += historical_county[pos - k - jump].tested;
                cases_r = Math.floor(cases_avg / (j + 1));
                deaths_r = Math.floor(deaths_avg / (j + 1));
-               test_pos_r = Math.floor(test_pos_avg / (j + 1));
+               test_pos_r = test_pos_avg / (j + 1);
                tests_r = Math.floor(tests_avg / (j + 1));
+               // console.log(cases_avg, cases_r)
             } else {
                cases_r = Math.floor(cases_avg / j);
                deaths_r = Math.floor(deaths_avg / j);
@@ -1017,7 +1278,9 @@ console.log(data[2].historical_county.values)
                tests_r = Math.floor(tests_avg / j);
                j = POINTS_AVERAGE + 1;
             }
+
          }
+
          historical_county[pos-k].cases_avg = cases_r;
          historical_county[pos-k].deaths_avg = deaths_r;
          historical_county[pos-k].test_pos_avg = test_pos_r;
@@ -1026,7 +1289,9 @@ console.log(data[2].historical_county.values)
       i += 1;
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
-console.log(historical_county)
+   
+   // console.log(historical_county)
+// console.log(historical_county)
    //    var pos = historical_county.length-1;
    //    //for each region at the end of array 
    //    for (let k = 0; k < 12; k++) {
@@ -1189,10 +1454,6 @@ function drawChart() {
    .exit()
    .remove()
    
-   
-   
- 
-
    var dataFilter = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
    var dataFilter2 = data[3].filter(function(d){return d.geography_modeled==selectedRegion}) 
    
@@ -1200,15 +1461,13 @@ function drawChart() {
     var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    var formatDate = d3.timeFormat("%b %d")
    
-
-      
+   
    //    var temp = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    // var data_map = temp.map((x) => x);   
    
 // console.log(data_map)
       
    // data_map.forEach((d, i, obj) => {
-      
    //    var r,
    //    avg = 0;
    //    for (let j = 0; j <= POINTS_AVERAGE; j++) {
