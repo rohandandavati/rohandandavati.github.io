@@ -749,6 +749,8 @@ var Tooltip = d3.select("#rt_chart")
 
 var grid_rt = svg_rt.append("g")
 
+var grid_cases = svg_cases.append("g")
+
    
  // Create the circle that travels along the curve of chart
  var focus_test_pos = d3.select("#test_pos")
@@ -1243,19 +1245,15 @@ function drawChart() {
       
       
           // Gridline
- var gridlines = d3.axisLeft()
+ var gridlines_rt = d3.axisLeft()
                    .tickFormat("")
                    .tickSize(-width_rt)
                    .scale(y_rt);
 
-// gridlines.tickFormat("")
-//                    .tickSize(-width_rt)
-//                    .scale(y_rt);
-
   grid_rt
      .attr("class", "grid")
      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-     .call(gridlines);
+     .call(gridlines_rt);
 
    
    svg_rt
@@ -1433,6 +1431,8 @@ function drawChart() {
       .range([0,width_cases])
       .padding(0);
    
+
+   
    // x_test_pos
    //    .domain(data_map.map(function(d) { return d.date; }))
    //    .range([0,width_cases])
@@ -1491,6 +1491,17 @@ function drawChart() {
    y_cases
       .domain([0, d3.max(data_map, function(d) { return d.cases; })])
       .range([height_cases, 0]);
+   
+                // Gridline
+ var gridlines_cases = d3.axisLeft()
+                   .tickFormat("")
+                   .tickSize(-width_cases)
+                   .scale(y_cases);
+
+  grid_cases
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .call(gridlines_cases);
    
    y_test_pos
       .domain([0, .30])
