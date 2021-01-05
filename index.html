@@ -11,6 +11,10 @@ title: Home
 /*   position: relative;*/
 /*}*/
 
+.grid line {
+  stroke: #ddd;
+}
+
 .d3-tip, .tooltip {
    z-index: 2;
   line-height: 1;
@@ -1219,6 +1223,10 @@ function drawChart() {
       .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks))
       .call(x_rt_axis => x_rt_axis.select(".domain").remove())
       
+      
+
+     
+      
    y_rt
       .range([ height_rt, 0 ])
    
@@ -1227,6 +1235,18 @@ function drawChart() {
       // .call(d3.axisLeft(y_rt).ticks(6))
       .call(d3.axisLeft(y_rt))
       .call(y_rt_axis => y_rt_axis.select(".domain").remove())
+      
+      
+           // Gridline
+  var gridlines = d3.axisLeft()
+                    .tickFormat("")
+                    .tickSize(-width_rt)
+                    .scale(y_rt);
+
+  svg_rt.append("g")
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+     .call(gridlines);
 
    
    svg_rt
