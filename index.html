@@ -1527,6 +1527,18 @@ function drawChart() {
      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
      .call(gridlines_test);   
      
+     
+                        // Gridline
+ var gridlines_test_pos = d3.axisLeft()
+                   .tickFormat("")
+                   .tickSize(-width_cases)
+                   .scale(y_test_pos);
+
+  grid_test_pos
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .call(gridlines_test_pos);   
+     
    y_axis
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       .call(d3.axisLeft(y_cases));
