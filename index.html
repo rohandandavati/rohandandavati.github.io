@@ -104,12 +104,13 @@ title: Home
          margin-right: 0%;
       }
       #cases_map {
-         width: 20%;
+         width: 15%;
          /*border: solid red 1px;*/
       }
       .rt {
-         width: 100%;
+         width: 80%;
          float: right;
+         margin-left: 10%;
       }
       .cases {
          width: 100%;
@@ -194,8 +195,8 @@ title: Home
 <div class="map" id = "cases_map"></div>
 
 
-<div class="card cases " id = "">
-  <div class="card-body">
+<div class="card cases  " id = "">
+  <div class="card-body rt">
     <h2>Transmission Status</h2>
     <text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
       reproductive number, tells us whether the epidemic is <i>growing</i> (\(R_t\) > 1), <i>shrinking</i> (\(R_t\) < 1), or
@@ -203,13 +204,13 @@ title: Home
   </div>
 </div>
 
-<div class = "card cases chart">
-   <div class="card-body" id = "rt_chart"> </div>
+<div class = "card cases  chart">
+   <div class="card-body rt" id = "rt_chart"> </div>
 </div>
 
 
 <div class="card cases " id = "">
-  <div class="card-body">
+  <div class="card-body rt">
     <h2>Cases</h2>
     <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
       Illinois Department of Public Health. Individuals who receive multiple positive test results only count as one
@@ -219,12 +220,12 @@ title: Home
 </div>
 
 <div class = "card cases chart">
-   <div class="card-body" id = "cases_chart"> </div>
+   <div class="card-body rt" id = "cases_chart"> </div>
 </div>
 
 
 <div class="card deaths " id = "">
-  <div class="card-body">
+  <div class="card-body rt">
     <h2>Deaths</h2>
     <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
       Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
@@ -235,11 +236,11 @@ title: Home
 </div>
 
 <div class = "card deaths chart">
-   <div class="card-body" id = "deaths_chart"> </div>
+   <div class="card-body rt" id = "deaths_chart"> </div>
 </div>
 
 <div class="card cases " id = "">
-  <div class="card-body">
+  <div class="card-body rt">
     <h2>Cases per Test (case positivity rate)</h2>
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
       is not the same as the test positivity rate, which measures the number of positive tests per every test
@@ -249,10 +250,10 @@ title: Home
 </div>
 
 <div class = "card deaths chart">
-<div id="test_pos"></div>
+   <div class="card-body rt" id="test_pos"></div>
 </div>
 <div class="card cases " id = "">
-  <div class="card-body">
+  <div class="card-body rt">
     <h2>Tests</h2>
     <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois. This count includes only
       molecular tests up to October 14, 2020 and includes both molecular and antigen tests after October 14, 2020.
@@ -265,7 +266,7 @@ title: Home
 
 
 <div class = "card deaths chart">
-<div id="tests"></div>
+   <div class="card-body rt" id="tests"></div>
 </div>
 
 
