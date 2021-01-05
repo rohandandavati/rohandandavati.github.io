@@ -1689,6 +1689,18 @@ function drawChart() {
    y_deaths
       .domain([0, d3.max(data_map, function(d) { return d.deaths; })])
       .range([height_cases, 0]);
+      
+      
+                   // Gridline
+ var gridlines_deaths = d3.axisLeft()
+                   .tickFormat("")
+                   .tickSize(-width_cases)
+                   .scale(y_deaths);
+
+  grid_deaths
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .call(gridlines_deaths);   
 
    y_axis_deaths
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
