@@ -824,6 +824,10 @@ var grid_rt = svg_rt.append("g")
 
 var grid_cases = svg_cases.append("g")
 
+var grid_test_pos = svg_test_pos.append("g")
+var grid_tests = svg_tests.append("g")
+var grid_deaths = svg_deaths.append("g")
+
    
  // Create the circle that travels along the curve of chart
  var focus_test_pos = d3.select("#test_pos")
@@ -1583,6 +1587,18 @@ function drawChart() {
    y_tests
       .domain([0, d3.max(data_map, function(d) { return d.tested; })])
       .range([height_cases, 0]);
+      
+      
+                   // Gridline
+ var gridlines_test = d3.axisLeft()
+                   .tickFormat("")
+                   .tickSize(-width_cases)
+                   .scale(y_tests);
+
+  grid_tests
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .call(gridlines_test);   
      
    y_axis
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
