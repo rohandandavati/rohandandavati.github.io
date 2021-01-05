@@ -1017,6 +1017,10 @@ title: Home
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
     .style("pointer-events", "all")
+    
+   //     var svg_test_pos = d3.select("#rt_chart").append("svg")    
+
+   
    
    var x_rt = d3.scaleTime();
    var x_rt_axis = svg_rt.append("g");
@@ -1054,6 +1058,8 @@ title: Home
 	var svg_map = d3.select("#cases_map").append("svg")
 	var svg_cases = d3.select("#cases_chart").append("svg")
 	var svg_test_pos = d3.select("#test_pos").append("svg")
+	   .style("fill", "none")
+    .style("pointer-events", "all")
 	var svg_tests = d3.select("#tests").append("svg")
 
 
@@ -1073,6 +1079,22 @@ title: Home
 var Tooltip = d3.select("#rt_chart")
     .append("div")
     .attr("class", "tooltip")
+   
+   
+ // Create the circle that travels along the curve of chart
+ var focus_test_pos = d3.select("#test_pos")
+    .append('g')
+    .append('circle')
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .attr('r', 4.5)
+      .style("opacity", 0)
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+
+var Tooltip_test_pos = d3.select("#test_pos")
+    .append("div")
+    .attr("class", "tooltip")
+    
    
    
 var projection = d3.geoAlbers()
@@ -1097,7 +1119,7 @@ var y_axis_deaths = svg_deaths.append("g")
 
 
 
-var x_test_pos= d3.scaleBand()
+var x_test_pos= d3.scaleTime()
 var y_test_pos = d3.scaleLinear()
 
 var x_axis_tests_pos = svg_test_pos.append("g")
@@ -1489,6 +1511,27 @@ function drawChart() {
       .attr("cy", y_rt(selectedData.rt_median))
    }
   
+  
+    var mousemove_test_pos = function(d) {
+         // var formatTime = d3.timeFormat("%b %d")"%b %Y"
+         var formatTime = d3.timeFormat("%b %d")
+    var x0 = x_test_pos.invert(d3.mouse(this)[0]);
+    var i = bisect(data_map, x0, 1);
+    var selectedData = data_map[i]
+    Tooltip_test_pos
+      // .html(tickTimeFormat(d.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
+      .html( formatTime(selectedData.date) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
+      
+      // .style("left", (d3.mouse(this)[0]+70) + "px")
+      .style("left", (x_test_pos(selectedData.date)) + "px")
+      .style("top",  (y_test_pos(selectedData.test_pos_avg)+40) + "px")
+   focus_test_pos
+      .attr("cx", x_test_pos(selectedData.date))
+      .attr("cy", y_test_pos(selectedData.test_pos_avg))
+   }
+   
+   
+  
     x_rt
       .domain(d3.extent(dataFilter , function(d) { return d.date}))
       .range([ 0, width_rt]);
@@ -1700,10 +1743,14 @@ function drawChart() {
       .range([0,width_cases])
       .padding(0);
    
+   // x_test_pos
+   //    .domain(data_map.map(function(d) { return d.date; }))
+   //    .range([0,width_cases])
+   //    .padding(0);
+   
    x_test_pos
-      .domain(data_map.map(function(d) { return d.date; }))
-      .range([0,width_cases])
-      .padding(0);
+         .domain(d3.extent(data_map , function(d) { return d.date}))
+      .range([ 0, width_cases]);
    
    x_tests
       .domain(data_map.map(function(d) { return d.date; }))
@@ -1835,6 +1882,25 @@ function drawChart() {
       .y(function(d) { return y_test_pos(d.test_pos_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
+      
+         // svg_test_pos.selectAll('rect').remove();
+      
+         svg_test_pos
+      .append('rect')
+      .attr('width', width_cases)
+      .attr('height', height_cases)
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+      .on("mouseover", function(d) {
+    focus_test_pos.style("opacity", 1)
+    Tooltip_test_pos
+      .style("opacity", 1)
+ })
+      .on("mousemove", mousemove_test_pos)
+      .on("mouseleave", function(d) {
+    focus_test_pos.style("opacity", 0)
+    Tooltip_test_pos
+      .style("opacity", 0)
+ })
 
 
   // Create the u variable
