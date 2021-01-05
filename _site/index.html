@@ -1055,6 +1055,7 @@ let dailyRegionCount = {}
       regionArray.forEach( region => {
       
       var cases = dailyRegionCount[region].cases - prev_dict[region].cases
+      var deaths = dailyRegionCount[region].deaths - prev_dict[region].deaths
        var test_pos = 0;
              
       if ((dailyRegionCount[region].tests - prev_dict[region].tests) > 0)    {
@@ -1066,13 +1067,17 @@ let dailyRegionCount = {}
          if (cases < 0 || isNaN(cases)) {
             cases = 0;
          }
+         if (deaths < 0 || isNaN(deaths)) {
+            deaths = 0;
+         }
          
          historical_county.push({
             date: date,
             NOFO_Region: region,
             // cases:  dailyRegionCount[region].cases - prev_dict[region].cases,
             cases: cases,
-            deaths: dailyRegionCount[region].deaths - prev_dict[region].deaths,
+            // deaths: dailyRegionCount[region].deaths - prev_dict[region].deaths,
+            deaths: deaths,
             tested: dailyRegionCount[region].tests - prev_dict[region].tests,
             // test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / 
             //                 (dailyRegionCount[region].tests - prev_dict[region].tests)
