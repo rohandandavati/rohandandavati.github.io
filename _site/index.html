@@ -126,8 +126,11 @@
         
     }
     body {
-        padding-top: 50px;
-        padding-bottom:300px;
+       margin: 0px;
+       padding: 0px;
+        /*padding-top: 50px;*/
+        /*padding-bottom:300px;*/
+        
 }
 	.classy {
       fill:#009DAA;
@@ -138,10 +141,10 @@
       position: fixed;
       z-index: 2;
    }
-   .card-body {
+   /*.card-body {*/
       /*width: 100%;*/
-      margin-right: 20px;
-   }
+   /*   margin-right: 20px;*/
+   /*}*/
    /*.pos {*/
    /*   float: right;*/
    /*   position: relative;*/
@@ -156,72 +159,68 @@
          /*padding-top: 10px;*/
          /*border: solid red 1px;*/
       }
-      .rt {
-         width: 100%;
-         float: right;
+            .card{
+         /*width:z;*/
       }
-      .cases {
-         width: 100%;
-         float: right;
-      }
-      .deaths {
-         width: 100%;
-         float: right;
-      }
-}
+
+} 
 
 
 @media only screen and (min-width: 339px) {
       body {
          padding-top: 90px;
-         margin-right: 0%;
+         /*margin-right: 0%;*/
       }
       #cases_map {
          width: 15%;
          /*border: solid red 1px;*/
       }
-      .rt {
-         width: 80%;
-         float: right;
-         margin-left: 10%;
-      }
-      .cases {
-         width: 100%;
-         float: right;
-      }
-      .deaths {
-         width: 100%;
+      /*.rt {*/
+      /*   width: 100%;*/
+      /*   float: right;*/
+         /*margin-left: 10%;*/
+      /*}*/
+      .card{
+         width:85%;
          float: right;
       }
+      /*.cases {*/
+      /*   width: 100%;*/
+      /*   float: right;*/
+      /*}*/
+      /*.deaths {*/
+      /*   width: 100%;*/
+      /*   float: right;*/
+      /*}*/
 
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-      #cases_map {
-         width: 18%;
-      }
-      body {
-         padding-top: 70px;
-      }
-      #cases_map {
-         width: 15%;
+/*@media only screen and (min-width: 600px) {*/
+/*      #cases_map {*/
+/*         width: 18%;*/
+/*      }*/
+/*      body {*/
+/*         padding-top: 70px;*/
+/*      }*/
+/*      #cases_map {*/
+/*         width: 15%;*/
          /*border: solid red 1px;*/
-      }
-      .rt {
-         width: 100%;
-         float: right;
-         margin-right: 0%;
-      }
-      .cases {
-         width: 100%;
-         float: right;
-      }
-      .deaths {
-         width: 100%;
-         float: right;
-      }
-}
+/*      }*/
+/*      .rt {*/
+/*         width: 100%;*/
+/*         float: right;*/
+/*         margin-right: 0%;*/
+/*      }*/
+/*      .cases {*/
+/*         width: 100%;*/
+/*         float: right;*/
+/*      }*/
+/*      .deaths {*/
+/*         width: 100%;*/
+/*         float: right;*/
+/*      }*/
+/*}*/
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
@@ -263,17 +262,25 @@
       }
 }
 
+/*.left{*/
+   /*text-align: center;*/
+/*}*/
+
+.nowrap {
+    white-space: nowrap;
+}
+
 </style>
 
 <div class="map" id = "cases_map"></div>
 
 
-<div class="card cases  " id = "">
+<div class="card  " id = "">
   <div class="card-body rt">
     <h2>Transmission Status</h2>
-    <text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
-      reproductive number, tells us whether the epidemic is <i>growing</i> (\(R_t\) > 1), <i>shrinking</i> (\(R_t\) < 1), or
-      staying the same (\(R_t\) = 1).</text>
+    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
+      reproductive number, tells us whether the epidemic is <i>growing</i> <span class = "nowrap">(\(R_t\) > 1)</span>, <i>shrinking</i> (\(R_t\) < 1), or
+      staying the same (\(R_t\) = 1).</text></p>
   </div>
 </div>
 
@@ -318,7 +325,7 @@
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
       is not the same as the test positivity rate, which measures the number of positive tests per every test
       administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
-      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_case_pos"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
   </div>
 </div>
 
@@ -1839,7 +1846,8 @@ function drawChart() {
     document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
     document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
     document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
-    
+        document.getElementById('avg_case_pos').innerHTML = (data_map[data_map.length - 1 ].test_pos_avg).toFixed(2);
+        
     var region = ""
     if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
          // return "Illinois";
