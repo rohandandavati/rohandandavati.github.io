@@ -325,7 +325,9 @@
 </div>
 
 <div class = "card deaths chart">
-   <div class="card-body rt" id = "deaths_chart"> </div>
+   <div class="card-body rt"> 
+      <div id = 'deaths_chart'></div>
+   </div>
 </div>
 
 <div class="card cases " id = "">
@@ -339,7 +341,9 @@
 </div>
 
 <div class = "card deaths chart">
-   <div class="card-body rt" id="test_pos"></div>
+   <div class="card-body rt"> 
+      <div id = 'test_pos'></div>
+   </div>
 </div>
 <div class="card cases " id = "">
   <div class="card-body rt">
@@ -355,7 +359,9 @@
 
 
 <div class = "card deaths chart">
-   <div class="card-body rt" id="tests"></div>
+   <div class="card-body rt"> 
+      <div id = 'tests'></div>
+   </div>
 </div>
 
 
@@ -1366,7 +1372,14 @@ function drawChart() {
        .style("fill", "#242526")
        .attr("transform", "rotate(-90)")
      .html('Reproductive Number - R')
-     .style('font-size', '1rem')
+   //  .style('font-size', '1rem')
+     .style('font-size', function() {
+        if (currentWidth < 600) {
+           return ".6rem"
+        } else {
+           return "1rem"
+        }
+     })
     .append('tspan')
        .text('t')
        .style('font-size', '.8rem')
