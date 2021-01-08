@@ -1309,8 +1309,12 @@ function drawChart() {
      })
     .append('tspan')
        .text('t')
-       .style('font-size', '.8rem')
-      //  .style('font-weight', 'bold')
+       .style('font-size', function() {
+        if (currentWidth < 600) {
+           return ".6rem"
+        } else {
+           return ".8rem"
+        }
        .attr('dx', '.1em')
        .attr('dy', '.3em')
 
