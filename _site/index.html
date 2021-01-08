@@ -76,9 +76,9 @@
    
      </nav>
     <style>
-/*div {*/
-/*   border: 1px solid red;*/
-/*}*/
+div {
+   border: 1px solid red;
+}
 /*.bottom {*/
 /*   height: 200px;*/
 /*   position: relative;*/
@@ -266,9 +266,7 @@
    /*text-align: center;*/
 /*}*/
 
-.nowrap {
-    white-space: nowrap;
-}
+
 
 </style>
 
@@ -284,8 +282,14 @@
   </div>
 </div>
 
+<!--<div class = "card cases  chart">-->
+<!--   <div class="card-body rt" id = "rt_chart"> </div>-->
+<!--</div>-->
+
 <div class = "card cases  chart">
-   <div class="card-body rt" id = "rt_chart"> </div>
+   <div class="card-body rt"> 
+   <div id = 'rt_chart'></div>
+   </div>
 </div>
 
 
@@ -299,8 +303,13 @@
   </div>
 </div>
 
+<!--<div class = "card cases chart">-->
+<!--   <div class="card-body rt" id = "cases_chart"> </div>-->
+<!--</div>-->
 <div class = "card cases chart">
-   <div class="card-body rt" id = "cases_chart"> </div>
+   <div class="card-body rt"> 
+      <div id = 'cases_chart'></div>
+   </div>
 </div>
 
 
@@ -845,11 +854,12 @@ var grid_deaths = svg_deaths.append("g")
       .attr("stroke", "black")
       .attr('r', 4.5)
       .style("opacity", 0)
-      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
 
 var Tooltip_test_pos = d3.select("#test_pos")
     .append("div")
     .attr("class", "tooltip")
+   //  .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
     
    
    
@@ -1292,7 +1302,7 @@ function drawChart() {
    }
    
    
-  
+  console.log(data_map[0].date) 
     x_rt
       .domain(d3.extent(dataFilter , function(d) { return d.date}))
       .range([ 0, width_rt]);
@@ -1319,11 +1329,7 @@ function drawChart() {
       .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
       .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks))
       .call(x_rt_axis => x_rt_axis.select(".domain").remove())
-      
-      
 
-     
-      
    y_rt
       .range([ height_rt, 0 ])
    
@@ -1450,14 +1456,10 @@ function drawChart() {
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-         // return tickTimeFormat(d.date) + "<br></br><strong>Cases:</strong> <span style='color:red'>" + d.cases + "</span>" ;
      return tickTimeFormat(d.date) + "<br></br>Cases:<span style='color:red'>" + d.cases + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.cases_avg;
   })
-//     return "<strong>Cases:</strong> <span style='color:red'>" + d.cases + "</span><br></br>" + 
-//     tickTimeFormat(d.date) + "</span> " ;
-//  })
-  
+
   
      var tip_deaths = d3.tip()
   .attr('class', 'd3-tip')
@@ -1471,6 +1473,7 @@ function drawChart() {
   
        var tip_tests = d3.tip()
   .attr('class', 'd3-tip')
+//  .attr('id', 'test')
   .offset([-10, 0])
   .html(function(d) {
      return tickTimeFormat(d.date) + "<br></br>Tests:<span style='color:red'>" + d.tested + "</span><br></br>" +
@@ -1486,7 +1489,9 @@ function drawChart() {
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
    
-   svg_cases.call(tip)
+   // svg_cases.call(tip)
+   
+  
    
    svg_deaths
       .attr("width", width_cases + margin_cases.left + margin_cases.right)
@@ -1523,11 +1528,6 @@ function drawChart() {
    
 
    
-   // x_test_pos
-   //    .domain(data_map.map(function(d) { return d.date; }))
-   //    .range([0,width_cases])
-   //    .padding(0);
-   
    x_test_pos
          .domain(d3.extent(data_map , function(d) { return d.date}))
       .range([ 0, width_cases]);
@@ -1537,7 +1537,23 @@ function drawChart() {
       .range([0,width_cases])
       .padding(0);
      
-   var tickVals = x_cases.domain().filter(function(d,i){ return !(i%30)})
+     
+   //change this                                               //if no remainder/ every 30
+   // var tickVals = x_cases.domain().filter(function(d,i){ return !(i%30)})
+   
+   var tickVals = x_cases.domain().filter(function(d,i){ 
+      return ((data_map[i].date).getDate() === 1)
+   })
+
+ 
+//  tickVals.forEach(day => {
+//     //floor date to first of month
+//    //  var month = day.getMonth()
+//    //  console.log(month)
+//    day.setDate(1)
+    
+//  })
+  console.log(tickVals)
  
    if (currentWidth < 500) {
       var index = tickVals.length -1
@@ -1551,13 +1567,16 @@ function drawChart() {
    }
  
  x_axis
-//    .attr("transform", "translate(" + margin_cases.left + "," + (height_cases+margin_cases.top) + ")")
+   // .attr("transform", "translate(" + 0 + "," + (height_cases+margin_cases.top) + ")")
 .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
    .call(d3.axisBottom(x_cases)
    //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
+   
    .tickValues(tickVals)
    .tickFormat(d3.timeFormat("%b %Y"))
    );
+   
+   svg_cases.call(tip)
 
       
    //test pos chart x axis    
@@ -1601,6 +1620,8 @@ function drawChart() {
       .domain([0, d3.max(data_map, function(d) { return d.tested; })])
       .range([height_cases, 0]);
       
+      
+   // console.log(data_map[data_map.length - 1].date)   
       
                    // Gridline
  var gridlines_test = d3.axisLeft()
@@ -1733,6 +1754,7 @@ function drawChart() {
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")")
+      // .attr("transform", "translate("+ 0 +","+ margin_cases.top + ")")
 
   u
     .exit()
@@ -1758,6 +1780,7 @@ function drawChart() {
       .y(function(d) { return y_cases(d.cases_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
+      //.attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
 
 
    x_deaths

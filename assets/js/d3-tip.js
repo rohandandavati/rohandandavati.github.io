@@ -43,6 +43,7 @@ d3.tip = function() {
         scrollTop  = document.documentElement.scrollTop || document.body.scrollTop,
         scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft
 
+
     nodel.html(content)
       .style('position', 'absolute')
       .style('opacity', 1)
@@ -77,7 +78,17 @@ d3.tip = function() {
   //
   // Returns tip or attribute value
   tip.attr = function(n, v) {
+    
+    // console.log(n, v)
+    // .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
+    // console.log(v)
+    // if (n.localeCompare('transform') === 0) {
+    //   // getNodeEl().attr("transform", "translate(40,431)")
+    // }
+  
+    
     if (arguments.length < 2 && typeof n === 'string') {
+      // console.log(n)
       return getNodeEl().attr(n)
     } else {
       var args =  Array.prototype.slice.call(arguments)
@@ -242,6 +253,7 @@ d3.tip = function() {
   function initNode() {
     var node = d3.select(document.createElement('div'))
     node
+    // .attr("transform", "translate(40,431)")
       .style('position', 'absolute')
       .style('top', '0')
       .style('opacity', '0')
