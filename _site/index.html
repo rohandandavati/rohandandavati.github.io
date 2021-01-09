@@ -185,12 +185,17 @@ html, body {
       /*   float: right;*/
          /*margin-left: 10%;*/
       /*}*/
+      
+
       #rt_outer {
          width: 100%;
       }
       .card{
-         width:85%;
+         width:100%;
          float: right;
+      }
+      .rt_title {
+         width: 85%;
       }
       /*.cases {*/
       /*   width: 100%;*/
@@ -281,7 +286,7 @@ html, body {
 <div class="map" id = "cases_map"></div>
 
 
-<div class="card  ">
+<div class="card rt_title ">
   <div class="card-body rt">
     <h2>Transmission Status</h2>
     <p><text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
@@ -290,18 +295,14 @@ html, body {
   </div>
 </div>
 
-<!--<div class = "card cases  chart">-->
-<!--   <div class="card-body rt" id = "rt_chart"> </div>-->
-<!--</div>-->
-
-<div class = "card cases " id = "rt_outer">
+<div class = "card cases " id = "card_1">
    <div class="card-body"> 
    <div id = 'rt_chart'></div>
    </div>
 </div>
 
 
-<div class="card cases " id = "">
+<div class="card cases " id = "card_2">
   <div class="card-body rt">
     <h2>Cases</h2>
     <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
@@ -314,14 +315,14 @@ html, body {
 <!--<div class = "card cases chart">-->
 <!--   <div class="card-body rt" id = "cases_chart"> </div>-->
 <!--</div>-->
-<div class = "card cases chart">
+<div class = "card cases chart " id ="card_3">
    <div class="card-body rt"> 
       <div id = 'cases_chart'></div>
    </div>
 </div>
 
 
-<div class="card deaths " id = "">
+<div class="card deaths " id = "card_4">
   <div class="card-body rt">
     <h2>Deaths</h2>
     <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
@@ -332,13 +333,13 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart">
+<div class = "card deaths chart" id ="card_5">
    <div class="card-body rt"> 
       <div id = 'deaths_chart'></div>
    </div>
 </div>
 
-<div class="card cases ">
+<div class="card cases " id ="card_6">
   <div class="card-body rt">
     <h2>Cases per Test (case positivity rate)</h2>
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
@@ -348,12 +349,12 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart">
+<div class = "card deaths chart" id ="card_7">
    <div class="card-body rt"> 
       <div id = 'test_pos'></div>
    </div>
 </div>
-<div class="card cases " id = "">
+<div class="card cases " id = "card_8">
   <div class="card-body rt">
     <h2>Tests</h2>
     <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois. This count includes only
@@ -366,7 +367,7 @@ html, body {
 </div>
 
 
-<div class = "card deaths chart">
+<div class = "card deaths chart" id = "card_9">
    <div class="card-body rt"> 
       <div id = 'tests'></div>
    </div>
@@ -1911,18 +1912,17 @@ function drawChart() {
    
    document.addEventListener("scroll", function(){
       
-      // console.log(document.getElementById("rt_outer").offsetTop)
-      // console.log(((document.getElementById("rt_outer")).getBoundingClientRect()).top)
-      console.log(((document.getElementById("cases_map")).getBoundingClientRect()).bottom)
+      var cards = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8', 'card_9' ]
       
-      if (((document.getElementById("rt_outer")).getBoundingClientRect()).top < 
-      ((document.getElementById("cases_map")).getBoundingClientRect()).bottom ){
-         // console.log('hi')
-         // d3.select('#rt_outer').style('width', '82%')
-         document.getElementById("rt_outer").style.width = '85%'
-      } else {
-         document.getElementById("rt_outer").style.width = '100%'
-      }
+      cards.forEach(card => {
+         if (((document.getElementById( card )).getBoundingClientRect()).top < 
+         ((document.getElementById("cases_map")).getBoundingClientRect()).bottom ){
+            document.getElementById(card).style.width = '85%'
+         } else {
+            document.getElementById(card).style.width = '100%'
+         }
+      })
+      
    });
    
       
