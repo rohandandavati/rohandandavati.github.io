@@ -306,6 +306,10 @@ html, body {
 <script>
    /* global d3 */
    /* global $ */
+   
+      $(document).ready(function(){
+    $(this).scrollTop(0);
+}); 
 
    
    function LightenDarkenColor(col,amt) {
@@ -331,6 +335,7 @@ html, body {
       return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
    }
    
+
 //  //orginal colors sent
 //    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
 //    var mapFill = ["#740000", "#743971", "#438a7f", "#b36f0e", "#505050", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#967c56"]
