@@ -107,6 +107,9 @@ title: Home
       /*   float: right;*/
          /*margin-left: 10%;*/
       /*}*/
+      #rt_outer {
+         width: 100%;
+      }
       .card{
          width:85%;
          float: right;
@@ -200,7 +203,7 @@ title: Home
 <div class="map" id = "cases_map"></div>
 
 
-<div class="card  " id = "">
+<div class="card  ">
   <div class="card-body rt">
     <h2>Transmission Status</h2>
     <p><text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
@@ -213,8 +216,8 @@ title: Home
 <!--   <div class="card-body rt" id = "rt_chart"> </div>-->
 <!--</div>-->
 
-<div class = "card cases  chart">
-   <div class="card-body rt"> 
+<div class = "card cases " id = "rt_outer">
+   <div class="card-body"> 
    <div id = 'rt_chart'></div>
    </div>
 </div>
@@ -257,7 +260,7 @@ title: Home
    </div>
 </div>
 
-<div class="card cases " id = "">
+<div class="card cases ">
   <div class="card-body rt">
     <h2>Cases per Test (case positivity rate)</h2>
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
@@ -1234,8 +1237,6 @@ function drawChart() {
       .attr("cy", y_test_pos(selectedData.test_pos_avg))
    }
    
-   
-  console.log(data_map[0].date) 
     x_rt
       .domain(d3.extent(dataFilter , function(d) { return d.date}))
       .range([ 0, width_rt]);
@@ -1315,6 +1316,7 @@ function drawChart() {
         } else {
            return ".8rem"
         }
+       })
        .attr('dx', '.1em')
        .attr('dy', '.3em')
 
@@ -1489,16 +1491,6 @@ function drawChart() {
       return ((data_map[i].date).getDate() === 1)
    })
 
- 
-//  tickVals.forEach(day => {
-//     //floor date to first of month
-//    //  var month = day.getMonth()
-//    //  console.log(month)
-//    day.setDate(1)
-    
-//  })
-  console.log(tickVals)
- 
    if (currentWidth < 500) {
       var index = tickVals.length -1
       
@@ -1565,7 +1557,6 @@ function drawChart() {
       .range([height_cases, 0]);
       
       
-   // console.log(data_map[data_map.length - 1].date)   
       
                    // Gridline
  var gridlines_test = d3.axisLeft()
@@ -1839,6 +1830,21 @@ function drawChart() {
    });
    
    
+   document.addEventListener("scroll", function(){
+      
+      // console.log(document.getElementById("rt_outer").offsetTop)
+      // console.log(((document.getElementById("rt_outer")).getBoundingClientRect()).top)
+      console.log(((document.getElementById("cases_map")).getBoundingClientRect()).bottom)
+      
+      if (((document.getElementById("rt_outer")).getBoundingClientRect()).top < 
+      ((document.getElementById("cases_map")).getBoundingClientRect()).bottom ){
+         // console.log('hi')
+         // d3.select('#rt_outer').style('width', '82%')
+         document.getElementById("rt_outer").style.width = '85%'
+      } else {
+         document.getElementById("rt_outer").style.width = '100%'
+      }
+   });
    
       
     }
