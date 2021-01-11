@@ -11,6 +11,55 @@ title: Home
 /*   position: relative;*/
 /*}*/
 
+.content {
+   display: none;
+}
+
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: 120px;
+  height: 120px;
+  margin: -76px 0 0 -76px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+
 html, body {
     max-width: 100%;
     overflow-x: hidden;
@@ -210,10 +259,13 @@ html, body {
 
 </style>
 
-<div class="map" id = "cases_map"></div>
+<div id="loader"></div>
+
+<div class="map content" id = "cases_map"></div>
 
 
-<div class="card rt_title ">
+
+<div class="card rt_title content">
   <div class="card-body rt">
     <h2>Transmission Status</h2>
     <p><text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
@@ -222,14 +274,14 @@ html, body {
   </div>
 </div>
 
-<div class = "card cases " id = "card_1">
+<div class = "card cases content" id = "card_1">
    <div class="card-body"> 
    <div id = 'rt_chart'></div>
    </div>
 </div>
 
 
-<div class="card cases " id = "card_2">
+<div class="card cases content" id = "card_2">
   <div class="card-body rt">
     <h2>Cases</h2>
     <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
@@ -242,14 +294,14 @@ html, body {
 <!--<div class = "card cases chart">-->
 <!--   <div class="card-body rt" id = "cases_chart"> </div>-->
 <!--</div>-->
-<div class = "card cases chart " id ="card_3">
+<div class = "card cases chart content" id ="card_3">
    <div class="card-body rt"> 
       <div id = 'cases_chart'></div>
    </div>
 </div>
 
 
-<div class="card deaths " id = "card_4">
+<div class="card deaths content" id = "card_4">
   <div class="card-body rt">
     <h2>Deaths</h2>
     <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
@@ -260,13 +312,13 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart" id ="card_5">
+<div class = "card deaths chart content" id ="card_5">
    <div class="card-body rt"> 
       <div id = 'deaths_chart'></div>
    </div>
 </div>
 
-<div class="card cases " id ="card_6">
+<div class="card cases content" id ="card_6">
   <div class="card-body rt">
     <h2>Cases per Test (case positivity rate)</h2>
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
@@ -276,12 +328,12 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart" id ="card_7">
+<div class = "card deaths chart content" id ="card_7">
    <div class="card-body rt"> 
       <div id = 'test_pos'></div>
    </div>
 </div>
-<div class="card cases " id = "card_8">
+<div class="card cases content" id = "card_8">
   <div class="card-body rt">
     <h2>Tests</h2>
     <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois. This count includes only
@@ -294,21 +346,42 @@ html, body {
 </div>
 
 
-<div class = "card deaths chart" id = "card_9">
+<div class = "card deaths chart content" id = "card_9">
    <div class="card-body rt"> 
       <div id = 'tests'></div>
    </div>
 </div>
 
 
-<div id="bottom"></div>
+<!--<div id="bottom"></div>-->
 
 <script>
    /* global d3 */
    /* global $ */
    
+       
+    var myVar;
+
+   function myFunction() {
+     myVar = setTimeout(showPage, 3000);
+   }
+   
+   function showPage() {
+     document.getElementById("loader").style.display = "none";
+     
+     //change to set all in class
+     //document.getElementById("myDiv").style.display = "block";
+      var content_divs = document.getElementsByClassName( 'content' );
+      
+      [].slice.call( content_divs ).forEach(function ( div ) {
+         div.style.display = 'block'
+      });
+     
+   }
+   
    $(document).ready(function(){
       $(this).scrollTop(0);
+      myFunction();
    }); 
 
    
@@ -818,22 +891,17 @@ var path = d3.geoPath()
 
 var selectedRegion = 'illinois';
 
-
 var x_cases = d3.scaleBand()
 var y_cases = d3.scaleLinear()
 
 var x_axis = svg_cases.append("g")
 var y_axis = svg_cases.append("g")
 
-
-
 var x_deaths= d3.scaleBand()
 var y_deaths = d3.scaleLinear()
 
 var x_axis_deaths = svg_deaths.append("g")
 var y_axis_deaths = svg_deaths.append("g")
-
-
 
 var x_test_pos= d3.scaleTime()
 var y_test_pos = d3.scaleLinear()
@@ -1094,6 +1162,8 @@ let dailyRegionCount = {}
       i += 1;
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
+   
+   
 
 function drawChart() {
    
@@ -1897,6 +1967,10 @@ lineLabel2
    }
       
     }
+    //show divs?
+    
+
+    
     // Initialize the chart
     drawChart();
     // Add an event listener that run the function when dimension change
