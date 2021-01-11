@@ -27,7 +27,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-geo-projection/2.4.0/d3-geo-projection.min.js" integrity="sha512-GsBgCSYNatBlhNZQPrXtlHydWMCi+rl7QyR5Fs5kNwczI8XdKqZ7ZZ+yGnEfhvekkgSiAW0KGM5o7q+OHqhutQ==" crossorigin="anonymous"></script>
    <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@2.0.0/dist/d3-scale-chromatic.min.js" integrity="sha256-6j4tMdLVRyhccNbjkfHgQCTYUmR68g0v9a+MvHPd2yI=" crossorigin="anonymous"></script>
   
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/2.0.0/d3-queue.min.js" integrity="sha512-CsnvWujOBruwPxb22BIfuZr3f9wQlDYpDVFhErxqmD8emnkVuD69iPXxr3cmKiEJMHLNp4bCqwnuMzQLTsn7tQ==" crossorigin="anonymous"></script>
 
  </head>
   <body >
@@ -92,7 +92,7 @@
   position: absolute;
   left: 50%;
   top: 50%;
-  z-index: 1;
+  z-index: 3;
   width: 120px;
   height: 120px;
   margin: -76px 0 0 -76px;
@@ -332,6 +332,7 @@ html, body {
 
 </style>
 
+<!--try raising z index-->
 <div id="loader"></div>
 
 <div class="map content" id = "cases_map"></div>
@@ -433,28 +434,32 @@ html, body {
    /* global $ */
    
        
-    var myVar;
+   //  var myVar;
 
-   function myFunction() {
-     myVar = setTimeout(showPage, 3000);
-   }
-   
-   function showPage() {
-     document.getElementById("loader").style.display = "none";
-     
-     //change to set all in class
-     //document.getElementById("myDiv").style.display = "block";
-      var content_divs = document.getElementsByClassName( 'content' );
+   // function myFunction() {
       
-      [].slice.call( content_divs ).forEach(function ( div ) {
-         div.style.display = 'block'
-      });
+   // //change to queue   
+   //  myVar = setTimeout(showPage, 3000);
+    
      
-   }
+   // }
+   
+   // function showPage() {
+   //  document.getElementById("loader").style.display = "none";
+     
+   //  //change to set all in class
+   //  //document.getElementById("myDiv").style.display = "block";
+   //    var content_divs = document.getElementsByClassName( 'content' );
+      
+   //    [].slice.call( content_divs ).forEach(function ( div ) {
+   //       div.style.display = 'block'
+   //    });
+     
+   // }
    
    $(document).ready(function(){
       $(this).scrollTop(0);
-      myFunction();
+      // myFunction();
    }); 
 
    
@@ -1045,6 +1050,23 @@ files.forEach(function(url) {
 
 Promise.all(promises).then(function(data) {
    
+   
+   document.getElementById("loader").style.display = "none";
+     
+    //change to set all in class
+    //document.getElementById("myDiv").style.display = "block";
+      var content_divs = document.getElementsByClassName( 'content' );
+      
+      [].slice.call( content_divs ).forEach(function ( div ) {
+         div.style.display = 'block'
+      });
+   
+   
+   
+var historical_county = []
+   
+
+   
 
    let parseDate2 = d3.timeParse("%m/%d/%Y");
 // let today = new Date();
@@ -1134,7 +1156,7 @@ let dailyRegionCount = {}
 })
    
    
-   var historical_county = []
+   
 
    var prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    
@@ -1236,6 +1258,7 @@ let dailyRegionCount = {}
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
    
+
    
 
 function drawChart() {
@@ -2041,9 +2064,30 @@ lineLabel2
       
     }
     //show divs?
-    
+   //  d3.queue()
+   //  .defer(read_data())
+   //  .await(function(error) {
+   //    if (error) throw error;
+      // console.log("Goodbye!");
+      // hide loader 
+      // show divs
+   //        document.getElementById("loader").style.display = "none";
+     
+   //  //change to set all in class
+   //  //document.getElementById("myDiv").style.display = "block";
+   //    var content_divs = document.getElementsByClassName( 'content' );
+      
+   //    [].slice.call( content_divs ).forEach(function ( div ) {
+   //       div.style.display = 'block'
+   //    });
+      //draw charts
+      // drawChart();
+      
+      
+   //  });
 
-    
+
+   //  read_data();
     // Initialize the chart
     drawChart();
     // Add an event listener that run the function when dimension change
