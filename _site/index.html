@@ -1509,6 +1509,7 @@ function drawChart() {
    interval_rt
       .datum(dataFilter)
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr('opacity', '0.5')
       .transition()
       .duration(1000)
       .attr("d", d3.area()
@@ -1520,6 +1521,7 @@ function drawChart() {
    interval_rt2
       .datum(dataFilter2)
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr('opacity', '0.5')
       .transition()
       .duration(1000)
       .attr("d", d3.area()
@@ -2044,7 +2046,6 @@ lineLabel2
    });
    
    if (currentWidth < 600) {
-   
    document.addEventListener("scroll", function(){
       
       var cards = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8', 'card_9' ]
@@ -2062,30 +2063,23 @@ lineLabel2
    });
    }
       
-    }
-    //show divs?
-   //  d3.queue()
-   //  .defer(read_data())
-   //  .await(function(error) {
-   //    if (error) throw error;
-      // console.log("Goodbye!");
-      // hide loader 
-      // show divs
-   //        document.getElementById("loader").style.display = "none";
-     
-   //  //change to set all in class
-   //  //document.getElementById("myDiv").style.display = "block";
-   //    var content_divs = document.getElementsByClassName( 'content' );
-      
-   //    [].slice.call( content_divs ).forEach(function ( div ) {
-   //       div.style.display = 'block'
-   //    });
-      //draw charts
-      // drawChart();
-      
-      
-   //  });
+}
 
+      //use geography modeled column
+      //rt gridlines behind line
+      //rt chart annotation
+      //second rt tip
+      //triangle on all tips
+      //rt chart annotation
+      //line labels follow lines closely
+      //lines different shades / colors 
+      //map bigger on mobile
+      //chart proportions good all screens
+      //layout good all screens
+      //divs never go outide screen
+      //get rid of cdns 
+      //set up cors proxy - better way?
+      //add font system from figma 
 
    //  read_data();
     // Initialize the chart
