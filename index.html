@@ -3,9 +3,9 @@ layout: default
 title: Home
 ---
 <style>
-/*div {*/
-/*   border: 1px solid red;*/
-/*}*/
+div {
+   border: 1px solid red;
+}
 /*.bottom {*/
 /*   height: 200px;*/
 /*   position: relative;*/
@@ -788,7 +788,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 15, right: 30, bottom: 50, left: 40};
+   var margin_rt = {top: 15, right: 50, bottom: 50, left: 40};
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -1214,7 +1214,7 @@ function drawChart() {
          height_rt = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
       }
       else if (parseInt(currentWidth) < 900) {
-         height_rt = parseInt(currentWidth * .62) - margin_rt.top - margin_rt.bottom;
+         height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
       }
 
       currentWidth = document.getElementById("cases_chart").offsetWidth;
