@@ -1387,9 +1387,14 @@ function drawChart() {
     var x0 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataFilter, x0, 1);
     var selectedData = dataFilter[i]
+    var selectedData2 = dataFilter2[i]
+    
+    
+    
     Tooltip
       // .html(tickTimeFormat(d.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-      .html( formatTime(selectedData.date) +"<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'> "+  parseFloat((selectedData.rt_median)).toFixed(2) + "</span>")
+      .html( formatTime(selectedData.date) +"<br></br><strong>R<sub>t</sub></strong><text> (NW)</text>: <span style='color:red'> "+  parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" +
+      "<br></br><strong>R<sub>t</sub></strong><text> (UC)</text>: <span style='color:red'> "+  parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>")
       
       // .style("left", (d3.mouse(this)[0]+70) + "px")
       .style("left", (x_rt(selectedData.date)+90) + "px")
@@ -1565,11 +1570,13 @@ function drawChart() {
 
 //  svg_rt.append("text")
 lineLabel1
+      // .transition()
+      // .duration(1000)
       .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top-1)+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       // .style("fill", "black")
-            .style("fill", "steelblue")
+            .style("fill", "black")
              .style('font-size', function() {
         if (currentWidth < 600) {
            return ".6rem"
@@ -1577,15 +1584,18 @@ lineLabel1
            return ".8rem"
         }
              })
-      .text("NW");
+      .text("NW")
+
       
       
 //  svg_rt.append("text")
 lineLabel2
+            // .transition()
+      // .duration(1000)
       .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top+1)+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
-      .style("fill", "steelblue")
+      .style("fill", "black")
              .style('font-size', function() {
         if (currentWidth < 600) {
            return ".6rem"
@@ -1593,7 +1603,8 @@ lineLabel2
            return ".8rem"
         }
              })
-      .text("UC");
+      .text("UC")
+
 
 
    svg_rt
