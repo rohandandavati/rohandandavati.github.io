@@ -131,7 +131,7 @@ html, body {
    /*   position: relative;*/
    /*}*/
 
-@media only screen and (max-width: 339px) {
+@media only screen and (max-width: 330px) {
       body {
          padding-top: 110px;
       }
@@ -142,6 +142,7 @@ html, body {
       }
             .card{
          /*width:z;*/
+         width: 80%;
       }
 
 } 
@@ -167,7 +168,7 @@ html, body {
          width: 100%;
       }
       .card{
-         width:100%;
+         width:85%;
          float: right;
       }
       .rt_title {
@@ -1983,24 +1984,24 @@ lineLabel2
       div.innerHTML = region
    });
    
-   if (currentWidth < 600) {
-   document.addEventListener("scroll", function(){
+   // if (currentWidth < 600) {
+   // document.addEventListener("scroll", function(){
       
-      var cards = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8', 'card_9' ]
+   //    var cards = ['card_1', 'card_2', 'card_3', 'card_4', 'card_5', 'card_6', 'card_7', 'card_8', 'card_9' ]
       
-      cards.forEach(card => {
-         if (((document.getElementById( card )).getBoundingClientRect()).top < 
-         ((document.getElementById("cases_map")).getBoundingClientRect()).bottom ){
-            document.getElementById(card).style.width = '80%'
-            document.getElementById(card).style.float = 'right'
-         } else {
-            document.getElementById(card).style.width = '100%'
-         }
+   //    cards.forEach(card => {
+   //       if (((document.getElementById( card )).getBoundingClientRect()).top < 
+   //       ((document.getElementById("cases_map")).getBoundingClientRect()).bottom ){
+   //          document.getElementById(card).style.width = '80%'
+   //          document.getElementById(card).style.float = 'right'
+   //       } else {
+   //          document.getElementById(card).style.width = '100%'
+   //       }
          
-      })
-      // drawChart()
-   });
-   }
+   //    })
+   //    // drawChart()
+   // });
+   // }
       
 }
 
