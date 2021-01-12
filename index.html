@@ -1451,16 +1451,16 @@ function drawChart() {
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
       
-   interval_rt2
-      .datum(dataFilter2)
-      .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      .attr('opacity', '0.5')
-      .transition()
-      .duration(1000)
-      .attr("d", d3.area()
-      .x(function(d) { return x_rt(d.date) })
-      .y0(function(d) { return y_rt(d.rt_lower) })
-      .y1(function(d) { return y_rt(d.rt_upper) }))
+   // interval_rt2
+   //    .datum(dataFilter2)
+   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
+   //    .attr('opacity', '0.5')
+   //    .transition()
+   //    .duration(1000)
+   //    .attr("d", d3.area()
+   //    .x(function(d) { return x_rt(d.date) })
+   //    .y0(function(d) { return y_rt(d.rt_lower) })
+   //    .y1(function(d) { return y_rt(d.rt_upper) }))
       
    
    line_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
@@ -1476,15 +1476,15 @@ function drawChart() {
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
-      line_rt2
-      .datum(dataFilter2)
-      .attr("stroke", function(d){ return colors(selectedRegion) })
-      .transition()
-      .duration(1000)
-      .attr("d", d3.line()
-      .x(function(d) { return x_rt(d.date) })
-      .y(function(d) { return y_rt(d.rt_median) })
-      )
+      // line_rt2
+      // .datum(dataFilter2)
+      // .attr("stroke", function(d){ return colors(selectedRegion) })
+      // .transition()
+      // .duration(1000)
+      // .attr("d", d3.line()
+      // .x(function(d) { return x_rt(d.date) })
+      // .y(function(d) { return y_rt(d.rt_median) })
+      // )
    
    refLine.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
@@ -1500,7 +1500,7 @@ function drawChart() {
 lineLabel1
       // .transition()
       // .duration(1000)
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top-1)+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left - 15)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top+10)+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       // .style("fill", "black")
@@ -1512,26 +1512,26 @@ lineLabel1
            return ".8rem"
         }
              })
-      .text("NW")
+      .text("NW(12/16)")
 
       
       
-//  svg_rt.append("text")
-lineLabel2
-            // .transition()
-      // .duration(1000)
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top+1)+")")
-      .attr("dy", ".35em")
-      .attr("text-anchor", "start")
-      .style("fill", "black")
-             .style('font-size', function() {
-        if (currentWidth < 600) {
-           return ".6rem"
-        } else {
-           return ".8rem"
-        }
-             })
-      .text("UC")
+// //  svg_rt.append("text")
+// lineLabel2
+//             // .transition()
+//       // .duration(1000)
+//       .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top+1)+")")
+//       .attr("dy", ".35em")
+//       .attr("text-anchor", "start")
+//       .style("fill", "black")
+//              .style('font-size', function() {
+//        if (currentWidth < 600) {
+//           return ".6rem"
+//        } else {
+//           return ".8rem"
+//        }
+//              })
+//       .text("UC")
 
 
 
