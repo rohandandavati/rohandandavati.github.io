@@ -1492,7 +1492,7 @@ function drawChart() {
 
 //  svg_rt.append("text")
 lineLabel1
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top-2)+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top-1)+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       // .style("fill", "black")
@@ -1509,7 +1509,7 @@ lineLabel1
       
 //  svg_rt.append("text")
 lineLabel2
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter[dataFilter2.length - 1].rt_median) + margin_rt.top+10)+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top+1)+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "steelblue")
