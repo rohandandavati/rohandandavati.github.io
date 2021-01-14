@@ -22,12 +22,6 @@
   image_path: /images/200618_faster_testing_deaths_averted_per_day.png
   description: >
     Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
-- name: Second wave?
-  date: July 6th, 2020
-  path: /reports/20200706_second_wave.pdf
-  image_path: /images/200706_second_wave_cases_by_age.png
-  description: >
-    Is Illinois experiencing a second wave in summer 2020?
 - name: Vaccine prioritization
   date: September 10th, 2020
   path: https://www.medrxiv.org/content/10.1101/2020.09.08.20190629v2
