@@ -923,13 +923,15 @@ var y_axis_tests = svg_tests.append("g")
 
 var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
-             'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
+            //  'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
+            'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv?token=AICABR2MJVT74JAP625B5X3ABIAOE',
             //  'https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json'
             'https://cors-anywhere-clone.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json'
             // ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR4NYAQPXFUEAEU7NWS76CISQ'
             
             // ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR63LU42JKEC45HUMEK77HNBC'
             , 'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR3LVAC4VIJ33DZ45ELAAMOLO'
+            // ,'/data/rtNU.csv'
             //  ,'https://idph.illinois.gov/DPHPublicInformation/api/covidexport/GetCountyHistoricalTestResults?reportDate=10/10/2020'
             ]
 
@@ -961,6 +963,8 @@ var files = [
       regionArray[9] = "Southern";
       regionArray[10] = "Southwest Central";
       regionArray[11] = "Suburban";
+
+// console.log(site.data.rtNU)
 
 var promises = [];
 let today = new Date();
@@ -997,12 +1001,31 @@ var historical_county = []
    
 
    let parseDate2 = d3.timeParse("%m/%d/%Y");
+   
+   
+var index = data[1].length - 1;
+
+while (index >= 0) {
+    if(isNaN(data[1][index].rt_median) 
+   //  ||  parseDate2(data[3][index].date) > today  
+      ){
+         data[1].splice(index, 1);
+      } else {
+         data[1][index].rt_lower = +data[1][index].rt_lower;
+         data[1][index].rt_median = +data[1][index].rt_median;
+         data[1][index].rt_upper = +data[1][index].rt_upper;
+         data[1][index].date = parseDate2(data[1][index].date);
+         data[1][index].model_date = parseDate2(data[1][index].model_date);
+      }
+ index -= 1;
+}
+
 // let today = new Date();
 var index = data[3].length - 1;
 
 while (index >= 0) {
-    if(isNaN(data[3][index].rt_median) || 
-          parseDate2(data[3][index].date) > today  
+    if(isNaN(data[3][index].rt_median) 
+   //  || parseDate2(data[3][index].date) > today  
       ){
          data[3].splice(index, 1);
       } else {
@@ -1017,39 +1040,40 @@ while (index >= 0) {
 
    var prev_date = parDate('11/11/1997')
    var region = 0;
-   data[3].forEach(d => {
-      //if date is increasing
-      if( (d.date).getTime() > prev_date.getTime() ){
-         d.geography_modeled = allGroup[region];
-      }
-      //date is less or eq, new region
-      else {
-         region += 1;
-         d.geography_modeled = allGroup[region];
-      }
-      prev_date = d.date;
-   });
+   // data[3].forEach(d => {
+   //    //if date is increasing
+   //    if( (d.date).getTime() > prev_date.getTime() ){
+   //       d.geography_modeled = allGroup[region];
+   //    }
+   //    //date is less or eq, new region
+   //    else {
+   //       region += 1;
+   //       d.geography_modeled = allGroup[region];
+   //    }
+   //    prev_date = d.date;
+   // });
    
+   // console.log(data[1], data[3])
+   
+// //clean rt    
+// let parseDate = d3.timeParse("%Y-%m-%d");
+// // let today = new Date();
+// var index = data[1].length - 1;
 
-//clean rt    
-let parseDate = d3.timeParse("%Y-%m-%d");
-// let today = new Date();
-var index = data[1].length - 1;
-
-while (index >= 0) {
-    if(isNaN(data[1][index].rt_median) || 
-          data[1][index].scenario_name !== 'baseline' ||
-          parseDate(data[1][index].date) > today  
-      ){
-         data[1].splice(index, 1);
-      } else {
-         data[1][index].rt_lower = +data[1][index].rt_lower;
-         data[1][index].rt_median = +data[1][index].rt_median;
-         data[1][index].rt_upper = +data[1][index].rt_upper;
-         data[1][index].date = parseDate(data[1][index].date);
-      }
- index -= 1;
-}
+// while (index >= 0) {
+//     if(isNaN(data[1][index].rt_median) || 
+//           data[1][index].scenario_name !== 'baseline' ||
+//           parseDate(data[1][index].date) > today  
+//       ){
+//          data[1].splice(index, 1);
+//       } else {
+//          data[1][index].rt_lower = +data[1][index].rt_lower;
+//          data[1][index].rt_median = +data[1][index].rt_median;
+//          data[1][index].rt_upper = +data[1][index].rt_upper;
+//          data[1][index].date = parseDate(data[1][index].date);
+//       }
+//  index -= 1;
+// }
 
 let dailyRegionCount = {}
       //reset to 0 after every day
@@ -1352,7 +1376,7 @@ function drawChart() {
    }
    
     x_rt
-      .domain(d3.extent(dataFilter , function(d) { return d.date}))
+      .domain(d3.extent(dataFilter2 , function(d) { return d.date}))
       .range([ 0, width_rt]);
    
    y_rt
@@ -1451,16 +1475,16 @@ function drawChart() {
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
       
-   // interval_rt2
-   //    .datum(dataFilter2)
-   //    .attr("fill", function(d){ return lightestColors(selectedRegion) })
-   //    .attr('opacity', '0.5')
-   //    .transition()
-   //    .duration(1000)
-   //    .attr("d", d3.area()
-   //    .x(function(d) { return x_rt(d.date) })
-   //    .y0(function(d) { return y_rt(d.rt_lower) })
-   //    .y1(function(d) { return y_rt(d.rt_upper) }))
+   interval_rt2
+      .datum(dataFilter2)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr('opacity', '0.5')
+      .transition()
+      .duration(1000)
+      .attr("d", d3.area()
+      .x(function(d) { return x_rt(d.date) })
+      .y0(function(d) { return y_rt(d.rt_lower) })
+      .y1(function(d) { return y_rt(d.rt_upper) }))
       
    
    line_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
@@ -1476,15 +1500,15 @@ function drawChart() {
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
-      // line_rt2
-      // .datum(dataFilter2)
-      // .attr("stroke", function(d){ return colors(selectedRegion) })
-      // .transition()
-      // .duration(1000)
-      // .attr("d", d3.line()
-      // .x(function(d) { return x_rt(d.date) })
-      // .y(function(d) { return y_rt(d.rt_median) })
-      // )
+      line_rt2
+      .datum(dataFilter2)
+      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+      .x(function(d) { return x_rt(d.date) })
+      .y(function(d) { return y_rt(d.rt_median) })
+      )
    
    refLine.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
@@ -2005,18 +2029,21 @@ lineLabel1
       
 }
 
+      //get rid of github token / do correctly
+      //second rt line new data
       //use geography modeled column
-      //rt gridlines behind line
-      //rt chart annotation
       //second rt tip
+      //rt tips move/flip predictably 
       //triangle on all tips
-      //rt chart annotation
-      //line labels follow lines closely
-      //lines different shades / colors 
+      //doses by day chart
+      
+      
+      //rt gridlines behind line
+
+
       //map bigger on mobile
-      //chart proportions good all screens
-      //layout good all screens
-      //divs never go outide screen
+      //chart proportions better all screens
+      
       //get rid of cdns 
       //set up cors proxy - better way?
       //add font system from figma 
