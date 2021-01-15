@@ -983,6 +983,13 @@ html, body {
 var Tooltip = d3.select("#rt_chart")
     .append("div")
     .attr("class", "tooltip")
+        .attr("id", "tooltip")
+    
+    var Tooltip2 = d3.select("#rt_chart")
+    .append("div")
+    .attr("class", "tooltip")
+        .attr("id", "tooltip2")
+    
     
    
               // Gridline
@@ -1012,7 +1019,8 @@ var lineLabel2 = svg_rt.append("text")
 
 var Tooltip_test_pos = d3.select("#test_pos")
     .append("div")
-    .attr("class", "tooltip")
+    .attr("class", "tooltip s")
+   //  .attr("class", "s")
    //  .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
     
    
@@ -1462,40 +1470,68 @@ function drawChart() {
    
   
   var mousemove = function(d) {
-     
-   //  console.log(d)
-         // var formatTime = d3.timeFormat("%b %d")"%b %Y"
-         var formatTime = d3.timeFormat("%b %d")
-    var x0 = x_rt.invert(d3.mouse(this)[0]);
-   //  console.log(x0)
-    var i = bisect(dataFilter2, x0, 1);
-    
-    var selectedData = dataFilter2[i]
-    var selectedData2 = dataFilter[i]
-    
-    
-    
-    Tooltip
-      .html(formatTime(selectedData.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
 
-   if(selectedData.rt_median < selectedData2.rt_median  ){
+   var formatTime = d3.timeFormat("%b %d")
+    var x0 = x_rt.invert(d3.mouse(this)[0]);
+    var i = bisect(dataFilter2, x0, 1);
+    var j = bisect(dataFilter, x0, 1);
+    var selectedData = dataFilter2[i]
+    var selectedData2 = dataFilter[j]
+
+   // Tooltip
+   //    .html(formatTime(selectedData.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
+   // if(selectedData.rt_median < selectedData2.rt_median  ){
+   
+   //    Tooltip2
+   //    .html(formatTime(selectedData2.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
+ 
+    Tooltip
+      .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
+   if(selectedData.rt_median < selectedData2.rt_median){
+   
+      Tooltip2
+      .html("NU" + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
+ 
+ 
    Tooltip   
       .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
       .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
-           d3.select('.tooltip') .attr('class', 'tooltip n')
+          d3.select('#tooltip') .attr('class', 'tooltip n')
+   
+   Tooltip2
+      .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
+      .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
+          d3.select('#tooltip2') .attr('class', 'tooltip s')
+      
+      
    } else {
       Tooltip
       .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
       .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
-           d3.select('.tooltip') .attr('class', 'tooltip s')
+          d3.select('#tooltip') .attr('class', 'tooltip s')
+             Tooltip2  
+      .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
+      .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
+          d3.select('#tooltip2') .attr('class', 'tooltip n')
    }
-      
-      
-      
-   focus
-      .attr("cx", x_rt(selectedData.date))
-      .attr("cy", y_rt(selectedData.rt_median))
-   }
+   
+   // Tooltip2
+   //    .html(formatTime(selectedData2.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
+   // if(selectedData2.rt_median < selectedData2.rt_median  ){
+   // Tooltip2  
+   //    .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
+   //        d3.select('.tooltip') .attr('class', 'tooltip n')
+   // } else {
+   //    Tooltip2
+   //    .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
+   //        d3.select('.tooltip') .attr('class', 'tooltip s')
+   // }
+   
+   
+  }
+  
   
   
     var mousemove_test_pos = function(d) {
@@ -1509,11 +1545,11 @@ function drawChart() {
       .html( formatTime(selectedData.date) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
       
       // .style("left", (d3.mouse(this)[0]+70) + "px")
-      .style("left", (x_test_pos(selectedData.date)) + "px")
-      .style("top",  (y_test_pos(selectedData.test_pos_avg)+40) + "px")
-   focus_test_pos
-      .attr("cx", x_test_pos(selectedData.date))
-      .attr("cy", y_test_pos(selectedData.test_pos_avg))
+      .style("left", (x_test_pos(selectedData.date) + 11) + "px")
+      .style("top",  (y_test_pos(selectedData.test_pos_avg)-45) + "px")
+   // focus_test_pos
+   //    .attr("cx", x_test_pos(selectedData.date))
+   //    .attr("cy", y_test_pos(selectedData.test_pos_avg))
    }
    
     x_rt
@@ -1661,23 +1697,23 @@ function drawChart() {
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(1.0) }));
 
-//  svg_rt.append("text")
-lineLabel1
-      // .transition()
-      // .duration(1000)
-      .attr("transform", "translate("+(width_rt+margin_rt.left - 15)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top+10)+")")
-      .attr("dy", ".35em")
-      .attr("text-anchor", "start")
-      // .style("fill", "black")
-            .style("fill", "black")
-             .style('font-size', function() {
-        if (currentWidth < 600) {
-           return ".6rem"
-        } else {
-           return ".8rem"
-        }
-             })
-      .text("NW(12/16)")
+// //  svg_rt.append("text")
+// lineLabel1
+//       // .transition()
+//       // .duration(1000)
+//       .attr("transform", "translate("+(width_rt+margin_rt.left - 15)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top+10)+")")
+//       .attr("dy", ".35em")
+//       .attr("text-anchor", "start")
+//       // .style("fill", "black")
+//             .style("fill", "black")
+//              .style('font-size', function() {
+//        if (currentWidth < 600) {
+//           return ".6rem"
+//        } else {
+//           return ".8rem"
+//        }
+//              })
+//       .text("NW(12/16)")
 
       
       
@@ -1709,11 +1745,15 @@ lineLabel1
      focus.style("opacity", 1)
     Tooltip
       .style("opacity", 1)
+          Tooltip2
+      .style("opacity", 1)
   })
       .on("mousemove", mousemove)
       .on("mouseleave", function(d) {
      focus.style("opacity", 0)
     Tooltip
+      .style("opacity", 0)
+          Tooltip2
       .style("opacity", 0)
   })
    
