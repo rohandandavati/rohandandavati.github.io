@@ -1762,7 +1762,7 @@ function drawChart() {
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.date) + "<br></br>Cases:<span style='color:red'>" + d.cases + "</span><br></br>" +
+     return tickTimeFormat(d.date) + "<br></br>Cases: <span style='color:red'>" + d.cases + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.cases_avg;
   })
 
