@@ -1,0 +1,487 @@
+<!doctype html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Reports</title>
+   <link rel="stylesheet" href="/assets/css/styles.css">
+   
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">-->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+   <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>-->
+   <script type="text/javascript" id="MathJax-script" async
+     src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+   </script>
+   <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>-->
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js" integrity="sha512-C2RveGuPIWqkaLAluvoxyiaN1XYNe5ss11urhZWZYBUA9Ydgj+hfGKPcxCzTwut1/fmjEZR7Ac35f2aycT8Ogw==" crossorigin="anonymous"></script>
+   <script type="text/javascript" src="/assets/js/d3-tip.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" integrity="sha512-P/PLNIojUNrUq2g5Q3NX8epp5X6KZmNvWV2pDGU+ZiU96YlqFhIrG0pkSZ/qgruT7uJ2Ok/vFN7/7brl4Y7ipw==" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-scale/1.0.7/d3-scale.min.js" integrity="sha512-CagQ2MAkdTRJK0ge/Q/+y2QL+0wvabHP7y7GIKwy7E5aptPLpHu26CDi3Ec95xkYPMvZBqjNOwe02NZoBqWXIg==" crossorigin="anonymous"></script>
+   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-transition/1.1.1/d3-transition.min.js" integrity="sha512-9EoVFaJ1f642H4qLe+VUMu7CDqa1FQPdar1Pm76aS1AeesQoMdmm3NUZaZlJ1H/IEpwfS1Hbq41l/iUmhxq8jw==" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-time/1.0.8/d3-time.min.js" integrity="sha512-UPE7yiWEYDz8P9wbryFMvk4XRktIUjV1Z5rQcmAsIgRelE9GAZ+6Z8jtGcaOUYEvz8aaoDWpDZXkhGbMkeWPQQ==" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-time-format/2.1.1/d3-time-format.min.js" integrity="sha512-RTLi1scS97v4q3+HK402bvUoRK7qwXoZytagrAsw+B6gVzTAiVXEzGW/L60XEd0N63qgB9NnSXzLv7gi1FcXFg==" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-collection/1.0.5/d3-collection.min.js" integrity="sha512-wYLIhsNaJ6cBEcFIgAtY0ncVV3KEzE95+32OfOdQJQkEfZVrWOn+N2woUPaBCuW8N6S7++72Y7XlOPZ/3U7X2w==" crossorigin="anonymous"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-geo-projection/2.4.0/d3-geo-projection.min.js" integrity="sha512-GsBgCSYNatBlhNZQPrXtlHydWMCi+rl7QyR5Fs5kNwczI8XdKqZ7ZZ+yGnEfhvekkgSiAW0KGM5o7q+OHqhutQ==" crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@2.0.0/dist/d3-scale-chromatic.min.js" integrity="sha256-6j4tMdLVRyhccNbjkfHgQCTYUmR68g0v9a+MvHPd2yI=" crossorigin="anonymous"></script>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/2.0.0/d3-queue.min.js" integrity="sha512-CsnvWujOBruwPxb22BIfuZr3f9wQlDYpDVFhErxqmD8emnkVuD69iPXxr3cmKiEJMHLNp4bCqwnuMzQLTsn7tQ==" crossorigin="anonymous"></script>
+
+ </head>
+  <body >
+    
+  <style>
+
+   .navbar {
+     z-index: 2;
+   }
+     .hi {
+       width:500px;
+     }
+   
+     </style>
+     
+     <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed ">
+       <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse buttons hi" id="navbarNav">
+         <ul class="navbar-nav list "id = "navList">
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/" >Home</a>
+               </li>
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/reports.html"  class="current" >Reports</a>
+               </li>
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/about.html" >About</a>
+               </li>
+           
+         </ul>
+       </div>
+       
+       <div class = "container position-relative ">
+       <div class = "row">
+           <div class = "col drop ">
+               <select id="selectButton" class = "dropdown "  ></select>
+           </div>
+       </div>
+   </div>
+   
+     </nav>
+    <style type="text/css">
+
+    .head {
+        position: relative;
+        padding-top: 80px
+    }
+    .card-title {
+        font-size: 18px;
+    }
+    .card-subtitle {
+        font-size: 12px;
+    }
+    .card {
+      width: 300px;
+      height: 450px;
+    }
+    .cut-text { 
+      text-overflow: ellipsis;
+      overflow: hidden; 
+      width: 160px; 
+      height: 3.6em; 
+      white-space: nowrap;
+    }
+    body {
+    padding-top: 90px;
+    }
+    .read {
+      width: 80px;
+      margin: 20px;
+      float: bottom;
+    }
+    .d-flex > div {
+      margin: 10px;
+    }
+    .dropdown{
+      display: none !important;
+    }
+    .img {
+      object-fit: contain;
+width: 100%;
+height: 200px;
+    }
+    .crop-text-1 {
+  -webkit-line-clamp: 1;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.crop-text-2 {
+  -webkit-line-clamp: 3;
+  overflow : hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+</style>
+
+
+
+<div class = "container ">
+  <div class = "d-flex justify-content-left flex-wrap">
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200505_sentinel_surveillance_Rt.png" alt="Sentinel surveillance">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Sentinel surveillance</text>
+        <text class = "card-subtitle">May 5th, 2020</text>
+        <p class="card-text crop-text-2">Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
+</p> 
+      </div>
+      <a href="/reports/20200515_surveillance_to_restore_illinois.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200623_rt_lags.png" alt="Estimating Rt">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Estimating Rt</text>
+        <text class = "card-subtitle">June 23rd, 2020</text>
+        <p class="card-text crop-text-2">Practical considerations for measuring the effective reproductive number, Rt
+</p> 
+      </div>
+      <a href="https://journals.plos.org/ploscompbiol/article/comments?id=10.1371/journal.pcbi.1008409" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/201110_mobility_poi_by_full_reopen_risk.png" alt="First wave mobility">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">First wave mobility</text>
+        <text class = "card-subtitle">Novemver 10th, 2020</text>
+        <p class="card-text crop-text-2">Mobility network models of COVID-19 explain inequities and inform reopening
+</p> 
+      </div>
+      <a href="https://www.nature.com/articles/s41586-020-2923-3" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200618_faster_testing_deaths_averted_per_day.png" alt="Reduce time to diagnosis">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Reduce time to diagnosis</text>
+        <text class = "card-subtitle">June 18th, 2020</text>
+        <p class="card-text crop-text-2">Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
+</p> 
+      </div>
+      <a href="/reports/20200618_reduce_time_to_diagnosis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200907_vax_prioritization.png" alt="Vaccine prioritization">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Vaccine prioritization</text>
+        <text class = "card-subtitle">September 10th, 2020</text>
+        <p class="card-text crop-text-2">Model-informed COVID-19 vaccine prioritization strategies by age and serostatus
+</p> 
+      </div>
+      <a href="https://www.medrxiv.org/content/10.1101/2020.09.08.20190629v2" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200710_contact_tracing_heatmap.png" alt="Contact tracing">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Contact tracing</text>
+        <text class = "card-subtitle">July 10th, 2020</text>
+        <p class="card-text crop-text-2">How do the performance requirements of contact tracing vary across different regions and transmission scenarios?
+</p> 
+      </div>
+      <a href="/reports/20200710_contact_tracing.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200714_overflow_simulated_trajectories.png" alt="NE Region hospital overflow">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">NE Region hospital overflow</text>
+        <text class = "card-subtitle">July 14th, 2020</text>
+        <p class="card-text crop-text-2">How can we reliably tell that COVID-19 hospital needs in the Northeast Restore Region are likely to exceed available capacity?
+</p> 
+      </div>
+      <a href="/reports/20200714_overflow_alert_v3.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200804_admissions_prob_of_trigger.png" alt="Hospital admissions as indicator">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Hospital admissions as indicator</text>
+        <text class = "card-subtitle">August 4th, 2020</text>
+        <p class="card-text crop-text-2">How reliable is COVID-like-illness (CLI) admissions as an indicator regions with fewer admissions?
+</p> 
+      </div>
+      <a href="/reports/20200804_hospitalizations_trigger_analysis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200811_exponential_extrapolation.png" alt="Hospital census as indicator">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Hospital census as indicator</text>
+        <text class = "card-subtitle">August 11th, 2020</text>
+        <p class="card-text crop-text-2">Can we predict ICU/hospital capacity overflow by fitting an exponential curve to recent data?
+</p> 
+      </div>
+      <a href="/reports/20200811_hospital_census_trigger_analysis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/200903_thresholds_for_action_risk_tolerance_curve.png" alt="Assessing thresholds for action">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Assessing thresholds for action</text>
+        <text class = "card-subtitle">September 3rd, 2020</text>
+        <p class="card-text crop-text-2">Defining thresholds occupancy of ICU beds to trigger mitigation actions
+</p> 
+      </div>
+      <a href="/reports/20200903_assessing_thresholds_for_action.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+                 
+    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  
+    
+      <img class="card-img-top img" src="/images/201019_TEPI_chicago_zip_map.png" alt="Prioritizing areas for expanding testing">
+      
+      <div class="card-body d-flex flex-column caption">
+        <text class = "card-title crop-text-1 ">Prioritizing areas for expanding testing</text>
+        <text class = "card-subtitle">October 19th, 2020</text>
+        <p class="card-text crop-text-2">What areas in Chicago are most in need of expanded COVID-19 diagnostic testing?
+</p> 
+      </div>
+      <a href="/reports/20201019_testing_expansion_priority.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+    </div>  
+    
+  </div>
+</div>
+
+
+  <!--<div class="album py-5 bg-light">-->
+  <!--  <div class=" head container">-->
+  <!--    <div class="row">-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200505_sentinel_surveillance_Rt.png" alt="Sentinel surveillance">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Sentinel surveillance</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20200515_surveillance_to_restore_illinois.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200623_rt_lags.png" alt="Estimating Rt">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Estimating Rt</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">Practical considerations for measuring the effective reproductive number, Rt
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="https://journals.plos.org/ploscompbiol/article/comments?id=10.1371/journal.pcbi.1008409" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/201110_mobility_poi_by_full_reopen_risk.png" alt="First wave mobility">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">First wave mobility</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">Mobility network models of COVID-19 explain inequities and inform reopening
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="https://www.nature.com/articles/s41586-020-2923-3" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200618_faster_testing_deaths_averted_per_day.png" alt="Reduce time to diagnosis">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Reduce time to diagnosis</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20200618_reduce_time_to_diagnosis.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200907_vax_prioritization.png" alt="Vaccine prioritization">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Vaccine prioritization</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">Model-informed COVID-19 vaccine prioritization strategies by age and serostatus
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="https://www.medrxiv.org/content/10.1101/2020.09.08.20190629v2" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200710_contact_tracing_heatmap.png" alt="Contact tracing">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Contact tracing</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">How do the performance requirements of contact tracing vary across different regions and transmission scenarios?
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20200710_contact_tracing.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200714_overflow_simulated_trajectories.png" alt="NE Region hospital overflow">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">NE Region hospital overflow</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">How can we reliably tell that COVID-19 hospital needs in the Northeast Restore Region are likely to exceed available capacity?
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20200714_overflow_alert_v3.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200804_admissions_prob_of_trigger.png" alt="Hospital admissions as indicator">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Hospital admissions as indicator</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">How reliable is COVID-like-illness (CLI) admissions as an indicator regions with fewer admissions?
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20200804_hospitalizations_trigger_analysis.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200811_exponential_extrapolation.png" alt="Hospital census as indicator">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Hospital census as indicator</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">Can we predict ICU/hospital capacity overflow by fitting an exponential curve to recent data?
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20200811_hospital_census_trigger_analysis.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/200903_thresholds_for_action_risk_tolerance_curve.png" alt="Assessing thresholds for action">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Assessing thresholds for action</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">Defining thresholds occupancy of ICU beds to trigger mitigation actions
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20200903_assessing_thresholds_for_action.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--        <div class="col-md-4" style="margin-bottom: 10px">-->
+  <!--          <div class="card mb-4 shadow-sm h-100">-->
+  <!--            <img class="card-img-top" src="/images/201019_TEPI_chicago_zip_map.png" alt="Prioritizing areas for expanding testing">-->
+  <!--            <div class="card-body">-->
+  <!--                <text class = "card-title">Prioritizing areas for expanding testing</text>-->
+  <!--                <br></br>-->
+  <!--              <p class="card-text">What areas in Chicago are most in need of expanded COVID-19 diagnostic testing?
+</p>-->
+  <!--              <div class="d-flex justify-content-between align-items-end">-->
+  <!--                <div class="btn-group">-->
+  <!--                  <a href="/reports/20201019_testing_expansion_priority.pdf" class="card-link" target="_blank">Read</a>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      -->
+  <!--    </div>-->
+  <!--  </div>-->
+  <!--</div>  -->
+        
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
