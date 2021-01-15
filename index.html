@@ -1060,14 +1060,17 @@ var historical_county = []
 
 
 
+   // let parseDate2 = d3.timeParse("%Y-%m-%d");
    let parseDate2 = d3.timeParse("%m/%d/%Y");
-   
    
 var index = data[1].length - 1;
 
 while (index >= 0) {
+   // parseDate2(data[1][index]
+   console.log(data[1][index].date)
+   // console.log(parseDate2(data[1][index].date))
     if(isNaN(data[1][index].rt_median) 
-   //  ||  (parseDate2(data[1][index].date)).getTime() > today.getTime()||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('04/01/2020').getTime()
+    ||  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('04/01/2020').getTime()
       ){
          console.log(data[1][index].date)
          data[1].splice(index, 1);
@@ -1081,25 +1084,27 @@ while (index >= 0) {
  index -= 1;
 }
 
+ let parseDate3 = d3.timeParse("%Y-%m-%d");
 // let today = new Date();
 var index = data[3].length - 1;
 
 while (index >= 0) {
+      // console.log(data[1][index].date)
     if(isNaN(data[3][index].rt_median) 
-    || parseDate2(data[3][index].date) > today  ||  (parseDate2(data[3][index].date)).getTime()  < parseDate2('04/01/2020').getTime()
+    || parseDate3(data[3][index].date) > today  ||  (parseDate3(data[3][index].date)).getTime()  < parseDate3('2020-04-01').getTime()
       ){
          data[3].splice(index, 1);
       } else {
          data[3][index].rt_lower = +data[3][index].rt_lower;
          data[3][index].rt_median = +data[3][index].rt_median;
          data[3][index].rt_upper = +data[3][index].rt_upper;
-         data[3][index].date = parseDate2(data[3][index].date);
-         data[3][index].model_date = parseDate2(data[3][index].model_date);
+         data[3][index].date = parseDate3(data[3][index].date);
+         data[3][index].model_date = parseDate3(data[3][index].model_date);
       }
  index -= 1;
 }
 
-   console.log(data[1][data[1].length -1].date, data[3][data[3].length - 1].date )
+   // console.log(data[1][data[1].length -1].date, data[3][data[3].length - 1].date )
    
    var prev_date = parDate('11/11/1997')
    var region = 0;
@@ -1172,7 +1177,7 @@ let dailyRegionCount = {}
    
    
    
-
+ 
    var prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    
    var i = 0;
