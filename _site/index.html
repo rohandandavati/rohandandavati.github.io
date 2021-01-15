@@ -142,7 +142,7 @@ html, body {
   stroke: #ddd;
 }
 
-.d3-tip, .tooltip {
+.d3-tip, .tooltip, .tooltip_up {
    z-index: 2;
   line-height: 1;
   font-weight: bold;
@@ -165,8 +165,8 @@ html, body {
   text-align: center;
 }
 
-.tooltip:after {
-  /*box-sizing: border-box;*/
+.tooltip.n:after {
+  box-sizing: border-box;
   display: block;
   font-size: 10px;
   width: 100%;
@@ -179,6 +179,40 @@ html, body {
   bottom: 100%;
   left: 0;
 }
+
+
+/*MAKES BOTTOM TIP*/
+.tooltip.s:after {
+  box-sizing: border-box;
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+
+/*creates tip on bottom: content, top*/
+/*.tooltip:after {*/
+  /*box-sizing: border-box;*/
+/*  display: block;*/
+/*  font-size: 10px;*/
+/*  width: 100%;*/
+/*  line-height: 1;*/
+/*  color: rgba(0, 0, 0, 0.8);*/
+/*  content: "\25BC";*/                   
+/*  position: absolute;*/
+/*  text-align: center;*/
+/*  margin: -1px 0 0 0;*/
+/*  top: 100%;*/
+/*  left: 0;*/
+/*}*/
 
 
 
@@ -949,6 +983,7 @@ html, body {
 var Tooltip = d3.select("#rt_chart")
     .append("div")
     .attr("class", "tooltip")
+    
    
               // Gridline
 //  var gridlines = d3.axisLeft();
@@ -1436,18 +1471,27 @@ function drawChart() {
     var i = bisect(dataFilter2, x0, 1);
     
     var selectedData = dataFilter2[i]
-   //  var selectedData2 = dataFilter2[i]
+    var selectedData2 = dataFilter[i]
     
     
     
     Tooltip
       .html(formatTime(selectedData.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-      // .html( formatTime(selectedData.date) +"<br></br><strong>R<sub>t</sub></strong><text> (NW)</text>: <span style='color:red'> "+  parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" +
-      // "<br></br><strong>R<sub>t</sub></strong><text> (UC)</text>: <span style='color:red'> "+  parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>")
-      
-      // .style("left", (d3.mouse(this)[0]+70) + "px")
+
+   if(selectedData.rt_median < selectedData2.rt_median  ){
+   Tooltip   
       .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
       .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
+           d3.select('.tooltip') .attr('class', 'tooltip n')
+   } else {
+      Tooltip
+      .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
+      .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
+           d3.select('.tooltip') .attr('class', 'tooltip s')
+   }
+      
+      
+      
    focus
       .attr("cx", x_rt(selectedData.date))
       .attr("cy", y_rt(selectedData.rt_median))
