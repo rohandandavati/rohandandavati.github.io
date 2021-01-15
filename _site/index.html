@@ -1139,9 +1139,6 @@ var historical_county = []
 var index = data[1].length - 1;
 
 while (index >= 0) {
-   // parseDate2(data[1][index]
-   console.log(data[1][index].date)
-   // console.log(parseDate2(data[1][index].date))
     if(isNaN(data[1][index].rt_median) 
     ||  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('04/01/2020').getTime()
       ){
