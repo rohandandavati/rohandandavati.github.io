@@ -462,11 +462,12 @@ html, body {
 <div class="card cases content" id = "card_8">
   <div class="card-body rt">
     <h2>Tests</h2>
-    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois. This count includes only
-      molecular tests up to October 14, 2020 and includes both molecular and antigen tests after October 14, 2020.
+    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois.
       This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
-      test for past SARS-CoV-2 infection, are not included in this count. Bars show daily tests, and the line
-      is a 7-day moving average. As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
+      test for past SARS-CoV-2 infection, are not included in this count. Diagnostic tests include only
+      molecular tests up to October 14, 2020 and include both molecular and antigen tests after October 14, 2020. Bars show daily tests, and the line
+      is a 7-day moving average. Dates are the date results were reported, not date of specimen collection. Spikes correspond to backlogged tests that were reported all at once.
+        As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
 </text>
   </div>
 </div>
@@ -1057,13 +1058,15 @@ var y_axis_tests = svg_tests.append("g")
 var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
             //  'https://raw.githubusercontent.com/samhovie/sitefiles/main/nu_20201027.csv',
-            'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv?token=AICABR2MJVT74JAP625B5X3ABIAOE',
+             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR3LVAC4VIJ33DZ45ELAAMOLO',
             //  'https://raw.githubusercontent.com/samhovie/sitefiles/main/COVIDHistoricalTestResults.json'
             'https://cors-anywhere-clone.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json'
             // ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR4NYAQPXFUEAEU7NWS76CISQ'
             
             // ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR63LU42JKEC45HUMEK77HNBC'
-            , 'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR3LVAC4VIJ33DZ45ELAAMOLO'
+            // , 'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv?token=AICABR3LVAC4VIJ33DZ45ELAAMOLO'
+            ,'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv?token=AICABR2MJVT74JAP625B5X3ABIAOE',
+            
             // ,'/data/rtNU.csv'
             //  ,'https://idph.illinois.gov/DPHPublicInformation/api/covidexport/GetCountyHistoricalTestResults?reportDate=10/10/2020'
             ]
@@ -1134,15 +1137,16 @@ var historical_county = []
 
 
    // let parseDate2 = d3.timeParse("%Y-%m-%d");
-   let parseDate2 = d3.timeParse("%m/%d/%Y");
+   let parseDate3 = d3.timeParse("%m/%d/%Y");
+    let parseDate2 = d3.timeParse("%Y-%m-%d");
    
 var index = data[1].length - 1;
 
 while (index >= 0) {
     if(isNaN(data[1][index].rt_median) 
-    ||  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('04/01/2020').getTime()
+    ||  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('2020-04-01').getTime()
       ){
-         console.log(data[1][index].date)
+         // console.log(data[1][index].date)
          data[1].splice(index, 1);
       } else {
          data[1][index].rt_lower = +data[1][index].rt_lower;
@@ -1154,14 +1158,14 @@ while (index >= 0) {
  index -= 1;
 }
 
- let parseDate3 = d3.timeParse("%Y-%m-%d");
+
 // let today = new Date();
 var index = data[3].length - 1;
 
 while (index >= 0) {
       // console.log(data[1][index].date)
     if(isNaN(data[3][index].rt_median) 
-    || parseDate3(data[3][index].date) > today  ||  (parseDate3(data[3][index].date)).getTime()  < parseDate3('2020-04-01').getTime()
+    || parseDate3(data[3][index].date) > today  ||  (parseDate3(data[3][index].date)).getTime()  < parseDate3('04/01/2020').getTime()
       ){
          data[3].splice(index, 1); 
       } else {
@@ -2211,7 +2215,10 @@ function drawChart() {
    // }
       
 }
-
+      //add back line labels
+      //hover detail match line
+      //hover detail different colors 
+      //
       //get rid of github token / do correctly
 
       //second rt tip
