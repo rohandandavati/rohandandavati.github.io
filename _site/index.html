@@ -1163,7 +1163,7 @@ while (index >= 0) {
     if(isNaN(data[3][index].rt_median) 
     || parseDate3(data[3][index].date) > today  ||  (parseDate3(data[3][index].date)).getTime()  < parseDate3('2020-04-01').getTime()
       ){
-         data[3].splice(index, 1);
+         data[3].splice(index, 1); 
       } else {
          data[3][index].rt_lower = +data[3][index].rt_lower;
          data[3][index].rt_median = +data[3][index].rt_median;
