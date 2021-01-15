@@ -92,6 +92,23 @@ html, body {
   text-align: center;
 }
 
+.tooltip:after {
+  /*box-sizing: border-box;*/
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25B2";
+  position: absolute;
+  text-align: center;
+  margin: -1px 0 0 0;
+  bottom: 100%;
+  left: 0;
+}
+
+
+
 /* Style northward tooltips differently */
 .d3-tip.n:after {
   margin: -1px 0 0 0;
