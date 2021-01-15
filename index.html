@@ -998,7 +998,7 @@ Promise.all(promises).then(function(data) {
 var historical_county = []
    
 
-   
+
 
    let parseDate2 = d3.timeParse("%m/%d/%Y");
    
@@ -1007,8 +1007,9 @@ var index = data[1].length - 1;
 
 while (index >= 0) {
     if(isNaN(data[1][index].rt_median) 
-    ||  parseDate2(data[3][index].date) > today  
+   //  ||  (parseDate2(data[1][index].date)).getTime() > today.getTime()||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('04/01/2020').getTime()
       ){
+         console.log(data[1][index].date)
          data[1].splice(index, 1);
       } else {
          data[1][index].rt_lower = +data[1][index].rt_lower;
@@ -1025,7 +1026,7 @@ var index = data[3].length - 1;
 
 while (index >= 0) {
     if(isNaN(data[3][index].rt_median) 
-    || parseDate2(data[3][index].date) > today  
+    || parseDate2(data[3][index].date) > today  ||  (parseDate2(data[3][index].date)).getTime()  < parseDate2('04/01/2020').getTime()
       ){
          data[3].splice(index, 1);
       } else {
@@ -1038,6 +1039,8 @@ while (index >= 0) {
  index -= 1;
 }
 
+   console.log(data[1][data[1].length -1].date, data[3][data[3].length - 1].date )
+   
    var prev_date = parDate('11/11/1997')
    var region = 0;
    // data[3].forEach(d => {
@@ -1334,23 +1337,27 @@ function drawChart() {
    
   
   var mousemove = function(d) {
+     
+   //  console.log(d)
          // var formatTime = d3.timeFormat("%b %d")"%b %Y"
          var formatTime = d3.timeFormat("%b %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
-    var i = bisect(dataFilter, x0, 1);
-    var selectedData = dataFilter[i]
-    var selectedData2 = dataFilter2[i]
+   //  console.log(x0)
+    var i = bisect(dataFilter2, x0, 1);
+    
+    var selectedData = dataFilter2[i]
+   //  var selectedData2 = dataFilter2[i]
     
     
     
     Tooltip
-      // .html(tickTimeFormat(d.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-      .html( formatTime(selectedData.date) +"<br></br><strong>R<sub>t</sub></strong><text> (NW)</text>: <span style='color:red'> "+  parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" +
-      "<br></br><strong>R<sub>t</sub></strong><text> (UC)</text>: <span style='color:red'> "+  parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>")
+      .html(formatTime(selectedData.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
+      // .html( formatTime(selectedData.date) +"<br></br><strong>R<sub>t</sub></strong><text> (NW)</text>: <span style='color:red'> "+  parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" +
+      // "<br></br><strong>R<sub>t</sub></strong><text> (UC)</text>: <span style='color:red'> "+  parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>")
       
       // .style("left", (d3.mouse(this)[0]+70) + "px")
-      .style("left", (x_rt(selectedData.date)+90) + "px")
-      .style("top",  (y_rt(selectedData.rt_median)+40) + "px")
+      .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
+      .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
    focus
       .attr("cx", x_rt(selectedData.date))
       .attr("cy", y_rt(selectedData.rt_median))
@@ -2030,8 +2037,7 @@ lineLabel1
 }
 
       //get rid of github token / do correctly
-      //second rt line new data
-      //use geography modeled column
+
       //second rt tip
       //rt tips move/flip predictably 
       //triangle on all tips
@@ -2047,6 +2053,7 @@ lineLabel1
       //get rid of cdns 
       //set up cors proxy - better way?
       //add font system from figma 
+      //error message on load timeout 
 
    //  read_data();
     // Initialize the chart
