@@ -396,7 +396,10 @@ html, body {
     <h2>Transmission Status</h2>
     <p><text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
       reproductive number, tells us whether the epidemic is <i>growing</i> <span class = "nowrap">(\(R_t\) > 1)</span>, <i>shrinking</i> (\(R_t\) < 1), or
-      staying the same (\(R_t\) = 1).</text></p>
+      staying the same (\(R_t\) = 1). </text></p>
+      <p><text>The curves below are estimated using different methods and data sources. Northwestern University (NU) estimates \(R_t\) from a dynamical model, which is fitted to COVID-19 hospitalizations and deaths.
+        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI. For more details and
+        links to the models, see the <a href="/about.html">About page</a>.</text></p>
   </div>
 </div>
 
@@ -913,7 +916,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 15, right: 50, bottom: 50, left: 40};
+   var margin_rt = {top: 15, right: 70, bottom: 50, left: 40};
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -1563,7 +1566,7 @@ function drawChart() {
       .range([ 0, width_rt]);
    
    y_rt
-   .domain([0, 1.6]);
+   .domain([0.6, 1.4]);
    
    svg_rt
       .attr("width", width_rt + margin_rt.left + margin_rt.right)
@@ -1703,43 +1706,59 @@ function drawChart() {
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(1.0) }));
 
-// //  svg_rt.append("text")
-// lineLabel1
-//       // .transition()
-//       // .duration(1000)
-//       .attr("transform", "translate("+(width_rt+margin_rt.left - 15)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top+10)+")")
-//       .attr("dy", ".35em")
-//       .attr("text-anchor", "start")
-//       // .style("fill", "black")
-//             .style("fill", "black")
-//              .style('font-size', function() {
-//        if (currentWidth < 600) {
-//           return ".6rem"
-//        } else {
-//           return ".8rem"
-//        }
-//              })
-//       .text("NW(12/16)")
+//  svg_rt.append("text")
+var label1Y = y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top
+var label2Y = y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top
 
-      
-      
-// //  svg_rt.append("text")
-// lineLabel2
-//             // .transition()
-//       // .duration(1000)
-//       .attr("transform", "translate("+(width_rt+margin_rt.left)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top+1)+")")
-//       .attr("dy", ".35em")
-//       .attr("text-anchor", "start")
-//       .style("fill", "black")
-//              .style('font-size', function() {
-//        if (currentWidth < 600) {
-//           return ".6rem"
-//        } else {
-//           return ".8rem"
-//        }
-//              })
-//       .text("UC")
+if (Math.abs(label1Y - label2Y) < 10 ) {
+   // console.log(Math.abs(label1Y - label2Y))
+   var offset = (10 - Math.abs(label1Y - label2Y)) / 2
+   if (label1Y < label2Y) {
+      label1Y = label1Y - offset
+      label2Y = label2Y + offset
+   } else {
+      label1Y = label1Y + offset
+      label2Y = label2Y - offset
+   }
+   
+}
 
+var formatModelDate = d3.timeFormat("%m/%d")
+lineLabel1
+      // .transition()
+      // .duration(1000)
+      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top)+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+ label1Y+")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      // .style("fill", "black")
+            .style("fill", "black")
+             .style('font-size', function() {
+       if (currentWidth < 600) {
+          return ".6rem"
+       } else {
+          return ".7rem"
+       }
+             })
+      .text('NU('+ formatModelDate(dataFilter[0].model_date) +')')
+      
+//  svg_rt.append("text")
+lineLabel2
+            // .transition()
+      // .duration(1000)
+      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+ label2Y+")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "black")
+             .style('font-size', function() {
+       if (currentWidth < 600) {
+          return ".6rem"
+       } else {
+          return ".7rem"
+       }
+             })
+      .text('UC('+ formatModelDate(dataFilter2[0].model_date) +')')
 
 
    svg_rt
@@ -2215,6 +2234,17 @@ function drawChart() {
    // }
       
 }
+
+//rt line labels
+//different color rt tips
+//rt slider 
+
+
+//label backlogged cases
+//extra rt text added ? 
+//text under Cases, Deaths, etc not wrapped in <p> </p> ?
+
+
       //add back line labels
       //hover detail match line
       //hover detail different colors 
