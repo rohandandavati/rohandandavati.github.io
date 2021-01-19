@@ -39,7 +39,11 @@
   <style>
 
    .navbar {
-     z-index: 2;
+     z-index: 3;
+   }
+   
+   .open {
+       z-index:3;
    }
      .hi {
        width:500px;
@@ -52,7 +56,7 @@
        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
        </button>
-       <div class="collapse navbar-collapse buttons hi" id="navbarNav">
+       <div class="collapse navbar-collapse buttons open" id="navbarNav">
          <ul class="navbar-nav list "id = "navList">
            
               <li class="nav-item">
@@ -944,7 +948,7 @@ html, body {
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
-   var margin_tests = {top: 15, right: 10, bottom: 50, left: 60};
+   var margin_tests = {top: 15, right: 10, bottom: 50, left: 70};
    
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
@@ -1469,35 +1473,35 @@ function drawChart() {
   
       
     
-// var dataTime = dataNU.map(function(d) { return d.date; })
+var dataTime = dataNU.map(function(d) { return d.date; })
 
-//  console.log(dataTime)
+ console.log(dataTime)
  
-//  var sliderTime = d3
-//     .sliderBottom()
-//     .min(d3.min(dataTime))
-//     .max(d3.max(dataTime))
-//    .step(60 * 60 * 24)
-//     .width(600)
-//     .tickFormat(d3.timeFormat('%b %Y'))
-//     .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
-//       return ((dataNU[i].date).getDate() === 1)
-//    }))
-//     .on('onchange', val => {
-//       d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
-//     });
+ var sliderTime = d3
+    .sliderBottom()
+    .min(d3.min(dataTime))
+    .max(d3.max(dataTime))
+   .step(60 * 60 * 24)
+    .width(600)
+    .tickFormat(d3.timeFormat('%b %Y'))
+    .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
+      return ((dataNU[i].date).getDate() === 1)
+   }))
+    .on('onchange', val => {
+      d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
+    });
 
-//  var gTime = d3
-//     .select('div#slider-time')
-//     .append('svg')
-//     .attr('width', 500)
-//     .attr('height', 100)
-//     .append('g')
-//     .attr('transform', 'translate(30,30)');
+ var gTime = d3
+    .select('div#slider-time')
+    .append('svg')
+    .attr('width', 500)
+    .attr('height', 100)
+    .append('g')
+    .attr('transform', 'translate(30,30)');
 
-//  gTime.call(sliderTime);
+ gTime.call(sliderTime);
 
-//  d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
+ d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
 
 
 
@@ -1916,7 +1920,7 @@ lineLabel2
    //tests chart x axis
    x_axis_tests
       // .attr("transform", "translate(" + margin_tests.left + "," + 0 + ")")
-      .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
+      .attr("transform", "translate(" + margin_tests.left + "," + (height_cases + margin_tests.top) + ")")
       .call(d3.axisBottom(x_tests)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1954,7 +1958,7 @@ lineLabel2
 
   grid_tests
      .attr("class", "grid")
-     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top + ")"  )
      .call(gridlines_test);   
      
      
@@ -1980,7 +1984,7 @@ lineLabel2
       .call(d3.axisLeft(y_test_pos).tickFormat(formatPercent))
    
    y_axis_tests
-      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
+      .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top  + ")"  )
       .call(d3.axisLeft(y_tests));
    
    var s = svg_tests.selectAll(".bar1")
@@ -1997,7 +2001,7 @@ lineLabel2
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
             .on('mouseover', tip_tests.show)
       .on('mouseout', tip_tests.hide)
-      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+      .attr("transform", "translate("+ margin_tests.left +","+margin_tests.top + ")"  );
    s
       .exit()
       .remove()
@@ -2018,7 +2022,7 @@ lineLabel2
       .x(function(d) { return x_tests(d.date) })
       .y(function(d) { return y_tests(d.tests_avg) })
       )
-      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  );
+      .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top + ")"  );
    
    svg_test_pos
       .selectAll("rect")
@@ -2238,28 +2242,26 @@ lineLabel2
 
 }
 
+//fix map covering dropdown 
+//rt text fix
+//mobile/desktop x-axis 
 
-//different color rt tips
+//add new rt line 
+//add new rt line label 
+//add new rt line tooltip 
+
+//doses by day chart
 //rt slider 
-
 //moble date consistency 
 
 
 //label backlogged cases
-//extra rt text added ? 
 //text under Cases, Deaths, etc not wrapped in <p> </p> ?
 
+//cleaner dropdown menu 
+//acc features
 
-      //add back line labels
-      //hover detail match line
-      //hover detail different colors 
-      //
-      //get rid of github token / do correctly
-
-      //second rt tip
-      //rt tips move/flip predictably 
-      //triangle on all tips
-      //doses by day chart
+      
       
       
       //rt gridlines behind line
