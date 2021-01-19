@@ -410,11 +410,12 @@ html, body {
 <div class="card rt_title content">
   <div class="card-body rt">
     <h2>Transmission Status</h2>
-    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
+    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text_lower"></text> to <text id = "rt_text_upper"></text> for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
       reproductive number, tells us whether the epidemic is <i>growing</i> <span class = "nowrap">(\(R_t\) > 1)</span>, <i>shrinking</i> (\(R_t\) < 1), or
       staying the same (\(R_t\) = 1). </text></p>
       <p><text>The curves below are estimated using different methods and data sources. Northwestern University (NU) estimates \(R_t\) from a dynamical model, which is fitted to COVID-19 hospitalizations and deaths.
-        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI. For more details and
+        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI.
+         The date next to the model name refers to the date of model fit. For more details and
         links to the models, see the <a href="/about.html">About page</a>.</text></p>
   </div>
 </div>
@@ -498,13 +499,13 @@ html, body {
    </div>
 </div>
 
-<div class = 'container'>
+<!--<div class = 'container'>-->
 
-  <div class=" bottom row align-items-center">
-    <div class="col-sm-2"><p id="value-time"></p></div>
-    <div class="col-sm"><div id="slider-time"></div></div>
-  </div>
-  </div>
+<!--  <div class=" bottom row align-items-center">-->
+<!--    <div class="col-sm-2"><p id="value-time"></p></div>-->
+<!--    <div class="col-sm"><div id="slider-time"></div></div>-->
+<!--  </div>-->
+<!--  </div>-->
 
 <!--<div id="bottom"></div>-->
 
@@ -1155,11 +1156,39 @@ var historical_county = []
    let parseDate3 = d3.timeParse("%m/%d/%Y");
     let parseDate2 = d3.timeParse("%Y-%m-%d");
    
+   //get min / max of each
+   //start at lower max, end at higher min 
+
+
+//UC data
+// let today = new Date();
+var index = data[3].length - 1;
+
+while (index >= 0) {
+      // console.log(data[1][index].date)
+    if(isNaN(data[3][index].rt_median) || 
+   //  parseDate3(data[3][index].date) > today  ||  
+    (parseDate3(data[3][index].date)).getTime()  < parseDate3('04/01/2020').getTime()
+      ){
+         data[3].splice(index, 1); 
+      } else {
+         data[3][index].rt_lower = +data[3][index].rt_lower;
+         data[3][index].rt_median = +data[3][index].rt_median;
+         data[3][index].rt_upper = +data[3][index].rt_upper;
+         data[3][index].date = parseDate3(data[3][index].date);
+         data[3][index].model_date = parseDate3(data[3][index].model_date);
+      }
+ index -= 1;
+}
+
+//NU data   
 var index = data[1].length - 1;
 
 while (index >= 0) {
-    if(isNaN(data[1][index].rt_median) 
-    ||  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('2020-04-01').getTime()
+    if(isNaN(data[1][index].rt_median) ||  
+   //  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  
+   (parseDate2(data[1][index].date)).getTime() > (data[3][data[3].length -1].date).getTime() ||  
+    (parseDate2(data[1][index].date)).getTime()  < parseDate2('2020-04-01').getTime()
       ){
          // console.log(data[1][index].date)
          data[1].splice(index, 1);
@@ -1173,25 +1202,6 @@ while (index >= 0) {
  index -= 1;
 }
 
-
-// let today = new Date();
-var index = data[3].length - 1;
-
-while (index >= 0) {
-      // console.log(data[1][index].date)
-    if(isNaN(data[3][index].rt_median) 
-    || parseDate3(data[3][index].date) > today  ||  (parseDate3(data[3][index].date)).getTime()  < parseDate3('04/01/2020').getTime()
-      ){
-         data[3].splice(index, 1); 
-      } else {
-         data[3][index].rt_lower = +data[3][index].rt_lower;
-         data[3][index].rt_median = +data[3][index].rt_median;
-         data[3][index].rt_upper = +data[3][index].rt_upper;
-         data[3][index].date = parseDate3(data[3][index].date);
-         data[3][index].model_date = parseDate3(data[3][index].model_date);
-      }
- index -= 1;
-}
 
 
    var prev_date = parDate('11/11/1997')
@@ -1459,35 +1469,35 @@ function drawChart() {
   
       
     
-var dataTime = dataNU.map(function(d) { return d.date; })
+// var dataTime = dataNU.map(function(d) { return d.date; })
 
- console.log(dataTime)
+//  console.log(dataTime)
  
- var sliderTime = d3
-    .sliderBottom()
-    .min(d3.min(dataTime))
-    .max(d3.max(dataTime))
-   .step(60 * 60 * 24)
-    .width(600)
-    .tickFormat(d3.timeFormat('%b %Y'))
-    .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
-      return ((dataNU[i].date).getDate() === 1)
-   }))
-    .on('onchange', val => {
-      d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
-    });
+//  var sliderTime = d3
+//     .sliderBottom()
+//     .min(d3.min(dataTime))
+//     .max(d3.max(dataTime))
+//    .step(60 * 60 * 24)
+//     .width(600)
+//     .tickFormat(d3.timeFormat('%b %Y'))
+//     .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
+//       return ((dataNU[i].date).getDate() === 1)
+//    }))
+//     .on('onchange', val => {
+//       d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
+//     });
 
- var gTime = d3
-    .select('div#slider-time')
-    .append('svg')
-    .attr('width', 500)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
+//  var gTime = d3
+//     .select('div#slider-time')
+//     .append('svg')
+//     .attr('width', 500)
+//     .attr('height', 100)
+//     .append('g')
+//     .attr('transform', 'translate(30,30)');
 
- gTime.call(sliderTime);
+//  gTime.call(sliderTime);
 
- d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
+//  d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
 
 
 
@@ -2173,10 +2183,29 @@ lineLabel2
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       
-     
-         document.getElementById('rt_text').innerHTML = (dataNU[dataNU.length - 1 ].rt_median).toFixed(2);
-    document.getElementById('rt_text_lower').innerHTML = (dataNU[dataNU.length - 1 ].rt_lower).toFixed(2);
-    document.getElementById('rt_text_upper').innerHTML = (dataNU[dataNU.length - 1 ].rt_upper).toFixed(2);
+      // var nuUpper = dataNU[dataNU.length - 1 ].rt_upper
+      // var nuLower = dataNU[dataNU.length - 1 ].rt_lower
+      
+      
+      // var ucUpper = dataUC[dataUC.length - 1 ].rt_upper
+      // var ucLower = dataUC[dataUC.length - 1 ].rt_lower
+      
+      
+      // var rt_lower = Math.min(nuLower, ucLower)
+      // var rt_upper = Math.max(nuUpper, ucUpper)
+      
+      
+      var rt_lower = Math.min((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
+      var rt_upper = Math.max((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
+      
+      
+   // document.getElementById('rt_text').innerHTML = (dataNU[dataNU.length - 1 ].rt_median).toFixed(2);
+   //  document.getElementById('rt_text_lower').innerHTML = (dataNU[dataNU.length - 1 ].rt_lower).toFixed(2);
+   //  document.getElementById('rt_text_upper').innerHTML = (dataNU[dataNU.length - 1 ].rt_upper).toFixed(2);
+    
+         document.getElementById('rt_text_lower').innerHTML = rt_lower.toFixed(2);
+    document.getElementById('rt_text_upper').innerHTML = rt_upper.toFixed(2);
+   
    //  document.getElementsByClassName('last_update_date').innerHTML = formatDate(data_map[data_map.length - 1 ].date)
 
     document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
