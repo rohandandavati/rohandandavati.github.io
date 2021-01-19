@@ -863,7 +863,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 15, right: 70, bottom: 50, left: 40};
+   var margin_rt = {top: 15, right: 50, bottom: 50, left: 40};
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -1518,7 +1518,6 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       return ((dataNU[i].date).getDate() === 1)
    })
 
-console.log(tickValsRT)
    if (currentWidth < 500) {
       var index = tickValsRT.length -1
       
@@ -1533,20 +1532,12 @@ console.log(tickValsRT)
    
     x_rt_axis
    // .attr("transform", "translate(" + 0 + "," + (height_cases+margin_cases.top) + ")")
-.attr("transform", "translate(" + margin_rt.left + "," + (height_cases + margin_rt.top) + ")")
-   .call(d3.axisBottom(x_rt)
+   .attr("transform", "translate(" + margin_rt.left + "," + (height_cases + margin_rt.top) + ")")
+   .call(d3.axisBottom(x_rt).tickSizeOuter(0)
    //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
-   
    .tickValues(tickValsRT)
    .tickFormat(d3.timeFormat("%b %Y"))
    );
-   
-   
-   
-   // x_rt_axis
-   //    .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
-   //    .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks))
-   //    .call(x_rt_axis => x_rt_axis.select(".domain").remove())
 
    y_rt
       .range([ height_rt, 0 ])
@@ -1589,7 +1580,7 @@ console.log(tickValsRT)
         if (currentWidth < 600) {
            return ".6rem"
         } else {
-           return "1rem"
+           return ".8rem"
         }
      })
     .append('tspan')
@@ -1687,7 +1678,7 @@ lineLabel1
       // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+ label1Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ label1Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       // .style("fill", "black")
@@ -1706,7 +1697,7 @@ lineLabel2
             // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+ label2Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ label2Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "black")
