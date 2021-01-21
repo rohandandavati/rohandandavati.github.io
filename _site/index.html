@@ -959,6 +959,7 @@ html, body {
    
    
    var x_rt = d3.scaleTime();
+   var x_rtNU = d3.scaleTime();
    var x_rt_band = d3.scaleBand();
    var x_rt_axis = svg_rt.append("g");
    var y_rt = d3.scaleLinear();
@@ -976,8 +977,18 @@ html, body {
       var interval_rt2 = svg_rt.append("path")
       .attr("stroke", "none")
       .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      
+      
+   var interval_rt3 = svg_rt.append("path")
+      .attr("stroke", "none")
+      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
    
    var line_rt2 = svg_rt.append('g').append("path")  
+   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+      .style("stroke-width", 2)
+      .style("fill", "none");
+      
+         var line_rt3 = svg_rt.append('g').append("path")  
    .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
@@ -1092,6 +1103,7 @@ var files = [
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv',
              'https://cors-anywhere-clone.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv',
+             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUIUC.csv'
              ]
 
    let map = {};
@@ -1138,6 +1150,7 @@ files.forEach(function(url) {
 
 
 Promise.all(promises).then(function(data) {
+
    
    
    document.getElementById("loader").style.display = "none";
@@ -1152,8 +1165,10 @@ Promise.all(promises).then(function(data) {
    
    
    
-var historical_county = []
    
+   
+   
+var historical_county = []
 
 
 
@@ -1165,9 +1180,34 @@ var historical_county = []
    //start at lower max, end at higher min 
 
 
+
+var index = data[4].length - 1;
+
+
+while (index >= 0) {
+    if(isNaN(data[4][index].rt_median) ||
+       (parseDate3(data[4][index].Date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
+    (parseDate3(data[4][index].Date)).getTime()  < parseDate2('2020-4-1').getTime()){
+       
+         data[4].splice(index, 1); 
+      } else {
+         data[4][index].rt_lower = +data[4][index].rt_lower;
+         data[4][index].rt_median = +data[4][index].rt_median;
+         data[4][index].rt_upper = +data[4][index].rt_upper;
+         data[4][index].date = parseDate3(data[4][index].Date);
+         // data[4][index].model_date = parseDate3(data[4][index].model_date);
+         delete data[4][index].Date
+         delete data[4][index].deaths_lower
+         delete data[4][index].deaths_median
+         delete data[4][index].deaths_upper
+      }
+ index -= 1;
+}
+// console.log(data[4])
+
 //UC data
 // let today = new Date();
-var index = data[3].length - 1;
+index = data[3].length - 1;
 
 while (index >= 0) {
     if(isNaN(data[3][index].rt_median) || 
@@ -1186,7 +1226,7 @@ while (index >= 0) {
 }
 
 //NU data   
-var index = data[1].length - 1;
+index = data[1].length - 1;
 
 while (index >= 0) {
     if(isNaN(data[1][index].rt_median) ||  
@@ -1346,7 +1386,7 @@ let dailyRegionCount = {}
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
    
-
+  
    
 
 function drawChart() {
@@ -1463,12 +1503,12 @@ function drawChart() {
    
    var dataNU = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
    var dataUC = data[3].filter(function(d){return d.geography_modeled==selectedRegion}) 
+   var dataUIUC = (data[4].filter(function(d){return d.geography_modeled==selectedRegion}) ).filter(function(d){return (d.scenario_name).localeCompare('baseline') === 0})
    
    var selectedGroupCases = selectToRegion[selectedRegion]
     var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    var formatDate = d3.timeFormat("%b %d")
    
-  
   
       
     
@@ -1476,31 +1516,31 @@ var dataTime = dataNU.map(function(d) { return d.date; })
 
 
  
- var sliderTime = d3
-    .sliderBottom()
-    .min(d3.min(dataTime))
-    .max(d3.max(dataTime))
-   .step(60 * 60 * 24)
-    .width(600)
-    .tickFormat(d3.timeFormat('%b %Y'))
-    .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
-      return ((dataNU[i].date).getDate() === 1)
-   }))
-    .on('onchange', val => {
-      d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
-    });
+//  var sliderTime = d3
+//     .sliderBottom()
+//     .min(d3.min(dataTime))
+//     .max(d3.max(dataTime))
+//    .step(60 * 60 * 24)
+//     .width(600)
+//     .tickFormat(d3.timeFormat('%b %Y'))
+//     .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
+//       return ((dataNU[i].date).getDate() === 1)
+//    }))
+//     .on('onchange', val => {
+//       d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
+//     });
 
- var gTime = d3
-    .select('div#slider-time')
-    .append('svg')
-    .attr('width', 500)
-    .attr('height', 100)
-    .append('g')
-    .attr('transform', 'translate(30,30)');
+//  var gTime = d3
+//     .select('div#slider-time')
+//     .append('svg')
+//     .attr('width', 500)
+//     .attr('height', 100)
+//     .append('g')
+//     .attr('transform', 'translate(30,30)');
 
- gTime.call(sliderTime);
+//  gTime.call(sliderTime);
 
- d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
+//  d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
 
 
 
@@ -1510,10 +1550,12 @@ var dataTime = dataNU.map(function(d) { return d.date; })
 
    var formatTime = d3.timeFormat("%b %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
+    var x1 = x_rtNU.invert(d3.mouse(this)[0]);
     var i = bisect(dataUC, x0, 1);
-    var j = bisect(dataNU, x0, 1);
+    var j = bisect(dataNU, x1, 1);
     var selectedData = dataUC[i]
     var selectedData2 = dataNU[j]
+    
 
     Tooltip
       .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
@@ -1529,7 +1571,7 @@ var dataTime = dataNU.map(function(d) { return d.date; })
           d3.select('#tooltipUC') .attr('class', 'tooltip n')
    
    Tooltip2
-      .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
+      .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
       .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
           d3.select('#tooltipNU') .attr('class', 'tooltip s')
       
@@ -1540,14 +1582,14 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
           d3.select('#tooltipUC') .attr('class', 'tooltip s')
              Tooltip2  
-      .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
+      .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
       .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
           d3.select('#tooltipNU') .attr('class', 'tooltip n')
    }
    
   }
   
-  
+
   
     var mousemove_test_pos = function(d) {
          // var formatTime = d3.timeFormat("%b %d")"%b %Y"
@@ -1568,9 +1610,13 @@ var dataTime = dataNU.map(function(d) { return d.date; })
    }
    
     x_rt
-      .domain(d3.extent(dataUC , function(d) { return d.date}))
+      .domain(d3.extent(dataUC, function(d) { return d.date}))
       .range([ 0, width_rt]);
    
+   x_rtNU
+      .domain(d3.extent(dataNU, function(d) { return d.date}))
+      .range([ 0, width_rt]);
+      
    y_rt
    .domain([0.6, 1.4]);
    
@@ -1679,7 +1725,7 @@ var dataTime = dataNU.map(function(d) { return d.date; })
 
    interval_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    interval_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-   
+   interval_rt3.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    interval_rt
       .datum(dataNU)
@@ -1688,7 +1734,7 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .transition()
       .duration(1000)
       .attr("d", d3.area()
-      .x(function(d) { return x_rt(d.date) })
+      .x(function(d) { return x_rtNU(d.date) })
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
@@ -1704,9 +1750,21 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
+      interval_rt3
+      .datum(dataUIUC)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr('opacity', '0.5')
+      .transition()
+      .duration(1000)
+      .attr("d", d3.area()
+      .x(function(d) { return x_rt(d.date) })
+      .y0(function(d) { return y_rt(d.rt_lower) })
+      .y1(function(d) { return y_rt(d.rt_upper) }))
+      
    
    line_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    line_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   line_rt3.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    line_rt
       .datum(dataNU)
@@ -1714,7 +1772,7 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .transition()
       .duration(1000)
       .attr("d", d3.line()
-      .x(function(d) { return x_rt(d.date) })
+      .x(function(d) { return x_rtNU(d.date) })
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
@@ -1727,8 +1785,19 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(d.rt_median) })
       )
+      
+   line_rt3
+      .datum(dataUIUC)
+      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+      .x(function(d) { return x_rt(d.date) })
+      .y(function(d) { return y_rt(d.rt_median) })
+      )
    
    refLine.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   
    
    refLine
       .datum(dataNU)
@@ -1790,6 +1859,23 @@ lineLabel2
        }
              })
       .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
+
+// lineLabel3
+//             // .transition()
+//       // .duration(1000)
+//       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
+//       .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ label3Y+")")
+//       .attr("dy", ".35em")
+//       .attr("text-anchor", "start")
+//       .style("fill", "black")
+//              .style('font-size', function() {
+//        if (currentWidth < 600) {
+//           return ".6rem"
+//        } else {
+//           return ".7rem"
+//        }
+//              })
+//       .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
 
 
    svg_rt
