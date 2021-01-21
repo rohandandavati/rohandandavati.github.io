@@ -19,9 +19,9 @@
 - name: B.1.1.7 in Illinois
   date: January 20, 2021
   path: /reports/20210121_B117_in_Illinois.pdf
-  image_path: /images/200618_faster_testing_deaths_averted_per_day.png
+  image_path: /images/210120_B117.png
   description: >
-    Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
+    Why is B.1.1.7 so dangerous, and what should we do about it?
 - name: Vaccine prioritization
   date: September 10th, 2020
   path: https://www.medrxiv.org/content/10.1101/2020.09.08.20190629v2
@@ -31,9 +31,9 @@
 - name: Reduce time to diagnosis
   date: June 18th, 2020
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
-  image_path: /images/210121_B117.png
+  image_path: /images/200618_faster_testing_deaths_averted_per_day.png
   description: >
-    Why is B.1.1.7 so dangerous, and what should we do about it?
+    Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
 - name: Contact tracing
   date: July 10th, 2020
   path: /reports/20200710_contact_tracing.pdf
