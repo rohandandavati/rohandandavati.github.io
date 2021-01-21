@@ -17,25 +17,29 @@ title: About
 <div class="jumbotron">
     <h1>About</h1>
     <!--<br></br>-->
-    <p>Illinois Covid Modeling is a joint effort between Northwestern University and the University of Chicago, who have been modeling COVID-19 in Illinois since March 2020.
+    <p>Illinois Covid Modeling is a joint effort between Northwestern University (NU), the University of Chicago (UC), and the University of Illinois at Urbana-Champaign (UIUC), who have been modeling COVID-19 in Illinois since March 2020.
     In partnership with the Illinois Department of Public Health (IDPH), we use simulation models to predict trends in hospital usage and deaths at the COVID-19 Region level.
-    Both models are SEIR-based compartmental models that are calibrated to these data sources collected by IDPH:
+    The NU and UC models are SEIR-based compartmental models, while the UIUC model is an age-of-infection model. The models are calibrated to these data sources collected by IDPH:
     <ol>
-    <li>daily census of non-ICU hospital beds occupied by COVID-19 patients</li>
-    <li>daily census of ICU hospital beds occupied by COVID-19 patients</li>
-    <li>COVID-like illness (CLI) hospital admissions</li>
-    <li>COVID-attributed death data</li>
+    <li>daily census of non-ICU hospital beds occupied by COVID-19 patients (NU, UC, UIUC)</li>
+    <li>daily census of ICU hospital beds occupied by COVID-19 patients (NU, UC, UIUC)</li>
+    <li>COVID-like illness (CLI) hospital admissions (NU, UC)</li>
+    <li>COVID-attributed death data in hospitals (UIUC)</li>
+    <li>COVID-attributed death data in and out of hospitals (NU, UC, UIUC)</li>
     </ol>
-    Each team has created a suite of 11 models, one for each COVID-19 Region.
+    Each team has created a suite of 11 models, one for each COVID-19 Region. UIUC also created a 12th model for the state as a whole, while Illinois-level predictions for NU and UC are summed up from their individual Region models.
     We continuously perform other analyses of pandemic dynamics, some of which are featured on the Reports page.</p>
     <p>Code for Northwestern's simulation model is available <a href="https://github.com/numalariamodeling/covid-chicago">here</a>. Northwestern is estimating \(R_t\) by
         applying the <a href="https://pypi.org/project/epyestim/">epyestim package</a> to the timeseries of daily new infections inferred from the simulation models.</p>
     <p>Code for University of Chicago's simulation model is available <a href="https://github.com/cobeylab/covid_IL">here</a>. The University of Chicago group is estimating \(R_t\) using methods in <a href="https://github.com/epiforecasts/EpiNow2">EpiNow2</a> to hospital admissions with COVID-like illness, which have tracked actual COVID-19 admissions very well. These estimates are checked against the \(R_t\) derived from the infection rates that are inferred from the dynamical model.</p>
+    <p>Code for UIUC's simulation model is available <a href="https://github.com/uiuc-covid19-modeling/pydemic">here</a> and the details of their procedure simultaneously fitting four data streams is <a href="/reports/20201116_UIUC_Illinois_model_paper.pdf">here</a>.</p>
     <p>Case and death data shown on the landing page are aggregated from <a href="https://www.dph.illinois.gov/covid19/covid19-statistics"> county-level public data from IDPH </a>.</p>
     <h2>About the modeling teams</h2>
     <p>COVID-19 modeling at Northwestern is led by the <a href="https://www.numalariamodeling.org/">Malaria and COVID-19 Modeling Team</a>, an infectious disease modeling group with expertise in using models to inform policy. In addition to their COVID-19 work, they
     work with malaria-endemic countries to develop data-driven national strategic plans to reduce malaria morbidity and mortality.</p>
     <p>The <a href="https://cobeylab.uchicago.edu/">Cobey Lab</a> at the University of Chicago is an infectious disease modeling group with expertise in respiratory pathogens.
     In addition to their COVID-19 work, they study how the host adaptive immune response coevolves with pathogens, especially in ways relevant to epidemiological and evolutionary forecasting, vaccine design, and pathogen diversity.</p>
+    <p>The UIUC modeling team led by Professors Goldenfeld and Maslov includes scientists from the University of Illinois and Brookhaven National Laboratory. In addition to their COVID-19 work, the leads of the team study dynamics
+        and co-evolution of microbial ecosystems including microbial pathogens as a part of Biocomplexity theme at the Carl R. Woese Institute for Genomic Biology, University of Illinois.</p>
 </div>
 </div>

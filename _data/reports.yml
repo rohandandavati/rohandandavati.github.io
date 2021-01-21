@@ -28,6 +28,12 @@
   image_path: /images/200907_vax_prioritization.png
   description: >
     Model-informed COVID-19 vaccine prioritization strategies by age and serostatus
+- name: UIUC model
+  date: November 16th, 2020
+  path: /reports/20201116_UIUC_Illinois_model_paper.pdf
+  image_path: /images/201116_UIUC_Illinois_model_paper.png
+  description: >
+    Structure, calibration, and application of the UIUC model.
 - name: Reduce time to diagnosis
   date: June 18th, 2020
   path: /reports/20200618_reduce_time_to_diagnosis.pdf
