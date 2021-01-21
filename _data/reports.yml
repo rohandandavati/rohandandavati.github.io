@@ -16,9 +16,9 @@
   image_path: /images/201110_mobility_poi_by_full_reopen_risk.png
   description: >
     Mobility network models of COVID-19 explain inequities and inform reopening
-- name: Reduce time to diagnosis
-  date: June 18th, 2020
-  path: /reports/20200618_reduce_time_to_diagnosis.pdf
+- name: B.1.1.7 in Illinois
+  date: January 20, 2021
+  path: /reports/20210121_B117_in_Illinois.pdf
   image_path: /images/200618_faster_testing_deaths_averted_per_day.png
   description: >
     Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
@@ -28,6 +28,12 @@
   image_path: /images/200907_vax_prioritization.png
   description: >
     Model-informed COVID-19 vaccine prioritization strategies by age and serostatus
+- name: Reduce time to diagnosis
+  date: June 18th, 2020
+  path: /reports/20200618_reduce_time_to_diagnosis.pdf
+  image_path: /images/210121_B117.png
+  description: >
+    Why is B.1.1.7 so dangerous, and what should we do about it?
 - name: Contact tracing
   date: July 10th, 2020
   path: /reports/20200710_contact_tracing.pdf
