@@ -944,7 +944,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 15, right: 53, bottom: 50, left: 35};
+   var margin_rt = {top: 15, right: 61, bottom: 50, left: 35};
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -1050,6 +1050,8 @@ var grid_deaths = svg_deaths.append("g")
 var lineLabel1 = svg_rt.append("text")   
 
 var lineLabel2 = svg_rt.append("text")
+
+var lineLabel3 = svg_rt.append("text")
    
  // Create the circle that travels along the curve of chart
  var focus_test_pos = d3.select("#test_pos")
@@ -1807,28 +1809,62 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(1.0) }));
 
-//  svg_rt.append("text")
-var label1Y = y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top
-var label2Y = y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top
 
-if (Math.abs(label1Y - label2Y) < 10 ) {
-   var offset = (10 - Math.abs(label1Y - label2Y)) / 2
-   if (label1Y < label2Y) {
-      label1Y = label1Y - offset
-      label2Y = label2Y + offset
-   } else {
-      label1Y = label1Y + offset
-      label2Y = label2Y - offset
+// var labelArr = [
+//    {"NU" : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top},
+//    {"UC" : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top},
+//    {"UIUC" : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top}
+//    ]
+
+var labelArr = [
+   {'unv' : 'UC', 'Y' : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUC[dataUC.length - 1].model_date },
+   {'unv' : 'UIUC', 'Y' : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUIUC[dataUIUC.length - 1].date },
+   {'unv' : 'NU', 'Y' : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top, 'm_d': dataNU[dataNU.length - 1].model_date }
+  
+   ]
+   
+   // console.log(labelArr)
+
+    for(let i = 0; i < 3; i++) {
+        // Finding the smallest number in the subarray
+        let min = i;
+        for(let j = i+1; j < 3; j++){
+            if(labelArr[j].Y < labelArr[min].Y) {
+                min=j; 
+            }
+         }
+         if (min != i) {
+            // let temp = {'region' : '', 'value': 0}   
+            // temp.region = labelArr[i].region
+            // temp.value = labelArr[i].value
+            // labelArr[i].region = labelArr[min].region
+            // labelArr[i].value = labelArr[min].value
+            // labelArr[min].region = temp.region;
+            // labelArr[min].value = temp.value;
+            let temp = labelArr[i]
+            labelArr[i] = labelArr[min]
+            labelArr[min] = temp
+        }
+    }
+   
+   // console.log(labelArr)
+   
+   if(labelArr[1].Y - labelArr[0].Y < 10) {
+      labelArr[1].Y += 10 - (labelArr[1].Y - labelArr[0].Y)
+   }
+   if(labelArr[2].Y - labelArr[1].Y < 10) {
+      labelArr[2].Y += 10 - (labelArr[2].Y - labelArr[1].Y)
    }
    
-}
+   // console.log(labelArr)
+
 
 var formatModelDate = d3.timeFormat("%m/%d")
 lineLabel1
       // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ label1Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ labelArr[0].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       // .style("fill", "black")
@@ -1840,14 +1876,15 @@ lineLabel1
           return ".7rem"
        }
              })
-      .text('NU('+ formatModelDate(dataNU[0].model_date) +')')
+      // .text('NU('+ formatModelDate(dataNU[0].model_date) +')')
+      .text(labelArr[0].unv + '('+ formatModelDate(labelArr[0].m_d) +')')
       
 //  svg_rt.append("text")
 lineLabel2
             // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ label2Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ labelArr[1].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "black")
@@ -1858,24 +1895,26 @@ lineLabel2
           return ".7rem"
        }
              })
-      .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
+      // .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
+      .text(labelArr[1].unv + '('+ formatModelDate(labelArr[1].m_d) +')')
 
-// lineLabel3
-//             // .transition()
-//       // .duration(1000)
-//       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-//       .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ label3Y+")")
-//       .attr("dy", ".35em")
-//       .attr("text-anchor", "start")
-//       .style("fill", "black")
-//              .style('font-size', function() {
-//        if (currentWidth < 600) {
-//           return ".6rem"
-//        } else {
-//           return ".7rem"
-//        }
-//              })
-//       .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
+lineLabel3
+            // .transition()
+      // .duration(1000)
+      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ labelArr[2].Y+")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "black")
+             .style('font-size', function() {
+       if (currentWidth < 600) {
+          return ".6rem"
+       } else {
+          return ".7rem"
+       }
+             })
+      // .text('UIUC('+ formatModelDate(dataUIUC[dataUIUC.length - 1].date) +')')
+      .text(labelArr[2].unv + '('+ formatModelDate(labelArr[2].m_d) +')')
 
 
    svg_rt
