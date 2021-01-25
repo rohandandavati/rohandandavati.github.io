@@ -874,10 +874,7 @@ html, body {
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
     .style("pointer-events", "all")
-    
-   //     var svg_test_pos = d3.select("#rt_chart").append("svg")    
 
-   
    
    var x_rt = d3.scaleTime();
    var x_rtNU = d3.scaleTime();
@@ -970,6 +967,15 @@ var lineLabel3 = svg_rt.append("text")
  var focus = svg_rt.append("g")
          //  .append('circle')
          .append('line')
+         
+ var circle_UC = svg_rt.append("g")
+         .append('circle')
+         
+ var circle_NU = svg_rt.append("g")
+         .append('circle')
+         
+var circle_UIUC = svg_rt.append("g")
+         .append('circle')
  
 
    
@@ -1472,24 +1478,36 @@ var dataTime = dataNU.map(function(d) { return d.date; })
 
    var formatTime = d3.timeFormat("%b %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
-    var x1 = x_rtNU.invert(d3.mouse(this)[0]);
+    var x1 = x_rt.invert(d3.mouse(this)[0]);
+   var x2 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataUC, x0, 1);
     var j = bisect(dataNU, x1, 1);
-    var selectedData = dataUC[i]
-    var selectedData2 = dataNU[j]
+    var k = bisect(dataUIUC, x2, 1);
+    var selectedDataUC = dataUC[i]
+    var selectedDataNU = dataNU[j]
+    var selectedDataUIUC = dataUIUC[k]
     
     
 focus
-.attr("transform", "translate(" + 0 + "," + margin_rt.top + ")")
-.attr("x1", x_rt(selectedData.date))  //<<== change your code here
+.attr("x1", x_rt(selectedDataUC.date))  //<<== change your code here
 .attr("y1", 0)
-.attr("x2", x_rt(selectedData.date))  //<<== and here
+.attr("x2", x_rt(selectedDataUC.date))  //<<== and here
 .attr("y2", height_rt)
 .style("stroke-width", 1)
 .style("stroke", "black")
 .style("fill", "none");
-      // .attr("cx", )
-      // .attr("cy", y_rt(selectedData.rt_median))
+
+circle_UC
+      .attr("cx", x_rt(selectedDataUC.date))
+      .attr("cy", y_rt(selectedDataUC.rt_median))
+      
+circle_NU
+      .attr("cx", x_rt(selectedDataNU.date))
+      .attr("cy", y_rt(selectedDataNU.rt_median))
+      
+circle_UIUC
+      .attr("cx", x_rt(selectedDataUIUC.date))
+      .attr("cy", y_rt(selectedDataUIUC.rt_median))
 
    //  Tooltip
    //    .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
@@ -1853,11 +1871,32 @@ lineLabel3
       .text(labelArr[2].unv + '('+ formatModelDate(labelArr[2].m_d) +')')
 
       focus
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .style("fill", "none")
       .attr("stroke", "black")
       .attr('r', 4.5)
       .style("opacity", 0)
 
+circle_NU
+.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .attr('r', 4.5)
+      .style("opacity", 0)
+
+circle_UC
+.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .attr('r', 4.5)
+      .style("opacity", 0)
+      
+circle_UIUC
+.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .attr('r', 4.5)
+      .style("opacity", 0)
 
 
    svg_rt
@@ -1866,8 +1905,17 @@ lineLabel3
       .attr('height', height_rt)
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .on("mouseover", function(d) {
+     
      focus
      .style("opacity", 1)
+     
+     circle_NU
+     .style("opacity", 1)
+     circle_UC
+     .style("opacity", 1)
+     circle_UIUC
+     .style("opacity", 1)
+     
    //  Tooltip
    //    .style("opacity", 1)
    //        Tooltip2
@@ -1882,6 +1930,13 @@ lineLabel3
       
       .on("mouseleave", function(d) {
      focus
+     .style("opacity", 0)
+     
+     circle_NU
+     .style("opacity", 0)
+     circle_UC
+     .style("opacity", 0)
+     circle_UIUC
      .style("opacity", 0)
    //  Tooltip
    //    .style("opacity", 0)
