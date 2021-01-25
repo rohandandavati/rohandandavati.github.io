@@ -865,7 +865,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 10, right: 61, bottom: 30, left: 35};
+   var margin_rt = {top: 10, right: 73, bottom: 30, left: 35};
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -977,6 +977,14 @@ var lineLabel3 = svg_rt.append("text")
 var circle_UIUC = svg_rt.append("g")
          .append('circle')
  
+  var dot_UC = svg_rt.append("g")
+         .append('circle')
+         
+ var dot_NU = svg_rt.append("g")
+         .append('circle')
+         
+var dot_UIUC = svg_rt.append("g")
+         .append('circle')
 
    
  // Create the circle that travels along the curve of chart
@@ -1670,9 +1678,9 @@ circle_UIUC
        .text('t')
        .style('font-size', function() {
         if (currentWidth < 600) {
-           return ".6rem"
+           return ".4rem"
         } else {
-           return ".8rem"
+           return ".6rem"
         }
        })
        .attr('dx', '.1em')
@@ -1818,7 +1826,7 @@ lineLabel1
       // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ labelArr[0].Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[0].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       // .style("fill", "black")
@@ -1838,7 +1846,7 @@ lineLabel2
             // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ labelArr[1].Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[1].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "black")
@@ -1856,7 +1864,7 @@ lineLabel3
             // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left)+","+ labelArr[2].Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[2].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "black")
@@ -1880,7 +1888,7 @@ lineLabel3
 
 circle_NU
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-      .style("fill", "#4E2A84")
+      // .style("fill", "#4E2A84")
       .style("fill", "none")
       .attr('stroke', '#4E2A84')
       .style("stroke-width", 2)
@@ -1903,7 +1911,35 @@ circle_UIUC
       .attr('stroke', '#E84A27')                  
       .style("stroke-width", 2)
       .attr('r', 4.5)
-      .style("opacity", 0)
+      // .style("opacity", 0)
+// console.log((labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y )
+
+dot_NU
+      .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y+")")
+      .style("fill", "#4E2A84")
+      // .style("fill", "none")
+      .attr('stroke', '#4E2A84')
+      .style("stroke-width", 2)
+      .attr('r', 3)
+      // .style("opacity", 0)
+
+dot_UC
+      .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UC') === 0}))[0].Y+")")
+      // .style("fill", "#AC1E2D")      
+      .style("fill", "#AC1E2D")
+      .attr('stroke', '#AC1E2D')
+      .style("stroke-width", 2)
+      .attr('r', 3)
+      // .style("opacity", 0)
+      
+dot_UIUC
+      .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UIUC') === 0}))[0].Y+")")
+      // .style("fill", "#E84A27")
+      .style("fill", "#E84A27")
+      .attr('stroke', '#E84A27')                  
+      .style("stroke-width", 2)
+      .attr('r', 3)
+      .style("opacity", 1)
 
 
    svg_rt
