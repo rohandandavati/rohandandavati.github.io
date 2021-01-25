@@ -14,7 +14,9 @@ title: Home
 .content {
    display: none;
 }
-
+/*#focus_rt {*/
+/*     z-index: 4;*/
+/*}*/
 #loader {
   position: absolute;
   left: 50%;
@@ -863,7 +865,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 15, right: 61, bottom: 50, left: 35};
+   var margin_rt = {top: 10, right: 60, bottom: 30, left: 50};
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
@@ -886,35 +888,35 @@ html, body {
    
    var interval_rt = svg_rt.append("path")
       .attr("stroke", "none")
-      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
    
    var line_rt = svg_rt.append('g').append("path")  
-   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
       
       var interval_rt2 = svg_rt.append("path")
       .attr("stroke", "none")
-      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
       
       
    var interval_rt3 = svg_rt.append("path")
       .attr("stroke", "none")
-      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
    
    var line_rt2 = svg_rt.append('g').append("path")  
-   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
       
          var line_rt3 = svg_rt.append('g').append("path")  
-   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
       
    var refLine = svg_rt.append('g').append("path")
    .attr("stroke", "black")
-   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 1)
       .style("stroke-dasharray", ("3, 3"))
       .style("fill", "none")
@@ -934,24 +936,17 @@ html, body {
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
  // Create the circle that travels along the curve of chart
- var focus = d3.select("#rt_chart")
-    .append('g')
-    .append('circle')
-      .style("fill", "none")
-      .attr("stroke", "black")
-      .attr('r', 4.5)
-      .style("opacity", 0)
-      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
 
-var Tooltip = d3.select("#rt_chart")
-    .append("div")
-    .attr("class", "tooltip")
-        .attr("id", "tooltipUC")
+
+// var Tooltip = d3.select("#rt_chart")
+//     .append("div")
+//     .attr("class", "tooltip")
+//        .attr("id", "tooltipUC")
     
-    var Tooltip2 = d3.select("#rt_chart")
-    .append("div")
-    .attr("class", "tooltip")
-        .attr("id", "tooltipNU")
+//     var Tooltip2 = d3.select("#rt_chart")
+//     .append("div")
+//     .attr("class", "tooltip")
+//        .attr("id", "tooltipNU")
     
     
    
@@ -971,6 +966,12 @@ var lineLabel1 = svg_rt.append("text")
 var lineLabel2 = svg_rt.append("text")
 
 var lineLabel3 = svg_rt.append("text")
+
+ var focus = svg_rt.append("g")
+         //  .append('circle')
+         .append('line')
+ 
+
    
  // Create the circle that travels along the curve of chart
  var focus_test_pos = d3.select("#test_pos")
@@ -1329,26 +1330,26 @@ function drawChart() {
 
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
       
-      const width_rt = currentWidth- margin_rt.left - margin_rt.right;
+      const width_rt = currentWidth - margin_rt.left - margin_rt.right;
       let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
 
-      if (parseInt(currentWidth) < 600) {
-         height_rt = parseInt(currentWidth * .68) - margin_rt.top - margin_rt.bottom;
-      }
-      else if (parseInt(currentWidth) < 900) {
-         height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
-      }
+      // if (parseInt(currentWidth) < 600) {
+      //    height_rt = parseInt(currentWidth * .68) - margin_rt.top - margin_rt.bottom;
+      // }
+      // else if (parseInt(currentWidth) < 900) {
+      //    height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
+      // }
 
       currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
       let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
       
-      if (parseInt(currentWidth) < 600) {
-         height_cases = parseInt(currentWidth * .68) - margin_cases.top - margin_cases.bottom;
-      }
-      else if (parseInt(currentWidth) < 900) {
-         height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
-      }
+      // if (parseInt(currentWidth) < 600) {
+      //    height_cases = parseInt(currentWidth * .68) - margin_cases.top - margin_cases.bottom;
+      // }
+      // else if (parseInt(currentWidth) < 900) {
+      //    height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
+      // }
       
       
    var map_wid = document.getElementById("cases_map").offsetWidth;
@@ -1477,36 +1478,48 @@ var dataTime = dataNU.map(function(d) { return d.date; })
     var selectedData = dataUC[i]
     var selectedData2 = dataNU[j]
     
+    
+focus
+.attr("transform", "translate(" + 0 + "," + margin_rt.top + ")")
+.attr("x1", x_rt(selectedData.date))  //<<== change your code here
+.attr("y1", 0)
+.attr("x2", x_rt(selectedData.date))  //<<== and here
+.attr("y2", height_rt)
+.style("stroke-width", 1)
+.style("stroke", "black")
+.style("fill", "none");
+      // .attr("cx", )
+      // .attr("cy", y_rt(selectedData.rt_median))
 
-    Tooltip
-      .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-   if(selectedData.rt_median < selectedData2.rt_median){
+   //  Tooltip
+   //    .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
+   // if(selectedData.rt_median < selectedData2.rt_median){
    
-      Tooltip2
-      .html("NU" + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
+   //    Tooltip2
+   //    .html("NU" + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
  
  
-   Tooltip   
-      .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
-          d3.select('#tooltipUC') .attr('class', 'tooltip n')
+   // Tooltip   
+   //    .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
+   //        d3.select('#tooltipUC') .attr('class', 'tooltip n')
    
-   Tooltip2
-      .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
-          d3.select('#tooltipNU') .attr('class', 'tooltip s')
+   // Tooltip2
+   //    .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
+   //        d3.select('#tooltipNU') .attr('class', 'tooltip s')
       
       
-   } else {
-      Tooltip
-      .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
-          d3.select('#tooltipUC') .attr('class', 'tooltip s')
-             Tooltip2  
-      .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
-          d3.select('#tooltipNU') .attr('class', 'tooltip n')
-   }
+   // } else {
+   //    Tooltip
+   //    .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
+   //        d3.select('#tooltipUC') .attr('class', 'tooltip s')
+   //           Tooltip2  
+   //    .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
+   //        d3.select('#tooltipNU') .attr('class', 'tooltip n')
+   // }
    
   }
   
@@ -1530,6 +1543,12 @@ var dataTime = dataNU.map(function(d) { return d.date; })
    //    .attr("cy", y_test_pos(selectedData.test_pos_avg))
    }
    
+      svg_rt
+      .attr("width", width_rt + margin_rt.left + margin_rt.right)
+      .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
+   .append("g")
+      .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
+   
     x_rt
       .domain(d3.extent(dataUC, function(d) { return d.date}))
       .range([ 0, width_rt]);
@@ -1539,13 +1558,10 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .range([ 0, width_rt]);
       
    y_rt
-   .domain([0.6, 1.4]);
+   .domain([0.6, 1.4])
+   .range([ height_rt, 0 ])
    
-   svg_rt
-      .attr("width", width_rt + margin_rt.left + margin_rt.right)
-      .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
-   .append("g")
-      .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
+
       
    const formatTime = d3.timeFormat("%b %Y");
       
@@ -1580,21 +1596,22 @@ var dataTime = dataNU.map(function(d) { return d.date; })
    
     x_rt_axis
    // .attr("transform", "translate(" + 0 + "," + (height_cases+margin_cases.top) + ")")
-   .attr("transform", "translate(" + margin_rt.left + "," + (height_cases + margin_rt.top) + ")")
+   .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
+   // .attr("transform", "translate(0," + height_rt + ")")
    .call(d3.axisBottom(x_rt).tickSizeOuter(0)
    //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
    .tickValues(tickValsRT)
    .tickFormat(d3.timeFormat("%b %Y"))
    );
 
-   y_rt
-      .range([ height_rt, 0 ])
+   // y_rt
+      
    
    y_rt_axis
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       // .call(d3.axisLeft(y_rt).ticks(6))
       .call(d3.axisLeft(y_rt))
-      .call(y_rt_axis => y_rt_axis.select(".domain").remove())
+      // .call(y_rt_axis => y_rt_axis.select(".domain").remove())
       
       
           // Gridline
@@ -1605,7 +1622,7 @@ var dataTime = dataNU.map(function(d) { return d.date; })
 
   grid_rt
      .attr("class", "grid")
-     .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+    .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
      .call(gridlines_rt);
 
    
@@ -1727,7 +1744,7 @@ var dataTime = dataNU.map(function(d) { return d.date; })
       .attr("d", d3.line()
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(1.0) }));
-
+      
 
 // var labelArr = [
 //    {"NU" : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top},
@@ -1835,6 +1852,13 @@ lineLabel3
       // .text('UIUC('+ formatModelDate(dataUIUC[dataUIUC.length - 1].date) +')')
       .text(labelArr[2].unv + '('+ formatModelDate(labelArr[2].m_d) +')')
 
+      focus
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .attr('r', 4.5)
+      .style("opacity", 0)
+
+
 
    svg_rt
       .append('rect')
@@ -1842,19 +1866,27 @@ lineLabel3
       .attr('height', height_rt)
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .on("mouseover", function(d) {
-     focus.style("opacity", 1)
-    Tooltip
-      .style("opacity", 1)
-          Tooltip2
-      .style("opacity", 1)
+     focus
+     .style("opacity", 1)
+   //  Tooltip
+   //    .style("opacity", 1)
+   //        Tooltip2
+   //    .style("opacity", 1)
   })
       .on("mousemove", mousemove)
+      // .on('mousemove', function() {
+      // return focus
+      //  .style("top", (d3.event.pageY + 16) + "px")
+      //  .style("left", (d3.event.pageX + 16) + "px");
+      // })
+      
       .on("mouseleave", function(d) {
-     focus.style("opacity", 0)
-    Tooltip
-      .style("opacity", 0)
-          Tooltip2
-      .style("opacity", 0)
+     focus
+     .style("opacity", 0)
+   //  Tooltip
+   //    .style("opacity", 0)
+   //        Tooltip2
+   //    .style("opacity", 0)
   })
    
     var tickTimeFormat = d3.timeFormat("%b %d")
