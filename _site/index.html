@@ -1569,14 +1569,14 @@ var dataTime = dataNU.map(function(d) { return d.date; })
     var selectedDataUIUC = dataUIUC[k]
     
     
-focus
-.attr("x1", x_rt(selectedDataUC.date))  //<<== change your code here
-.attr("y1", 0)
-.attr("x2", x_rt(selectedDataUC.date))  //<<== and here
-.attr("y2", height_rt)
-.style("stroke-width", 1)
-.style("stroke", "black")
-.style("fill", "none");
+   focus
+      .attr("x1", x_rt(selectedDataUC.date))  //<<== change your code here
+      .attr("y1", 0)
+      .attr("x2", x_rt(selectedDataUC.date))  //<<== and here
+      .attr("y2", height_rt)
+      // .style("stroke-width", 1)
+      // .style("stroke", "black")
+      // .style("fill", "none");
 
 circle_UC
       .attr("cx", x_rt(selectedDataUC.date))
@@ -1955,27 +1955,31 @@ lineLabel3
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .style("fill", "none")
       .attr("stroke", "black")
-      .attr('r', 4.5)
       .style("opacity", 0)
+      .style("stroke-width", 1)
+
 
 circle_NU
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .style("fill", "none")
-      .attr("stroke", "black")
+      .attr('stroke', '#4E2A84')
+      .style("stroke-width", 2)
       .attr('r', 4.5)
       .style("opacity", 0)
 
 circle_UC
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .style("fill", "none")
-      .attr("stroke", "black")
+      .attr('stroke', '#AC1E2D')
+      .style("stroke-width", 2)
       .attr('r', 4.5)
       .style("opacity", 0)
       
 circle_UIUC
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .style("fill", "none")
-      .attr("stroke", "black")
+      .attr('stroke', '#E84A27')                  
+      .style("stroke-width", 2)
       .attr('r', 4.5)
       .style("opacity", 0)
 
