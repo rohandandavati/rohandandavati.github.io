@@ -1614,8 +1614,9 @@ circle_UIUC
       .html(formatDate(x0) + '<br>' + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
       "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
       "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
-      .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
-      .style("top",  (margin_rt.top +28) + "px")
+      // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
+      .style("left", (margin_rt.left +24) + "px")
+      .style("top",  (margin_rt.top +24) + "px")
       
       
    // if(selectedData.rt_median < selectedData2.rt_median){
