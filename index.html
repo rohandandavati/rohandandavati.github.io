@@ -935,10 +935,10 @@ html, body {
  // Create the circle that travels along the curve of chart
 
 
-// var Tooltip = d3.select("#rt_chart")
-//     .append("div")
-//     .attr("class", "tooltip")
-//        .attr("id", "tooltipUC")
+var Tooltip = d3.select("#rt_chart")
+    .append("div")
+    .attr("class", "tooltip")
+       .attr("id", "line_tooltip")
     
 //     var Tooltip2 = d3.select("#rt_chart")
 //     .append("div")
@@ -985,6 +985,17 @@ var circle_UIUC = svg_rt.append("g")
          
 var dot_UIUC = svg_rt.append("g")
          .append('circle')
+         
+         
+// var Tooltip = svg_rt.append("g")
+//     .append("div")
+//     .attr("class", "tooltip")
+         
+// var value_UC = svg_rt.append("text")   
+
+// var value_NU = svg_rt.append("text")
+
+// var value_UIUC = svg_rt.append("text")
 
    
  // Create the circle that travels along the curve of chart
@@ -1517,6 +1528,18 @@ circle_UIUC
       .attr("cx", x_rt(selectedDataUIUC.date))
       .attr("cy", y_rt(selectedDataUIUC.rt_median))
 
+//bottom right of focus 
+    Tooltip
+      .html("UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
+      "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
+      "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
+      .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +22) + "px")
+      .style("top",  (height_rt-margin_rt.top-28) + "px")
+      
+      
+   // if(selectedData.rt_median < selectedData2.rt_median){
+
+
    //  Tooltip
    //    .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
    // if(selectedData.rt_median < selectedData2.rt_median){
@@ -1948,6 +1971,7 @@ dot_UIUC
       .attr('height', height_rt)
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .on("mouseover", function(d) {
+         // console.log('mouseover')
      
      focus
      .style("opacity", 1)
@@ -1959,20 +1983,21 @@ dot_UIUC
      circle_UIUC
      .style("opacity", 1)
      
-   //  Tooltip
-   //    .style("opacity", 1)
+    Tooltip
+      .style("opacity", 1)
    //        Tooltip2
    //    .style("opacity", 1)
   })
       .on("mousemove", mousemove)
-      // .on('mousemove', function() {
-      // return focus
-      //  .style("top", (d3.event.pageY + 16) + "px")
-      //  .style("left", (d3.event.pageX + 16) + "px");
-      // })
+
       
-      .on("mouseleave", function(d) {
-     focus
+      .on("mouseout", function(event) {
+         
+      var e = event.toElement || event.relatedTarget;
+        if (e.parentNode == this || e == this) {
+           return;
+        }
+   focus
      .style("opacity", 0)
      
      circle_NU
@@ -1981,10 +2006,9 @@ dot_UIUC
      .style("opacity", 0)
      circle_UIUC
      .style("opacity", 0)
-   //  Tooltip
-   //    .style("opacity", 0)
-   //        Tooltip2
-   //    .style("opacity", 0)
+    Tooltip
+      .style("opacity", 0)
+// }
   })
    
     var tickTimeFormat = d3.timeFormat("%b %d")
