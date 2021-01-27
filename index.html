@@ -866,10 +866,10 @@ html, body {
    }
    
    var margin_rt = {top: 10, right: 74, bottom: 30, left: 35};
-   var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
-   var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
-   var margin_tests = {top: 25, right: 10, bottom: 50, left: 70};
+   var margin_cases = {top: 10, right: 20, bottom: 30, left: 40};
+   var margin_deaths = {top: 10, right: 20, bottom: 30, left: 40};
+   var margin_test_pos = {top: 10, right: 20, bottom: 30, left: 60};
+   var margin_tests = {top: 10, right: 20, bottom: 30, left: 70};
    
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
@@ -1359,7 +1359,7 @@ function drawChart() {
       let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
 
       if (parseInt(currentWidth) < 600) {
-         height_rt = parseInt(currentWidth * .55) - margin_rt.top - margin_rt.bottom;
+         height_rt = parseInt(currentWidth * .58) - margin_rt.top - margin_rt.bottom;
       }
       else if (parseInt(currentWidth) < 900) {
          height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
@@ -1370,7 +1370,7 @@ function drawChart() {
       let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
       
       if (parseInt(currentWidth) < 600) {
-         height_cases = parseInt(currentWidth * .55) - margin_cases.top - margin_cases.bottom;
+         height_cases = parseInt(currentWidth * .60) - margin_cases.top - margin_cases.bottom;
       }
       else if (parseInt(currentWidth) < 900) {
          height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
