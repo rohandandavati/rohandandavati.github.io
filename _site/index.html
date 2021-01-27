@@ -1431,23 +1431,23 @@ function drawChart() {
       const width_rt = currentWidth - margin_rt.left - margin_rt.right;
       let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
 
-      // if (parseInt(currentWidth) < 600) {
-      //    height_rt = parseInt(currentWidth * .68) - margin_rt.top - margin_rt.bottom;
-      // }
-      // else if (parseInt(currentWidth) < 900) {
-      //    height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
-      // }
+      if (parseInt(currentWidth) < 600) {
+         height_rt = parseInt(currentWidth * .55) - margin_rt.top - margin_rt.bottom;
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
+      }
 
       currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
       let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
       
-      // if (parseInt(currentWidth) < 600) {
-      //    height_cases = parseInt(currentWidth * .68) - margin_cases.top - margin_cases.bottom;
-      // }
-      // else if (parseInt(currentWidth) < 900) {
-      //    height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
-      // }
+      if (parseInt(currentWidth) < 600) {
+         height_cases = parseInt(currentWidth * .55) - margin_cases.top - margin_cases.bottom;
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
+      }
       
       
    var map_wid = document.getElementById("cases_map").offsetWidth;
