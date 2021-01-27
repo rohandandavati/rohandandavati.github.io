@@ -14,7 +14,9 @@ title: Home
 .content {
    display: none;
 }
-
+/*#focus_rt {*/
+/*     z-index: 4;*/
+/*}*/
 #loader {
   position: absolute;
   left: 50%;
@@ -314,7 +316,11 @@ html, body {
 /*.left{*/
    /*text-align: center;*/
 /*}*/
-
+.bottom {
+   float: right;
+   /*width: 50%*/
+   position: relative;
+}
 
 
 </style>
@@ -329,11 +335,12 @@ html, body {
 <div class="card rt_title content">
   <div class="card-body rt">
     <h2>Transmission Status</h2>
-    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text"></text> (95% CI <text id = "rt_text_lower"></text>-<text id = "rt_text_upper"></text>) for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
+    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text_lower"></text> to <text id = "rt_text_upper"></text> for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
       reproductive number, tells us whether the epidemic is <i>growing</i> <span class = "nowrap">(\(R_t\) > 1)</span>, <i>shrinking</i> (\(R_t\) < 1), or
       staying the same (\(R_t\) = 1). </text></p>
       <p><text>The curves below are estimated using different methods and data sources. Northwestern University (NU) estimates \(R_t\) from a dynamical model, which is fitted to COVID-19 hospitalizations and deaths.
-        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI. For more details and
+        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI.
+         The date next to the model name refers to the date of model fit. For more details and
         links to the models, see the <a href="/about.html">About page</a>.</text></p>
   </div>
 </div>
@@ -417,6 +424,13 @@ html, body {
    </div>
 </div>
 
+<!--<div class = 'container'>-->
+
+<!--  <div class=" bottom row align-items-center">-->
+<!--    <div class="col-sm-2"><p id="value-time"></p></div>-->
+<!--    <div class="col-sm"><div id="slider-time"></div></div>-->
+<!--  </div>-->
+<!--  </div>-->
 
 <!--<div id="bottom"></div>-->
 
@@ -851,46 +865,55 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 15, right: 70, bottom: 50, left: 40};
+   var margin_rt = {top: 10, right: 74, bottom: 30, left: 35};
    var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
    var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
    var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
-   var margin_tests = {top: 15, right: 10, bottom: 50, left: 60};
+   var margin_tests = {top: 25, right: 10, bottom: 50, left: 70};
    
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
     .style("pointer-events", "all")
-    
-   //     var svg_test_pos = d3.select("#rt_chart").append("svg")    
 
    
-   
    var x_rt = d3.scaleTime();
+   var x_rtNU = d3.scaleTime();
+   var x_rt_band = d3.scaleBand();
    var x_rt_axis = svg_rt.append("g");
    var y_rt = d3.scaleLinear();
    var y_rt_axis = svg_rt.append("g");
    
    var interval_rt = svg_rt.append("path")
       .attr("stroke", "none")
-      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
    
    var line_rt = svg_rt.append('g').append("path")  
-   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
       
       var interval_rt2 = svg_rt.append("path")
       .attr("stroke", "none")
-      .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      
+      
+   var interval_rt3 = svg_rt.append("path")
+      .attr("stroke", "none")
+      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
    
    var line_rt2 = svg_rt.append('g').append("path")  
-   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+      .style("stroke-width", 2)
+      .style("fill", "none");
+      
+         var line_rt3 = svg_rt.append('g').append("path")  
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
       
    var refLine = svg_rt.append('g').append("path")
    .attr("stroke", "black")
-   .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 1)
       .style("stroke-dasharray", ("3, 3"))
       .style("fill", "none")
@@ -910,24 +933,17 @@ html, body {
   var bisect = d3.bisector(function(d) { return d.date; }).left;
 
  // Create the circle that travels along the curve of chart
- var focus = d3.select("#rt_chart")
-    .append('g')
-    .append('circle')
-      .style("fill", "none")
-      .attr("stroke", "black")
-      .attr('r', 4.5)
-      .style("opacity", 0)
-      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top  + ")"  );
+
 
 var Tooltip = d3.select("#rt_chart")
     .append("div")
     .attr("class", "tooltip")
-        .attr("id", "tooltipUC")
+       .attr("id", "line_tooltip")
     
-    var Tooltip2 = d3.select("#rt_chart")
-    .append("div")
-    .attr("class", "tooltip")
-        .attr("id", "tooltipNU")
+//     var Tooltip2 = d3.select("#rt_chart")
+//     .append("div")
+//     .attr("class", "tooltip")
+//        .attr("id", "tooltipNU")
     
     
    
@@ -945,6 +961,42 @@ var grid_deaths = svg_deaths.append("g")
 var lineLabel1 = svg_rt.append("text")   
 
 var lineLabel2 = svg_rt.append("text")
+
+var lineLabel3 = svg_rt.append("text")
+
+ var focus = svg_rt.append("g")
+         //  .append('circle')
+         .append('line')
+         
+ var circle_UC = svg_rt.append("g")
+         .append('circle')
+         
+ var circle_NU = svg_rt.append("g")
+         .append('circle')
+         
+var circle_UIUC = svg_rt.append("g")
+         .append('circle')
+ 
+  var dot_UC = svg_rt.append("g")
+         .append('circle')
+         
+ var dot_NU = svg_rt.append("g")
+         .append('circle')
+         
+var dot_UIUC = svg_rt.append("g")
+         .append('circle')
+         
+         
+// var Tooltip = svg_rt.append("g")
+//     .append("div")
+//     .attr("class", "tooltip")
+         
+// var value_UC = svg_rt.append("text")   
+
+// var value_NU = svg_rt.append("text")
+
+// var value_UIUC = svg_rt.append("text")
+
    
  // Create the circle that travels along the curve of chart
  var focus_test_pos = d3.select("#test_pos")
@@ -998,6 +1050,7 @@ var files = [
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv',
              'https://cors-anywhere-clone.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv',
+             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUIUC.csv'
              ]
 
    let map = {};
@@ -1044,6 +1097,7 @@ files.forEach(function(url) {
 
 
 Promise.all(promises).then(function(data) {
+
    
    
    document.getElementById("loader").style.display = "none";
@@ -1058,8 +1112,10 @@ Promise.all(promises).then(function(data) {
    
    
    
-var historical_county = []
    
+   
+   
+var historical_county = []
 
 
 
@@ -1067,32 +1123,43 @@ var historical_county = []
    let parseDate3 = d3.timeParse("%m/%d/%Y");
     let parseDate2 = d3.timeParse("%Y-%m-%d");
    
-var index = data[1].length - 1;
+   //get min / max of each
+   //start at lower max, end at higher min 
+
+
+
+var index = data[4].length - 1;
+
 
 while (index >= 0) {
-    if(isNaN(data[1][index].rt_median) 
-    ||  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  (parseDate2(data[1][index].date)).getTime()  < parseDate2('2020-04-01').getTime()
-      ){
-         // console.log(data[1][index].date)
-         data[1].splice(index, 1);
+    if(isNaN(data[4][index].rt_median) ||
+       (parseDate3(data[4][index].Date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
+    (parseDate3(data[4][index].Date)).getTime()  < parseDate2('2020-4-1').getTime()){
+       
+         data[4].splice(index, 1); 
       } else {
-         data[1][index].rt_lower = +data[1][index].rt_lower;
-         data[1][index].rt_median = +data[1][index].rt_median;
-         data[1][index].rt_upper = +data[1][index].rt_upper;
-         data[1][index].date = parseDate2(data[1][index].date);
-         data[1][index].model_date = parseDate2(data[1][index].model_date);
+         data[4][index].rt_lower = +data[4][index].rt_lower;
+         data[4][index].rt_median = +data[4][index].rt_median;
+         data[4][index].rt_upper = +data[4][index].rt_upper;
+         data[4][index].date = parseDate3(data[4][index].Date);
+         // data[4][index].model_date = parseDate3(data[4][index].model_date);
+         delete data[4][index].Date
+         delete data[4][index].deaths_lower
+         delete data[4][index].deaths_median
+         delete data[4][index].deaths_upper
       }
  index -= 1;
 }
+// console.log(data[4])
 
-
+//UC data
 // let today = new Date();
-var index = data[3].length - 1;
+index = data[3].length - 1;
 
 while (index >= 0) {
-      // console.log(data[1][index].date)
-    if(isNaN(data[3][index].rt_median) 
-    || parseDate3(data[3][index].date) > today  ||  (parseDate3(data[3][index].date)).getTime()  < parseDate3('04/01/2020').getTime()
+    if(isNaN(data[3][index].rt_median) || 
+   //  parseDate3(data[3][index].date) > today  ||  
+    (parseDate3(data[3][index].date)).getTime()  < parseDate3('04/01/2020').getTime()
       ){
          data[3].splice(index, 1); 
       } else {
@@ -1105,44 +1172,31 @@ while (index >= 0) {
  index -= 1;
 }
 
-   // console.log(data[1][data[1].length -1].date, data[3][data[3].length - 1].date )
-   
+//NU data   
+index = data[1].length - 1;
+
+while (index >= 0) {
+    if(isNaN(data[1][index].rt_median) ||  
+   //  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  
+   (parseDate2(data[1][index].date)).getTime() > (data[3][data[3].length -1].date).getTime() ||  
+    (parseDate2(data[1][index].date)).getTime()  < parseDate2('2020-04-01').getTime()
+      ){
+         data[1].splice(index, 1);
+      } else {
+         data[1][index].rt_lower = +data[1][index].rt_lower;
+         data[1][index].rt_median = +data[1][index].rt_median;
+         data[1][index].rt_upper = +data[1][index].rt_upper;
+         data[1][index].date = parseDate2(data[1][index].date);
+         data[1][index].model_date = parseDate2(data[1][index].model_date);
+      }
+ index -= 1;
+}
+
+
+
    var prev_date = parDate('11/11/1997')
    var region = 0;
-   // data[3].forEach(d => {
-   //    //if date is increasing
-   //    if( (d.date).getTime() > prev_date.getTime() ){
-   //       d.geography_modeled = allGroup[region];
-   //    }
-   //    //date is less or eq, new region
-   //    else {
-   //       region += 1;
-   //       d.geography_modeled = allGroup[region];
-   //    }
-   //    prev_date = d.date;
-   // });
-   
-   // console.log(data[1], data[3])
-   
-// //clean rt    
-// let parseDate = d3.timeParse("%Y-%m-%d");
-// // let today = new Date();
-// var index = data[1].length - 1;
 
-// while (index >= 0) {
-//     if(isNaN(data[1][index].rt_median) || 
-//           data[1][index].scenario_name !== 'baseline' ||
-//           parseDate(data[1][index].date) > today  
-//       ){
-//          data[1].splice(index, 1);
-//       } else {
-//          data[1][index].rt_lower = +data[1][index].rt_lower;
-//          data[1][index].rt_median = +data[1][index].rt_median;
-//          data[1][index].rt_upper = +data[1][index].rt_upper;
-//          data[1][index].date = parseDate(data[1][index].date);
-//       }
-//  index -= 1;
-// }
 
 let dailyRegionCount = {}
       //reset to 0 after every day
@@ -1279,10 +1333,11 @@ let dailyRegionCount = {}
       prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
    });
    
-
+  
    
 
 function drawChart() {
+   
    
    let selectToRegion = {};
       selectToRegion["illinois"] = "Illinois";
@@ -1300,26 +1355,26 @@ function drawChart() {
 
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
       
-      const width_rt = currentWidth- margin_rt.left - margin_rt.right;
+      const width_rt = currentWidth - margin_rt.left - margin_rt.right;
       let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
 
-      if (parseInt(currentWidth) < 600) {
-         height_rt = parseInt(currentWidth * .72) - margin_rt.top - margin_rt.bottom;
-      }
-      else if (parseInt(currentWidth) < 900) {
-         height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
-      }
+      // if (parseInt(currentWidth) < 600) {
+      //    height_rt = parseInt(currentWidth * .68) - margin_rt.top - margin_rt.bottom;
+      // }
+      // else if (parseInt(currentWidth) < 900) {
+      //    height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
+      // }
 
       currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
       let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
       
-      if (parseInt(currentWidth) < 600) {
-         height_cases = parseInt(currentWidth * .72) - margin_cases.top - margin_cases.bottom;
-      }
-      else if (parseInt(currentWidth) < 900) {
-         height_cases = parseInt(currentWidth * .62) - margin_cases.top - margin_cases.bottom;
-      }
+      // if (parseInt(currentWidth) < 600) {
+      //    height_cases = parseInt(currentWidth * .68) - margin_cases.top - margin_cases.bottom;
+      // }
+      // else if (parseInt(currentWidth) < 900) {
+      //    height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
+      // }
       
       
    var map_wid = document.getElementById("cases_map").offsetWidth;
@@ -1395,76 +1450,130 @@ function drawChart() {
    
    var dataNU = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
    var dataUC = data[3].filter(function(d){return d.geography_modeled==selectedRegion}) 
+   var dataUIUC = (data[4].filter(function(d){return d.geography_modeled==selectedRegion}) ).filter(function(d){return (d.scenario_name).localeCompare('baseline') === 0})
    
    var selectedGroupCases = selectToRegion[selectedRegion]
     var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
    var formatDate = d3.timeFormat("%b %d")
    
   
+      
+    
+var dataTime = dataNU.map(function(d) { return d.date; })
+
+
+ 
+//  var sliderTime = d3
+//     .sliderBottom()
+//     .min(d3.min(dataTime))
+//     .max(d3.max(dataTime))
+//    .step(60 * 60 * 24)
+//     .width(600)
+//     .tickFormat(d3.timeFormat('%b %Y'))
+//     .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
+//       return ((dataNU[i].date).getDate() === 1)
+//    }))
+//     .on('onchange', val => {
+//       d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
+//     });
+
+//  var gTime = d3
+//     .select('div#slider-time')
+//     .append('svg')
+//     .attr('width', 500)
+//     .attr('height', 100)
+//     .append('g')
+//     .attr('transform', 'translate(30,30)');
+
+//  gTime.call(sliderTime);
+
+//  d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
+
+
+
+
+
   var mousemove = function(d) {
 
    var formatTime = d3.timeFormat("%b %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
+    var x1 = x_rt.invert(d3.mouse(this)[0]);
+   var x2 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataUC, x0, 1);
-    var j = bisect(dataNU, x0, 1);
-    var selectedData = dataUC[i]
-    var selectedData2 = dataNU[j]
+    var j = bisect(dataNU, x1, 1);
+    var k = bisect(dataUIUC, x2, 1);
+    var selectedDataUC = dataUC[i]
+    var selectedDataNU = dataNU[j]
+    var selectedDataUIUC = dataUIUC[k]
+    
+    
+   focus
+      .attr("x1", x_rt(selectedDataUC.date))  //<<== change your code here
+      .attr("y1", 0)
+      .attr("x2", x_rt(selectedDataUC.date))  //<<== and here
+      .attr("y2", height_rt)
+      // .style("stroke-width", 1)
+      // .style("stroke", "black")
+      // .style("fill", "none");
 
-   // Tooltip
-   //    .html(formatTime(selectedData.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-   // if(selectedData.rt_median < selectedData2.rt_median  ){
+circle_UC
+      .attr("cx", x_rt(selectedDataUC.date))
+      .attr("cy", y_rt(selectedDataUC.rt_median))
+      
+circle_NU
+      .attr("cx", x_rt(selectedDataNU.date))
+      .attr("cy", y_rt(selectedDataNU.rt_median))
+      
+circle_UIUC
+      .attr("cx", x_rt(selectedDataUIUC.date))
+      .attr("cy", y_rt(selectedDataUIUC.rt_median))
+
+//bottom right of focus 
+    Tooltip
+      .html(formatDate(x0) + '<br>' + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
+      "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
+      "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
+      // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
+      .style("left", (margin_rt.left +24) + "px")
+      .style("top",  (margin_rt.top +24) + "px")
+      
+      
+   // if(selectedData.rt_median < selectedData2.rt_median){
+
+
+   //  Tooltip
+   //    .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
+   // if(selectedData.rt_median < selectedData2.rt_median){
    
    //    Tooltip2
-   //    .html(formatTime(selectedData2.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
- 
-    Tooltip
-      .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-   if(selectedData.rt_median < selectedData2.rt_median){
-   
-      Tooltip2
-      .html("NU" + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
+   //    .html("NU" + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
  
  
-   Tooltip   
-      .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
-          d3.select('#tooltipUC') .attr('class', 'tooltip n')
-   
-   Tooltip2
-      .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
-          d3.select('#tooltipNU') .attr('class', 'tooltip s')
-      
-      
-   } else {
-      Tooltip
-      .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
-          d3.select('#tooltipUC') .attr('class', 'tooltip s')
-             Tooltip2  
-      .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
-      .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
-          d3.select('#tooltipNU') .attr('class', 'tooltip n')
-   }
+   // Tooltip   
+   //    .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
+   //        d3.select('#tooltipUC') .attr('class', 'tooltip n')
    
    // Tooltip2
-   //    .html(formatTime(selectedData2.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
-   // if(selectedData2.rt_median < selectedData2.rt_median  ){
-   // Tooltip2  
-   //    .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
-   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
-   //        d3.select('.tooltip') .attr('class', 'tooltip n')
-   // } else {
-   //    Tooltip2
-   //    .style("left", (x_rt(selectedData2.date) +margin_rt.left - 20) + "px")
+   //    .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
    //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
-   //        d3.select('.tooltip') .attr('class', 'tooltip s')
+   //        d3.select('#tooltipNU') .attr('class', 'tooltip s')
+      
+      
+   // } else {
+   //    Tooltip
+   //    .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
+   //        d3.select('#tooltipUC') .attr('class', 'tooltip s')
+   //           Tooltip2  
+   //    .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
+   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
+   //        d3.select('#tooltipNU') .attr('class', 'tooltip n')
    // }
-   
    
   }
   
-  
+
   
     var mousemove_test_pos = function(d) {
          // var formatTime = d3.timeFormat("%b %d")"%b %Y"
@@ -1484,18 +1593,25 @@ function drawChart() {
    //    .attr("cy", y_test_pos(selectedData.test_pos_avg))
    }
    
-    x_rt
-      .domain(d3.extent(dataUC , function(d) { return d.date}))
-      .range([ 0, width_rt]);
-   
-   y_rt
-   .domain([0.6, 1.4]);
-   
-   svg_rt
+      svg_rt
       .attr("width", width_rt + margin_rt.left + margin_rt.right)
       .attr("height", height_rt + margin_rt.top + margin_rt.bottom)
    .append("g")
       .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
+   
+    x_rt
+      .domain(d3.extent(dataUC, function(d) { return d.date}))
+      .range([ 0, width_rt]);
+   
+   x_rtNU
+      .domain(d3.extent(dataNU, function(d) { return d.date}))
+      .range([ 0, width_rt]);
+      
+   y_rt
+   .domain([0.6, 1.4])
+   .range([ height_rt, 0 ])
+   
+
       
    const formatTime = d3.timeFormat("%b %Y");
       
@@ -1506,19 +1622,46 @@ function drawChart() {
       ticks = 6
    }
    
-   x_rt_axis
-      .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
-      .call(d3.axisBottom(x_rt).tickFormat(d3.timeFormat("%b %Y")).ticks(ticks))
-      .call(x_rt_axis => x_rt_axis.select(".domain").remove())
+   
+      x_rt_band
+      .domain(dataNU.map(function(d) { return d.date; }))
+      .range([0,width_rt])
+      .padding(0);
+   
+      var tickValsRT = x_rt_band.domain().filter(function(d,i){ 
+      return ((dataNU[i].date).getDate() === 1)
+   })
 
-   y_rt
-      .range([ height_rt, 0 ])
+   if (currentWidth < 500) {
+      var index = tickValsRT.length -1
+      
+      while (index >= 0) {
+         if(index % 2 == 0  ){
+            tickValsRT.splice(index, 1);
+         }
+         index -= 1;
+      }
+   }
+   
+   
+    x_rt_axis
+   // .attr("transform", "translate(" + 0 + "," + (height_cases+margin_cases.top) + ")")
+   .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
+   // .attr("transform", "translate(0," + height_rt + ")")
+   .call(d3.axisBottom(x_rt).tickSizeOuter(0)
+   //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
+   .tickValues(tickValsRT)
+   .tickFormat(d3.timeFormat("%b %Y"))
+   );
+
+   // y_rt
+      
    
    y_rt_axis
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       // .call(d3.axisLeft(y_rt).ticks(6))
       .call(d3.axisLeft(y_rt))
-      .call(y_rt_axis => y_rt_axis.select(".domain").remove())
+      // .call(y_rt_axis => y_rt_axis.select(".domain").remove())
       
       
           // Gridline
@@ -1529,7 +1672,7 @@ function drawChart() {
 
   grid_rt
      .attr("class", "grid")
-     .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+    .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
      .call(gridlines_rt);
 
    
@@ -1552,16 +1695,16 @@ function drawChart() {
         if (currentWidth < 600) {
            return ".6rem"
         } else {
-           return "1rem"
+           return ".8rem"
         }
      })
     .append('tspan')
        .text('t')
        .style('font-size', function() {
         if (currentWidth < 600) {
-           return ".6rem"
+           return ".4rem"
         } else {
-           return ".8rem"
+           return ".6rem"
         }
        })
        .attr('dx', '.1em')
@@ -1570,7 +1713,7 @@ function drawChart() {
 
    interval_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    interval_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-   
+   interval_rt3.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    interval_rt
       .datum(dataNU)
@@ -1579,7 +1722,7 @@ function drawChart() {
       .transition()
       .duration(1000)
       .attr("d", d3.area()
-      .x(function(d) { return x_rt(d.date) })
+      .x(function(d) { return x_rtNU(d.date) })
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
@@ -1595,9 +1738,21 @@ function drawChart() {
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
+      interval_rt3
+      .datum(dataUIUC)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr('opacity', '0.5')
+      .transition()
+      .duration(1000)
+      .attr("d", d3.area()
+      .x(function(d) { return x_rt(d.date) })
+      .y0(function(d) { return y_rt(d.rt_lower) })
+      .y1(function(d) { return y_rt(d.rt_upper) }))
+      
    
    line_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    line_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   line_rt3.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    line_rt
       .datum(dataNU)
@@ -1605,7 +1760,7 @@ function drawChart() {
       .transition()
       .duration(1000)
       .attr("d", d3.line()
-      .x(function(d) { return x_rt(d.date) })
+      .x(function(d) { return x_rtNU(d.date) })
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
@@ -1618,8 +1773,19 @@ function drawChart() {
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(d.rt_median) })
       )
+      
+   line_rt3
+      .datum(dataUIUC)
+      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+      .x(function(d) { return x_rt(d.date) })
+      .y(function(d) { return y_rt(d.rt_median) })
+      )
    
    refLine.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   
    
    refLine
       .datum(dataNU)
@@ -1628,30 +1794,63 @@ function drawChart() {
       .attr("d", d3.line()
       .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(1.0) }));
+      
 
-//  svg_rt.append("text")
-var label1Y = y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top
-var label2Y = y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top
+// var labelArr = [
+//    {"NU" : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top},
+//    {"UC" : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top},
+//    {"UIUC" : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top}
+//    ]
 
-if (Math.abs(label1Y - label2Y) < 10 ) {
-   // console.log(Math.abs(label1Y - label2Y))
-   var offset = (10 - Math.abs(label1Y - label2Y)) / 2
-   if (label1Y < label2Y) {
-      label1Y = label1Y - offset
-      label2Y = label2Y + offset
-   } else {
-      label1Y = label1Y + offset
-      label2Y = label2Y - offset
+var labelArr = [
+   {'unv' : 'UC', 'Y' : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUC[dataUC.length - 1].model_date },
+   {'unv' : 'UIUC', 'Y' : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUIUC[dataUIUC.length - 1].date },
+   {'unv' : 'NU', 'Y' : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top, 'm_d': dataNU[dataNU.length - 1].model_date }
+  
+   ]
+   
+   // console.log(labelArr)
+
+    for(let i = 0; i < 3; i++) {
+        // Finding the smallest number in the subarray
+        let min = i;
+        for(let j = i+1; j < 3; j++){
+            if(labelArr[j].Y < labelArr[min].Y) {
+                min=j; 
+            }
+         }
+         if (min != i) {
+            // let temp = {'region' : '', 'value': 0}   
+            // temp.region = labelArr[i].region
+            // temp.value = labelArr[i].value
+            // labelArr[i].region = labelArr[min].region
+            // labelArr[i].value = labelArr[min].value
+            // labelArr[min].region = temp.region;
+            // labelArr[min].value = temp.value;
+            let temp = labelArr[i]
+            labelArr[i] = labelArr[min]
+            labelArr[min] = temp
+        }
+    }
+   
+   // console.log(labelArr)
+   
+   if(labelArr[1].Y - labelArr[0].Y < 10) {
+      labelArr[1].Y += 10 - (labelArr[1].Y - labelArr[0].Y)
+   }
+   if(labelArr[2].Y - labelArr[1].Y < 10) {
+      labelArr[2].Y += 10 - (labelArr[2].Y - labelArr[1].Y)
    }
    
-}
+   // console.log(labelArr)
+
 
 var formatModelDate = d3.timeFormat("%m/%d")
 lineLabel1
       // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+ label1Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[0].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       // .style("fill", "black")
@@ -1663,14 +1862,15 @@ lineLabel1
           return ".7rem"
        }
              })
-      .text('NU('+ formatModelDate(dataNU[0].model_date) +')')
+      // .text('NU('+ formatModelDate(dataNU[0].model_date) +')')
+      .text(labelArr[0].unv + '('+ formatModelDate(labelArr[0].m_d) +')')
       
 //  svg_rt.append("text")
 lineLabel2
             // .transition()
       // .duration(1000)
       // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+ label2Y+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[1].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "black")
@@ -1681,7 +1881,89 @@ lineLabel2
           return ".7rem"
        }
              })
-      .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
+      // .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
+      .text(labelArr[1].unv + '('+ formatModelDate(labelArr[1].m_d) +')')
+
+lineLabel3
+            // .transition()
+      // .duration(1000)
+      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
+      .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[2].Y+")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "black")
+             .style('font-size', function() {
+       if (currentWidth < 600) {
+          return ".6rem"
+       } else {
+          return ".7rem"
+       }
+             })
+      // .text('UIUC('+ formatModelDate(dataUIUC[dataUIUC.length - 1].date) +')')
+      .text(labelArr[2].unv + '('+ formatModelDate(labelArr[2].m_d) +')')
+
+      focus
+      .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      .style("fill", "none")
+      .attr("stroke", "black")
+      .style("opacity", 0)
+      .style("stroke-width", 1)
+
+
+circle_NU
+.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      // .style("fill", "#4E2A84")
+      .style("fill", "none")
+      .attr('stroke', '#4E2A84')
+      .style("stroke-width", 2)
+      .attr('r', 4.5)
+      .style("opacity", 0)
+
+circle_UC
+.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      // .style("fill", "#AC1E2D")      
+      .style("fill", "none")
+      .attr('stroke', '#AC1E2D')
+      .style("stroke-width", 2)
+      .attr('r', 4.5)
+      .style("opacity", 0)
+      
+circle_UIUC
+.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      // .style("fill", "#E84A27")
+      .style("fill", "none")
+      .attr('stroke', '#E84A27')                  
+      .style("stroke-width", 2)
+      .attr('r', 4.5)
+      // .style("opacity", 0)
+// console.log((labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y )
+
+dot_NU
+      .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y+")")
+      .style("fill", "#4E2A84")
+      // .style("fill", "none")
+      .attr('stroke', '#4E2A84')
+      .style("stroke-width", 2)
+      .attr('r', 3)
+      .style("opacity", 0)
+
+dot_UC
+      .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UC') === 0}))[0].Y+")")
+      // .style("fill", "#AC1E2D")      
+      .style("fill", "#AC1E2D")
+      .attr('stroke', '#AC1E2D')
+      .style("stroke-width", 2)
+      .attr('r', 3)
+      // .style("opacity", 0)
+      
+dot_UIUC
+      .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UIUC') === 0}))[0].Y+")")
+      // .style("fill", "#E84A27")
+      .style("fill", "#E84A27")
+      .attr('stroke', '#E84A27')                  
+      .style("stroke-width", 2)
+      .attr('r', 3)
+      .style("opacity", 1)
 
 
    svg_rt
@@ -1690,19 +1972,44 @@ lineLabel2
       .attr('height', height_rt)
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .on("mouseover", function(d) {
-     focus.style("opacity", 1)
+         // console.log('mouseover')
+     
+     focus
+     .style("opacity", 1)
+     
+     circle_NU
+     .style("opacity", 1)
+     circle_UC
+     .style("opacity", 1)
+     circle_UIUC
+     .style("opacity", 1)
+     
     Tooltip
       .style("opacity", 1)
-          Tooltip2
-      .style("opacity", 1)
+   //        Tooltip2
+   //    .style("opacity", 1)
   })
       .on("mousemove", mousemove)
-      .on("mouseleave", function(d) {
-     focus.style("opacity", 0)
+
+      
+      .on("mouseout", function(event) {
+         
+      var e = event.toElement || event.relatedTarget;
+        if (e.parentNode == this || e == this) {
+           return;
+        }
+   focus
+     .style("opacity", 0)
+     
+     circle_NU
+     .style("opacity", 0)
+     circle_UC
+     .style("opacity", 0)
+     circle_UIUC
+     .style("opacity", 0)
     Tooltip
       .style("opacity", 0)
-          Tooltip2
-      .style("opacity", 0)
+// }
   })
    
     var tickTimeFormat = d3.timeFormat("%b %d")
@@ -1836,7 +2143,7 @@ lineLabel2
    //tests chart x axis
    x_axis_tests
       // .attr("transform", "translate(" + margin_tests.left + "," + 0 + ")")
-      .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
+      .attr("transform", "translate(" + margin_tests.left + "," + (height_cases + margin_tests.top) + ")")
       .call(d3.axisBottom(x_tests)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
@@ -1861,7 +2168,8 @@ lineLabel2
       .range([height_cases, 0]);
    
    y_tests
-      .domain([0, d3.max(data_map, function(d) { return d.tested; })])
+      // .domain([0, d3.max(data_map, function(d) { return d.tested; })])
+      .domain([0, d3.max(data_map, function(d) { return d.tests_avg; })])
       .range([height_cases, 0]);
       
       
@@ -1874,7 +2182,7 @@ lineLabel2
 
   grid_tests
      .attr("class", "grid")
-     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top + ")"  )
      .call(gridlines_test);   
      
      
@@ -1900,7 +2208,7 @@ lineLabel2
       .call(d3.axisLeft(y_test_pos).tickFormat(formatPercent))
    
    y_axis_tests
-      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
+      .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top  + ")"  )
       .call(d3.axisLeft(y_tests));
    
    var s = svg_tests.selectAll(".bar1")
@@ -1917,7 +2225,7 @@ lineLabel2
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
             .on('mouseover', tip_tests.show)
       .on('mouseout', tip_tests.hide)
-      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+      .attr("transform", "translate("+ margin_tests.left +","+margin_tests.top + ")"  );
    s
       .exit()
       .remove()
@@ -1938,7 +2246,7 @@ lineLabel2
       .x(function(d) { return x_tests(d.date) })
       .y(function(d) { return y_tests(d.tests_avg) })
       )
-      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  );
+      .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top + ")"  );
    
    svg_test_pos
       .selectAll("rect")
@@ -2103,10 +2411,29 @@ lineLabel2
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       
-     
-         document.getElementById('rt_text').innerHTML = (dataNU[dataNU.length - 1 ].rt_median).toFixed(2);
-    document.getElementById('rt_text_lower').innerHTML = (dataNU[dataNU.length - 1 ].rt_lower).toFixed(2);
-    document.getElementById('rt_text_upper').innerHTML = (dataNU[dataNU.length - 1 ].rt_upper).toFixed(2);
+      // var nuUpper = dataNU[dataNU.length - 1 ].rt_upper
+      // var nuLower = dataNU[dataNU.length - 1 ].rt_lower
+      
+      
+      // var ucUpper = dataUC[dataUC.length - 1 ].rt_upper
+      // var ucLower = dataUC[dataUC.length - 1 ].rt_lower
+      
+      
+      // var rt_lower = Math.min(nuLower, ucLower)
+      // var rt_upper = Math.max(nuUpper, ucUpper)
+      
+      
+      var rt_lower = Math.min((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
+      var rt_upper = Math.max((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
+      
+      
+   // document.getElementById('rt_text').innerHTML = (dataNU[dataNU.length - 1 ].rt_median).toFixed(2);
+   //  document.getElementById('rt_text_lower').innerHTML = (dataNU[dataNU.length - 1 ].rt_lower).toFixed(2);
+   //  document.getElementById('rt_text_upper').innerHTML = (dataNU[dataNU.length - 1 ].rt_upper).toFixed(2);
+    
+         document.getElementById('rt_text_lower').innerHTML = rt_lower.toFixed(2);
+    document.getElementById('rt_text_upper').innerHTML = rt_upper.toFixed(2);
+   
    //  document.getElementsByClassName('last_update_date').innerHTML = formatDate(data_map[data_map.length - 1 ].date)
 
     document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
@@ -2139,40 +2466,30 @@ lineLabel2
 
 }
 
+//nov hover rt 
+//add new rt line 
+//add new rt line label 
+//add new rt line tooltip 
+//rt download link 
 
-//different color rt tips
-//rt slider 
 
-//moble date consistency 
+//doses by day chart
 
-
+//vertical spacing on mobile
+//smaller rt y-axis label on desktop
+//better label/text size/reaction
+//map bigger on mobile
+//chart proportions better all screens
 //label backlogged cases
-//extra rt text added ? 
+//rt slider 
+//rt gridlines behind line
 //text under Cases, Deaths, etc not wrapped in <p> </p> ?
-
-
-      //add back line labels
-      //hover detail match line
-      //hover detail different colors 
-      //
-      //get rid of github token / do correctly
-
-      //second rt tip
-      //rt tips move/flip predictably 
-      //triangle on all tips
-      //doses by day chart
-      
-      
-      //rt gridlines behind line
-
-
-      //map bigger on mobile
-      //chart proportions better all screens
-      
-      //get rid of cdns 
-      //set up cors proxy - better way?
-      //add font system from figma 
-      //error message on load timeout 
+//cleaner dropdown menu 
+//acc features
+//get rid of cdns 
+//set up cors proxy - better way?
+//add font system from figma 
+//error message on load timeout 
 
    //  read_data();
     // Initialize the chart
