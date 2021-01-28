@@ -2579,17 +2579,7 @@ if(labelArr.length > 3 ){
       .y(function(d) { return y_deaths(d.deaths_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
-      
-      // var nuUpper = dataNU[dataNU.length - 1 ].rt_upper
-      // var nuLower = dataNU[dataNU.length - 1 ].rt_lower
-      
-      
-      // var ucUpper = dataUC[dataUC.length - 1 ].rt_upper
-      // var ucLower = dataUC[dataUC.length - 1 ].rt_lower
-      
-      
-      // var rt_lower = Math.min(nuLower, ucLower)
-      // var rt_upper = Math.max(nuUpper, ucUpper)
+
       
       var rt = [
          dataNU[dataNU.length - 1 ].rt_median,
@@ -2670,6 +2660,7 @@ if(labelArr.length > 3 ){
 //set up cors proxy - better way?
 //add font system from figma 
 //error message on load timeout 
+
 
    //  read_data();
     // Initialize the chart
