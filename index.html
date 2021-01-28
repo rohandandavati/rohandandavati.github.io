@@ -2591,10 +2591,20 @@ if(labelArr.length > 3 ){
       // var rt_lower = Math.min(nuLower, ucLower)
       // var rt_upper = Math.max(nuUpper, ucUpper)
       
+      var rt = [
+         dataNU[dataNU.length - 1 ].rt_median,
+         dataUC[dataUC.length - 1 ].rt_median,
+         dataUIUC[dataUIUC.length - 1 ].rt_median
+         ]
       
-      var rt_lower = Math.min((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
-      var rt_upper = Math.max((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
+      if ((selectedRegion).localeCompare('covidregion_11') === 0) {
+         rt.push(dataANL[dataANL.length - 1 ].rt_median)
+      }
+      // var rt_lower = Math.min((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
+      // var rt_upper = Math.max((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
       
+            var rt_lower = Math.min(...rt)
+            var rt_upper = Math.max(...rt)
       
    // document.getElementById('rt_text').innerHTML = (dataNU[dataNU.length - 1 ].rt_median).toFixed(2);
    //  document.getElementById('rt_text_lower').innerHTML = (dataNU[dataNU.length - 1 ].rt_lower).toFixed(2);
