@@ -1,8 +1,89 @@
----
-layout: default
-title: Home
----
-<style>
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>-->
+    <script type="text/javascript" id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>-->
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js" integrity="sha512-C2RveGuPIWqkaLAluvoxyiaN1XYNe5ss11urhZWZYBUA9Ydgj+hfGKPcxCzTwut1/fmjEZR7Ac35f2aycT8Ogw==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/assets/js/d3-tip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" integrity="sha512-P/PLNIojUNrUq2g5Q3NX8epp5X6KZmNvWV2pDGU+ZiU96YlqFhIrG0pkSZ/qgruT7uJ2Ok/vFN7/7brl4Y7ipw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-scale/1.0.7/d3-scale.min.js" integrity="sha512-CagQ2MAkdTRJK0ge/Q/+y2QL+0wvabHP7y7GIKwy7E5aptPLpHu26CDi3Ec95xkYPMvZBqjNOwe02NZoBqWXIg==" crossorigin="anonymous"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-transition/1.1.1/d3-transition.min.js" integrity="sha512-9EoVFaJ1f642H4qLe+VUMu7CDqa1FQPdar1Pm76aS1AeesQoMdmm3NUZaZlJ1H/IEpwfS1Hbq41l/iUmhxq8jw==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-time/1.0.8/d3-time.min.js" integrity="sha512-UPE7yiWEYDz8P9wbryFMvk4XRktIUjV1Z5rQcmAsIgRelE9GAZ+6Z8jtGcaOUYEvz8aaoDWpDZXkhGbMkeWPQQ==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-time-format/2.1.1/d3-time-format.min.js" integrity="sha512-RTLi1scS97v4q3+HK402bvUoRK7qwXoZytagrAsw+B6gVzTAiVXEzGW/L60XEd0N63qgB9NnSXzLv7gi1FcXFg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-collection/1.0.5/d3-collection.min.js" integrity="sha512-wYLIhsNaJ6cBEcFIgAtY0ncVV3KEzE95+32OfOdQJQkEfZVrWOn+N2woUPaBCuW8N6S7++72Y7XlOPZ/3U7X2w==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-geo-projection/2.4.0/d3-geo-projection.min.js" integrity="sha512-GsBgCSYNatBlhNZQPrXtlHydWMCi+rl7QyR5Fs5kNwczI8XdKqZ7ZZ+yGnEfhvekkgSiAW0KGM5o7q+OHqhutQ==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@2.0.0/dist/d3-scale-chromatic.min.js" integrity="sha256-6j4tMdLVRyhccNbjkfHgQCTYUmR68g0v9a+MvHPd2yI=" crossorigin="anonymous"></script>
+   <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-zoom/1.7.1/d3-zoom.min.js" integrity="sha512-NrNejGiQgUB+TA42pQ4GlKf+pB2a/cHaoX+Jg+DI0Hr5JlLv31T8ewiFoL8YnlxocmtJaYrkedZkXVlDRJOs6w==" crossorigin="anonymous"></script>-->
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-drag/1.2.1/d3-drag.min.js" integrity="sha512-t039zwQbVlKk0TRUp1uDa4q1RT6++bjBfwwZnolG0fYiBq6uWUcYgYYBb8U0ZfEMtS+2OgBP47bl6dV5QNRaxQ==" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/2.0.0/d3-queue.min.js" integrity="sha512-CsnvWujOBruwPxb22BIfuZr3f9wQlDYpDVFhErxqmD8emnkVuD69iPXxr3cmKiEJMHLNp4bCqwnuMzQLTsn7tQ==" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-brush/1.0.4/d3-brush.min.js" integrity="sha512-Fz/fCT+LP/iJ4R/463McuhsUA7myzZ3qapIxewSBxycShXUA7CzA5gVH89vBtx3zXeiHrj+TR6Pe7+YKi+PThw==" crossorigin="anonymous"></script>
+ <script src="https://unpkg.com/d3-simple-slider"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-shape/1.2.0/d3-shape.min.js" integrity="sha512-78mNqQERrqbS7sZEK4XidMguPiLguTxFbouxfSvurI843nXwiyJzD2Bt2Qv6qK0EPo7bWeUMjLsYJSEeox9Y6A==" crossorigin="anonymous"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-array/1.2.2/d3-array.min.js" integrity="sha512-a/E42YlriWlH6BqS4HXIXSx/tNTdC9NAKnGayXm0yac310St9QXhgtMQTPd9Ve48M3GEc234+qxZY3W/8v6cOw==" crossorigin="anonymous"></script>
+  </head>
+  <body >
+    
+  <style>
+
+   .navbar {
+     z-index: 3;
+   }
+   
+   .open {
+       z-index:3;
+   }
+     .hi {
+       width:500px;
+     }
+   
+     </style>
+     
+     <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed ">
+       <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse buttons open" id="navbarNav">
+         <ul class="navbar-nav list "id = "navList">
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/"  class="current" >Home</a>
+               </li>
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/reports.html" >Reports</a>
+               </li>
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/about.html" >About</a>
+               </li>
+           
+         </ul>
+       </div>
+       
+       <div class = "container position-relative ">
+       <div class = "row">
+           <div class = "col drop ">
+               <select id="selectButton" class = "dropdown "  ></select>
+           </div>
+       </div>
+   </div>
+   
+     </nav>
+    <style>
 /*div {*/
 /*   border: 1px solid red;*/
 /*}*/
@@ -2581,20 +2662,6 @@ if(labelArr.length > 3 ){
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
 
       
-<<<<<<< HEAD
-=======
-      // var nuUpper = dataNU[dataNU.length - 1 ].rt_upper
-      // var nuLower = dataNU[dataNU.length - 1 ].rt_lower
-      
-      
-      // var ucUpper = dataUC[dataUC.length - 1 ].rt_upper
-      // var ucLower = dataUC[dataUC.length - 1 ].rt_lower
-      
-      
-      // var rt_lower = Math.min(nuLower, ucLower)
-      // var rt_upper = Math.max(nuUpper, ucUpper)
-      
->>>>>>> 9e3f65a95ed49d4c0960522620d332ea0b568ad9
       var rt = [
          dataNU[dataNU.length - 1 ].rt_median,
          dataUC[dataUC.length - 1 ].rt_median,
@@ -2692,3 +2759,8 @@ if(labelArr.length > 3 ){
 })
 
 </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
