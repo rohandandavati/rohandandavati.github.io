@@ -98,22 +98,23 @@
 <div class="jumbotron">
     <h1>About</h1>
     <!--<br></br>-->
-    <p>Illinois Covid Modeling is a joint effort between Northwestern University (NU), the University of Chicago (UC), and the University of Illinois at Urbana-Champaign (UIUC), who have been modeling COVID-19 in Illinois since March 2020.
+    <p>Illinois Covid Modeling is a joint effort between Northwestern University (NU), the University of Chicago (UC), the University of Illinois at Urbana-Champaign (UIUC), and Argonne National Laboratory (ANL) who have been modeling COVID-19 in Illinois since March 2020.
     In partnership with the Illinois Department of Public Health (IDPH), we use simulation models to predict trends in hospital usage and deaths at the COVID-19 Region level.
-    The NU and UC models are SEIR-based compartmental models, while the UIUC model is an age-of-infection model. The models are calibrated to these data sources collected by IDPH:
+    The NU and UC models are SEIR-based compartmental models, the UIUC model is an age-of-infection model, and the ANL model is an agent-based model. The models are calibrated to these data sources collected by IDPH:
     <ol>
-    <li>daily census of non-ICU hospital beds occupied by COVID-19 patients (NU, UC, UIUC)</li>
-    <li>daily census of ICU hospital beds occupied by COVID-19 patients (NU, UC, UIUC)</li>
+    <li>daily census of non-ICU hospital beds occupied by COVID-19 patients (NU, UC, UIUC, ANL)</li>
+    <li>daily census of ICU hospital beds occupied by COVID-19 patients (NU, UC, UIUC, ANL)</li>
     <li>COVID-like illness (CLI) hospital admissions (NU, UC)</li>
     <li>COVID-attributed death data in hospitals (UIUC)</li>
-    <li>COVID-attributed death data in and out of hospitals (NU, UC, UIUC)</li>
+    <li>COVID-attributed death data in and out of hospitals (NU, UC, UIUC, ANL)</li>
     </ol>
-    Each team has created a suite of 11 models, one for each COVID-19 Region. UIUC also created a 12th model for the state as a whole, while Illinois-level predictions for NU and UC are summed up from their individual Region models.
+    The NU, UC, and UIUC teams have created a suite of 11 models, one for each COVID-19 Region. UIUC also created a 12th model for the state as a whole, while Illinois-level predictions for NU and UC are summed up from their individual Region models. The ANL model is currently producing results for COVID-19 Region 11.
     We continuously perform other analyses of pandemic dynamics, some of which are featured on the Reports page.</p>
     <p>Code for Northwestern's simulation model is available <a href="https://github.com/numalariamodeling/covid-chicago">here</a>. Northwestern is estimating \(R_t\) by
         applying the <a href="https://pypi.org/project/epyestim/">epyestim package</a> to the timeseries of daily new infections inferred from the simulation models.</p>
     <p>Code for University of Chicago's simulation model is available <a href="https://github.com/cobeylab/covid_IL">here</a>. The University of Chicago group is estimating \(R_t\) using methods in <a href="https://github.com/epiforecasts/EpiNow2">EpiNow2</a> to hospital admissions with COVID-like illness, which have tracked actual COVID-19 admissions very well. These estimates are checked against the \(R_t\) derived from the infection rates that are inferred from the dynamical model.</p>
     <p>Code for UIUC's simulation model is available <a href="https://github.com/uiuc-covid19-modeling/pydemic">here</a> and the details of their procedure simultaneously fitting four data streams is <a href="/reports/20201116_UIUC_Illinois_model_paper.pdf">here</a>.</p>
+    <p>The Argonne model (CityCOVID) is a distributed agent-based model built on the free and open source Repast for High-performance Computing (Repast HPC) <a href="https://repast.github.io/repast_hpc.html">agent-based modeling toolkit</a> and the Chicago Social Interaction Model (ChiSIM) <a href="https://github.com/Repast/chiSIM">framework</a>. \(R_t\) is calculated by tracking individual simulated agents across their infectious careers and tallying up the number of secondary infections that they produce. The \(R_t\)  value for a date is the average number of secondary infectious produced by all the agents who began their infectious careers on that date.</p>
     <p>Case and death data shown on the landing page are aggregated from <a href="https://www.dph.illinois.gov/covid19/covid19-statistics"> county-level public data from IDPH </a>.</p>
     <h2>About the modeling teams</h2>
     <p>COVID-19 modeling at Northwestern is led by the <a href="https://www.numalariamodeling.org/">Malaria and COVID-19 Modeling Team</a>, an infectious disease modeling group with expertise in using models to inform policy. In addition to their COVID-19 work, they
@@ -122,6 +123,7 @@
     In addition to their COVID-19 work, they study how the host adaptive immune response coevolves with pathogens, especially in ways relevant to epidemiological and evolutionary forecasting, vaccine design, and pathogen diversity.</p>
     <p>The UIUC modeling team led by Professors Goldenfeld and Maslov includes scientists from the University of Illinois and Brookhaven National Laboratory. In addition to their COVID-19 work, the leads of the team study dynamics
         and co-evolution of microbial ecosystems including microbial pathogens as a part of Biocomplexity theme at the Carl R. Woese Institute for Genomic Biology, University of Illinois.</p>
+    <p>The <a href="https://www.anl.gov/dis/citycovid">CityCOVID team</a> at <a href="https://www.anl.gov">Argonne National Laboratory</a> is led by Charles "Chick" Macal and Jonathan Ozik from the Decision and Infrastructure Sciences Division. The group develops large-scale agent-based models in a variety of domain areas, including healthcare, energy, and the environment, to support decision making. The group also publishes open-source toolkits for <a href="https://repast.github.io">agent-based modeling</a> and <a href="https://emews.github.io">high-performance computing</a>.</p>
 </div>
 </div>
 

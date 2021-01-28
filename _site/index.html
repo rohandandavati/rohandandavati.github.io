@@ -515,6 +515,442 @@ html, body {
 
 <!--<div id="bottom"></div>-->
 
+---
+layout: default
+title: Home
+---
+<style>
+/*div {*/
+/*   border: 1px solid red;*/
+/*}*/
+/*.bottom {*/
+/*   height: 200px;*/
+/*   position: relative;*/
+/*}*/
+
+.content {
+   display: none;
+}
+/*#focus_rt {*/
+/*     z-index: 4;*/
+/*}*/
+#loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  width: 120px;
+  height: 120px;
+  margin: -76px 0 0 -76px;
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Add animation to "page content" */
+.animate-bottom {
+  position: relative;
+  -webkit-animation-name: animatebottom;
+  -webkit-animation-duration: 1s;
+  animation-name: animatebottom;
+  animation-duration: 1s
+}
+
+@-webkit-keyframes animatebottom {
+  from { bottom:-100px; opacity:0 } 
+  to { bottom:0px; opacity:1 }
+}
+
+@keyframes animatebottom { 
+  from{ bottom:-100px; opacity:0 } 
+  to{ bottom:0; opacity:1 }
+}
+
+
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.grid line {
+  stroke: #ddd;
+}
+
+.d3-tip, .tooltip, .tooltip_up {
+   z-index: 2;
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  /*box-sizing: border-box;*/
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.tooltip.n:after {
+  box-sizing: border-box;
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25B2";
+  position: absolute;
+  text-align: center;
+  margin: -1px 0 0 0;
+  bottom: 100%;
+  left: 0;
+}
+
+
+/*MAKES BOTTOM TIP*/
+.tooltip.s:after {
+  box-sizing: border-box;
+  display: block;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+
+/*#tooltipUC {*/
+/*   background: #464646*/
+/*}*/
+
+#tooltipNU {
+   background: #949494
+}
+
+
+/*creates tip on bottom: content, top*/
+/*.tooltip:after {*/
+  /*box-sizing: border-box;*/
+/*  display: block;*/
+/*  font-size: 10px;*/
+/*  width: 100%;*/
+/*  line-height: 1;*/
+/*  color: rgba(0, 0, 0, 0.8);*/
+/*  content: "\25BC";*/                   
+/*  position: absolute;*/
+/*  text-align: center;*/
+/*  margin: -1px 0 0 0;*/
+/*  top: 100%;*/
+/*  left: 0;*/
+/*}*/
+
+
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+    .card {
+    border-color:transparent !important;
+    }
+    .chart {
+        z-index: 1;
+        /*margin-bottom: 1%;*/
+        
+    }
+    body {
+       margin: 0px;
+       padding: 0px;
+        /*padding-top: 50px;*/
+        /*padding-bottom:300px;*/
+        
+}
+	.classy {
+      fill:#009DAA;
+    } 
+ 
+   #cases_map {
+      /*z-index: 2;*/   
+      position: fixed;
+      z-index: 2;
+   }
+   /*.card-body {*/
+      /*width: 100%;*/
+   /*   margin-right: 20px;*/
+   /*}*/
+   /*.pos {*/
+   /*   float: right;*/
+   /*   position: relative;*/
+   /*}*/
+
+@media only screen and (max-width: 330px) {
+      body {
+         padding-top: 110px;
+      }
+      #cases_map {
+         width: 20%;
+         /*padding-top: 10px;*/
+         /*border: solid red 1px;*/
+      }
+            .card{
+         /*width:z;*/
+         width: 80%;
+      }
+
+} 
+
+
+@media only screen and (min-width: 339px) {
+      body {
+         padding-top: 90px;
+         /*margin-right: 0%;*/
+      }
+      #cases_map {
+         width: 15%;
+         /*border: solid red 1px;*/
+      }
+      /*.rt {*/
+      /*   width: 100%;*/
+      /*   float: right;*/
+         /*margin-left: 10%;*/
+      /*}*/
+      
+
+      #rt_outer {
+         width: 100%;
+      }
+      .card{
+         width:85%;
+         float: right;
+      }
+      .rt_title {
+         width: 85%;
+      }
+      /*.cases {*/
+      /*   width: 100%;*/
+      /*   float: right;*/
+      /*}*/
+      /*.deaths {*/
+      /*   width: 100%;*/
+      /*   float: right;*/
+      /*}*/
+
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+/*@media only screen and (min-width: 600px) {*/
+/*      #cases_map {*/
+/*         width: 18%;*/
+/*      }*/
+/*      body {*/
+/*         padding-top: 70px;*/
+/*      }*/
+/*      #cases_map {*/
+/*         width: 15%;*/
+         /*border: solid red 1px;*/
+/*      }*/
+/*      .rt {*/
+/*         width: 100%;*/
+/*         float: right;*/
+/*         margin-right: 0%;*/
+/*      }*/
+/*      .cases {*/
+/*         width: 100%;*/
+/*         float: right;*/
+/*      }*/
+/*      .deaths {*/
+/*         width: 100%;*/
+/*         float: right;*/
+/*      }*/
+/*}*/
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+      
+      #cases_map {
+         width: 15%;
+      }
+      .card {
+         margin-right: 5%;
+         width: 80%;
+      }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+   body{
+      /*margin-left: 5%;*/
+      margin-right: 10%;
+   }
+   #cases_map {
+      margin-left: 1%;
+         width: 10%;
+}
+      .card {
+         margin-right: 5%;
+         width: 80%;
+      }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+   
+      body{
+      /*margin-left: 5%;*/
+      margin-right: 12%;
+   }
+   #cases_map {
+         width: 10%;
+      }
+}
+
+/*.left{*/
+   /*text-align: center;*/
+/*}*/
+.bottom {
+   float: right;
+   /*width: 50%*/
+   position: relative;
+}
+
+
+</style>
+
+<!--try raising z index-->
+<div id="loader"></div>
+
+<div class="map content" id = "cases_map"></div>
+
+
+
+<div class="card rt_title content">
+  <div class="card-body rt">
+    <h2>Transmission Status</h2>
+    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text_lower"></text> to <text id = "rt_text_upper"></text> for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
+      reproductive number, tells us whether the epidemic is <i>growing</i> <span class = "nowrap">(\(R_t\) > 1)</span>, <i>shrinking</i> (\(R_t\) < 1), or
+      staying the same (\(R_t\) = 1). </text></p>
+      <p><text>The curves below are estimated using different methods and data sources. Northwestern University (NU) estimates \(R_t\) from a dynamical model, which is fitted to COVID-19 hospitalizations and deaths.
+        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI.
+         The date next to the model name refers to the date of model fit. For more details and
+        links to the models, see the <a href="/about.html">About page</a>.</text></p>
+  </div>
+</div>
+
+<div class = "card cases content" id = "card_1">
+   <div class="card-body"> 
+   <div id = 'rt_chart'></div>
+   </div>
+</div>
+
+
+<div class="card cases content" id = "card_2">
+  <div class="card-body rt">
+    <h2>Cases</h2>
+    <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
+      Illinois Department of Public Health. Individuals who receive multiple positive test results only count as one
+      case. Bars show daily cases, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases of SARS-CoV-2 infection are discovered daily in <text class = "region_text"></text>  of Illinois. </text>
+  </div>
+</div>
+
+<!--<div class = "card cases chart">-->
+<!--   <div class="card-body rt" id = "cases_chart"> </div>-->
+<!--</div>-->
+<div class = "card cases chart content" id ="card_3">
+   <div class="card-body rt"> 
+      <div id = 'cases_chart'></div>
+   </div>
+</div>
+
+
+<div class="card deaths content" id = "card_4">
+  <div class="card-body rt">
+    <h2>Deaths</h2>
+    <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
+      Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
+      but are likely within two weeks. Bars show daily deaths, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_deaths"></text> confirmed COVID-19 deaths
+      occur daily in <text class = "region_text"></text> of Illinois. </text>
+  </div>
+</div>
+
+<div class = "card deaths chart content" id ="card_5">
+   <div class="card-body rt"> 
+      <div id = 'deaths_chart'></div>
+   </div>
+</div>
+
+<div class="card cases content" id ="card_6">
+  <div class="card-body rt">
+    <h2>Cases per Test (case positivity rate)</h2>
+    <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
+      is not the same as the test positivity rate, which measures the number of positive tests per every test
+      administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_case_pos"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
+  </div>
+</div>
+
+<div class = "card deaths chart content" id ="card_7">
+   <div class="card-body rt"> 
+      <div id = 'test_pos'></div>
+   </div>
+</div>
+<div class="card cases content" id = "card_8">
+  <div class="card-body rt">
+    <h2>Tests</h2>
+    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois.
+      This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
+      test for past SARS-CoV-2 infection, are not included in this count. Diagnostic tests include only
+      molecular tests up to October 14, 2020 and include both molecular and antigen tests after October 14, 2020. Bars show daily tests, and the line
+      is a 7-day moving average. Dates are the date results were reported, not date of specimen collection. Spikes correspond to backlogged tests that were reported all at once.
+        As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
+</text>
+  </div>
+</div>
+
+
+<div class = "card deaths chart content" id = "card_9">
+   <div class="card-body rt"> 
+      <div id = 'tests'></div>
+   </div>
+</div>
+
+<!--<div class = 'container'>-->
+
+<!--  <div class=" bottom row align-items-center">-->
+<!--    <div class="col-sm-2"><p id="value-time"></p></div>-->
+<!--    <div class="col-sm"><div id="slider-time"></div></div>-->
+<!--  </div>-->
+<!--  </div>-->
+
+<!--<div id="bottom"></div>-->
+
 <script>
    /* global d3 */
    /* global $ */
@@ -946,11 +1382,11 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 10, right: 74, bottom: 30, left: 35};
-   var margin_cases = {top: 15, right: 20, bottom: 50, left: 40};
-   var margin_deaths = {top: 15, right: 10, bottom: 50, left: 40};
-   var margin_test_pos = {top: 15, right: 30, bottom: 50, left: 60};
-   var margin_tests = {top: 25, right: 10, bottom: 50, left: 70};
+   var margin_rt = {top: 10, right: 70, bottom: 30, left: 35};
+   var margin_cases = {top: 10, right: 20, bottom: 30, left: 40};
+   var margin_deaths = {top: 10, right: 20, bottom: 30, left: 40};
+   var margin_test_pos = {top: 10, right: 20, bottom: 30, left: 60};
+   var margin_tests = {top: 10, right: 20, bottom: 30, left: 70};
    
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
@@ -981,6 +1417,9 @@ html, body {
    var interval_rt3 = svg_rt.append("path")
       .attr("stroke", "none")
       // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+      
+      var interval_rt4 = svg_rt.append("path")
+      .attr("stroke", "none")
    
    var line_rt2 = svg_rt.append('g').append("path")  
    // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
@@ -988,6 +1427,12 @@ html, body {
       .style("fill", "none");
       
          var line_rt3 = svg_rt.append('g').append("path")  
+   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+      .style("stroke-width", 2)
+      .style("fill", "none");
+      
+      
+      var line_rt4 = svg_rt.append('g').append("path")  
    // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
@@ -1045,6 +1490,8 @@ var lineLabel2 = svg_rt.append("text")
 
 var lineLabel3 = svg_rt.append("text")
 
+var lineLabel4 = svg_rt.append("text")
+
  var focus = svg_rt.append("g")
          //  .append('circle')
          .append('line')
@@ -1057,6 +1504,9 @@ var lineLabel3 = svg_rt.append("text")
          
 var circle_UIUC = svg_rt.append("g")
          .append('circle')
+         
+var circle_ANL = svg_rt.append("g")
+         .append('circle')
  
   var dot_UC = svg_rt.append("g")
          .append('circle')
@@ -1067,6 +1517,8 @@ var circle_UIUC = svg_rt.append("g")
 var dot_UIUC = svg_rt.append("g")
          .append('circle')
          
+var dot_ANL = svg_rt.append("g")
+         .append('circle')
          
 // var Tooltip = svg_rt.append("g")
 //     .append("div")
@@ -1131,7 +1583,8 @@ var files = [
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv',
              'https://cors-anywhere-clone.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv',
-             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUIUC.csv'
+             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUIUC.csv',
+             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtANL.csv'
              ]
 
    let map = {};
@@ -1193,7 +1646,7 @@ Promise.all(promises).then(function(data) {
    
    
    
-   
+   // console.log(data[5])
    
    
 var historical_county = []
@@ -1206,10 +1659,34 @@ var historical_county = []
    
    //get min / max of each
    //start at lower max, end at higher min 
+   
+   //ANL data
+var index = data[5].length - 1;
 
 
+while (index >= 0) {
+    if(isNaN(data[5][index].rt_median) ||
+       (parseDate2(data[5][index].date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
+    (parseDate2(data[5][index].date)).getTime()  < parseDate2('2020-4-1').getTime()){
+       
+         data[5].splice(index, 1); 
+      } else {
+         data[5][index].rt_lower = +data[5][index].rt_lower;
+         if(data[5][index].rt_lower <.6) {
+            data[5][index].rt_lower = .6
+         }
+         data[5][index].rt_median = +data[5][index].rt_median;
+         data[5][index].rt_upper = +data[5][index].rt_upper;
+         data[5][index].date = parseDate2(data[5][index].date);
+          data[5][index].model_date = parseDate2(data[5][index].model_date);
+      }
+ index -= 1;
+}
 
-var index = data[4].length - 1;
+
+   // console.log(data[5])
+
+index = data[4].length - 1;
 
 
 while (index >= 0) {
@@ -1439,23 +1916,23 @@ function drawChart() {
       const width_rt = currentWidth - margin_rt.left - margin_rt.right;
       let height_rt = parseInt(currentWidth * 0.35 ) - margin_rt.top - margin_rt.bottom;
 
-      // if (parseInt(currentWidth) < 600) {
-      //    height_rt = parseInt(currentWidth * .68) - margin_rt.top - margin_rt.bottom;
-      // }
-      // else if (parseInt(currentWidth) < 900) {
-      //    height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
-      // }
+      if (parseInt(currentWidth) < 600) {
+         height_rt = parseInt(currentWidth * .58) - margin_rt.top - margin_rt.bottom;
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_rt = parseInt(currentWidth * .42) - margin_rt.top - margin_rt.bottom;
+      }
 
       currentWidth = document.getElementById("cases_chart").offsetWidth;
       const width_cases = currentWidth- margin_cases.left - margin_cases.right;
       let height_cases = parseInt(currentWidth * 0.35 ) - margin_cases.top - margin_cases.bottom;
       
-      // if (parseInt(currentWidth) < 600) {
-      //    height_cases = parseInt(currentWidth * .68) - margin_cases.top - margin_cases.bottom;
-      // }
-      // else if (parseInt(currentWidth) < 900) {
-      //    height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
-      // }
+      if (parseInt(currentWidth) < 600) {
+         height_cases = parseInt(currentWidth * .60) - margin_cases.top - margin_cases.bottom;
+      }
+      else if (parseInt(currentWidth) < 900) {
+         height_cases = parseInt(currentWidth * .42) - margin_cases.top - margin_cases.bottom;
+      }
       
       
    var map_wid = document.getElementById("cases_map").offsetWidth;
@@ -1532,6 +2009,8 @@ function drawChart() {
    var dataNU = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
    var dataUC = data[3].filter(function(d){return d.geography_modeled==selectedRegion}) 
    var dataUIUC = (data[4].filter(function(d){return d.geography_modeled==selectedRegion}) ).filter(function(d){return (d.scenario_name).localeCompare('baseline') === 0})
+   var dataANL = data[5]
+      //.filter(function(d){return d.geography_modeled==selectedRegion}) 
    
    var selectedGroupCases = selectToRegion[selectedRegion]
     var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
@@ -1578,14 +2057,17 @@ var dataTime = dataNU.map(function(d) { return d.date; })
 
    var formatTime = d3.timeFormat("%b %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
-    var x1 = x_rt.invert(d3.mouse(this)[0]);
-   var x2 = x_rt.invert(d3.mouse(this)[0]);
+   //  var x1 = x_rt.invert(d3.mouse(this)[0]);
+   // var x2 = x_rt.invert(d3.mouse(this)[0]);
+   // var x3 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataUC, x0, 1);
-    var j = bisect(dataNU, x1, 1);
-    var k = bisect(dataUIUC, x2, 1);
+    var j = bisect(dataNU, x0, 1);
+    var k = bisect(dataUIUC, x0, 1);
+    var l = bisect(dataANL, x0, 1);
     var selectedDataUC = dataUC[i]
     var selectedDataNU = dataNU[j]
     var selectedDataUIUC = dataUIUC[k]
+    var selectedDataANL = dataANL[l]
     
     
    focus
@@ -1609,15 +2091,32 @@ circle_UIUC
       .attr("cx", x_rt(selectedDataUIUC.date))
       .attr("cy", y_rt(selectedDataUIUC.rt_median))
 
+circle_ANL
+      .attr("cx", x_rt(selectedDataANL.date))
+      .attr("cy", y_rt(selectedDataANL.rt_median))
+
 //bottom right of focus 
+
+if ((selectedRegion).localeCompare('covidregion_11') === 0) {
     Tooltip
-      .html(formatDate(x0) + '<br>' + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
+      .html(formatDate(x0) + '<br>' + 
+      "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
+      "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
+      "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataANL.rt_median)).toFixed(2) + "</span>"+ "<br>" +
+      "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
+      // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
+      .style("left", (margin_rt.left +24) + "px")
+      .style("top",  (margin_rt.top +24) + "px")
+} else {
+       Tooltip
+      .html(formatDate(x0) + '<br>' + 
+      "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
       "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
       "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
       // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
       .style("left", (margin_rt.left +24) + "px")
       .style("top",  (margin_rt.top +24) + "px")
-      
+}
       
    // if(selectedData.rt_median < selectedData2.rt_median){
 
@@ -1795,6 +2294,7 @@ circle_UIUC
    interval_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    interval_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    interval_rt3.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   interval_rt4.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    interval_rt
       .datum(dataNU)
@@ -1822,7 +2322,6 @@ circle_UIUC
       interval_rt3
       .datum(dataUIUC)
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      .attr('opacity', '0.5')
       .transition()
       .duration(1000)
       .attr("d", d3.area()
@@ -1830,10 +2329,28 @@ circle_UIUC
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
+   if((selectedRegion).localeCompare('covidregion_11') === 0){
+      interval_rt4.attr('opacity', '0.5')
+            .transition()
+      .duration(1000)
+   } else {
+      interval_rt4.attr('opacity', '0')
+   }
    
+   interval_rt4
+      .datum(dataANL)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+
+      .attr("d", d3.area()
+      .x(function(d) { return x_rt(d.date) })
+      .y0(function(d) { return y_rt(d.rt_lower) })
+      .y1(function(d) { return y_rt(d.rt_upper) }))
+      
+      
    line_rt.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    line_rt2.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    line_rt3.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+   line_rt4.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
    
    line_rt
       .datum(dataNU)
@@ -1857,6 +2374,23 @@ circle_UIUC
       
    line_rt3
       .datum(dataUIUC)
+      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .transition()
+      .duration(1000)
+      .attr("d", d3.line()
+      .x(function(d) { return x_rt(d.date) })
+      .y(function(d) { return y_rt(d.rt_median) })
+      )
+      
+   if((selectedRegion).localeCompare('covidregion_11') === 0){
+      line_rt4.attr('opacity', '1')
+   } else {
+      line_rt4.attr('opacity', '0')
+   }
+      
+      
+   line_rt4
+      .datum(dataANL)
       .attr("stroke", function(d){ return colors(selectedRegion) })
       .transition()
       .duration(1000)
@@ -1890,12 +2424,17 @@ var labelArr = [
   
    ]
    
+   if((selectedRegion).localeCompare('covidregion_11') === 0) {
+      labelArr.push({'unv' : 'ANL', 'Y' : y_rt(dataANL[dataANL.length - 1].rt_median) + margin_rt.top, 'm_d': dataANL[dataANL.length - 1].model_date })
+   }
+   
    // console.log(labelArr)
 
-    for(let i = 0; i < 3; i++) {
+//sort labels
+    for(var i = 0; i < labelArr.length-1; i++) {
         // Finding the smallest number in the subarray
         let min = i;
-        for(let j = i+1; j < 3; j++){
+        for(let j = i+1; j < labelArr.length-1; j++){
             if(labelArr[j].Y < labelArr[min].Y) {
                 min=j; 
             }
@@ -1916,14 +2455,24 @@ var labelArr = [
    
    // console.log(labelArr)
    
-   if(labelArr[1].Y - labelArr[0].Y < 10) {
-      labelArr[1].Y += 10 - (labelArr[1].Y - labelArr[0].Y)
-   }
-   if(labelArr[2].Y - labelArr[1].Y < 10) {
-      labelArr[2].Y += 10 - (labelArr[2].Y - labelArr[1].Y)
-   }
+ for(var i = 1; i < labelArr.length-1; i++) {
+    if(labelArr[i].Y - labelArr[i-1].Y < 10) {
+    labelArr[i].Y += 10 - (labelArr[i].Y - labelArr[i-1].Y)
+    }
+ }
    
-   // console.log(labelArr)
+   // if(labelArr[1].Y - labelArr[0].Y < 10) {
+   //    labelArr[1].Y += 10 - (labelArr[1].Y - labelArr[0].Y)
+   // }
+   // if(labelArr[2].Y - labelArr[1].Y < 10) {
+   //    labelArr[2].Y += 10 - (labelArr[2].Y - labelArr[1].Y)
+   // }
+   // if(labelArr.length > 3) {
+   //    if(labelArr[3].Y - labelArr[2].Y < 10) {
+   //       labelArr[3].Y += 10 - (labelArr[3].Y - labelArr[2].Y)
+   //    }
+   // }
+   // // console.log(labelArr)
 
 
 var formatModelDate = d3.timeFormat("%m/%d")
@@ -1982,8 +2531,32 @@ lineLabel3
              })
       // .text('UIUC('+ formatModelDate(dataUIUC[dataUIUC.length - 1].date) +')')
       .text(labelArr[2].unv + '('+ formatModelDate(labelArr[2].m_d) +')')
+      
+lineLabel4
+            // .transition()
+      // .duration(1000)
+      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
+      // .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[3].Y+")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "black")
+             .style('font-size', function() {
+       if (currentWidth < 600) {
+          return ".6rem"
+       } else {
+          return ".7rem"
+       }
+             })
+      // .text('ANL('+ formatModelDate(labelArr[3].m_d) +')')
+      // .text('UIUC('+ formatModelDate(dataUIUC[dataUIUC.length - 1].date) +')')
+   
+if(labelArr.length > 3) {
+   lineLabel4
+   .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[3].Y+")")
+    .text(labelArr[3].unv +'('+ formatModelDate(labelArr[3].m_d) +')')
 
-      focus
+}
+focus
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .style("fill", "none")
       .attr("stroke", "black")
@@ -2019,6 +2592,16 @@ circle_UIUC
       .style("opacity", 0)
 // console.log((labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y )
 
+
+circle_ANL
+.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+      // .style("fill", "#E84A27")
+      .style("fill", "none")
+      .attr('stroke', '#228C22')                  
+      .style("stroke-width", 2)
+      .attr('r', 4.5)
+      .style("opacity", 0)
+
 dot_NU
       .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y+")")
       .style("fill", "#4E2A84")
@@ -2026,7 +2609,7 @@ dot_NU
       .attr('stroke', '#4E2A84')
       .style("stroke-width", 2)
       .attr('r', 3)
-      // .style("opacity", 0)
+      .style("opacity", 1)
 
 dot_UC
       .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UC') === 0}))[0].Y+")")
@@ -2035,7 +2618,7 @@ dot_UC
       .attr('stroke', '#AC1E2D')
       .style("stroke-width", 2)
       .attr('r', 3)
-      // .style("opacity", 0)
+      .style("opacity", 1)
       
 dot_UIUC
       .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UIUC') === 0}))[0].Y+")")
@@ -2045,6 +2628,21 @@ dot_UIUC
       .style("stroke-width", 2)
       .attr('r', 3)
       .style("opacity", 1)
+      
+dot_ANL
+      // .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('ANL') === 0}))[0].Y+")")
+      // .style("fill", "#E84A27")
+      .style("fill", "#228C22")
+      .attr('stroke', '#228C22')                  
+      .style("stroke-width", 2)
+      .attr('r', 3)
+      .style("opacity", 0)
+
+if(labelArr.length > 3 ){
+   dot_ANL
+   .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('ANL') === 0}))[0].Y+")")
+   .style("opacity", 1)
+}
 
 
    svg_rt
@@ -2067,6 +2665,11 @@ dot_UIUC
      
     Tooltip
       .style("opacity", 1)
+      
+      if((selectedRegion).localeCompare('covidregion_11') === 0 ) {
+          circle_ANL
+            .style("opacity", 1)
+      }
    //        Tooltip2
    //    .style("opacity", 1)
   })
@@ -2087,6 +2690,8 @@ dot_UIUC
      circle_UC
      .style("opacity", 0)
      circle_UIUC
+     .style("opacity", 0)
+   circle_ANL
      .style("opacity", 0)
     Tooltip
       .style("opacity", 0)
@@ -2547,6 +3152,7 @@ dot_UIUC
 
 }
 
+//fix rt min domain/ data read
 //nov hover rt 
 //add new rt line 
 //add new rt line label 
