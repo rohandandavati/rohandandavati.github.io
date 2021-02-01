@@ -1220,15 +1220,17 @@ var getDaysArray = function(start, end) {
     return arr;
 };
 
-var start = parseDate2('2020-12-17')
-var end = new Date(); //today
+// var start = parseDate2('2020-12-17')
+// var end = new Date(); //today
+
+//could be one loop vv
 
 // concat all county arrays into one
 for(var i = 6; i < data.length-1; ++i) {
    allCounties = allCounties.concat(data[i].VaccineAdministration)
 }
 
-// change county to region 
+// change county to region -- change to covid_region_
 allCounties.forEach(value => {
    
    value.NOFO_Region = regionArray[countyMap[(value.CountyName).toUpperCase()].covid_region]
@@ -1239,29 +1241,56 @@ allCounties.forEach(value => {
    delete value.Report_Date
 })
 
+// ^^
 
-var vaccineByRegion = []
-var temp = []
-regionArray.forEach(region => {
-   //filter to one region 
-   temp = allCounties.filter(function(d){return (region).localeCompare(d.NOFO_Region) === 0 })
-   //consolidate region
-   //for each day
-   var days = []
-   if(temp.length > 0) {
-      days = getDaysArray(temp[0].date, temp[temp.length-1].date)
+var ind = allCounties.length-1
+
+
+const arrDate = allCounties.map(d => (d.date).getTime() );
+const arrRegion = allCounties.map(d => d.NOFO_Region);
+
+while (ind >= 0) {
+   
+   //find index of last matching date & region
+   var j = allCounties.length-1
+   while(j >= ind) {
+       if( (allCounties[j].date).getTime() === (allCounties[ind].date).getTime() && (allCounties[j].NOFO_Region).localeCompare(allCounties[ind].NOFO_Region) === 0 ) {
+      // if( (allCounties[j].date).getTime() === (allCounties[j].date).getTime() && (allCounties[j].NOFO_Region).localeCompare(allCounties[j].NOFO_Region) === 0 ) {
+         // console.log(j)
+         break;
+      } 
+      else {
+         --j
+      }
    }
+   if(j > ind ) {
+      allCounties[ind].AdministeredCount += allCounties[j].AdministeredCount
+      allCounties[ind].AdministeredCountChange += allCounties[j].AdministeredCountChange
+      allCounties[ind].PersonsFullyVaccinated += allCounties[j].PersonsFullyVaccinated
+      allCounties.splice(j, 1); 
+   }
+   
+   --ind;
+}
+
+var dayDomain = d3.extent(allCounties, function(d){ return d.date})
+var days = getDaysArray(dayDomain[0], dayDomain[1])
+
+days.forEach(day => {
+   
+   var sameDay = (allCounties.filter(function(d){return (d.date).getTime() === day.getTime() }))
       
-   days.forEach(day => {
-      vaccineByRegion.push({
+      allCounties.push({
          date: day,
-         NOFO_Region: region,
-         adminCount: (temp.filter(function(d){return (d.date).getTime() === day.getTime() })).reduce(function (accumulator, currentValue) { return accumulator + currentValue.AdministeredCount }, 0),
-         adminCountChange: (temp.filter(function(d){return (d.date).getTime() === day.getTime() })).reduce(function (accumulator, currentValue) { return accumulator + currentValue.AdministeredCountChange }, 0),
-         personsFully: (temp.filter(function(d){return (d.date).getTime() === day.getTime() })).reduce(function (accumulator, currentValue) { return accumulator + currentValue.PersonsFullyVaccinated }, 0)
+         NOFO_Region: 'Illinois',
+         AdministeredCount: sameDay.reduce(function (accumulator, currentValue) { return accumulator + currentValue.AdministeredCount }, 0),
+         AdministeredCountChange: sameDay.reduce(function (accumulator, currentValue) { return accumulator + currentValue.AdministeredCountChange }, 0),
+         PersonsFullyVaccinated: sameDay.reduce(function (accumulator, currentValue) { return accumulator + currentValue.PersonsFullyVaccinated }, 0)
       });
-   })
+   
 })
+
+
 
    //ANL data
 var index = data[5].length - 1;
@@ -1643,7 +1672,14 @@ function drawChart() {
    // if((selectedRegion).localeCompare('illinois') === 0) {
    //    vaccineData = vaccineByRegion.filter(function(d){return d.NOFO_Region=='North'})
    // } else {
-      vaccineData = vaccineByRegion.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+   
+   
+      // vaccineData = vaccineByRegion.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+      
+      vaccineData = allCounties.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+      console.log(vaccineData)
+      
+      
    // }
 
    var formatDate = d3.timeFormat("%b %d")
@@ -2317,8 +2353,7 @@ if(labelArr.length > 3 ){
    var tickVals = x_cases.domain().filter(function(d,i){ 
       return ((data_map[i].date).getDate() === 1)
    })
-   
-   console.log(vaccineData)
+
    
       var tickValsVac = x_vac.domain().filter(function(d,i){ 
       // if(vaccineData.length >0 ) {
@@ -2373,7 +2408,7 @@ if(labelArr.length > 3 ){
       .range([height_cases, 0]);
    
       y_vac
-      .domain([0, d3.max(vaccineData, function(d) { return d.adminCountChange; })])
+      .domain([0, d3.max(vaccineData, function(d) { return d.AdministeredCountChange; })])
       .range([height_cases, 0]);
       
  // Gridline
@@ -2448,9 +2483,9 @@ if(labelArr.length > 3 ){
       .append("rect").merge(v)
       .attr("class", "bar1")
       .attr("x", function(d) { return x_vac(d.date)})
-      .attr("y", function(d) { return y_vac(d.adminCountChange); })
+      .attr("y", function(d) { return y_vac(d.AdministeredCountChange); })
       .attr("width",  x_vac.bandwidth())
-      .attr("height", function(d) { return height_cases - y_vac(d.adminCountChange); })
+      .attr("height", function(d) { return height_cases - y_vac(d.AdministeredCountChange); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
             // .on('mouseover', tip_tests.show)
       // .on('mouseout', tip_tests.hide)
