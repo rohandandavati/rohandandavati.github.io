@@ -2354,6 +2354,9 @@ if(labelArr.length > 3 ){
       .call(d3.axisBottom(x_vac).tickSizeOuter(0)
       .tickValues(tickValsVac)
       .tickFormat(d3.timeFormat("%b %Y")));
+      
+         x_axis_vac
+      .call(x_axis_vac => x_axis_vac.select(".domain").remove());
 
    y_cases
       .domain([0, d3.max(data_map, function(d) { return d.cases; })])
