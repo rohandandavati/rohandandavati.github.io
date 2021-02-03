@@ -1134,6 +1134,7 @@ var files = [
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtANL.csv'
              ]
              
+            //  'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
 
 var idph_url = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDVaccine/getVaccineAdministration?CountyName='
        
@@ -1192,18 +1193,6 @@ files.forEach(function(url) {
 Promise.all(promises).then(function(data) {
 
    
-   
-   // document.getElementById("loader").style.display = "none";
-     
-   //  //change to set all in class
-   //  //document.getElementById("myDiv").style.display = "block";
-   //    var content_divs = document.getElementsByClassName( 'content' );
-      
-   //    [].slice.call( content_divs ).forEach(function ( div ) {
-   //       div.style.display = 'block'
-   //    });
-   
-   
 var historical_county = []
 
    // let parseDate2 = d3.timeParse("%Y-%m-%d");
@@ -1220,43 +1209,65 @@ var getDaysArray = function(start, end) {
     return arr;
 };
 
-// var start = parseDate2('2020-12-17')
-// var end = new Date(); //today
 
-//could be one loop vv
-
-// concat all county arrays into one
+var indArr = []
 for(var i = 6; i < data.length-1; ++i) {
-   allCounties = allCounties.concat(data[i].VaccineAdministration)
+   
+   if((data[i].VaccineAdministration).length > 0 ) {
+   indArr.push(i)
+   }
 }
 
-// change county to region -- change to covid_region_
-allCounties.forEach(value => {
+indArr.sort(function(a, b) {
+   // console.log(a)
+   a =  parseDate2(((data[a].VaccineAdministration[0]).Report_Date ).split('T')[0]).getTime() 
+   b = parseDate2(((data[b].VaccineAdministration[0]).Report_Date ).split('T')[0]).getTime()
+   //if (a is less than b by some ordering criterion) 
+   if (a < b) {
+      return -1;
+   }
+   //  if (a is greater than b by the ordering criterion) {
+   if (a > b) {
+      return 1;
+   }
+   if (a === a) {
+      return 0;
+   } 
+})
    
-   value.NOFO_Region = regionArray[countyMap[(value.CountyName).toUpperCase()].covid_region]
-   // delete value.CountyName
-   value.CountyName = regionArray[countyMap[(value.CountyName).toUpperCase()].covid_region]
+   // console.log(indArr)
+
+indArr.forEach(i => {
    
-   value.date = parseDate2((value.Report_Date).split('T')[0])
-   delete value.Report_Date
+   // allCounties = allCounties.concat(data[i].VaccineAdministration)
+   
+   var a = data[i].VaccineAdministration
+   
+   a.forEach(value => {
+      
+      value.NOFO_Region = regionArray[countyMap[(value.CountyName).toUpperCase()].covid_region]
+      
+      value.CountyName = regionArray[countyMap[(value.CountyName).toUpperCase()].covid_region]
+      delete value.CountyName
+      value.date = parseDate2((value.Report_Date).split('T')[0])
+      delete value.Report_Date
+   })
+   
+   allCounties = allCounties.concat(data[i].VaccineAdministration)
+
 })
 
-// ^^
 
 var ind = allCounties.length-1
-
-
 const arrDate = allCounties.map(d => (d.date).getTime() );
 const arrRegion = allCounties.map(d => d.NOFO_Region);
 
 while (ind >= 0) {
-   
    //find index of last matching date & region
-   var j = allCounties.length-1
+   var j = allCounties.length - 1
    while(j >= ind) {
+      //go to last index of same region
        if( (allCounties[j].date).getTime() === (allCounties[ind].date).getTime() && (allCounties[j].NOFO_Region).localeCompare(allCounties[ind].NOFO_Region) === 0 ) {
-      // if( (allCounties[j].date).getTime() === (allCounties[j].date).getTime() && (allCounties[j].NOFO_Region).localeCompare(allCounties[j].NOFO_Region) === 0 ) {
-         // console.log(j)
          break;
       } 
       else {
@@ -1269,7 +1280,6 @@ while (ind >= 0) {
       allCounties[ind].PersonsFullyVaccinated += allCounties[j].PersonsFullyVaccinated
       allCounties.splice(j, 1); 
    }
-   
    --ind;
 }
 
@@ -1291,6 +1301,19 @@ days.forEach(day => {
 })
 
 
+// get PersonsFullyVaccinatedChange
+ind = allCounties.length-1
+while(ind >= 0 ) {
+   //if next > region is the same 
+   if (ind > 0 && (allCounties[ind].NOFO_Region).localeCompare(allCounties[ind-1].NOFO_Region) === 0 ) {
+      allCounties[ind].PersonsFullyVaccinatedChange = allCounties[ind].PersonsFullyVaccinated - allCounties[ind-1].PersonsFullyVaccinated
+   } else {
+      allCounties[ind].PersonsFullyVaccinatedChange = allCounties[ind].PersonsFullyVaccinated
+   }
+   --ind
+}
+
+// console.log(allCounties)
 
    //ANL data
 var index = data[5].length - 1;
@@ -1425,7 +1448,7 @@ let dailyRegionCount = {}
    }
    if (parDate(a.testDate).getTime() === parDate(b.testDate).getTime()) {
       return 0;
-   }
+   } 
 })
    
    
@@ -1479,13 +1502,9 @@ let dailyRegionCount = {}
          historical_county.push({
             date: date,
             NOFO_Region: region,
-            // cases:  dailyRegionCount[region].cases - prev_dict[region].cases,
             cases: cases,
-            // deaths: dailyRegionCount[region].deaths - prev_dict[region].deaths,
             deaths: deaths,
             tested: dailyRegionCount[region].tests - prev_dict[region].tests,
-            // test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / 
-            //                 (dailyRegionCount[region].tests - prev_dict[region].tests)
             test_positivity: test_pos
          });
       })
@@ -1677,7 +1696,7 @@ function drawChart() {
       // vaccineData = vaccineByRegion.filter(function(d){return d.NOFO_Region==selectedGroupCases})
       
       vaccineData = allCounties.filter(function(d){return d.NOFO_Region==selectedGroupCases})
-      console.log(vaccineData)
+      // console.log(vaccineData)
       
       
    // }
@@ -2477,6 +2496,11 @@ if(labelArr.length > 3 ){
    
    var v = svg_vac.selectAll(".bar1")
                     .data(vaccineData)
+                    
+      var v2 = svg_vac.selectAll(".bar2")
+                    .data(vaccineData)
+                    
+                    
 
    v
       .enter()
@@ -2487,10 +2511,29 @@ if(labelArr.length > 3 ){
       .attr("width",  x_vac.bandwidth())
       .attr("height", function(d) { return height_cases - y_vac(d.AdministeredCountChange); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-            // .on('mouseover', tip_tests.show)
-      // .on('mouseout', tip_tests.hide)
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+   
+   
+   
+      v2
+      .enter()
+      .append("rect").merge(v2)
+      .attr("class", "bar2")
+      .attr("x", function(d) { return x_vac(d.date)})
+      .attr("y", function(d) { return y_vac(d.PersonsFullyVaccinatedChange); })
+      .attr("width",  x_vac.bandwidth())
+      .attr("height", function(d) { return height_cases - y_vac(d.PersonsFullyVaccinatedChange); })
+      // .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr("fill", "steelblue")
+      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+   
+   
+   
    v
+      .exit()
+      .remove()
+      
+      v2
       .exit()
       .remove()
    
@@ -2759,6 +2802,7 @@ if(labelArr.length > 3 ){
 
 }
 
+//get rid of region names, use covid_region: int
 //fix rt min domain/ data read
 //nov hover rt 
 //add new rt line 
