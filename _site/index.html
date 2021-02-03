@@ -148,8 +148,16 @@ html, body {
     overflow-x: hidden;
 }
 
+/*.grid line {*/
+/*  stroke: #ddd;*/
+/*}*/
+
 .grid line {
-  stroke: #ddd;
+    stroke: #ddd;
+    /*opacity: 0.7;*/
+}
+.grid path {
+      stroke-width: 0;
 }
 
 .d3-tip, .tooltip, .tooltip_up {
@@ -587,7 +595,7 @@ html, body {
 //    var hexColorsLightest = ["#ce7774", "#cea5cc","#acded6", "#facb87", "#b5b5b5", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#e6d4b9"]
    
    //region color swap issue #29
-   var hexColors = ["#969696", "#BA7FB7","#89D0C5", "#F9B554", "#DCC29C", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#BA3E39"] 
+   var hexColors = ["#8f8f8f", "#BA7FB7","#89D0C5", "#F9B554", "#DCC29C", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#BA3E39"] 
    
    var mapFill = ["#505050", "#743971", "#438a7f", "#b36f0e", "#967c56", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#740000"]
 
@@ -596,6 +604,9 @@ html, body {
    var hexColorsLighter = ["#ababab", "#c798c5","#a0d9d0", "#fac376", "#e3ceaf", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#c76460"]
 
    var hexColorsLightest = ["#b5b5b5", "#cea5cc","#acded6", "#facb87", "#e6d4b9", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#ce7774"]
+   
+      var personsVaccineColors = ["#8f8f8f", "#BA7FB7","#89D0C5", "#facb87", "#e6d4b9", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#ce7774"]
+   
 
    var firstIteration = true;
    
@@ -633,7 +644,9 @@ html, body {
    var lightestColors = d3.scaleOrdinal().domain(allGroup)
      .range(hexColorsLightest)
   
-   
+      var darkerColor = d3.scaleOrdinal().domain(allGroup)
+     .range(hexColors)
+     
    var countyMap = {
       "ADAMS": {
          "covid_region": 3
@@ -1035,6 +1048,7 @@ var Tooltip = d3.select("#rt_chart")
 var grid_rt = svg_rt.append("g")
 
 var grid_cases = svg_cases.append("g")
+var grid_vac = svg_vac.append("g")
 
 var grid_test_pos = svg_test_pos.append("g")
 var grid_tests = svg_tests.append("g")
@@ -2418,7 +2432,7 @@ if(labelArr.length > 3 ){
 
    x_axis_vac
       .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
-      .call(d3.axisBottom(x_vac)
+      .call(d3.axisBottom(x_vac).tickSizeOuter(0)
       .tickValues(tickValsVac)
       .tickFormat(d3.timeFormat("%b %Y")));
 
@@ -2435,11 +2449,23 @@ if(labelArr.length > 3 ){
                    .tickFormat("")
                    .tickSize(-width_cases)
                    .scale(y_cases);
+                   
+    var gridlines_vac = d3.axisLeft()
+                   .tickFormat("")
+                   .tickSize(-width_cases)
+                   .scale(y_vac);
+
 
   grid_cases
      .attr("class", "grid")
      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
      .call(gridlines_cases);
+   
+     grid_vac
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .call(gridlines_vac);
+   
    
    y_test_pos
       .domain([0, .30])
@@ -2481,8 +2507,10 @@ if(labelArr.length > 3 ){
       
       y_axis_vac
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
-      .call(d3.axisLeft(y_vac));
+      .call(d3.axisLeft(y_vac).tickSizeOuter(0))
       
+      y_axis_vac
+      .call(y_axis_vac => y_axis_vac.select(".domain").remove());
 
    var formatPercent = d3.format(".0%");
    
@@ -2523,8 +2551,8 @@ if(labelArr.length > 3 ){
       .attr("y", function(d) { return y_vac(d.PersonsFullyVaccinatedChange); })
       .attr("width",  x_vac.bandwidth())
       .attr("height", function(d) { return height_cases - y_vac(d.PersonsFullyVaccinatedChange); })
-      // .attr("fill", function(d){ return lightestColors(selectedRegion) })
-      .attr("fill", "steelblue")
+      .attr("fill", function(d){ return darkerColor(selectedRegion) })
+      // .attr("fill", "steelblue")
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
    
    
@@ -2802,6 +2830,35 @@ if(labelArr.length > 3 ){
 
 }
 
+
+// Vaccine Chart:
+// - gridlines
+// - tooltip(s)
+// - filler text with inserted value
+// fix rt persisting ANL label 
+// fix tests tooltip 
+// rt file download 
+// Bar Charts:
+// - separate line and bar tooltips
+
+// ask about cli 
+// ask about reports tab
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// data plots on production only go to Jan 26 while staging goes to Jan 29?
 //get rid of region names, use covid_region: int
 //fix rt min domain/ data read
 //nov hover rt 
