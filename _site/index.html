@@ -965,7 +965,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 10, right: 70, bottom: 30, left: 35};
+   var margin_rt = {top: 10, right: 70, bottom: 50, left: 35};
    var margin_cases = {top: 10, right: 20, bottom: 30, left: 40};
    var margin_deaths = {top: 10, right: 20, bottom: 30, left: 40};
    var margin_test_pos = {top: 10, right: 20, bottom: 30, left: 60};
@@ -1864,14 +1864,16 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       ticks = 6
    }
    
-      x_rt_band
+   x_rt_band
       .domain(dataNU.map(function(d) { return d.date; }))
       .range([0,width_rt])
       .padding(0);
    
-      var tickValsRT = x_rt_band.domain().filter(function(d,i){ 
+   var tickValsRT = x_rt_band.domain().filter(function(d,i){ 
       return ((dataNU[i].date).getDate() === 1)
    })
+   
+      // console.log(tickValsRT)
 
    if (currentWidth < 500) {
       var index = tickValsRT.length -1
@@ -1884,11 +1886,12 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       }
    }
    
+
    
     x_rt_axis
    .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
    .call(d3.axisBottom(x_rt).tickSizeOuter(0)
-   .tickValues(tickValsRT)
+   // .tickValues(tickValsRT)
    .tickFormat(d3.timeFormat("%b %Y"))
    );
 
@@ -2085,30 +2088,56 @@ var labelArr = [
    }
    
 
+// labelArr.sort((a, b) => (a.Y > b.Y) ? 1 : (a.Y === b.Y) ? ((a.Y > b.Y) ? 1 : -1) : -1 )
+
 //sort labels
-    for(var i = 0; i < labelArr.length-1; i++) {
-        // Finding the smallest number in the subarray
-        let min = i;
-        for(let j = i+1; j < labelArr.length-1; j++){
-            if(labelArr[j].Y < labelArr[min].Y) {
-                min=j; 
-            }
-         }
-         if (min != i) {
-            let temp = labelArr[i]
-            labelArr[i] = labelArr[min]
-            labelArr[min] = temp
-        }
-    }
+   //  for(var i = 0; i < labelArr.length-1; i++) {
+   //     // Finding the smallest number in the subarray
+   //     let min = i;
+   //     for(let j = i+1; j < labelArr.length-1; j++){
+   //          if(labelArr[j].Y < labelArr[min].Y) {
+   //              min=j; 
+   //          }
+   //       }
+   //       if (min != i) {
+   //          let tempUV = labelArr[i].unv
+   //          labelArr[i].unv = labelArr[min].unv
+   //          labelArr[min].unv = tempUV
+            
+            
+   //          let tempY = labelArr[i].Y
+   //          labelArr[i].Y= labelArr[min].Y
+   //          labelArr[min].Y = tempY
+            
+   //       let tempMD = labelArr[i].m_d
+   //          labelArr[i].m_d= labelArr[min].m_d
+   //          labelArr[min].m_d = tempMD
+            
+            
+   //     }
+   //  }
+   
+   // console.log(labelArr)
+   
+//  for(var i = 1; i < labelArr.length-1; i++) {
+//     if( labelArr[i].Y - labelArr[i-1].Y < 10) {
+//    //  if(labelArr[i].Y - labelArr[i-1].Y < 14) {
+//     labelArr[i].Y += 15 - ( labelArr[i].Y - labelArr[i-1].Y)
+//     }
+//  }
+
+// labelArr.forEach((label, i) => {
+// if(i>0){
+//     if( label.Y - label[i-1].Y < 10) {
+//    //  if(labelArr[i].Y - labelArr[i-1].Y < 14) {
+//     label.Y += 15 - ( label.Y - label[i-1].Y)
+//     }
+// }
+// })
+
+   // console.log(labelArr)
    
    
- for(var i = 1; i < labelArr.length-1; i++) {
-    if(labelArr[i].Y - labelArr[i-1].Y < 10) {
-    labelArr[i].Y += 10 - (labelArr[i].Y - labelArr[i-1].Y)
-    }
- }
-
-
 var formatModelDate = d3.timeFormat("%m/%d")
 lineLabel1
       .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[0].Y+")")
@@ -2168,7 +2197,9 @@ if(labelArr.length > 3) {
    lineLabel4
    .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[3].Y+")")
     .text(labelArr[3].unv +'('+ formatModelDate(labelArr[3].m_d) +')')
-
+}else {
+    lineLabel4
+    .text("")
 }
 
 focus
@@ -2833,13 +2864,11 @@ if(labelArr.length > 3 ){
 
 }
 
-
-// Vaccine Chart:
-// - gridlines
-// - tooltip(s)
-// - filler text with inserted value
 // fix rt persisting ANL label 
 // fix tests tooltip 
+// Vaccine Chart:
+// - tooltip(s)
+// - filler text with inserted value
 // rt file download 
 // Bar Charts:
 // - separate line and bar tooltips
