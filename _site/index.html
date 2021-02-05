@@ -1272,29 +1272,29 @@ indArr.forEach(i => {
 })
 
 
-var ind = allCounties.length-1
+var index = allCounties.length-1
 const arrDate = allCounties.map(d => (d.date).getTime() );
 const arrRegion = allCounties.map(d => d.NOFO_Region);
 
-while (ind >= 0) {
+while (index >= 0) {
    //find index of last matching date & region
    var j = allCounties.length - 1
-   while(j >= ind) {
+   while(j >= index) {
       //go to last index of same region
-       if( (allCounties[j].date).getTime() === (allCounties[ind].date).getTime() && (allCounties[j].NOFO_Region).localeCompare(allCounties[ind].NOFO_Region) === 0 ) {
+       if( (allCounties[j].date).getTime() === (allCounties[index].date).getTime() && (allCounties[j].NOFO_Region).localeCompare(allCounties[index].NOFO_Region) === 0 ) {
          break;
       } 
       else {
          --j
       }
    }
-   if(j > ind ) {
-      allCounties[ind].AdministeredCount += allCounties[j].AdministeredCount
-      allCounties[ind].AdministeredCountChange += allCounties[j].AdministeredCountChange
-      allCounties[ind].PersonsFullyVaccinated += allCounties[j].PersonsFullyVaccinated
+   if(j > index ) {
+      allCounties[index].AdministeredCount += allCounties[j].AdministeredCount
+      allCounties[index].AdministeredCountChange += allCounties[j].AdministeredCountChange
+      allCounties[index].PersonsFullyVaccinated += allCounties[j].PersonsFullyVaccinated
       allCounties.splice(j, 1); 
    }
-   --ind;
+   --index;
 }
 
 var dayDomain = d3.extent(allCounties, function(d){ return d.date})
@@ -1316,26 +1316,45 @@ days.forEach(day => {
 
 
 // get PersonsFullyVaccinatedChange
-ind = allCounties.length-1
-while(ind >= 0 ) {
+index = allCounties.length-1
+while(index >= 0 ) {
    //if next > region is the same 
-   if (ind > 0 && (allCounties[ind].NOFO_Region).localeCompare(allCounties[ind-1].NOFO_Region) === 0 ) {
-      allCounties[ind].PersonsFullyVaccinatedChange = allCounties[ind].PersonsFullyVaccinated - allCounties[ind-1].PersonsFullyVaccinated
+   if (index > 0 && (allCounties[index].NOFO_Region).localeCompare(allCounties[index-1].NOFO_Region) === 0 ) {
+      allCounties[index].PersonsFullyVaccinatedChange = allCounties[index].PersonsFullyVaccinated - allCounties[index-1].PersonsFullyVaccinated
    } else {
-      allCounties[ind].PersonsFullyVaccinatedChange = allCounties[ind].PersonsFullyVaccinated
+      allCounties[index].PersonsFullyVaccinatedChange = allCounties[index].PersonsFullyVaccinated
    }
-   --ind
+   --index
 }
 
 // console.log(allCounties)
 
+//domain = latestDate
+
+// // var latestDate = new Date(parseDadte2('1996-7-2'))
+// console.log(data[4][data[4].length - 1].Date)
+// console.log(data[1][data[1].length - 1].date)
+
+// // var endDates = []
+var endDates = [
+   // parseDate2(data[5][data[5].length - 1].model_date).getTime(),
+   // parseDate3(data[4][data[4].length - 1].Date).getTime()
+   // parseDate3(data[3][data[3].length - 1].date).getTime()
+   // parseDate2(data[1][data[1].length - 1].date).getTime()
+]
+
+// var latestDate =  new Date(Math.max(...endDates))
+
+// console.log(endDates, latestDate)
+
    //ANL data
-var index = data[5].length - 1;
+index = data[5].length - 1;
 
 
 while (index >= 0) {
     if(isNaN(data[5][index].rt_median) ||
-       (parseDate2(data[5][index].date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
+      //  (parseDate2(data[5][index].date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
+      (parseDate2(data[5][index].date)).getTime() > today.getTime() ||  
     (parseDate2(data[5][index].date)).getTime()  < parseDate2('2020-4-1').getTime()){
        
          data[5].splice(index, 1); 
@@ -1354,12 +1373,13 @@ while (index >= 0) {
 
 
 index = data[4].length - 1;
-
-
+console.log(data[4].length -1)
 while (index >= 0) {
     if(isNaN(data[4][index].rt_median) ||
-       (parseDate3(data[4][index].Date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
-    (parseDate3(data[4][index].Date)).getTime()  < parseDate2('2020-4-1').getTime()){
+      //  (parseDate3(data[4][index].Date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
+      parseDate3(data[4][index].Date).getTime() > today.getTime() ||  
+      parseDate3(data[4][index].Date).getTime()  < parseDate2('2020-4-1').getTime()
+      ){
        
          data[4].splice(index, 1); 
       } else {
@@ -1382,7 +1402,7 @@ index = data[3].length - 1;
 
 while (index >= 0) {
     if(isNaN(data[3][index].rt_median) || 
-   //  parseDate3(data[3][index].date) > today  ||  
+    parseDate3(data[3][index].date).getTime() > today.getTime()  ||  
     (parseDate3(data[3][index].date)).getTime()  < parseDate3('04/01/2020').getTime()
       ){
          data[3].splice(index, 1); 
@@ -1402,7 +1422,8 @@ index = data[1].length - 1;
 while (index >= 0) {
     if(isNaN(data[1][index].rt_median) ||  
    //  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  
-   (parseDate2(data[1][index].date)).getTime() > (data[3][data[3].length -1].date).getTime() ||  
+   // (parseDate2(data[1][index].date)).getTime() > (data[3][data[3].length -1].date).getTime() ||  
+   (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  
     (parseDate2(data[1][index].date)).getTime()  < parseDate2('2020-04-01').getTime()
       ){
          data[1].splice(index, 1);
@@ -1768,26 +1789,37 @@ var dataTime = dataNU.map(function(d) { return d.date; })
     var selectedDataANL = dataANL[l]
     
     
-   focus
-      .attr("x1", x_rt(selectedDataUC.date)) 
+   // focus
+   //    .attr("x1", x_rt(selectedDataUC.date)) 
+   //    .attr("y1", 0)
+   //    .attr("x2", x_rt(selectedDataUC.date)) 
+   //    .attr("y2", height_rt)
+   
+      focus
+      .attr("x1", x_rt(x0)) 
       .attr("y1", 0)
-      .attr("x2", x_rt(selectedDataUC.date)) 
+      .attr("x2", x_rt(x0)) 
       .attr("y2", height_rt)
 
+
 circle_UC
-      .attr("cx", x_rt(selectedDataUC.date))
+      // .attr("cx", x_rt(selectedDataUC.date))
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataUC.rt_median))
       
+      
 circle_NU
-      .attr("cx", x_rt(selectedDataNU.date))
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataNU.rt_median))
       
 circle_UIUC
-      .attr("cx", x_rt(selectedDataUIUC.date))
+      // .attr("cx", x_rt(selectedDataUIUC.date))
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataUIUC.rt_median))
 
 circle_ANL
-      .attr("cx", x_rt(selectedDataANL.date))
+      // .attr("cx", x_rt(selectedDataANL.date))
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataANL.rt_median))
 
 //bottom right of focus 
@@ -1842,7 +1874,8 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
    
     x_rt
-      .domain(d3.extent(dataUC, function(d) { return d.date}))
+      // .domain(d3.extent(dataUC, function(d) { return d.date}))
+      .domain([ parseDate2('2020-4-1'), today])
       .range([ 0, width_rt]);
    
    x_rtNU
