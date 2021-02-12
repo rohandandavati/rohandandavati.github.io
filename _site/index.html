@@ -1039,7 +1039,7 @@ html, body {
 
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
-
+var bisectCDT = d3.bisector(function(d) { return d.reportDate; }).left;
 
 var Tooltip = d3.select("#rt_chart")
     .append("div")
@@ -1665,22 +1665,18 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
 
   
     var mousemove_test_pos = function(d) {
-         // var formatTime = d3.timeFormat("%b %d")"%b %Y"
-         var formatTime = d3.timeFormat("%b %d")
-    var x0 = x_test_pos.invert(d3.mouse(this)[0]);
-    var i = bisect(data_map, x0, 1);
-    var selectedData = data_map[i]
-    Tooltip_test_pos
-      // .html(tickTimeFormat(d.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-      .html( formatTime(selectedData.date) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
-      
-      // .style("left", (d3.mouse(this)[0]+70) + "px")
-      .style("left", (x_test_pos(selectedData.date) + 11) + "px")
-      .style("top",  (y_test_pos(selectedData.test_pos_avg)-45) + "px")
-   // focus_test_pos
-   //    .attr("cx", x_test_pos(selectedData.date))
-   //    .attr("cy", y_test_pos(selectedData.test_pos_avg))
-   }
+       var formatTime = d3.timeFormat("%b %d")
+       var x0 = x_test_pos.invert(d3.mouse(this)[0]);
+       
+       var i = bisectCDT(data_map, x0, 1);
+       
+      //  console.log(x0)
+       var selectedData = data_map[i]
+       Tooltip_test_pos
+         .html( formatTime(selectedData.reportDate) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
+         .style("left", (x_test_pos(selectedData.reportDate) + 11) + "px")
+         .style("top",  (y_test_pos(selectedData.test_pos_avg)-45) + "px")
+      }
    
       svg_rt
       .attr("width", width_rt + margin_rt.left + margin_rt.right)
