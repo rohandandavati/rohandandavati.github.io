@@ -1329,7 +1329,6 @@ rtArrs.forEach(obj => {
 
 index = cdtArrs.length-1
 while (index >= 0) {
-   // cdtArrs[index].reportDate = moment(cdtArrs[index].reportDate)._d //don't use
    cdtArrs[index].reportDate =  moment(cdtArrs[index].reportDate, 'YYYY-MM-DD').toDate()
    cdtArrs[index].covid_region = countyMap[(cdtArrs[index].CountyName).toUpperCase()].covid_region
    cdtArrs[index].confirmed_cases = +cdtArrs[index].confirmed_cases 
@@ -1388,7 +1387,7 @@ while (index >= 0) {
    } else {
       cdtArrs[index].test_positivity = cdtArrs[index].confirmed_cases_change / cdtArrs[index].tested_change
    }
-   if ( (cdtArrs[index].reportDate).getTime() === moment('2020-04-11', 'YYYY-MM-DD').valueOf()) {
+   if ( (cdtArrs[index].reportDate).getTime() === moment('2020-04-11', 'YYYY-MM-DD').valueOf() ||  (cdtArrs[index].reportDate).getTime() === moment('2020-05-04', 'YYYY-MM-DD').valueOf()) {
       cdtArrs.splice(index, 1)
    }
    --index;
