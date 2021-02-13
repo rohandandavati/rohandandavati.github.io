@@ -1233,7 +1233,7 @@ rtArrs.forEach(obj => {
 
 var rtStart  =  moment('2020-4-1', 'YYYY-MM-DD').valueOf()
 
-rtArrs.forEach((obj)=> {
+rtArrs.forEach(obj => {
    
    var indx = (obj.data).length-1
    while(indx >= 0 ){
@@ -1532,16 +1532,21 @@ function drawChart() {
     var selectedDataUIUC = dataUIUC[k]
     var selectedDataANL = dataANL[l]
     
+   //  console.log(selectedDataUC,selectedDataNU,selectedDataUIUC,selectedDataANL)
+  
+    
    focus
       .attr("x1", x_rt(x0)) 
       .attr("y1", 0)
       .attr("x2", x_rt(x0)) 
       .attr("y2", height_rt)
 
+ if (typeof selectedDataUC !== 'undefined') {
    circle_UC
       .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataUC.rt_median))
-      
+ }
+ 
    circle_NU
       .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataNU.rt_median))
@@ -1554,28 +1559,30 @@ function drawChart() {
       .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataANL.rt_median))
 
+var strHTML = formatDate(x0) + '<br>' + 
+         "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
+         "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+         
+         
+      if (typeof selectedDataUC !== 'undefined') {
+       strHTML = strHTML + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+      }
 
-if ((selectedRegion).localeCompare('covidregion_11') === 0) {
-    Tooltip
-      .html(formatDate(x0) + '<br>' + 
-      "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
-      "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-      "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataANL.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-      "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
-      // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
-      .style("left", (margin_rt.left +24) + "px")
-      .style("top",  (margin_rt.top +24) + "px")
-} else {
+
+   if ((selectedRegion).localeCompare('covidregion_11') === 0) {
+       
+        strHTML = strHTML + "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataANL.rt_median)).toFixed(2) + "</span>"+ "<br>"
+       
        Tooltip
-      .html(formatDate(x0) + '<br>' + 
-      "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
-      "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-      "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
-      // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
-      .style("left", (margin_rt.left +24) + "px")
-      .style("top",  (margin_rt.top +24) + "px")
-}
-   
+         .html(strHTML)
+         .style("left", (margin_rt.left +24) + "px")
+         .style("top",  (margin_rt.top +24) + "px")
+   } else {
+          Tooltip
+          .html(strHTML)
+         .style("left", (margin_rt.left +24) + "px")
+         .style("top",  (margin_rt.top +24) + "px")
+   }
   }
   
 
@@ -1588,7 +1595,8 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
        
        var selectedData = data_map[i]
        Tooltip_test_pos
-         .html( formatTime(selectedData.reportDate) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
+         .html( formatTime(selectedData.reportDate) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  
+         parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
          .style("left", (x_test_pos(selectedData.reportDate) + 11) + "px")
          .style("top",  (y_test_pos(selectedData.test_pos_avg)-45) + "px")
       }
