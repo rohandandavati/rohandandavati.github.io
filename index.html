@@ -1563,7 +1563,6 @@ var strHTML = formatDate(x0) + '<br>' +
          "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
          "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>" + "<br>"
          
-         
       if (typeof selectedDataUC !== 'undefined') {
        strHTML = strHTML + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
       }
@@ -1571,9 +1570,9 @@ var strHTML = formatDate(x0) + '<br>' +
 
    if ((selectedRegion).localeCompare('covidregion_11') === 0) {
        
-        strHTML = strHTML + "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataANL.rt_median)).toFixed(2) + "</span>"+ "<br>"
+      strHTML = strHTML + "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataANL.rt_median)).toFixed(2) + "</span>"+ "<br>"
        
-       Tooltip
+      Tooltip
          .html(strHTML)
          .style("left", (margin_rt.left +24) + "px")
          .style("top",  (margin_rt.top +24) + "px")
@@ -1584,8 +1583,6 @@ var strHTML = formatDate(x0) + '<br>' +
          .style("top",  (margin_rt.top +24) + "px")
    }
   }
-  
-
   
     var mousemove_test_pos = function(d) {
        var formatTime = d3.timeFormat("%b %d")
@@ -1837,8 +1834,28 @@ var labelArr = [
       labelArr.push({'unv' : 'ANL', 'Y' : y_rt(dataANL[dataANL.length - 1].rt_median) + margin_rt.top, 'm_d': dataANL[dataANL.length - 1].model_date })
    }
    
+// console.log(labelArr)
+labelArr.sort((a, b) => (a.Y > b.Y) ? 1 : (a.Y === b.Y) ? ((a.Y > b.Y) ? 1 : -1) : -1 )
+console.log(labelArr)
 
-// labelArr.sort((a, b) => (a.Y > b.Y) ? 1 : (a.Y === b.Y) ? ((a.Y > b.Y) ? 1 : -1) : -1 )
+labelArr.forEach((label, i, obj) => {
+   
+   if (i > 0 ) {
+      // if (label[i])
+      // console.log(obj[i])
+      
+      if (obj[i].Y - obj[i-1].Y < 10) {
+         
+         obj[i].Y += 10 - (obj[i].Y - obj[i-1].Y)
+      }
+      
+      
+      
+   }
+   
+})
+
+console.log(labelArr)
 
 //sort labels
    //  for(var i = 0; i < labelArr.length-1; i++) {
