@@ -1834,72 +1834,16 @@ var labelArr = [
       labelArr.push({'unv' : 'ANL', 'Y' : y_rt(dataANL[dataANL.length - 1].rt_median) + margin_rt.top, 'm_d': dataANL[dataANL.length - 1].model_date })
    }
    
-// console.log(labelArr)
 labelArr.sort((a, b) => (a.Y > b.Y) ? 1 : (a.Y === b.Y) ? ((a.Y > b.Y) ? 1 : -1) : -1 )
-console.log(labelArr)
 
 labelArr.forEach((label, i, obj) => {
    
    if (i > 0 ) {
-      // if (label[i])
-      // console.log(obj[i])
-      
       if (obj[i].Y - obj[i-1].Y < 10) {
-         
          obj[i].Y += 10 - (obj[i].Y - obj[i-1].Y)
       }
-      
-      
-      
    }
-   
 })
-
-console.log(labelArr)
-
-//sort labels
-   //  for(var i = 0; i < labelArr.length-1; i++) {
-   //     // Finding the smallest number in the subarray
-   //     let min = i;
-   //     for(let j = i+1; j < labelArr.length-1; j++){
-   //          if(labelArr[j].Y < labelArr[min].Y) {
-   //              min=j; 
-   //          }
-   //       }
-   //       if (min != i) {
-   //          let tempUV = labelArr[i].unv
-   //          labelArr[i].unv = labelArr[min].unv
-   //          labelArr[min].unv = tempUV
-            
-            
-   //          let tempY = labelArr[i].Y
-   //          labelArr[i].Y= labelArr[min].Y
-   //          labelArr[min].Y = tempY
-            
-   //       let tempMD = labelArr[i].m_d
-   //          labelArr[i].m_d= labelArr[min].m_d
-   //          labelArr[min].m_d = tempMD
-            
-            
-   //     }
-   //  }
-   
-   
-//  for(var i = 1; i < labelArr.length-1; i++) {
-//     if( labelArr[i].Y - labelArr[i-1].Y < 10) {
-//    //  if(labelArr[i].Y - labelArr[i-1].Y < 14) {
-//     labelArr[i].Y += 15 - ( labelArr[i].Y - labelArr[i-1].Y)
-//     }
-//  }
-
-// labelArr.forEach((label, i) => {
-// if(i>0){
-//     if( label.Y - label[i-1].Y < 10) {
-//    //  if(labelArr[i].Y - labelArr[i-1].Y < 14) {
-//     label.Y += 15 - ( label.Y - label[i-1].Y)
-//     }
-// }
-// })
    
    
 var formatModelDate = d3.timeFormat("%m/%d")
