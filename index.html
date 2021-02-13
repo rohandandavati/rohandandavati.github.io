@@ -935,12 +935,6 @@ html, body {
       var line_rt4 = svg_rt.append('g').append("path")  
       .style("stroke-width", 2)
       .style("fill", "none");
-      
-   // var refLine = svg_rt.append('g').append("path")
-   // .attr("stroke", "black")
-   //    .style("stroke-width", 1)
-   //    .style("stroke-dasharray", ("3, 3"))
-   //    .style("fill", "none")
    
    var dataFilter = null; 
    
@@ -1135,6 +1129,7 @@ Promise.all(promises).then(function(data) {
    var cdtArrs = []
    var vaccineArrs = []
    var maxMinTime = 0
+   var maxMinTimeRT = 0;
    
    data.forEach((datum, i) => {
       if (datum.VaccineAdministration) {
@@ -1151,7 +1146,12 @@ Promise.all(promises).then(function(data) {
       }
       else if ((typeof(datum.values)).localeCompare('function') === 0){
          // rtArrs.push(datum)
-         rtArrs.push({title: files[i].slice(files[i].lastIndexOf('/') + 1 ), data: datum })
+         var title = files[i].slice(files[i].lastIndexOf('/') + 1 )
+         if ((title).localeCompare('rtUIUC.csv') === 0 ) {
+            datum = datum.filter(function(d) { return (d.scenario_name).localeCompare('baseline') === 0 })
+         }
+         rtArrs.push({title: title, data: datum })
+         
       } else {
          return;
       }
@@ -1213,10 +1213,6 @@ while(index >= 0 ) {
 
 moment.suppressDeprecationWarnings = true;
 
-// MM/DD/YYYY YYYY-MM-DD 
-// "2020-03-07" "07/10/2020" "6/9/2020" "2021-02-03"
-//moment('12 March, 2016', ['YYYY-MM-DD', 'MM/DD/YYYY', 'M/D/YYYY' ])
-
 //parse rtArrs
 rtArrs.forEach(obj => {
    (obj.data).forEach(datum => {
@@ -1226,11 +1222,28 @@ rtArrs.forEach(obj => {
          } else if ( moment(datum[key] ).isValid() ) {
             // datum[key] = moment(datum[key] )._d; //dontuse
             datum[key] = moment(datum[key], ['YYYY-MM-DD', 'MM/DD/YYYY']).toDate()
+            if (key[0] === 'D') {
+               datum['date'] = datum['Date']
+               delete datum['Date']
+            }
          }
       }
    })
 })
-// console.log(rtArrs)
+
+var rtStart  =  moment('2020-4-1', 'YYYY-MM-DD').valueOf()
+
+rtArrs.forEach((obj)=> {
+   
+   var indx = (obj.data).length-1
+   while(indx >= 0 ){
+      var time = ((obj.data)[indx].date).getTime()
+      if(time < rtStart || time > today.getTime()) {
+         (obj.data).splice(indx, 1) 
+      }
+      --indx;
+   }
+})
 
 index = cdtArrs.length-1
 while (index >= 0) {
@@ -1469,7 +1482,6 @@ function drawChart() {
 
    var data_map = cdtArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
    
-   // console.log(data_map)
     
    var vaccineData = vaccineArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
    var formatDate = d3.timeFormat("%b %d")
@@ -1520,39 +1532,25 @@ function drawChart() {
     var selectedDataUIUC = dataUIUC[k]
     var selectedDataANL = dataANL[l]
     
-    
-   // focus
-   //    .attr("x1", x_rt(selectedDataUC.date)) 
-   //    .attr("y1", 0)
-   //    .attr("x2", x_rt(selectedDataUC.date)) 
-   //    .attr("y2", height_rt)
-   
-      focus
+   focus
       .attr("x1", x_rt(x0)) 
       .attr("y1", 0)
       .attr("x2", x_rt(x0)) 
       .attr("y2", height_rt)
 
-
-
-
-circle_UC
-      // .attr("cx", x_rt(selectedDataUC.date))
+   circle_UC
       .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataUC.rt_median))
       
-      
-circle_NU
+   circle_NU
       .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataNU.rt_median))
       
-circle_UIUC
-      // .attr("cx", x_rt(selectedDataUIUC.date))
+   circle_UIUC
       .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataUIUC.rt_median))
 
-circle_ANL
-      // .attr("cx", x_rt(selectedDataANL.date))
+   circle_ANL
       .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataANL.rt_median))
 
@@ -1588,7 +1586,6 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
        
        var i = bisectCDT(data_map, x0, 1);
        
-      //  console.log(x0)
        var selectedData = data_map[i]
        Tooltip_test_pos
          .html( formatTime(selectedData.reportDate) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
@@ -1632,7 +1629,6 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       .padding(0);
    
    var tickValsRT = x_rt_band.domain().filter(function(d,i){ 
-      // console.log(dataNU[i].date)
       return ((dataNU[i].date).getDate() === 1)
    })
    
@@ -1821,23 +1817,6 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
-   // refLine.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-   
-   
-   // refLine
-   //    .datum(dataNU)
-   //    .transition()
-   //    .duration(1000)
-   //    .attr("d", d3.line()
-   //    .x(function(d) { return x_rt(d.date) })
-   //    .y(function(d) { return y_rt(1.0) }));
-      
-
-// var labelArr = [
-//    {"NU" : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top},
-//    {"UC" : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top},
-//    {"UIUC" : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top}
-//    ]
 
 var labelArr = [
    {'unv' : 'UC', 'Y' : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUC[dataUC.length - 1].model_date },
@@ -2608,7 +2587,6 @@ if(labelArr.length > 3 ){
     document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
     document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
     document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
-   //  console.log(data_map)
         document.getElementById('avg_case_pos').innerHTML = (data_map[data_map.length - 1 ].test_pos_avg).toFixed(2);
         
     var region = ""
