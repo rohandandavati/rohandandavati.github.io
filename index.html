@@ -2195,6 +2195,9 @@ if(labelArr.length > 3 ){
       .call(d3.axisBottom(x_cli).tickSizeOuter(0)
       .tickValues(tickValsCLI)
       .tickFormat(d3.timeFormat("%b %Y")));
+      
+               x_axis_cli
+      .call(x_axis_cli => x_axis_cli.select(".domain").remove());
 
    y_cases
       .domain([0, d3.max(data_map, function(d) { return d.confirmed_cases_change; })])
