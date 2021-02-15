@@ -2512,6 +2512,21 @@ var gridlines_cli = d3.axisLeft()
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       
+      
+   d3.select('#rt_download').on('click', function() {
+      var fileName = 'rtData.json';
+
+// Create a blob of the data
+var fileToSave = new Blob([JSON.stringify(rtArrs, undefined, 2)], {
+    type: 'application/json',
+    name: fileName
+});
+
+// Save the file
+saveAs(fileToSave, fileName);
+   })   
+      
+      
       var rt = [
          dataNU[dataNU.length - 1 ].rt_median,
          dataUC[dataUC.length - 1 ].rt_median,

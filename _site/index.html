@@ -34,6 +34,7 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-shape/1.2.0/d3-shape.min.js" integrity="sha512-78mNqQERrqbS7sZEK4XidMguPiLguTxFbouxfSvurI843nXwiyJzD2Bt2Qv6qK0EPo7bWeUMjLsYJSEeox9Y6A==" crossorigin="anonymous"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-array/1.2.2/d3-array.min.js" integrity="sha512-a/E42YlriWlH6BqS4HXIXSx/tNTdC9NAKnGayXm0yac310St9QXhgtMQTPd9Ve48M3GEc234+qxZY3W/8v6cOw==" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>
   
 <meta name="google-site-verification" content="nosSwzGY6NvfaGc0eqDx-o4iE3TrVFz3jghj0jGW5is" /> 
   </head>
@@ -2596,6 +2597,21 @@ var gridlines_cli = d3.axisLeft()
       .y(function(d) { return y_deaths(d.deaths_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
+      
+      
+   d3.select('#rt_download').on('click', function() {
+      var fileName = 'rtData.json';
+
+// Create a blob of the data
+var fileToSave = new Blob([JSON.stringify(rtArrs, undefined, 2)], {
+    type: 'application/json',
+    name: fileName
+});
+
+// Save the file
+saveAs(fileToSave, fileName);
+   })   
+      
       
       var rt = [
          dataNU[dataNU.length - 1 ].rt_median,
