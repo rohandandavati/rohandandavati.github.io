@@ -2054,6 +2054,13 @@ if(labelArr.length > 3 ){
      return tickTimeFormat(d.date) + "<br></br>Administed Doses: <span style='color:red'>" + d.AdministeredCountChange + "</span><br></br>" +
      "Fully Vaccinated: <span style='color:red'>" + d.PersonsFullyVaccinatedChange;
   })
+  
+         var tip_cli = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+     return tickTimeFormat(d.reportDate) + "<br></br>CLI Admissions: <span style='color:red'>" + d.CLIAdmissionsRA + "</span><br></br>"
+  })
    
    svg_cases
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
@@ -2104,7 +2111,7 @@ if(labelArr.length > 3 ){
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");       
    
-   
+   svg_cli.call(tip_cli)
    
    
   const len = data_map.length - 1;
@@ -2357,8 +2364,8 @@ var gridlines_cli = d3.axisLeft()
       .attr("y", function(d) { return y_cli(d.CLIAdmissionsRA); })
       .attr("width",  x_cli.bandwidth())
       .attr("height", function(d) { return height_cases - y_cli(d.CLIAdmissionsRA); })
-      //             .on('mouseover', tip_vaccine.show)
-      // .on('mouseout', tip_vaccine.hide)
+      .on('mouseover', tip_cli.show)
+      .on('mouseout', tip_cli.hide)
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );   
       
