@@ -39,7 +39,7 @@
 <meta name="google-site-verification" content="nosSwzGY6NvfaGc0eqDx-o4iE3TrVFz3jghj0jGW5is" /> 
   </head>
 
-  <body >
+  <body>
     
   <style>
 
@@ -1122,6 +1122,13 @@ files.forEach(function(url) {
 // get all data
 Promise.all(promises).then(function(data) {
    
+   
+   //once through all data
+   //all data in same object? 
+   
+   
+   
+   
    let parseDate3 = d3.timeParse("%m/%d/%Y");
     let parseDate2 = d3.timeParse("%Y-%m-%d");
    
@@ -1133,6 +1140,7 @@ Promise.all(promises).then(function(data) {
    var maxMinTimeRT = 0;
    var cliArr = []
    
+   //separate 
    data.forEach((datum, i) => {
       if (datum.VaccineAdministration) {
          if((datum.VaccineAdministration.length > 0)) {
