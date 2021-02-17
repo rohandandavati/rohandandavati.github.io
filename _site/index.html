@@ -386,17 +386,31 @@ html, body {
   </div>
 </div>
 
-<!--<div class = "card cases chart">-->
-<!--   <div class="card-body rt" id = "cases_chart"> </div>-->
-<!--</div>-->
+
 <div class = "card cases chart content" id ="card_3">
    <div class="card-body rt"> 
       <div id = 'cases_chart'></div>
    </div>
 </div>
 
+<div class="card vacc content" id = "card_4">
+  <div class="card-body rt">
+    <h2>COVID-like illness (CLI) Admissions </h2>
+    <text>This is the daily number of people admitted to the hospital for COVID-like illness (CLI) in <text class = "region_text"></text> of Illinois.
+        CLI admissions are a gold-standard indicator for COVID-19 trends because unlike cases or test positivity rate, CLI admissions are
+        much less sensitive to changes in diagnostic test availability or demand.
+</text>
+  </div>
+</div>
 
-<div class="card deaths content" id = "card_4">
+<div class = "card cli chart content" id = "card_5">
+   <div class="card-body rt">
+      <div id = 'cli'></div>
+   </div>
+</div>
+
+
+<div class="card deaths content" id = "card_6">
   <div class="card-body rt">
     <h2>Deaths</h2>
     <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
@@ -407,13 +421,13 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart content" id ="card_5">
+<div class = "card deaths chart content" id ="card_7">
    <div class="card-body rt"> 
       <div id = 'deaths_chart'></div>
    </div>
 </div>
 
-<div class="card cases content" id ="card_6">
+<div class="card cases content" id ="card_8">
   <div class="card-body rt">
     <h2>Cases per Test (case positivity rate)</h2>
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
@@ -423,13 +437,13 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart content" id ="card_7">
+<div class = "card deaths chart content" id ="card_9">
    <div class="card-body rt"> 
       <div id = 'test_pos'></div>
    </div>
 </div>
 
-<div class="card cases content" id = "card_8">
+<div class="card cases content" id = "card_10">
   <div class="card-body rt">
     <h2>Tests</h2>
     <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois.
@@ -443,43 +457,29 @@ html, body {
 </div>
 
 
-<div class = "card deaths chart content" id = "card_9">
+<div class = "card deaths chart content" id = "card_11">
    <div class="card-body rt"> 
       <div id = 'tests'></div>
    </div>
 </div>
 
 
-<div class="card vacc content" id = "card_10">
+<div class="card vacc content" id = "card_12">
   <div class="card-body rt">
-    <h2>Vaccine Administration </h2>
-    <text>Place holder text for vaccine description in <text class = "region_text"></text> of Illinois.
-
+    <h2>Vaccination </h2>
+    <text>This is the daily number of doses administered in and newly fully vaccinated residents of <text class = "region_text"></text> of Illinois.
+        As of <text class = "last_update_date"></text>, <text id = "percent_vaccinated"></text>% of residents of <text class = "region_text"></text> of Illinois have been fully vaccinated.
 </text>
   </div>
 </div>
 
 
-<div class = "card deaths chart content" id = "card_11">
+<div class = "card deaths chart content" id = "card_13">
    <div class="card-body rt"> 
       <div id = 'vaccine'></div>
    </div>
 </div>
 
-<div class="card vacc content" id = "card_10">
-  <div class="card-body rt">
-    <h2>CLI Admissions </h2>
-    <text>Place holder text for cli admin description in <text class = "region_text"></text> of Illinois.
-
-</text>
-  </div>
-</div>
-
-<div class = "card cli chart content" id = "card_11">
-   <div class="card-body rt"> 
-      <div id = 'cli'></div>
-   </div>
-</div>
 
 
 
@@ -1125,9 +1125,6 @@ Promise.all(promises).then(function(data) {
    
    //once through all data
    //all data in same object? 
-   
-   
-   
    
    let parseDate3 = d3.timeParse("%m/%d/%Y");
     let parseDate2 = d3.timeParse("%Y-%m-%d");
@@ -2095,7 +2092,7 @@ if(labelArr.length > 3 ){
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.date) + "<br></br>Administed Doses: <span style='color:red'>" + d.AdministeredCountChange + "</span><br></br>" +
+     return tickTimeFormat(d.date) + "<br></br>Administered Doses: <span style='color:red'>" + d.AdministeredCountChange + "</span><br></br>" +
      "Fully Vaccinated: <span style='color:red'>" + d.PersonsFullyVaccinatedChange;
   })
   
@@ -2619,6 +2616,22 @@ var fileToSave = new Blob([JSON.stringify(rtArrs, undefined, 2)], {
 // Save the file
 saveAs(fileToSave, fileName);
    })   
+   
+   var regionPopulation = {
+   
+   'illinois': 12671821,
+'covidregion_1': 660965,
+'covidregion_2': 1243906,
+'covidregion_3': 556776,
+'covidregion_4': 656946,
+'covidregion_5': 403659,
+'covidregion_6': 739098,
+'covidregion_7': 800605,
+'covidregion_8': 1455324,
+'covidregion_9': 1004309,
+'covidregion_10': 2693959,
+'covidregion_11': 2456274
+}
       
       
       var rt = [
@@ -2641,6 +2654,10 @@ saveAs(fileToSave, fileName);
     document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
     document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
         document.getElementById('avg_case_pos').innerHTML = (data_map[data_map.length - 1 ].test_pos_avg).toFixed(2);
+       
+       document.getElementById('percent_vaccinated').innerHTML = ((vaccineData[vaccineData.length-1].PersonsFullyVaccinated / regionPopulation[selectedRegion]) *100).toFixed(0);
+       
+      //  console.log(vaccineData[vaccineData.length-1].PersonsFullyVaccinated, regionPopulation[selectedRegion])
         
     var region = ""
     if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
