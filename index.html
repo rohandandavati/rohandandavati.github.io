@@ -6,17 +6,17 @@ title: Home
 /*div {*/
 /*   border: 1px solid red;*/
 /*}*/
-/*.bottom {*/
-/*   height: 200px;*/
-/*   position: relative;*/
-/*}*/
 
+#rt_download {
+   position:absolute;
+   right:90px;
+   bottom: 5px;
+   /*float: right;*/
+}
 .content {
+   position: relative;
    display: none;
 }
-/*#focus_rt {*/
-/*     z-index: 4;*/
-/*}*/
 #loader {
   position: absolute;
   left: 50%;
@@ -66,9 +66,12 @@ html, body {
     max-width: 100%;
     overflow-x: hidden;
 }
-
 .grid line {
-  stroke: #ddd;
+    stroke: #ddd;
+    /*opacity: 0.7;*/
+}
+.grid path {
+      stroke-width: 0;
 }
 
 .d3-tip, .tooltip, .tooltip_up {
@@ -133,26 +136,6 @@ html, body {
 #tooltipNU {
    background: #949494
 }
-
-
-/*creates tip on bottom: content, top*/
-/*.tooltip:after {*/
-  /*box-sizing: border-box;*/
-/*  display: block;*/
-/*  font-size: 10px;*/
-/*  width: 100%;*/
-/*  line-height: 1;*/
-/*  color: rgba(0, 0, 0, 0.8);*/
-/*  content: "\25BC";*/                   
-/*  position: absolute;*/
-/*  text-align: center;*/
-/*  margin: -1px 0 0 0;*/
-/*  top: 100%;*/
-/*  left: 0;*/
-/*}*/
-
-
-
 /* Style northward tooltips differently */
 .d3-tip.n:after {
   margin: -1px 0 0 0;
@@ -182,15 +165,7 @@ html, body {
       /*z-index: 2;*/   
       position: fixed;
       z-index: 2;
-   }
-   /*.card-body {*/
-      /*width: 100%;*/
-   /*   margin-right: 20px;*/
-   /*}*/
-   /*.pos {*/
-   /*   float: right;*/
-   /*   position: relative;*/
-   /*}*/
+}
 
 @media only screen and (max-width: 330px) {
       body {
@@ -218,12 +193,6 @@ html, body {
          width: 15%;
          /*border: solid red 1px;*/
       }
-      /*.rt {*/
-      /*   width: 100%;*/
-      /*   float: right;*/
-         /*margin-left: 10%;*/
-      /*}*/
-      
 
       #rt_outer {
          width: 100%;
@@ -235,43 +204,8 @@ html, body {
       .rt_title {
          width: 85%;
       }
-      /*.cases {*/
-      /*   width: 100%;*/
-      /*   float: right;*/
-      /*}*/
-      /*.deaths {*/
-      /*   width: 100%;*/
-      /*   float: right;*/
-      /*}*/
 
 }
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-/*@media only screen and (min-width: 600px) {*/
-/*      #cases_map {*/
-/*         width: 18%;*/
-/*      }*/
-/*      body {*/
-/*         padding-top: 70px;*/
-/*      }*/
-/*      #cases_map {*/
-/*         width: 15%;*/
-         /*border: solid red 1px;*/
-/*      }*/
-/*      .rt {*/
-/*         width: 100%;*/
-/*         float: right;*/
-/*         margin-right: 0%;*/
-/*      }*/
-/*      .cases {*/
-/*         width: 100%;*/
-/*         float: right;*/
-/*      }*/
-/*      .deaths {*/
-/*         width: 100%;*/
-/*         float: right;*/
-/*      }*/
-/*}*/
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
@@ -312,10 +246,6 @@ html, body {
          width: 10%;
       }
 }
-
-/*.left{*/
-   /*text-align: center;*/
-/*}*/
 .bottom {
    float: right;
    /*width: 50%*/
@@ -348,8 +278,16 @@ html, body {
 <div class = "card cases content" id = "card_1">
    <div class="card-body"> 
    <div id = 'rt_chart'></div>
+      <button type="button" class="btn btn-primary" id= "rt_download">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"></path>
+</svg> Download 
+              </button>
+              
+              
    </div>
 </div>
+
 
 
 <div class="card cases content" id = "card_2">
@@ -362,17 +300,31 @@ html, body {
   </div>
 </div>
 
-<!--<div class = "card cases chart">-->
-<!--   <div class="card-body rt" id = "cases_chart"> </div>-->
-<!--</div>-->
+
 <div class = "card cases chart content" id ="card_3">
    <div class="card-body rt"> 
       <div id = 'cases_chart'></div>
    </div>
 </div>
 
+<div class="card vacc content" id = "card_4">
+  <div class="card-body rt">
+    <h2>COVID-like illness (CLI) Admissions </h2>
+    <text>This is the daily number of people admitted to the hospital for COVID-like illness (CLI) in <text class = "region_text"></text> of Illinois.
+        CLI admissions are a gold-standard indicator for COVID-19 trends because unlike cases or test positivity rate, CLI admissions are
+        much less sensitive to changes in diagnostic test availability or demand.
+</text>
+  </div>
+</div>
 
-<div class="card deaths content" id = "card_4">
+<div class = "card cli chart content" id = "card_5">
+   <div class="card-body rt">
+      <div id = 'cli'></div>
+   </div>
+</div>
+
+
+<div class="card deaths content" id = "card_6">
   <div class="card-body rt">
     <h2>Deaths</h2>
     <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
@@ -383,13 +335,13 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart content" id ="card_5">
+<div class = "card deaths chart content" id ="card_7">
    <div class="card-body rt"> 
       <div id = 'deaths_chart'></div>
    </div>
 </div>
 
-<div class="card cases content" id ="card_6">
+<div class="card cases content" id ="card_8">
   <div class="card-body rt">
     <h2>Cases per Test (case positivity rate)</h2>
     <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
@@ -399,12 +351,13 @@ html, body {
   </div>
 </div>
 
-<div class = "card deaths chart content" id ="card_7">
+<div class = "card deaths chart content" id ="card_9">
    <div class="card-body rt"> 
       <div id = 'test_pos'></div>
    </div>
 </div>
-<div class="card cases content" id = "card_8">
+
+<div class="card cases content" id = "card_10">
   <div class="card-body rt">
     <h2>Tests</h2>
     <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois.
@@ -418,11 +371,31 @@ html, body {
 </div>
 
 
-<div class = "card deaths chart content" id = "card_9">
+<div class = "card deaths chart content" id = "card_11">
    <div class="card-body rt"> 
       <div id = 'tests'></div>
    </div>
 </div>
+
+
+<div class="card vacc content" id = "card_12">
+  <div class="card-body rt">
+    <h2>Vaccination </h2>
+    <text>This is the daily number of doses administered in and newly fully vaccinated residents of <text class = "region_text"></text> of Illinois.
+        As of <text class = "last_update_date"></text>, <text id = "percent_vaccinated"></text>% of residents of <text class = "region_text"></text> of Illinois have been fully vaccinated.
+</text>
+  </div>
+</div>
+
+
+<div class = "card deaths chart content" id = "card_13">
+   <div class="card-body rt"> 
+      <div id = 'vaccine'></div>
+   </div>
+</div>
+
+
+
 
 <!--<div class = 'container'>-->
 
@@ -437,30 +410,8 @@ html, body {
 <script>
    /* global d3 */
    /* global $ */
-   
+   /*global moment*/
        
-   //  var myVar;
-
-   // function myFunction() {
-      
-   // //change to queue   
-   //  myVar = setTimeout(showPage, 3000);
-    
-     
-   // }
-   
-   // function showPage() {
-   //  document.getElementById("loader").style.display = "none";
-     
-   //  //change to set all in class
-   //  //document.getElementById("myDiv").style.display = "block";
-   //    var content_divs = document.getElementsByClassName( 'content' );
-      
-   //    [].slice.call( content_divs ).forEach(function ( div ) {
-   //       div.style.display = 'block'
-   //    });
-     
-   // }
    
    $(document).ready(function(){
       $(this).scrollTop(0);
@@ -500,7 +451,7 @@ html, body {
 //    var hexColorsLightest = ["#ce7774", "#cea5cc","#acded6", "#facb87", "#b5b5b5", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#e6d4b9"]
    
    //region color swap issue #29
-   var hexColors = ["#969696", "#BA7FB7","#89D0C5", "#F9B554", "#DCC29C", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#BA3E39"] 
+   var hexColors = ["#8f8f8f", "#BA7FB7","#89D0C5", "#F9B554", "#DCC29C", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#BA3E39"] 
    
    var mapFill = ["#505050", "#743971", "#438a7f", "#b36f0e", "#967c56", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#740000"]
 
@@ -509,6 +460,9 @@ html, body {
    var hexColorsLighter = ["#ababab", "#c798c5","#a0d9d0", "#fac376", "#e3ceaf", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#c76460"]
 
    var hexColorsLightest = ["#b5b5b5", "#cea5cc","#acded6", "#facb87", "#e6d4b9", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#ce7774"]
+   
+      var personsVaccineColors = ["#8f8f8f", "#BA7FB7","#89D0C5", "#facb87", "#e6d4b9", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#ce7774"]
+   
 
    var firstIteration = true;
    
@@ -546,7 +500,9 @@ html, body {
    var lightestColors = d3.scaleOrdinal().domain(allGroup)
      .range(hexColorsLightest)
   
-   
+      var darkerColor = d3.scaleOrdinal().domain(allGroup)
+     .range(hexColors)
+     
    var countyMap = {
       "ADAMS": {
          "covid_region": 3
@@ -865,11 +821,11 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 10, right: 70, bottom: 30, left: 35};
+   var margin_rt = {top: 10, right: 70, bottom: 50, left: 35};
    var margin_cases = {top: 10, right: 20, bottom: 30, left: 40};
    var margin_deaths = {top: 10, right: 20, bottom: 30, left: 40};
    var margin_test_pos = {top: 10, right: 20, bottom: 30, left: 60};
-   var margin_tests = {top: 10, right: 20, bottom: 30, left: 70};
+   var margin_tests = {top: 30, right: 20, bottom: 30, left: 50};
    
    var svg_rt = d3.select("#rt_chart").append("svg")    
    .style("fill", "none")
@@ -883,49 +839,39 @@ html, body {
    var y_rt = d3.scaleLinear();
    var y_rt_axis = svg_rt.append("g");
    
-   var interval_rt = svg_rt.append("path")
-      .attr("stroke", "none")
-      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
+   var interval_rt = svg_rt
+   .append("path")
+   .attr("stroke", "none")
    
-   var line_rt = svg_rt.append('g').append("path")  
-   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   var line_rt = svg_rt
+      .append('g')
+      .append("path")
       .style("stroke-width", 2)
       .style("fill", "none");
       
-      var interval_rt2 = svg_rt.append("path")
+   var interval_rt2 = svg_rt
+   .append("path")
       .attr("stroke", "none")
-      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
       
       
    var interval_rt3 = svg_rt.append("path")
       .attr("stroke", "none")
-      // .attr("transform", "translate("+ 0 +","+ 0  + ")"  );
       
       var interval_rt4 = svg_rt.append("path")
       .attr("stroke", "none")
    
-   var line_rt2 = svg_rt.append('g').append("path")  
-   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+   var line_rt2 = svg_rt.append('g').append("path") 
       .style("stroke-width", 2)
       .style("fill", "none");
       
-         var line_rt3 = svg_rt.append('g').append("path")  
-   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
+         var line_rt3 = svg_rt.append('g').append("path") 
       .style("stroke-width", 2)
       .style("fill", "none");
       
       
       var line_rt4 = svg_rt.append('g').append("path")  
-   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
       .style("stroke-width", 2)
       .style("fill", "none");
-      
-   var refLine = svg_rt.append('g').append("path")
-   .attr("stroke", "black")
-   // .attr("transform", "translate("+ 0 +","+ 0  + ")"  )
-      .style("stroke-width", 1)
-      .style("stroke-dasharray", ("3, 3"))
-      .style("fill", "none")
    
    var dataFilter = null; 
    
@@ -935,33 +881,26 @@ html, body {
 	var svg_test_pos = d3.select("#test_pos").append("svg")
 	   .style("fill", "none")
     .style("pointer-events", "all")
+    
 	var svg_tests = d3.select("#tests").append("svg")
-
+	
+	var svg_vac = d3.select("#vaccine").append("svg")
+	var svg_cli = d3.select("#cli").append("svg")
 
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
-
- // Create the circle that travels along the curve of chart
-
+var bisectCDT = d3.bisector(function(d) { return d.reportDate; }).left;
 
 var Tooltip = d3.select("#rt_chart")
     .append("div")
     .attr("class", "tooltip")
        .attr("id", "line_tooltip")
-    
-//     var Tooltip2 = d3.select("#rt_chart")
-//     .append("div")
-//     .attr("class", "tooltip")
-//        .attr("id", "tooltipNU")
-    
-    
-   
-              // Gridline
-//  var gridlines = d3.axisLeft();
 
 var grid_rt = svg_rt.append("g")
 
 var grid_cases = svg_cases.append("g")
+var grid_vac = svg_vac.append("g")
+var grid_cli = svg_cli.append("g")
 
 var grid_test_pos = svg_test_pos.append("g")
 var grid_tests = svg_tests.append("g")
@@ -976,6 +915,10 @@ var lineLabel3 = svg_rt.append("text")
 var lineLabel4 = svg_rt.append("text")
 
  var focus = svg_rt.append("g")
+         //  .append('circle')
+         .append('line')
+         
+ var refLine = svg_rt.append("g")
          //  .append('circle')
          .append('line')
          
@@ -1002,16 +945,6 @@ var dot_UIUC = svg_rt.append("g")
          
 var dot_ANL = svg_rt.append("g")
          .append('circle')
-         
-// var Tooltip = svg_rt.append("g")
-//     .append("div")
-//     .attr("class", "tooltip")
-         
-// var value_UC = svg_rt.append("text")   
-
-// var value_NU = svg_rt.append("text")
-
-// var value_UIUC = svg_rt.append("text")
 
    
  // Create the circle that travels along the curve of chart
@@ -1027,10 +960,6 @@ var dot_ANL = svg_rt.append("g")
 var Tooltip_test_pos = d3.select("#test_pos")
     .append("div")
     .attr("class", "tooltip s")
-   //  .attr("class", "s")
-   //  .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
-    
-   
    
 var projection = d3.geoAlbers()
 var path = d3.geoPath()
@@ -1055,344 +984,335 @@ var y_test_pos = d3.scaleLinear()
 var x_axis_tests_pos = svg_test_pos.append("g")
 var y_axis_tests_pos = svg_test_pos.append("g")
 
-
 var x_tests= d3.scaleBand()
 var y_tests = d3.scaleLinear()
 var x_axis_tests = svg_tests.append("g")
 var y_axis_tests = svg_tests.append("g")
 
+var x_vac = d3.scaleBand()
+var y_vac = d3.scaleLinear()
+var x_axis_vac = svg_vac.append("g")
+var y_axis_vac = svg_vac.append("g")
+
+
+var x_cli = d3.scaleBand()
+var y_cli = d3.scaleLinear()
+var x_axis_cli = svg_cli.append("g")
+var y_axis_cli = svg_cli.append("g")
+
 var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv',
-             'https://cors-anywhere-clone.herokuapp.com/https://www.dph.illinois.gov/sitefiles/COVIDHistoricalTestResults.json',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUIUC.csv',
-             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtANL.csv'
+             'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtANL.csv',
+             'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
              ]
+var idph_cli = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
+var idph_url = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDVaccine/getVaccineAdministration?CountyName='
+var idph_test = 'https://idph.illinois.gov/DPHPublicInformation/api/COVID/GetCountyHistorical?countyName='
+   
 
-   let map = {};
-      map["illinois"] = "Illinois";
-      map["covidregion_1"] = "Central";
-      map["covidregion_2"] = "Chicago";
-      map["covidregion_3"] = "Collar";
-      map["covidregion_4"] = "West Central";
-      map["covidregion_5"] = "North Central";
-      map["covidregion_6"] = "Northern";
-      map["covidregion_7"] = "Northwest"; 
-      map["covidregion_8"] = "Southeast Central";
-      map["covidregion_9"] = "Southern";
-      map["covidregion_10"] = "Southwest Central";
-      map["covidregion_11"] = "Suburban";
-
-
-   let regionArray = [];
-      regionArray[0] = "Illinois";
-      regionArray[1] = "Central";
-      regionArray[2] = "Chicago";
-      regionArray[3] = "Collar";
-      regionArray[4] = "West Central";
-      regionArray[5] = "North Central";
-      regionArray[6] = "Northern";
-      regionArray[7] = "Northwest"; 
-      regionArray[8] = "Southeast Central";
-      regionArray[9] = "Southern";
-      regionArray[10] = "Southwest Central";
-      regionArray[11] = "Suburban";
+   
+   
+   Object.entries(countyMap).forEach(county => {
+      files.push(idph_url + county[0])
+      files.push(idph_test + county[0])
+   })
 
 var promises = [];
 let today = new Date();
 let parDate = d3.timeParse("%m/%d/%Y");
 
+//push all urls in files
 files.forEach(function(url) {
-    if (url.slice(-1) === 'n'){
-       promises.push(d3.json(url))
-    }else{
+    if (url.slice(-1) === 'v'){
        promises.push(d3.csv(url))
+    }else{
+       promises.push(d3.json(url))
     }
 });
 
-
-
+// get all data
 Promise.all(promises).then(function(data) {
-
    
    
-   document.getElementById("loader").style.display = "none";
-     
-    //change to set all in class
-    //document.getElementById("myDiv").style.display = "block";
-      var content_divs = document.getElementsByClassName( 'content' );
+   //once through all data
+   //all data in same object? 
+   
+   let parseDate3 = d3.timeParse("%m/%d/%Y");
+    let parseDate2 = d3.timeParse("%Y-%m-%d");
+   
+   //section data into rt, cases/tests/deaths, vaccine 
+   var rtArrs = []
+   var cdtArrs = []
+   var vaccineArrs = []
+   var maxMinTime = 0
+   var maxMinTimeRT = 0;
+   var cliArr = []
+   
+   //separate 
+   data.forEach((datum, i) => {
+      if (datum.VaccineAdministration) {
+         if((datum.VaccineAdministration.length > 0)) {
+            vaccineArrs = vaccineArrs.concat(datum.VaccineAdministration)
+            maxMinTime = Math.max(maxMinTime, moment( (datum.VaccineAdministration[0]).Report_Date ).valueOf())
+         }
+      }
+      else if ((typeof(datum.values)).localeCompare('object') === 0){
+         if((datum.values.length > 0)) {
+         //  cdtArrs.push(datum)
+         cdtArrs = cdtArrs.concat(datum.values)
+         }
+      }
+      else if ((typeof(datum.values)).localeCompare('function') === 0){
+         // rtArrs.push(datum)
+         var title = files[i].slice(files[i].lastIndexOf('/') + 1 )
+         if ((title).localeCompare('rtUIUC.csv') === 0 ) {
+            datum = datum.filter(function(d) { return (d.scenario_name).localeCompare('baseline') === 0 })
+         }
+         if ((title).localeCompare("GetResurgenceDataCLIAdmissions") === 0 ) {
+            cliArr = datum
+            // return
+         } else {
+         rtArrs.push({title: title, data: datum })
+         }
+      } else {
+         return;
+      }
+   })
+   
+   //get first day and init sum
+   var prev_day = moment(cliArr[0].reportDate).valueOf()
+   var dayTotal = 0;
+   
+   //if date is new, push prev day, add current day to sum
+   cliArr.forEach(datum => {
+      //init datum date
+      datum.reportDate = moment(datum.reportDate).toDate()
+      //if current day is diff from prev day
+      if ((datum.reportDate).getTime() != prev_day) {
+         cliArr.push({
+            CLIAdmissionsRA: dayTotal,
+            regionDescription: 'Illinois',
+            regionID: 0,
+            reportDate: new Date(prev_day)
+         })
+         dayTotal = 0;
+         prev_day = (datum.reportDate).getTime()
+      }
+      //add datum cli to sum
+      dayTotal += datum.CLIAdmissionsRA
+   })
+   
       
+   //process data sections
+   
+   //consol start date
+   var index = vaccineArrs.length-1
+   while (index >= 0) {
+      if(maxMinTime > moment(  (vaccineArrs[index]).Report_Date ).valueOf()) {
+         vaccineArrs.splice(index, 1); 
+      } else {
+         vaccineArrs[index].covid_region = countyMap[(vaccineArrs[index].CountyName).toUpperCase()].covid_region
+         delete vaccineArrs[index].CountyName
+         vaccineArrs[index].date = moment(vaccineArrs[index].Report_Date).toDate()
+         delete vaccineArrs[index].Report_Date
+      }
+   --index;
+}
+index = vaccineArrs.length-1
+
+while (index >= 0) {
+   //find index of last matching date & region
+   var j = vaccineArrs.length - 1
+   while(j >= index) {
+      //go to last index of same region
+      if( (vaccineArrs[j].date).valueOf() === (vaccineArrs[index].date).valueOf() && 
+           vaccineArrs[j].covid_region === vaccineArrs[index].covid_region ) {
+         break;
+      } 
+      else {
+         --j
+      }
+   }
+   if(j > index ) {
+      vaccineArrs[index].AdministeredCount += vaccineArrs[j].AdministeredCount
+      vaccineArrs[index].AdministeredCountChange += vaccineArrs[j].AdministeredCountChange
+      vaccineArrs[index].PersonsFullyVaccinated += vaccineArrs[j].PersonsFullyVaccinated
+      vaccineArrs.splice(j, 1); 
+   }
+   --index;
+}
+
+// get PersonsFullyVaccinatedChange
+index = vaccineArrs.length-1
+while(index >= 0 ) {
+   //if next > region is the same 
+   if (index > 0 && (vaccineArrs[index].covid_region === vaccineArrs[index-1].covid_region) ) {
+      vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated - vaccineArrs[index-1].PersonsFullyVaccinated
+   } else {
+      vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated
+   }
+   --index
+}
+
+moment.suppressDeprecationWarnings = true;
+
+//parse rtArrs
+rtArrs.forEach(obj => {
+   (obj.data).forEach(datum => {
+      for (var [key, value]  of Object.entries(datum)) {
+         if (!isNaN(datum[key]) && !isNaN(parseFloat(datum[key]))) {
+            datum[key] = +datum[key]
+         } else if ( moment(datum[key] ).isValid() ) {
+            datum[key] = moment(datum[key], ['YYYY-MM-DD', 'MM/DD/YYYY']).toDate()
+            if (key[0] === 'D') {
+               datum['date'] = datum['Date']
+               delete datum['Date']
+            }
+         }
+      }
+   })
+})
+
+var rtStart  =  moment('2020-4-1', 'YYYY-MM-DD').valueOf()
+
+rtArrs.forEach(obj => {
+   
+   var indx = (obj.data).length-1
+   while(indx >= 0 ){
+      var time = ((obj.data)[indx].date).getTime()
+      if(time < rtStart || time > today.getTime()) {
+         (obj.data).splice(indx, 1) 
+      }
+      --indx;
+   }
+})
+
+index = cdtArrs.length-1
+while (index >= 0) {
+   cdtArrs[index].reportDate =  moment(cdtArrs[index].reportDate, 'YYYY-MM-DD').toDate()
+   cdtArrs[index].covid_region = countyMap[(cdtArrs[index].CountyName).toUpperCase()].covid_region
+   cdtArrs[index].confirmed_cases = +cdtArrs[index].confirmed_cases 
+   cdtArrs[index].deaths = +cdtArrs[index].deaths
+   cdtArrs[index].tested = +cdtArrs[index].tested
+   delete cdtArrs[index].CountyName
+   //find index of last matching date & region
+   var j = cdtArrs.length - 1
+   while(j >= index) {
+      if( (cdtArrs[j].reportDate).valueOf() === (cdtArrs[index].reportDate).valueOf() && 
+         cdtArrs[j].covid_region === cdtArrs[index].covid_region) {
+         break;
+      } 
+      else {
+         --j
+      }
+   }
+   if(j > index ) {
+      cdtArrs[index].confirmed_cases += cdtArrs[j].confirmed_cases
+      cdtArrs[index].deaths += cdtArrs[j].deaths
+      cdtArrs[index].tested += cdtArrs[j].tested
+      cdtArrs.splice(j, 1); 
+   }
+   --index;
+}
+
+index = cdtArrs.length-1
+while (index >= 0) {
+     if (index > 0 && (cdtArrs[index].covid_region === cdtArrs[index-1].covid_region) ) {
+      cdtArrs[index].confirmed_cases_change = cdtArrs[index].confirmed_cases - cdtArrs[index-1].confirmed_cases
+      cdtArrs[index].deaths_change = cdtArrs[index].deaths - cdtArrs[index-1].deaths
+      cdtArrs[index].tested_change = cdtArrs[index].tested - cdtArrs[index-1].tested
+      if(cdtArrs[index].tested_change > 200000) {
+         cdtArrs[index].tested_change = 0;
+      }
+      
+   } else {
+      cdtArrs[index].confirmed_cases_change = cdtArrs[index].confirmed_cases
+      cdtArrs[index].deaths_change = cdtArrs[index].deaths
+      cdtArrs[index].tested_change = cdtArrs[index].tested
+   }
+   
+   if(cdtArrs[index].confirmed_cases_change < 0) {
+      cdtArrs[index].confirmed_cases_change = 0
+   }
+   if(cdtArrs[index].deaths_change < 0) {
+      cdtArrs[index].deaths_change = 0
+   }
+   if(cdtArrs[index].tested_change < 0) {
+      cdtArrs[index].tested_change = 0
+   }
+   
+   if(cdtArrs[index].tested_change === 0) {
+      cdtArrs[index].test_positivity = 0
+   
+   } else {
+      cdtArrs[index].test_positivity = cdtArrs[index].confirmed_cases_change / cdtArrs[index].tested_change
+   }
+   if ( (cdtArrs[index].reportDate).getTime() === moment('2020-04-11', 'YYYY-MM-DD').valueOf() ||  (cdtArrs[index].reportDate).getTime() === moment('2020-05-04', 'YYYY-MM-DD').valueOf()) {
+      cdtArrs.splice(index, 1)
+   }
+   --index;
+}
+
+const POINTS_AVERAGE = 6;
+for(var i = 0; i < cdtArrs.length ; ++i) {
+      var cases_r = 0
+      var deaths_r = 0
+      var tests_r = 0
+      var test_pos_r = 0
+      var cases_avg = 0
+      var deaths_avg = 0
+      var test_pos_avg = 0
+      var tests_avg = 0;
+         
+      for (let j = 0; j <= POINTS_AVERAGE; j++) {
+       if (i - j >= 0 && cdtArrs[i].covid_region === cdtArrs[i-j].covid_region) {
+         cases_avg += cdtArrs[i - j].confirmed_cases_change;
+         deaths_avg += cdtArrs[i - j].deaths_change;
+         tests_avg += cdtArrs[i - j].tested_change;
+         test_pos_avg += cdtArrs[i - j].test_positivity;
+         cases_r = Math.floor(cases_avg / (j + 1));
+         deaths_r = Math.floor(deaths_avg / (j + 1));
+         tests_r = Math.floor(tests_avg / (j + 1));
+         test_pos_r = test_pos_avg / (j + 1);
+       } else {
+          cases_r = Math.floor(cases_avg / j);
+          deaths_r = Math.floor(deaths_avg / j);
+          tests_r = Math.floor(tests_avg / j);
+          test_pos_r = test_pos_avg / j ;
+          j = POINTS_AVERAGE + 1;
+       }
+      }
+      cdtArrs[i].cases_avg = cases_r;
+      cdtArrs[i].deaths_avg = deaths_r;
+      cdtArrs[i].test_pos_avg = test_pos_r;
+      cdtArrs[i].tests_avg = tests_r;
+}
+   
+      document.getElementById("loader").style.display = "none";
+      var content_divs = document.getElementsByClassName( 'content' );
       [].slice.call( content_divs ).forEach(function ( div ) {
          div.style.display = 'block'
       });
    
-   
-   
-   // console.log(data[5])
-   
-   
-var historical_county = []
-
-
-
-   // let parseDate2 = d3.timeParse("%Y-%m-%d");
-   let parseDate3 = d3.timeParse("%m/%d/%Y");
-    let parseDate2 = d3.timeParse("%Y-%m-%d");
-   
-   //get min / max of each
-   //start at lower max, end at higher min 
-   
-   //ANL data
-var index = data[5].length - 1;
-
-
-while (index >= 0) {
-    if(isNaN(data[5][index].rt_median) ||
-       (parseDate2(data[5][index].date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
-    (parseDate2(data[5][index].date)).getTime()  < parseDate2('2020-4-1').getTime()){
-       
-         data[5].splice(index, 1); 
-      } else {
-         data[5][index].rt_lower = +data[5][index].rt_lower;
-         if(data[5][index].rt_lower <.6) {
-            data[5][index].rt_lower = .6
-         }
-         data[5][index].rt_median = +data[5][index].rt_median;
-         data[5][index].rt_upper = +data[5][index].rt_upper;
-         data[5][index].date = parseDate2(data[5][index].date);
-          data[5][index].model_date = parseDate2(data[5][index].model_date);
-      }
- index -= 1;
-}
-
-
-   // console.log(data[5])
-
-index = data[4].length - 1;
-
-
-while (index >= 0) {
-    if(isNaN(data[4][index].rt_median) ||
-       (parseDate3(data[4][index].Date)).getTime() > parseDate3(data[3][data[3].length -1].date).getTime() ||  
-    (parseDate3(data[4][index].Date)).getTime()  < parseDate2('2020-4-1').getTime()){
-       
-         data[4].splice(index, 1); 
-      } else {
-         data[4][index].rt_lower = +data[4][index].rt_lower;
-         data[4][index].rt_median = +data[4][index].rt_median;
-         data[4][index].rt_upper = +data[4][index].rt_upper;
-         data[4][index].date = parseDate3(data[4][index].Date);
-         // data[4][index].model_date = parseDate3(data[4][index].model_date);
-         delete data[4][index].Date
-         delete data[4][index].deaths_lower
-         delete data[4][index].deaths_median
-         delete data[4][index].deaths_upper
-      }
- index -= 1;
-}
-// console.log(data[4])
-
-//UC data
-// let today = new Date();
-index = data[3].length - 1;
-
-while (index >= 0) {
-    if(isNaN(data[3][index].rt_median) || 
-   //  parseDate3(data[3][index].date) > today  ||  
-    (parseDate3(data[3][index].date)).getTime()  < parseDate3('04/01/2020').getTime()
-      ){
-         data[3].splice(index, 1); 
-      } else {
-         data[3][index].rt_lower = +data[3][index].rt_lower;
-         data[3][index].rt_median = +data[3][index].rt_median;
-         data[3][index].rt_upper = +data[3][index].rt_upper;
-         data[3][index].date = parseDate3(data[3][index].date);
-         data[3][index].model_date = parseDate3(data[3][index].model_date);
-      }
- index -= 1;
-}
-
-//NU data   
-index = data[1].length - 1;
-
-while (index >= 0) {
-    if(isNaN(data[1][index].rt_median) ||  
-   //  (parseDate2(data[1][index].date)).getTime() > today.getTime() ||  
-   (parseDate2(data[1][index].date)).getTime() > (data[3][data[3].length -1].date).getTime() ||  
-    (parseDate2(data[1][index].date)).getTime()  < parseDate2('2020-04-01').getTime()
-      ){
-         data[1].splice(index, 1);
-      } else {
-         data[1][index].rt_lower = +data[1][index].rt_lower;
-         data[1][index].rt_median = +data[1][index].rt_median;
-         data[1][index].rt_upper = +data[1][index].rt_upper;
-         data[1][index].date = parseDate2(data[1][index].date);
-         data[1][index].model_date = parseDate2(data[1][index].model_date);
-      }
- index -= 1;
-}
-
-
-
-   var prev_date = parDate('11/11/1997')
-   var region = 0;
-
-
-let dailyRegionCount = {}
-      //reset to 0 after every day
-      dailyRegionCount["Illinois"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Central"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Chicago"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Collar"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["West Central"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["North Central"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Northern"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Northwest"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Southeast Central"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Southern"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Southwest Central"] = {cases: 0, deaths: 0, tests: 0};
-      dailyRegionCount["Suburban"] = {cases: 0, deaths: 0, tests: 0};
-
-   
-   var c = data[2].historical_county.values
-
-   c.sort(function(a, b) {
-   //if (a is less than b by some ordering criterion) {
-   if (parDate(a.testDate).getTime() < parDate(b.testDate).getTime()) {
-      return -1;
-   }
-   //  if (a is greater than b by the ordering criterion) {
-   if (parDate(a.testDate).getTime() > parDate(b.testDate).getTime()) {
-      return 1;
-   }
-   if (parDate(a.testDate).getTime() === parDate(b.testDate).getTime()) {
-      return 0;
-   }
-})
-   
-   
-   
- 
-   var prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
-   
-   var i = 0;
-   c.forEach( value => {
-      //clear dictionary
-      regionArray.forEach(region => {
-         dailyRegionCount[region].cases = 0;
-         dailyRegionCount[region].deaths = 0;
-         dailyRegionCount[region].tests = 0;
-      })
-      
-      //filter county array 
-      var values = (value.values).filter(function(d){return !(d.County==="Out Of State" || d.County==="Unassigned")})
-      //remember date
-      
-      
-      var date = parDate(value.testDate)
-
-      //loop county array for that day
-      values.forEach( county => {
-         //sum for that day
-         dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].cases += county.confirmed_cases
-         dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].deaths += county.deaths
-         dailyRegionCount[regionArray[countyMap[(county.County).toUpperCase()].covid_region]].tests += county.total_tested
-      })
-      
-      regionArray.forEach( region => {
-      
-      var cases = dailyRegionCount[region].cases - prev_dict[region].cases
-      var deaths = dailyRegionCount[region].deaths - prev_dict[region].deaths
-       var test_pos = 0;
-             
-      if ((dailyRegionCount[region].tests - prev_dict[region].tests) > 0)    {
-
-         test_pos =  (dailyRegionCount[region].cases - prev_dict[region].cases) / 
-                            (dailyRegionCount[region].tests - prev_dict[region].tests)
-      } 
-         //if overcounted                   
-         if (cases < 0 || isNaN(cases)) {
-            cases = 0;
-         }
-         if (deaths < 0 || isNaN(deaths)) {
-            deaths = 0;
-         }
-         
-         historical_county.push({
-            date: date,
-            NOFO_Region: region,
-            // cases:  dailyRegionCount[region].cases - prev_dict[region].cases,
-            cases: cases,
-            // deaths: dailyRegionCount[region].deaths - prev_dict[region].deaths,
-            deaths: deaths,
-            tested: dailyRegionCount[region].tests - prev_dict[region].tests,
-            // test_positivity: (dailyRegionCount[region].cases - prev_dict[region].cases) / 
-            //                 (dailyRegionCount[region].tests - prev_dict[region].tests)
-            test_positivity: test_pos
-         });
-      })
-      
-      const POINTS_AVERAGE = 6;
-      var pos = historical_county.length-1;
-      //for each region at the end of array 
-      for (let k = 0; k < 12; k++) {
-         var cases_r = 0
-         var cases_avg = 0
-         var deaths_r = 0
-         var deaths_avg = 0
-         var test_pos_r =0
-         var test_pos_avg =0
-         var tests_r =0
-         var tests_avg = 0;
-         
-         for (let j = 0; j <= POINTS_AVERAGE; j++) {
-            if (i - j >= 0) {
-               var jump = j * 12; 
-               cases_avg += historical_county[pos - k - jump].cases;
-               deaths_avg += historical_county[pos - k - jump].deaths;
-               test_pos_avg += historical_county[pos - k - jump].test_positivity;
-               tests_avg += historical_county[pos - k - jump].tested;
-               cases_r = Math.floor(cases_avg / (j + 1));
-               deaths_r = Math.floor(deaths_avg / (j + 1));
-               test_pos_r = test_pos_avg / (j + 1);
-               tests_r = Math.floor(tests_avg / (j + 1));
-            } else {
-               cases_r = Math.floor(cases_avg / j);
-               deaths_r = Math.floor(deaths_avg / j);
-               test_pos_r = Math.floor(test_pos_r / j);
-               tests_r = Math.floor(tests_avg / j);
-               j = POINTS_AVERAGE + 1;
-            }
-         }
-         historical_county[pos-k].cases_avg = cases_r;
-         historical_county[pos-k].deaths_avg = deaths_r;
-         historical_county[pos-k].test_pos_avg = test_pos_r;
-         historical_county[pos-k].tests_avg = tests_r;
-      }
-      i += 1;
-      prev_dict = JSON.parse(JSON.stringify(dailyRegionCount))
-   });
-   
-  
-   
 
 function drawChart() {
    
-   
    let selectToRegion = {};
-      selectToRegion["illinois"] = "Illinois";
-      selectToRegion["covidregion_1"] = "Central";
-      selectToRegion["covidregion_2"] = "Chicago";
-      selectToRegion["covidregion_3"] = "Collar";
-      selectToRegion["covidregion_4"] = "West Central";
-      selectToRegion["covidregion_5"] = "North Central";
-      selectToRegion["covidregion_6"] = "Northern";
-      selectToRegion["covidregion_7"] = "Northwest"; 
-      selectToRegion["covidregion_8"] = "Southeast Central";
-      selectToRegion["covidregion_9"] = "Southern";
-      selectToRegion["covidregion_10"] = "Southwest Central";
-      selectToRegion["covidregion_11"] = "Suburban";
+      selectToRegion["illinois"] = 0
+      selectToRegion["covidregion_1"] = 1
+      selectToRegion["covidregion_2"] = 2
+      selectToRegion["covidregion_3"] = 3
+      selectToRegion["covidregion_4"] = 4
+      selectToRegion["covidregion_5"] = 5
+      selectToRegion["covidregion_6"] = 6
+      selectToRegion["covidregion_7"] = 7
+      selectToRegion["covidregion_8"] = 8
+      selectToRegion["covidregion_9"] = 9
+      selectToRegion["covidregion_10"] = 10
+      selectToRegion["covidregion_11"] = 11
 
       var currentWidth = document.getElementById("rt_chart").offsetWidth;
       
@@ -1434,7 +1354,7 @@ function drawChart() {
    svg_map.attr("width", map_wid )
 	       .attr("height", map_hid)
 	       
-	       svg_map.call(tip_map)
+	 svg_map.call(tip_map)
 	       
    projection.rotate([89.5,0]).fitWidth(map_wid, data[0]);
    
@@ -1489,21 +1409,25 @@ function drawChart() {
    .exit()
    .remove()
    
-   var dataNU = data[1].filter(function(d){return d.geography_modeled==selectedRegion}) 
-   var dataUC = data[3].filter(function(d){return d.geography_modeled==selectedRegion}) 
-   var dataUIUC = (data[4].filter(function(d){return d.geography_modeled==selectedRegion}) ).filter(function(d){return (d.scenario_name).localeCompare('baseline') === 0})
-   var dataANL = data[5]
-      //.filter(function(d){return d.geography_modeled==selectedRegion}) 
-   
-   var selectedGroupCases = selectToRegion[selectedRegion]
-    var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
-   var formatDate = d3.timeFormat("%b %d")
-   
-  
-      
-    
-var dataTime = dataNU.map(function(d) { return d.date; })
+   var dataNU = (rtArrs.filter(function(d) { return (d.title).localeCompare('rtNU.csv') === 0})[0].data)
+               .filter(function(d){return d.geography_modeled==selectedRegion}) 
+               
+   var dataUC = (rtArrs.filter(function(d) { return (d.title).localeCompare('rtUC.csv') === 0})[0].data)
+               .filter(function(d){return d.geography_modeled==selectedRegion}) 
+               
+   var dataUIUC = (rtArrs.filter(function(d) { return (d.title).localeCompare('rtUIUC.csv') === 0})[0].data)
+               .filter(function(d){return d.geography_modeled==selectedRegion}) 
+               
+   var dataANL = (rtArrs.filter(function(d) { return (d.title).localeCompare('rtANL.csv') === 0})[0].data)
 
+   var data_map = cdtArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
+   
+    
+   var vaccineData = vaccineArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
+   
+   var cliData = cliArr.filter(function(d){return d.regionID===selectToRegion[selectedRegion]})
+   // var cli
+   var formatDate = d3.timeFormat("%b %d")
 
  
 //  var sliderTime = d3
@@ -1533,16 +1457,10 @@ var dataTime = dataNU.map(function(d) { return d.date; })
 //  d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
 
 
-
-
-
   var mousemove = function(d) {
 
    var formatTime = d3.timeFormat("%b %d")
     var x0 = x_rt.invert(d3.mouse(this)[0]);
-   //  var x1 = x_rt.invert(d3.mouse(this)[0]);
-   // var x2 = x_rt.invert(d3.mouse(this)[0]);
-   // var x3 = x_rt.invert(d3.mouse(this)[0]);
     var i = bisect(dataUC, x0, 1);
     var j = bisect(dataNU, x0, 1);
     var k = bisect(dataUIUC, x0, 1);
@@ -1552,109 +1470,67 @@ var dataTime = dataNU.map(function(d) { return d.date; })
     var selectedDataUIUC = dataUIUC[k]
     var selectedDataANL = dataANL[l]
     
-    
    focus
-      .attr("x1", x_rt(selectedDataUC.date))  //<<== change your code here
+      .attr("x1", x_rt(x0)) 
       .attr("y1", 0)
-      .attr("x2", x_rt(selectedDataUC.date))  //<<== and here
+      .attr("x2", x_rt(x0)) 
       .attr("y2", height_rt)
-      // .style("stroke-width", 1)
-      // .style("stroke", "black")
-      // .style("fill", "none");
 
-circle_UC
-      .attr("cx", x_rt(selectedDataUC.date))
+ if (typeof selectedDataUC !== 'undefined') {
+   circle_UC
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataUC.rt_median))
-      
-circle_NU
-      .attr("cx", x_rt(selectedDataNU.date))
+ }
+ 
+   circle_NU
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataNU.rt_median))
       
-circle_UIUC
-      .attr("cx", x_rt(selectedDataUIUC.date))
+   circle_UIUC
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataUIUC.rt_median))
 
-circle_ANL
-      .attr("cx", x_rt(selectedDataANL.date))
+   circle_ANL
+      .attr("cx", x_rt(x0))
       .attr("cy", y_rt(selectedDataANL.rt_median))
 
-//bottom right of focus 
+var strHTML = formatDate(x0) + '<br>' + 
+         "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
+         "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+         
+      if (typeof selectedDataUC !== 'undefined') {
+       strHTML = strHTML + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+      }
 
-if ((selectedRegion).localeCompare('covidregion_11') === 0) {
-    Tooltip
-      .html(formatDate(x0) + '<br>' + 
-      "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
-      "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-      "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataANL.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-      "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
-      // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
-      .style("left", (margin_rt.left +24) + "px")
-      .style("top",  (margin_rt.top +24) + "px")
-} else {
-       Tooltip
-      .html(formatDate(x0) + '<br>' + 
-      "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>" +
-      "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-      "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>")
-      // .style("left", (x_rt(selectedDataUC.date) +margin_rt.left +30) + "px")
-      .style("left", (margin_rt.left +24) + "px")
-      .style("top",  (margin_rt.top +24) + "px")
-}
-      
-   // if(selectedData.rt_median < selectedData2.rt_median){
-
-
-   //  Tooltip
-   //    .html("UC"+ "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-   // if(selectedData.rt_median < selectedData2.rt_median){
-   
-   //    Tooltip2
-   //    .html("NU" + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData2.rt_median)).toFixed(2) + "</span>" )
- 
- 
-   // Tooltip   
-   //    .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
-   //    .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top +30) + "px")
-   //        d3.select('#tooltipUC') .attr('class', 'tooltip n')
-   
-   // Tooltip2
-   //    .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
-   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top - 55) + "px")
-   //        d3.select('#tooltipNU') .attr('class', 'tooltip s')
-      
-      
-   // } else {
-   //    Tooltip
-   //    .style("left", (x_rt(selectedData.date) +margin_rt.left - 20) + "px")
-   //    .style("top",  (y_rt(selectedData.rt_median)+margin_rt.top - 55) + "px")
-   //        d3.select('#tooltipUC') .attr('class', 'tooltip s')
-   //           Tooltip2  
-   //    .style("left", (x_rtNU(selectedData2.date) +margin_rt.left - 20) + "px")
-   //    .style("top",  (y_rt(selectedData2.rt_median)+margin_rt.top +30) + "px")
-   //        d3.select('#tooltipNU') .attr('class', 'tooltip n')
-   // }
-   
+   if ((selectedRegion).localeCompare('covidregion_11') === 0) {
+       
+      strHTML = strHTML + "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataANL.rt_median)).toFixed(2) + "</span>"+ "<br>"
+       
+      Tooltip
+         .html(strHTML)
+         .style("left", (margin_rt.left +24) + "px")
+         .style("top",  (margin_rt.top +24) + "px")
+   } else {
+          Tooltip
+          .html(strHTML)
+         .style("left", (margin_rt.left +24) + "px")
+         .style("top",  (margin_rt.top +24) + "px")
+   }
   }
   
-
-  
     var mousemove_test_pos = function(d) {
-         // var formatTime = d3.timeFormat("%b %d")"%b %Y"
-         var formatTime = d3.timeFormat("%b %d")
-    var x0 = x_test_pos.invert(d3.mouse(this)[0]);
-    var i = bisect(data_map, x0, 1);
-    var selectedData = data_map[i]
-    Tooltip_test_pos
-      // .html(tickTimeFormat(d.date) + "<br></br><strong>R<sub>t</sub>:</strong> <span style='color:red'>" + parseFloat((selectedData.rt_median)).toFixed(2) + "</span>" )
-      .html( formatTime(selectedData.date) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
-      
-      // .style("left", (d3.mouse(this)[0]+70) + "px")
-      .style("left", (x_test_pos(selectedData.date) + 11) + "px")
-      .style("top",  (y_test_pos(selectedData.test_pos_avg)-45) + "px")
-   // focus_test_pos
-   //    .attr("cx", x_test_pos(selectedData.date))
-   //    .attr("cy", y_test_pos(selectedData.test_pos_avg))
-   }
+       var formatTime = d3.timeFormat("%b %d")
+       var x0 = x_test_pos.invert(d3.mouse(this)[0]);
+       
+       var i = bisectCDT(data_map, x0, 1);
+       
+       var selectedData = data_map[i]
+       Tooltip_test_pos
+         .html( formatTime(selectedData.reportDate) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  
+         parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
+         .style("left", (x_test_pos(selectedData.reportDate) + 11) + "px")
+         .style("top",  (y_test_pos(selectedData.test_pos_avg)-45) + "px")
+      }
    
       svg_rt
       .attr("width", width_rt + margin_rt.left + margin_rt.right)
@@ -1663,7 +1539,8 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
    
     x_rt
-      .domain(d3.extent(dataUC, function(d) { return d.date}))
+      // .domain(d3.extent(dataUC, function(d) { return d.date}))
+      .domain([ parseDate2('2020-4-1'), today])
       .range([ 0, width_rt]);
    
    x_rtNU
@@ -1685,15 +1562,15 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       ticks = 6
    }
    
-   
-      x_rt_band
+   x_rt_band
       .domain(dataNU.map(function(d) { return d.date; }))
       .range([0,width_rt])
       .padding(0);
    
-      var tickValsRT = x_rt_band.domain().filter(function(d,i){ 
+   var tickValsRT = x_rt_band.domain().filter(function(d,i){ 
       return ((dataNU[i].date).getDate() === 1)
    })
+   
 
    if (currentWidth < 500) {
       var index = tickValsRT.length -1
@@ -1706,20 +1583,16 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       }
    }
    
+
    
     x_rt_axis
-   // .attr("transform", "translate(" + 0 + "," + (height_cases+margin_cases.top) + ")")
    .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
-   // .attr("transform", "translate(0," + height_rt + ")")
    .call(d3.axisBottom(x_rt).tickSizeOuter(0)
-   //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
-   .tickValues(tickValsRT)
+   // .tickValues(tickValsRT)
    .tickFormat(d3.timeFormat("%b %Y"))
    );
 
    // y_rt
-      
-   
    y_rt_axis
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       // .call(d3.axisLeft(y_rt).ticks(6))
@@ -1805,6 +1678,7 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       interval_rt3
       .datum(dataUIUC)
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr('opacity', '0.5')
       .transition()
       .duration(1000)
       .attr("d", d3.area()
@@ -1823,7 +1697,6 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
    interval_rt4
       .datum(dataANL)
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-
       .attr("d", d3.area()
       .x(function(d) { return x_rt(d.date) })
       .y0(function(d) { return y_rt(d.rt_lower) })
@@ -1882,23 +1755,6 @@ if ((selectedRegion).localeCompare('covidregion_11') === 0) {
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
-   refLine.attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-   
-   
-   refLine
-      .datum(dataNU)
-      .transition()
-      .duration(1000)
-      .attr("d", d3.line()
-      .x(function(d) { return x_rt(d.date) })
-      .y(function(d) { return y_rt(1.0) }));
-      
-
-// var labelArr = [
-//    {"NU" : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top},
-//    {"UC" : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top},
-//    {"UIUC" : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top}
-//    ]
 
 var labelArr = [
    {'unv' : 'UC', 'Y' : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUC[dataUC.length - 1].model_date },
@@ -1911,62 +1767,23 @@ var labelArr = [
       labelArr.push({'unv' : 'ANL', 'Y' : y_rt(dataANL[dataANL.length - 1].rt_median) + margin_rt.top, 'm_d': dataANL[dataANL.length - 1].model_date })
    }
    
-   // console.log(labelArr)
+labelArr.sort((a, b) => (a.Y > b.Y) ? 1 : (a.Y === b.Y) ? ((a.Y > b.Y) ? 1 : -1) : -1 )
 
-//sort labels
-    for(var i = 0; i < labelArr.length-1; i++) {
-        // Finding the smallest number in the subarray
-        let min = i;
-        for(let j = i+1; j < labelArr.length-1; j++){
-            if(labelArr[j].Y < labelArr[min].Y) {
-                min=j; 
-            }
-         }
-         if (min != i) {
-            // let temp = {'region' : '', 'value': 0}   
-            // temp.region = labelArr[i].region
-            // temp.value = labelArr[i].value
-            // labelArr[i].region = labelArr[min].region
-            // labelArr[i].value = labelArr[min].value
-            // labelArr[min].region = temp.region;
-            // labelArr[min].value = temp.value;
-            let temp = labelArr[i]
-            labelArr[i] = labelArr[min]
-            labelArr[min] = temp
-        }
-    }
+labelArr.forEach((label, i, obj) => {
    
-   // console.log(labelArr)
+   if (i > 0 ) {
+      if (obj[i].Y - obj[i-1].Y < 10) {
+         obj[i].Y += 10 - (obj[i].Y - obj[i-1].Y)
+      }
+   }
+})
    
- for(var i = 1; i < labelArr.length-1; i++) {
-    if(labelArr[i].Y - labelArr[i-1].Y < 10) {
-    labelArr[i].Y += 10 - (labelArr[i].Y - labelArr[i-1].Y)
-    }
- }
    
-   // if(labelArr[1].Y - labelArr[0].Y < 10) {
-   //    labelArr[1].Y += 10 - (labelArr[1].Y - labelArr[0].Y)
-   // }
-   // if(labelArr[2].Y - labelArr[1].Y < 10) {
-   //    labelArr[2].Y += 10 - (labelArr[2].Y - labelArr[1].Y)
-   // }
-   // if(labelArr.length > 3) {
-   //    if(labelArr[3].Y - labelArr[2].Y < 10) {
-   //       labelArr[3].Y += 10 - (labelArr[3].Y - labelArr[2].Y)
-   //    }
-   // }
-   // // console.log(labelArr)
-
-
 var formatModelDate = d3.timeFormat("%m/%d")
 lineLabel1
-      // .transition()
-      // .duration(1000)
-      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter[dataFilter.length - 1].rt_median) + margin_rt.top)+")")
       .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[0].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
-      // .style("fill", "black")
             .style("fill", "black")
              .style('font-size', function() {
        if (currentWidth < 600) {
@@ -1975,15 +1792,10 @@ lineLabel1
           return ".7rem"
        }
              })
-      // .text('NU('+ formatModelDate(dataNU[0].model_date) +')')
       .text(labelArr[0].unv + '('+ formatModelDate(labelArr[0].m_d) +')')
       
-//  svg_rt.append("text")
 lineLabel2
-            // .transition()
-      // .duration(1000)
-      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-      .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[1].Y+")")
+     .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[1].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "black")
@@ -1994,13 +1806,9 @@ lineLabel2
           return ".7rem"
        }
              })
-      // .text('UC('+ formatModelDate(dataUC[0].model_date) +')')
       .text(labelArr[1].unv + '('+ formatModelDate(labelArr[1].m_d) +')')
 
 lineLabel3
-            // .transition()
-      // .duration(1000)
-      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
       .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[2].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
@@ -2011,15 +1819,10 @@ lineLabel3
        } else {
           return ".7rem"
        }
-             })
-      // .text('UIUC('+ formatModelDate(dataUIUC[dataUIUC.length - 1].date) +')')
+      })
       .text(labelArr[2].unv + '('+ formatModelDate(labelArr[2].m_d) +')')
       
 lineLabel4
-            // .transition()
-      // .duration(1000)
-      // .attr("transform", "translate("+(width_rt+margin_rt.left+20)+","+( y_rt(dataFilter2[dataFilter2.length - 1].rt_median) + margin_rt.top)+")")
-      // .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[3].Y+")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "black")
@@ -2029,27 +1832,39 @@ lineLabel4
        } else {
           return ".7rem"
        }
-             })
-      // .text('ANL('+ formatModelDate(labelArr[3].m_d) +')')
-      // .text('UIUC('+ formatModelDate(dataUIUC[dataUIUC.length - 1].date) +')')
+      })
    
 if(labelArr.length > 3) {
    lineLabel4
    .attr("transform", "translate("+(width_rt+margin_rt.left+10)+","+ labelArr[3].Y+")")
     .text(labelArr[3].unv +'('+ formatModelDate(labelArr[3].m_d) +')')
-
+}else {
+    lineLabel4
+    .text("")
 }
+
 focus
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .style("fill", "none")
-      .attr("stroke", "black")
+      .attr("stroke", "#ddd")
       .style("opacity", 0)
+      .style("stroke-width", 1.5)
+      
+refLine
+       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
+       .attr("x1", 0) 
+      .attr("y1",  y_rt(1.0))
+      .attr("x2", width_rt) 
+      .attr("y2", y_rt(1.0))
+         .attr("stroke", "black")
       .style("stroke-width", 1)
+      .style("stroke-dasharray", ("3, 3"))
+      .style("fill", "none")
+   
 
 
 circle_NU
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-      // .style("fill", "#4E2A84")
       .style("fill", "none")
       .attr('stroke', '#4E2A84')
       .style("stroke-width", 2)
@@ -2058,7 +1873,6 @@ circle_NU
 
 circle_UC
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-      // .style("fill", "#AC1E2D")      
       .style("fill", "none")
       .attr('stroke', '#AC1E2D')
       .style("stroke-width", 2)
@@ -2067,18 +1881,15 @@ circle_UC
       
 circle_UIUC
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-      // .style("fill", "#E84A27")
       .style("fill", "none")
       .attr('stroke', '#E84A27')                  
       .style("stroke-width", 2)
       .attr('r', 4.5)
       .style("opacity", 0)
-// console.log((labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y )
 
 
 circle_ANL
 .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-      // .style("fill", "#E84A27")
       .style("fill", "none")
       .attr('stroke', '#228C22')                  
       .style("stroke-width", 2)
@@ -2088,7 +1899,6 @@ circle_ANL
 dot_NU
       .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('NU') === 0}))[0].Y+")")
       .style("fill", "#4E2A84")
-      // .style("fill", "none")
       .attr('stroke', '#4E2A84')
       .style("stroke-width", 2)
       .attr('r', 3)
@@ -2096,7 +1906,6 @@ dot_NU
 
 dot_UC
       .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UC') === 0}))[0].Y+")")
-      // .style("fill", "#AC1E2D")      
       .style("fill", "#AC1E2D")
       .attr('stroke', '#AC1E2D')
       .style("stroke-width", 2)
@@ -2105,7 +1914,6 @@ dot_UC
       
 dot_UIUC
       .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('UIUC') === 0}))[0].Y+")")
-      // .style("fill", "#E84A27")
       .style("fill", "#E84A27")
       .attr('stroke', '#E84A27')                  
       .style("stroke-width", 2)
@@ -2113,8 +1921,6 @@ dot_UIUC
       .style("opacity", 1)
       
 dot_ANL
-      // .attr("transform", "translate("+(width_rt+margin_rt.left+5)+","+ (labelArr.filter(obj => {return (obj.unv).localeCompare('ANL') === 0}))[0].Y+")")
-      // .style("fill", "#E84A27")
       .style("fill", "#228C22")
       .attr('stroke', '#228C22')                  
       .style("stroke-width", 2)
@@ -2127,18 +1933,15 @@ if(labelArr.length > 3 ){
    .style("opacity", 1)
 }
 
-
    svg_rt
       .append('rect')
       .attr('width', width_rt)
       .attr('height', height_rt)
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
       .on("mouseover", function(d) {
-         // console.log('mouseover')
      
      focus
      .style("opacity", 1)
-     
      circle_NU
      .style("opacity", 1)
      circle_UC
@@ -2148,26 +1951,19 @@ if(labelArr.length > 3 ){
      
     Tooltip
       .style("opacity", 1)
-      
       if((selectedRegion).localeCompare('covidregion_11') === 0 ) {
           circle_ANL
             .style("opacity", 1)
       }
-   //        Tooltip2
-   //    .style("opacity", 1)
   })
       .on("mousemove", mousemove)
-
-      
       .on("mouseout", function(event) {
-         
       var e = event.toElement || event.relatedTarget;
         if (e.parentNode == this || e == this) {
            return;
         }
    focus
      .style("opacity", 0)
-     
      circle_NU
      .style("opacity", 0)
      circle_UC
@@ -2178,7 +1974,6 @@ if(labelArr.length > 3 ){
      .style("opacity", 0)
     Tooltip
       .style("opacity", 0)
-// }
   })
    
     var tickTimeFormat = d3.timeFormat("%b %d")
@@ -2186,7 +1981,7 @@ if(labelArr.length > 3 ){
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.date) + "<br></br>Cases: <span style='color:red'>" + d.cases + "</span><br></br>" +
+     return tickTimeFormat(d.reportDate) + "<br></br>Cases: <span style='color:red'>" + d.confirmed_cases_change + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.cases_avg;
   })
 
@@ -2195,22 +1990,32 @@ if(labelArr.length > 3 ){
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.date) + "<br></br>Deaths: <span style='color:red'>" + d.deaths + "</span><br></br>" +
+     return tickTimeFormat(d.reportDate) + "<br></br>Deaths: <span style='color:red'>" + d.deaths_change + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.deaths_avg;
   })
-//     return "<strong>Deaths:</strong> <span style='color:red'>" + d.deaths + "</span>";
-//  })
   
        var tip_tests = d3.tip()
   .attr('class', 'd3-tip')
-//  .attr('id', 'test')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.date) + "<br></br>Tests:<span style='color:red'>" + d.tested + "</span><br></br>" +
+     return tickTimeFormat(d.reportDate) + "<br></br>Tests: <span style='color:red'>" + d.tested_change + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.tests_avg;
   })
-//     return "<strong>Tests:</strong> <span style='color:red'>" + d.tested + "</span>";
-//  })
+  
+         var tip_vaccine = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+     return tickTimeFormat(d.date) + "<br></br>Administered Doses: <span style='color:red'>" + d.AdministeredCountChange + "</span><br></br>" +
+     "Fully Vaccinated: <span style='color:red'>" + d.PersonsFullyVaccinatedChange;
+  })
+  
+         var tip_cli = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+     return tickTimeFormat(d.reportDate) + "<br></br>CLI Admissions: <span style='color:red'>" + d.CLIAdmissionsRA
+  })
    
    svg_cases
     .attr("width", width_cases + margin_cases.left + margin_cases.right)
@@ -2218,10 +2023,6 @@ if(labelArr.length > 3 ){
   .append("g")
     .attr("transform",
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
-   
-   // svg_cases.call(tip)
-   
-  
    
    svg_deaths
       .attr("width", width_cases + margin_cases.left + margin_cases.right)
@@ -2239,40 +2040,72 @@ if(labelArr.length > 3 ){
           "translate(" + margin_cases.left + "," + margin_cases.top + ")");
           
    svg_tests
-    .attr("width", width_cases + margin_cases.left + margin_cases.right)
-    .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
+    .attr("width", width_cases + margin_tests.left + margin_tests.right)
+    .attr("height", height_cases + margin_tests.top + margin_tests.bottom)
  .append("g")
     .attr("transform",
-          "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+          "translate(" + margin_tests.left + "," + margin_tests.top + ")");
           
           svg_tests.call(tip_tests)
           
-   // var data_map = historical_county.filter(function(d){return d.NOFO_Region==selectedGroupCases})
+      svg_vac
+    .attr("width", width_cases + margin_cases.left + margin_cases.right)
+    .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin_cases.left + "," + margin_cases.top + ")");
+          
+          
+          svg_vac.call(tip_vaccine)
+          
+          
+         svg_cli
+    .attr("width", width_cases + margin_cases.left + margin_cases.right)
+    .attr("height", height_cases + margin_cases.top + margin_cases.bottom)
+  .append("g")
+    .attr("transform",
+          "translate(" + margin_cases.left + "," + margin_cases.top + ")");       
+   
+   svg_cli.call(tip_cli)
+   
    
   const len = data_map.length - 1;
 
    x_cases
-      .domain(data_map.map(function(d) { return d.date; }))
+      .domain(data_map.map(function(d) { return d.reportDate; }))
+      .range([0,width_cases])
+      .padding(0);
+      
+   x_cli
+      .domain(cliData.map(function(d) { return d.reportDate; }))
       .range([0,width_cases])
       .padding(0);
    
-
-   
    x_test_pos
-         .domain(d3.extent(data_map , function(d) { return d.date}))
+         .domain(d3.extent(data_map , function(d) { return d.reportDate}))
       .range([ 0, width_cases]);
    
    x_tests
-      .domain(data_map.map(function(d) { return d.date; }))
+      .domain(data_map.map(function(d) { return d.reportDate; }))
       .range([0,width_cases])
       .padding(0);
-     
-     
-   //change this                                               //if no remainder/ every 30
-   // var tickVals = x_cases.domain().filter(function(d,i){ return !(i%30)})
+   
+      x_vac
+      .domain(vaccineData.map(function(d) { return d.date; }))
+      .range([0,width_cases])
+      .padding(0);
+   
    
    var tickVals = x_cases.domain().filter(function(d,i){ 
-      return ((data_map[i].date).getDate() === 1)
+            return ((data_map[i].reportDate).getDate() === 1)
+   })
+   
+   var tickValsVac = x_vac.domain().filter(function(d,i){ 
+      return ((vaccineData[i].date).getDate() === 1)
+   })
+   
+      var tickValsCLI = x_cli.domain().filter(function(d,i){ 
+      return ((cliData[i].reportDate).getDate() === 1)
    })
 
    if (currentWidth < 500) {
@@ -2287,11 +2120,8 @@ if(labelArr.length > 3 ){
    }
  
  x_axis
-   // .attr("transform", "translate(" + 0 + "," + (height_cases+margin_cases.top) + ")")
 .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
    .call(d3.axisBottom(x_cases)
-   //  .tickValues( x_cases.domain().filter(function(d,i){ return !(i%30)}))
-   
    .tickValues(tickVals)
    .tickFormat(d3.timeFormat("%b %Y"))
    );
@@ -2301,49 +2131,90 @@ if(labelArr.length > 3 ){
       
    //test pos chart x axis    
    x_axis_tests_pos
-      // .attr("transform", "translate(" + margin_test_pos.left + "," + (height_cases+margin_test_pos.top) + ")")
       .attr("transform", "translate(" +  margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
       .call(d3.axisBottom(x_test_pos)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
-          
-
 
    //tests chart x axis
    x_axis_tests
-      // .attr("transform", "translate(" + margin_tests.left + "," + 0 + ")")
       .attr("transform", "translate(" + margin_tests.left + "," + (height_cases + margin_tests.top) + ")")
       .call(d3.axisBottom(x_tests)
       .tickValues(tickVals)
       .tickFormat(d3.timeFormat("%b %Y")));
 
+   x_axis_vac
+      .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
+      .call(d3.axisBottom(x_vac).tickSizeOuter(0)
+      .tickValues(tickValsVac)
+      .tickFormat(d3.timeFormat("%b %Y")));
+      
+         x_axis_vac
+      .call(x_axis_vac => x_axis_vac.select(".domain").remove());
+      
+         x_axis_cli
+      .attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
+      .call(d3.axisBottom(x_cli).tickSizeOuter(0)
+      .tickValues(tickValsCLI)
+      .tickFormat(d3.timeFormat("%b %Y")));
+      
+               x_axis_cli
+      .call(x_axis_cli => x_axis_cli.select(".domain").remove());
+
    y_cases
-      .domain([0, d3.max(data_map, function(d) { return d.cases; })])
+      .domain([0, d3.max(data_map, function(d) { return d.confirmed_cases_change; })])
       .range([height_cases, 0]);
    
-                // Gridline
+      y_vac
+      .domain([0, d3.max(vaccineData, function(d) { return d.AdministeredCountChange; })])
+      .range([height_cases, 0]);
+      
+      
+   y_cli
+      .domain([0, d3.max(cliData, function(d) { return d.CLIAdmissionsRA; })])
+      .range([height_cases, 0]);
+      
+ // Gridline
  var gridlines_cases = d3.axisLeft()
                    .tickFormat("")
                    .tickSize(-width_cases)
                    .scale(y_cases);
+                   
+var gridlines_vac = d3.axisLeft()
+                   .tickFormat("")
+                   .tickSize(-width_cases)
+                   .scale(y_vac);
+                   
+var gridlines_cli = d3.axisLeft()
+                   .tickFormat("")
+                   .tickSize(-width_cases)
+                   .scale(y_cli);
 
   grid_cases
      .attr("class", "grid")
      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
      .call(gridlines_cases);
    
+   grid_vac
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .call(gridlines_vac);
+     
+       grid_cli
+     .attr("class", "grid")
+     .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top + ")"  )
+     .call(gridlines_cli);
+   
    y_test_pos
       .domain([0, .30])
       .range([height_cases, 0]);
    
    y_tests
-      // .domain([0, d3.max(data_map, function(d) { return d.tested; })])
-      .domain([0, d3.max(data_map, function(d) { return d.tests_avg; })])
+      .domain([0, d3.max(data_map, function(d) { return d.tested_change; })])
       .range([height_cases, 0]);
       
       
-      
-                   // Gridline
+ // Gridline
  var gridlines_test = d3.axisLeft()
                    .tickFormat("")
                    .tickSize(-width_cases)
@@ -2355,7 +2226,7 @@ if(labelArr.length > 3 ){
      .call(gridlines_test);   
      
      
-                        // Gridline
+ // Gridline
  var gridlines_test_pos = d3.axisLeft()
                    .tickFormat("")
                    .tickSize(-width_cases)
@@ -2369,6 +2240,22 @@ if(labelArr.length > 3 ){
    y_axis
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
       .call(d3.axisLeft(y_cases));
+      
+      y_axis_vac
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
+      .call(d3.axisLeft(y_vac).tickSizeOuter(0))
+      
+      y_axis_vac
+      .call(y_axis_vac => y_axis_vac.select(".domain").remove());
+      
+      
+      
+            y_axis_cli
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
+      .call(d3.axisLeft(y_cli).tickSizeOuter(0))
+      
+      y_axis_cli
+      .call(y_axis_cli => y_axis_cli.select(".domain").remove());
 
    var formatPercent = d3.format(".0%");
    
@@ -2380,6 +2267,69 @@ if(labelArr.length > 3 ){
       .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top  + ")"  )
       .call(d3.axisLeft(y_tests));
    
+   var v = svg_vac.selectAll(".bar1")
+                    .data(vaccineData)
+                    
+   var v2 = svg_vac.selectAll(".bar2")
+                    .data(vaccineData)
+
+   v
+      .enter()
+      .append("rect").merge(v)
+      .attr("class", "bar1")
+      .attr("x", function(d) { return x_vac(d.date)})
+      .attr("y", function(d) { return y_vac(d.AdministeredCountChange); })
+      .attr("width",  x_vac.bandwidth())
+      .attr("height", function(d) { return height_cases - y_vac(d.AdministeredCountChange); })
+                  .on('mouseover', tip_vaccine.show)
+      .on('mouseout', tip_vaccine.hide)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+   
+   
+      v2
+      .enter()
+      .append("rect").merge(v2)
+      .attr("class", "bar2")
+      .attr("x", function(d) { return x_vac(d.date)})
+      .attr("y", function(d) { return y_vac(d.PersonsFullyVaccinatedChange); })
+      .attr("width",  x_vac.bandwidth())
+      .attr("height", function(d) { return height_cases - y_vac(d.PersonsFullyVaccinatedChange); })
+      .attr("fill", function(d){ return darkerColor(selectedRegion) })
+      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
+   
+   v
+      .exit()
+      .remove()
+      
+   v2
+      .exit()
+      .remove()
+      
+      
+   var c = svg_cli.selectAll(".bar1")
+                  .data(cliData)   
+                  
+                  
+           c
+      .enter()
+      .append("rect").merge(c)
+      .attr("class", "bar1")
+      .attr("x", function(d) { return x_cli(d.reportDate)})
+      .attr("y", function(d) { return y_cli(d.CLIAdmissionsRA); })
+      .attr("width",  x_cli.bandwidth())
+      .attr("height", function(d) { return height_cases - y_cli(d.CLIAdmissionsRA); })
+      .on('mouseover', tip_cli.show)
+      .on('mouseout', tip_cli.hide)
+      .attr("fill", function(d){ return lightestColors(selectedRegion) })
+      .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );   
+      
+      
+   c
+   .exit()
+   .remove()
+      
+   
    var s = svg_tests.selectAll(".bar1")
                     .data(data_map)
 
@@ -2387,10 +2337,10 @@ if(labelArr.length > 3 ){
       .enter()
       .append("rect").merge(s)
       .attr("class", "bar1")
-      .attr("x", function(d) { return x_tests(d.date)})
-      .attr("y", function(d) { return y_tests(d.tested); })
+      .attr("x", function(d) { return x_tests(d.reportDate)})
+      .attr("y", function(d) { return y_tests(d.tested_change); })
       .attr("width",  x_tests.bandwidth())
-      .attr("height", function(d) { return height_cases - y_tests(d.tested); })
+      .attr("height", function(d) { return height_cases - y_tests(d.tested_change); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
             .on('mouseover', tip_tests.show)
       .on('mouseout', tip_tests.hide)
@@ -2410,9 +2360,8 @@ if(labelArr.length > 3 ){
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      // .attr('d', line_test_daily)
-            .attr("d", d3.line()
-      .x(function(d) { return x_tests(d.date) })
+      .attr("d", d3.line()
+      .x(function(d) { return x_tests(d.reportDate) })
       .y(function(d) { return y_tests(d.tests_avg) })
       )
       .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top + ")"  );
@@ -2420,7 +2369,6 @@ if(labelArr.length > 3 ){
    svg_test_pos
       .selectAll("rect")
       .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
-
 
    svg_test_pos.selectAll('path').remove();
      
@@ -2432,16 +2380,13 @@ if(labelArr.length > 3 ){
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      // .attr('d', line_tests)
-                  .attr("d", d3.line()
-      .x(function(d) { return x_test_pos(d.date) })
+      .attr("d", d3.line()
+      .x(function(d) { return x_test_pos(d.reportDate) })
       .y(function(d) { return y_test_pos(d.test_pos_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
       
-         // svg_test_pos.selectAll('rect').remove();
-      
-         svg_test_pos
+   svg_test_pos
       .append('rect')
       .attr('width', width_cases)
       .attr('height', height_cases)
@@ -2458,7 +2403,6 @@ if(labelArr.length > 3 ){
       .style("opacity", 0)
  })
 
-
   // Create the u variable
   var u = svg_cases.selectAll("rect").data(data_map)
 
@@ -2466,10 +2410,10 @@ if(labelArr.length > 3 ){
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(u) // get the already existing elements as well
-      .attr("x", function(d) { return x_cases(d.date); })
-      .attr("y", function(d) { return y_cases(d.cases); })
+      .attr("x", function(d) { return x_cases(d.reportDate); })
+      .attr("y", function(d) { return y_cases(d.confirmed_cases_change); })
       .attr("width", x_cases.bandwidth())
-      .attr("height", function(d) { return height_cases - y_cases(d.cases); })
+      .attr("height", function(d) { return height_cases - y_cases(d.confirmed_cases_change); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
       .on('mouseover', tip.show)
       .on('mouseout', tip.hide)
@@ -2494,17 +2438,14 @@ if(labelArr.length > 3 ){
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
-      // .attr('d', line)
-                        .attr("d", d3.line()
-      .x(function(d) { return x_cases(d.date) })
+      .attr("d", d3.line()
+      .x(function(d) { return x_cases(d.reportDate) })
       .y(function(d) { return y_cases(d.cases_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
-      //.attr("transform", "translate(" + margin_cases.left + "," + (height_cases + margin_cases.top) + ")")
-
 
    x_deaths
-     .domain(data_map.map(function(d) { return d.date; }))
+     .domain(data_map.map(function(d) { return d.reportDate; }))
      .range([0,width_cases])
      .padding(0);
 
@@ -2516,11 +2457,11 @@ if(labelArr.length > 3 ){
       .tickFormat(d3.timeFormat("%b %Y")));
 
    y_deaths
-      .domain([0, d3.max(data_map, function(d) { return d.deaths; })])
+      .domain([0, d3.max(data_map, function(d) { return d.deaths_change; })])
       .range([height_cases, 0]);
       
       
-                   // Gridline
+   // Gridline
  var gridlines_deaths = d3.axisLeft()
                    .tickFormat("")
                    .tickSize(-width_cases)
@@ -2542,14 +2483,13 @@ if(labelArr.length > 3 ){
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(i) // get the already existing elements as well
-      .attr("x", function(d) { return x_deaths(d.date); })
-      .attr("y", function(d) { return y_deaths(d.deaths); })
+      .attr("x", function(d) { return x_deaths(d.reportDate); })
+      .attr("y", function(d) { return y_deaths(d.deaths_change); })
       .attr("width", x_deaths.bandwidth())
-      .attr("height", function(d) { return height_cases - y_deaths(d.deaths); })
+      .attr("height", function(d) { return height_cases - y_deaths(d.deaths_change); })
       .attr("fill", function(d){ return lightestColors(selectedRegion) })
-            .on('mouseover', tip_deaths.show)
+      .on('mouseover', tip_deaths.show)
       .on('mouseout', tip_deaths.hide)
-      // .attr("transform", "translate("+ margin_cases.left +","+margin_cases.top + ")"  );
 
   i
     .exit()
@@ -2558,10 +2498,7 @@ if(labelArr.length > 3 ){
    // u
    svg_deaths
    .selectAll("rect")
-   // .attr("transform", "translate("+ margin_cases.left +","+0 + ")"  );
    .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
-    
-
 
    svg_deaths.selectAll('path').remove();
    
@@ -2575,11 +2512,41 @@ if(labelArr.length > 3 ){
       .attr('stroke-linecap', 'round')
       // .attr('d', lineA)
       .attr("d", d3.line()
-      .x(function(d) { return x_deaths(d.date) })
+      .x(function(d) { return x_deaths(d.reportDate) })
       .y(function(d) { return y_deaths(d.deaths_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
+      
+      
+   d3.select('#rt_download').on('click', function() {
+      var fileName = 'rtData.json';
 
+// Create a blob of the data
+var fileToSave = new Blob([JSON.stringify(rtArrs, undefined, 2)], {
+    type: 'application/json',
+    name: fileName
+});
+
+// Save the file
+saveAs(fileToSave, fileName);
+   })   
+   
+   var regionPopulation = {
+   
+   'illinois': 12671821,
+'covidregion_1': 660965,
+'covidregion_2': 1243906,
+'covidregion_3': 556776,
+'covidregion_4': 656946,
+'covidregion_5': 403659,
+'covidregion_6': 739098,
+'covidregion_7': 800605,
+'covidregion_8': 1455324,
+'covidregion_9': 1004309,
+'covidregion_10': 2693959,
+'covidregion_11': 2456274
+}
+      
       
       var rt = [
          dataNU[dataNU.length - 1 ].rt_median,
@@ -2590,25 +2557,21 @@ if(labelArr.length > 3 ){
       if ((selectedRegion).localeCompare('covidregion_11') === 0) {
          rt.push(dataANL[dataANL.length - 1 ].rt_median)
       }
-      // var rt_lower = Math.min((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
-      // var rt_upper = Math.max((dataNU[dataNU.length - 1 ].rt_median), (dataUC[dataUC.length - 1 ].rt_median))
       
             var rt_lower = Math.min(...rt)
             var rt_upper = Math.max(...rt)
       
-   // document.getElementById('rt_text').innerHTML = (dataNU[dataNU.length - 1 ].rt_median).toFixed(2);
-   //  document.getElementById('rt_text_lower').innerHTML = (dataNU[dataNU.length - 1 ].rt_lower).toFixed(2);
-   //  document.getElementById('rt_text_upper').innerHTML = (dataNU[dataNU.length - 1 ].rt_upper).toFixed(2);
-    
-         document.getElementById('rt_text_lower').innerHTML = rt_lower.toFixed(2);
+   document.getElementById('rt_text_lower').innerHTML = rt_lower.toFixed(2);
     document.getElementById('rt_text_upper').innerHTML = rt_upper.toFixed(2);
    
-   //  document.getElementsByClassName('last_update_date').innerHTML = formatDate(data_map[data_map.length - 1 ].date)
-
     document.getElementById('avg_cases').innerHTML = data_map[data_map.length - 1 ].cases_avg
     document.getElementById('avg_deaths').innerHTML = data_map[data_map.length - 1 ].deaths_avg
     document.getElementById('avg_test').innerHTML = data_map[data_map.length - 1 ].tests_avg
         document.getElementById('avg_case_pos').innerHTML = (data_map[data_map.length - 1 ].test_pos_avg).toFixed(2);
+       
+       document.getElementById('percent_vaccinated').innerHTML = ((vaccineData[vaccineData.length-1].PersonsFullyVaccinated / regionPopulation[selectedRegion]) *100).toFixed(0);
+       
+      //  console.log(vaccineData[vaccineData.length-1].PersonsFullyVaccinated, regionPopulation[selectedRegion])
         
     var region = ""
     if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
@@ -2618,13 +2581,11 @@ if(labelArr.length > 3 ){
         region = "Region " + selectedRegion.substring( selectedRegion.indexOf('_')+1);
      }
      
-   //  document.getElementById('rt_text_region').innerHTML = region;
-     
    var date_divs = document.getElementsByClassName( 'last_update_date' );
    var formatHTMLDate = d3.timeFormat("%B %d");
    
    [].slice.call( date_divs ).forEach(function ( div ) {
-      div.innerHTML = formatHTMLDate(data_map[data_map.length - 1 ].date)
+      div.innerHTML = formatHTMLDate(data_map[data_map.length - 1 ].reportDate)
    });
    
    var reg_divs = document.getElementsByClassName( 'region_text' );
@@ -2635,6 +2596,16 @@ if(labelArr.length > 3 ){
 
 }
 
+// Vaccine Chart:
+// - tooltip(s)
+// - filler text with inserted value
+// rt file download 
+// Bar Charts:
+// - separate line and bar tooltips
+
+// ask about reports tab
+
+//get rid of region names, use covid_region: int -- rt
 //fix rt min domain/ data read
 //nov hover rt 
 //add new rt line 
