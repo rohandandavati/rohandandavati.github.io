@@ -499,6 +499,31 @@ html, body {
    /*global moment*/
        
    
+   let binarySearch = function (arr, x) { 
+   
+    let start=0, end=arr.length-1; 
+          
+    // Iterate while start not meets end 
+    while (start<=end){ 
+  
+        // Find the mid index 
+        let mid=Math.floor((start + end)/2); 
+   
+        // If element is present at mid, return True 
+        if ( (arr[mid].reportDate).getTime() ===x) return mid; 
+  
+        // Else look in left or right half accordingly 
+        else if ((arr[mid].reportDate).getTime() < x)  
+             start = mid + 1; 
+        else
+             end = mid - 1; 
+    } 
+   
+    return -1; 
+}
+   
+   
+   
    $(document).ready(function(){
       $(this).scrollTop(0);
       // myFunction();
@@ -639,9 +664,6 @@ html, body {
          "covid_region": 6
       },
       "COOK": {
-         "covid_region": 10
-      },
-      "SUBURBAN COOK": {
          "covid_region": 10
       },
       "CRAWFORD": {
@@ -1094,11 +1116,9 @@ var files = [
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtANL.csv',
              'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
              ]
-var idph_cli = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
+             
 var idph_url = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDVaccine/getVaccineAdministration?CountyName='
 var idph_test = 'https://idph.illinois.gov/DPHPublicInformation/api/COVID/GetCountyHistorical?countyName='
-   
-
    
    
    Object.entries(countyMap).forEach(county => {
@@ -1121,23 +1141,22 @@ files.forEach(function(url) {
 
 // get all data
 Promise.all(promises).then(function(data) {
+   // const t0 = performance.now();
+
+   var cdtRegions = []
+
+for (var i = 0; i < 12; ++i) {
+   cdtRegions.push([])
+}   
    
-   
-   //once through all data
-   //all data in same object? 
-   
-   let parseDate3 = d3.timeParse("%m/%d/%Y");
-    let parseDate2 = d3.timeParse("%Y-%m-%d");
-   
-   //section data into rt, cases/tests/deaths, vaccine 
    var rtArrs = []
    var cdtArrs = []
    var vaccineArrs = []
    var maxMinTime = 0
    var maxMinTimeRT = 0;
    var cliArr = []
-   
-   //separate 
+
+      //separate 
    data.forEach((datum, i) => {
       if (datum.VaccineAdministration) {
          if((datum.VaccineAdministration.length > 0)) {
@@ -1145,10 +1164,73 @@ Promise.all(promises).then(function(data) {
             maxMinTime = Math.max(maxMinTime, moment( (datum.VaccineAdministration[0]).Report_Date ).valueOf())
          }
       }
-      else if ((typeof(datum.values)).localeCompare('object') === 0){
-         if((datum.values.length > 0)) {
-         //  cdtArrs.push(datum)
-         cdtArrs = cdtArrs.concat(datum.values)
+      else if (typeof datum.values  === 'object'){
+         
+         var len = (datum.values).length-1
+         for (var i = 1; i < len; ++i) {
+            
+            //compute vals 
+            var date = moment((datum.values)[i].reportDate).toDate();
+            var region = countyMap[((datum.values)[i].CountyName).toUpperCase()].covid_region
+            var cases_change = (datum.values)[i].confirmed_cases - (datum.values)[i-1].confirmed_cases
+            var deaths_change =  (datum.values)[i].deaths - (datum.values)[i-1].deaths
+            var tested_change =  (datum.values)[i].tested - (datum.values)[i-1].tested
+            var test_positivity = cases_change / tested_change
+            
+            //check for invalids 
+            if(cases_change < 0) {
+               cases_change = 0
+            }
+            if(deaths_change < 0) {
+               deaths_change = 0
+            }
+            if(tested_change <= 0) {
+               tested_change = 0
+               test_positivity = 0
+            }
+            
+            //if date is less than last date in array -- date is likely in array
+            var dateTime = date.getTime()
+            if (cdtRegions[region].length > 0 && dateTime < (cdtRegions[region][cdtRegions[region].length-1].reportDate).getTime() ) {
+               
+               //search for date
+               var find = binarySearch(cdtRegions[region], dateTime)
+               if (find !== -1){
+                  cases_change += cdtRegions[region][find].confirmed_cases_change
+                  deaths_change += cdtRegions[region][find].deaths_change
+                  tested_change += cdtRegions[region][find].tested_change
+                  test_positivity = cases_change / tested_change
+                  
+                              //check for invalids 
+            if(cases_change < 0) {
+               cases_change = 0
+            }
+            if(deaths_change < 0) {
+               deaths_change = 0
+            }
+            if(tested_change <= 0) {
+               tested_change = 0
+               test_positivity = 0
+            }
+            
+                  cdtRegions[region][find].confirmed_cases_change = cases_change
+                  cdtRegions[region][find].deaths_change = deaths_change
+                  cdtRegions[region][find].tested_change = tested_change
+                  cdtRegions[region][find].test_positivity = test_positivity
+                  
+               } else {
+                  console.log('date not found')
+               }
+               
+            } else {
+               cdtRegions[region].push({
+                  reportDate: moment((datum.values)[i].reportDate).toDate(),
+                  confirmed_cases_change:  cases_change,
+                  deaths_change: deaths_change,
+                  tested_change: tested_change,
+                  test_positivity: test_positivity
+               });
+            }
          }
       }
       else if ((typeof(datum.values)).localeCompare('function') === 0){
@@ -1167,6 +1249,57 @@ Promise.all(promises).then(function(data) {
          return;
       }
    })
+
+      
+const POINTS_AVERAGE = 6;
+   cdtRegions.forEach(region => {
+      
+      //  var end = cdtRegions[region].length - 1
+      var len = region.length
+      for (var i = 0; i < len; ++i ){
+         
+         //compute average 
+         
+         var cases_r = 0
+         var deaths_r = 0
+         var tests_r = 0
+         var test_pos_r = 0
+         var cases_avg = 0
+         var deaths_avg = 0
+         var test_pos_avg = 0
+         var tests_avg = 0;
+         
+         for (let j = 0; j <= POINTS_AVERAGE; j++) {
+         //  if (end - j >= 0 && endTime > (cdtRegions[region][end-j].date).getTime()) {
+         if (i - j >= 0 ){
+            cases_avg += region[i - j].confirmed_cases_change;
+            deaths_avg += region[i - j].deaths_change;
+            tests_avg += region[i - j].tested_change;
+            test_pos_avg += region[i - j].test_positivity;
+            cases_r = Math.floor(cases_avg / (j + 1));
+            deaths_r = Math.floor(deaths_avg / (j + 1));
+            tests_r = Math.floor(tests_avg / (j + 1));
+            test_pos_r = test_pos_avg / (j + 1);
+          } else {
+             cases_r = Math.floor(cases_avg / j);
+             deaths_r = Math.floor(deaths_avg / j);
+             tests_r = Math.floor(tests_avg / j);
+             test_pos_r = test_pos_avg / j;
+             j = POINTS_AVERAGE + 1;
+          }
+         }
+         region[i].cases_avg = cases_r;
+         region[i].deaths_avg = deaths_r;
+         region[i].test_pos_avg = test_pos_r;
+         region[i].tests_avg = tests_r;
+      }
+   })
+   
+   //once through all data
+   //all data in same object? 
+   
+   let parseDate3 = d3.timeParse("%m/%d/%Y");
+    let parseDate2 = d3.timeParse("%Y-%m-%d");
    
    //get first day and init sum
    var prev_day = moment(cliArr[0].reportDate).valueOf()
@@ -1276,112 +1409,20 @@ rtArrs.forEach(obj => {
    }
 })
 
-index = cdtArrs.length-1
-while (index >= 0) {
-   cdtArrs[index].reportDate =  moment(cdtArrs[index].reportDate, 'YYYY-MM-DD').toDate()
-   cdtArrs[index].covid_region = countyMap[(cdtArrs[index].CountyName).toUpperCase()].covid_region
-   cdtArrs[index].confirmed_cases = +cdtArrs[index].confirmed_cases 
-   cdtArrs[index].deaths = +cdtArrs[index].deaths
-   cdtArrs[index].tested = +cdtArrs[index].tested
-   delete cdtArrs[index].CountyName
-   //find index of last matching date & region
-   var j = cdtArrs.length - 1
-   while(j >= index) {
-      if( (cdtArrs[j].reportDate).valueOf() === (cdtArrs[index].reportDate).valueOf() && 
-         cdtArrs[j].covid_region === cdtArrs[index].covid_region) {
-         break;
-      } 
-      else {
-         --j
-      }
-   }
-   if(j > index ) {
-      cdtArrs[index].confirmed_cases += cdtArrs[j].confirmed_cases
-      cdtArrs[index].deaths += cdtArrs[j].deaths
-      cdtArrs[index].tested += cdtArrs[j].tested
-      cdtArrs.splice(j, 1); 
-   }
-   --index;
-}
 
-index = cdtArrs.length-1
-while (index >= 0) {
-     if (index > 0 && (cdtArrs[index].covid_region === cdtArrs[index-1].covid_region) ) {
-      cdtArrs[index].confirmed_cases_change = cdtArrs[index].confirmed_cases - cdtArrs[index-1].confirmed_cases
-      cdtArrs[index].deaths_change = cdtArrs[index].deaths - cdtArrs[index-1].deaths
-      cdtArrs[index].tested_change = cdtArrs[index].tested - cdtArrs[index-1].tested
-      if(cdtArrs[index].tested_change > 200000) {
-         cdtArrs[index].tested_change = 0;
-      }
-      
-   } else {
-      cdtArrs[index].confirmed_cases_change = cdtArrs[index].confirmed_cases
-      cdtArrs[index].deaths_change = cdtArrs[index].deaths
-      cdtArrs[index].tested_change = cdtArrs[index].tested
-   }
-   
-   if(cdtArrs[index].confirmed_cases_change < 0) {
-      cdtArrs[index].confirmed_cases_change = 0
-   }
-   if(cdtArrs[index].deaths_change < 0) {
-      cdtArrs[index].deaths_change = 0
-   }
-   if(cdtArrs[index].tested_change < 0) {
-      cdtArrs[index].tested_change = 0
-   }
-   
-   if(cdtArrs[index].tested_change === 0) {
-      cdtArrs[index].test_positivity = 0
-   
-   } else {
-      cdtArrs[index].test_positivity = cdtArrs[index].confirmed_cases_change / cdtArrs[index].tested_change
-   }
-   if ( (cdtArrs[index].reportDate).getTime() === moment('2020-04-11', 'YYYY-MM-DD').valueOf() ||  (cdtArrs[index].reportDate).getTime() === moment('2020-05-04', 'YYYY-MM-DD').valueOf()) {
-      cdtArrs.splice(index, 1)
-   }
-   --index;
-}
 
-const POINTS_AVERAGE = 6;
-for(var i = 0; i < cdtArrs.length ; ++i) {
-      var cases_r = 0
-      var deaths_r = 0
-      var tests_r = 0
-      var test_pos_r = 0
-      var cases_avg = 0
-      var deaths_avg = 0
-      var test_pos_avg = 0
-      var tests_avg = 0;
-         
-      for (let j = 0; j <= POINTS_AVERAGE; j++) {
-       if (i - j >= 0 && cdtArrs[i].covid_region === cdtArrs[i-j].covid_region) {
-         cases_avg += cdtArrs[i - j].confirmed_cases_change;
-         deaths_avg += cdtArrs[i - j].deaths_change;
-         tests_avg += cdtArrs[i - j].tested_change;
-         test_pos_avg += cdtArrs[i - j].test_positivity;
-         cases_r = Math.floor(cases_avg / (j + 1));
-         deaths_r = Math.floor(deaths_avg / (j + 1));
-         tests_r = Math.floor(tests_avg / (j + 1));
-         test_pos_r = test_pos_avg / (j + 1);
-       } else {
-          cases_r = Math.floor(cases_avg / j);
-          deaths_r = Math.floor(deaths_avg / j);
-          tests_r = Math.floor(tests_avg / j);
-          test_pos_r = test_pos_avg / j ;
-          j = POINTS_AVERAGE + 1;
-       }
-      }
-      cdtArrs[i].cases_avg = cases_r;
-      cdtArrs[i].deaths_avg = deaths_r;
-      cdtArrs[i].test_pos_avg = test_pos_r;
-      cdtArrs[i].tests_avg = tests_r;
-}
+
+const t1 = performance.now();
+console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
    
       document.getElementById("loader").style.display = "none";
       var content_divs = document.getElementsByClassName( 'content' );
       [].slice.call( content_divs ).forEach(function ( div ) {
          div.style.display = 'block'
       });
+      
+      
+      
    
 
 function drawChart() {
@@ -1506,7 +1547,8 @@ function drawChart() {
                
    var dataANL = (rtArrs.filter(function(d) { return (d.title).localeCompare('rtANL.csv') === 0})[0].data)
 
-   var data_map = cdtArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
+   // var data_map = cdtArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
+    var data_map = cdtRegions[selectToRegion[selectedRegion]]
    
     
    var vaccineData = vaccineArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
@@ -2155,7 +2197,7 @@ if(labelArr.length > 3 ){
    svg_cli.call(tip_cli)
    
    
-  const len = data_map.length - 1;
+//  const len = data_map.length - 1;
 
    x_cases
       .domain(data_map.map(function(d) { return d.reportDate; }))
