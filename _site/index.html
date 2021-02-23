@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="text/javascript" src="/assets/js/d3.js"></script>
+    <script type="text/javascript" src="/assets/js/FileSaver.min.js"></script>
+    <script type="text/javascript" src="/assets/js/moment.min.js"></script>
+    <!--<script type="text/javascript" src="/assets/js/d3-selection.min.js"></script>-->
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">-->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>-->
-    <script type="text/javascript" id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>-->
  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js" integrity="sha512-C2RveGuPIWqkaLAluvoxyiaN1XYNe5ss11urhZWZYBUA9Ydgj+hfGKPcxCzTwut1/fmjEZR7Ac35f2aycT8Ogw==" crossorigin="anonymous"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.min.js" integrity="sha512-C2RveGuPIWqkaLAluvoxyiaN1XYNe5ss11urhZWZYBUA9Ydgj+hfGKPcxCzTwut1/fmjEZR7Ac35f2aycT8Ogw==" crossorigin="anonymous"></script>-->
     <script type="text/javascript" src="/assets/js/d3-tip.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" integrity="sha512-P/PLNIojUNrUq2g5Q3NX8epp5X6KZmNvWV2pDGU+ZiU96YlqFhIrG0pkSZ/qgruT7uJ2Ok/vFN7/7brl4Y7ipw==" crossorigin="anonymous"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-scale/1.0.7/d3-scale.min.js" integrity="sha512-CagQ2MAkdTRJK0ge/Q/+y2QL+0wvabHP7y7GIKwy7E5aptPLpHu26CDi3Ec95xkYPMvZBqjNOwe02NZoBqWXIg==" crossorigin="anonymous"></script>
     <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.10.0/d3.min.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-transition/1.1.1/d3-transition.min.js" integrity="sha512-9EoVFaJ1f642H4qLe+VUMu7CDqa1FQPdar1Pm76aS1AeesQoMdmm3NUZaZlJ1H/IEpwfS1Hbq41l/iUmhxq8jw==" crossorigin="anonymous"></script>
@@ -30,15 +33,15 @@
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-drag/1.2.1/d3-drag.min.js" integrity="sha512-t039zwQbVlKk0TRUp1uDa4q1RT6++bjBfwwZnolG0fYiBq6uWUcYgYYBb8U0ZfEMtS+2OgBP47bl6dV5QNRaxQ==" crossorigin="anonymous"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/2.0.0/d3-queue.min.js" integrity="sha512-CsnvWujOBruwPxb22BIfuZr3f9wQlDYpDVFhErxqmD8emnkVuD69iPXxr3cmKiEJMHLNp4bCqwnuMzQLTsn7tQ==" crossorigin="anonymous"></script>
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-brush/1.0.4/d3-brush.min.js" integrity="sha512-Fz/fCT+LP/iJ4R/463McuhsUA7myzZ3qapIxewSBxycShXUA7CzA5gVH89vBtx3zXeiHrj+TR6Pe7+YKi+PThw==" crossorigin="anonymous"></script>
- <script src="https://unpkg.com/d3-simple-slider"></script>
+ <!--<script src="https://unpkg.com/d3-simple-slider"></script>-->
  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-shape/1.2.0/d3-shape.min.js" integrity="sha512-78mNqQERrqbS7sZEK4XidMguPiLguTxFbouxfSvurI843nXwiyJzD2Bt2Qv6qK0EPo7bWeUMjLsYJSEeox9Y6A==" crossorigin="anonymous"></script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-array/1.2.2/d3-array.min.js" integrity="sha512-a/E42YlriWlH6BqS4HXIXSx/tNTdC9NAKnGayXm0yac310St9QXhgtMQTPd9Ve48M3GEc234+qxZY3W/8v6cOw==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>
+ <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-array/1.2.2/d3-array.min.js" integrity="sha512-a/E42YlriWlH6BqS4HXIXSx/tNTdC9NAKnGayXm0yac310St9QXhgtMQTPd9Ve48M3GEc234+qxZY3W/8v6cOw==" crossorigin="anonymous"></script>-->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>-->
+  <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous"></script>-->
   
 <meta name="google-site-verification" content="nosSwzGY6NvfaGc0eqDx-o4iE3TrVFz3jghj0jGW5is" /> 
   </head>
-
+ 
   <body>
     
   <style>
@@ -510,10 +513,10 @@ html, body {
         let mid=Math.floor((start + end)/2); 
    
         // If element is present at mid, return True 
-        if ( (arr[mid].reportDate).getTime() ===x) return mid; 
+        if ( (arr[mid].date).getTime() ===x) return mid; 
   
         // Else look in left or right half accordingly 
-        else if ((arr[mid].reportDate).getTime() < x)  
+        else if ((arr[mid].date).getTime() < x)  
              start = mid + 1; 
         else
              end = mid - 1; 
@@ -997,7 +1000,7 @@ html, body {
 
 	 // This allows to find the closest X index of the mouse:
   var bisect = d3.bisector(function(d) { return d.date; }).left;
-var bisectCDT = d3.bisector(function(d) { return d.reportDate; }).left;
+var bisectCDT = d3.bisector(function(d) { return d.date; }).left;
 
 var Tooltip = d3.select("#rt_chart")
     .append("div")
@@ -1141,12 +1144,14 @@ files.forEach(function(url) {
 
 // get all data
 Promise.all(promises).then(function(data) {
-   // const t0 = performance.now();
+   const t0 = performance.now();
 
    var cdtRegions = []
+   var vaccineRegions = []
 
 for (var i = 0; i < 12; ++i) {
    cdtRegions.push([])
+   vaccineRegions.push([])
 }   
    
    var rtArrs = []
@@ -1159,11 +1164,62 @@ for (var i = 0; i < 12; ++i) {
       //separate 
    data.forEach((datum, i) => {
       if (datum.VaccineAdministration) {
-         if((datum.VaccineAdministration.length > 0)) {
-            vaccineArrs = vaccineArrs.concat(datum.VaccineAdministration)
-            maxMinTime = Math.max(maxMinTime, moment( (datum.VaccineAdministration[0]).Report_Date ).valueOf())
+         
+         var len = (datum.VaccineAdministration).length-1
+         for (var i = 1; i < len; ++i) {
+            
+            var region = countyMap[((datum.VaccineAdministration)[i].CountyName).toUpperCase()].covid_region
+            var date = moment((datum.VaccineAdministration)[i].Report_Date).toDate()
+            var AdministeredCount = (datum.VaccineAdministration)[i].AdministeredCount
+            var AdministeredCountChange = (datum.VaccineAdministration)[i].AdministeredCount - (datum.VaccineAdministration)[i-1].AdministeredCount
+            var PersonsFullyVaccinated = (datum.VaccineAdministration)[i].PersonsFullyVaccinated
+            var PersonsFullyVaccinatedChange = (datum.VaccineAdministration)[i].PersonsFullyVaccinated - (datum.VaccineAdministration)[i-1].PersonsFullyVaccinated
+            
+            if(AdministeredCountChange < 0) {
+               AdministeredCountChange = 0
+            }
+            if (PersonsFullyVaccinatedChange < 0) {
+               PersonsFullyVaccinatedChange = 0
+            }
+            
+            var dateTime = date.getTime()
+            if (vaccineRegions[region].length > 0 && dateTime < (vaccineRegions[region][vaccineRegions[region].length-1].date).getTime() ) {
+               var find = binarySearch(vaccineRegions[region], dateTime)
+               
+                if (find !== -1){
+                  AdministeredCount += vaccineRegions[region][find].AdministeredCount
+                  AdministeredCountChange += vaccineRegions[region][find].AdministeredCountChange
+                  PersonsFullyVaccinated += vaccineRegions[region][find].PersonsFullyVaccinated
+                  PersonsFullyVaccinatedChange = vaccineRegions[region][find].PersonsFullyVaccinatedChange
+               
+                        
+               if (AdministeredCountChange < 0) {
+                  AdministeredCountChange = 0
+               }
+               if (PersonsFullyVaccinatedChange < 0) {
+                  PersonsFullyVaccinatedChange = 0
+               }
+                  vaccineRegions[region][find].AdministeredCount = AdministeredCount
+                  vaccineRegions[region][find].AdministeredCountChange = AdministeredCountChange
+                  vaccineRegions[region][find].PersonsFullyVaccinated = PersonsFullyVaccinated
+                  vaccineRegions[region][find].PersonsFullyVaccinatedChange = PersonsFullyVaccinatedChange
+                  
+               }
+               
+            } 
+            else {
+               vaccineRegions[region].push({
+                  date: date,
+                  AdministeredCount:  AdministeredCount,
+                  AdministeredCountChange: AdministeredCountChange,
+                  PersonsFullyVaccinated: PersonsFullyVaccinated,
+                  PersonsFullyVaccinatedChange: PersonsFullyVaccinatedChange
+               });
+               
+            }
          }
       }
+      
       else if (typeof datum.values  === 'object'){
          
          var len = (datum.values).length-1
@@ -1191,7 +1247,7 @@ for (var i = 0; i < 12; ++i) {
             
             //if date is less than last date in array -- date is likely in array
             var dateTime = date.getTime()
-            if (cdtRegions[region].length > 0 && dateTime < (cdtRegions[region][cdtRegions[region].length-1].reportDate).getTime() ) {
+            if (cdtRegions[region].length > 0 && dateTime < (cdtRegions[region][cdtRegions[region].length-1].date).getTime() ) {
                
                //search for date
                var find = binarySearch(cdtRegions[region], dateTime)
@@ -1200,31 +1256,29 @@ for (var i = 0; i < 12; ++i) {
                   deaths_change += cdtRegions[region][find].deaths_change
                   tested_change += cdtRegions[region][find].tested_change
                   test_positivity = cases_change / tested_change
-                  
-                              //check for invalids 
-            if(cases_change < 0) {
-               cases_change = 0
-            }
-            if(deaths_change < 0) {
-               deaths_change = 0
-            }
-            if(tested_change <= 0) {
-               tested_change = 0
-               test_positivity = 0
-            }
+                        
+                  //check for invalids 
+                  if(cases_change < 0) {
+                     cases_change = 0
+                  }
+                  if(deaths_change < 0) {
+                     deaths_change = 0
+                  }
+                  if(tested_change <= 0) {
+                     tested_change = 0
+                     test_positivity = 0
+                  }
             
                   cdtRegions[region][find].confirmed_cases_change = cases_change
                   cdtRegions[region][find].deaths_change = deaths_change
                   cdtRegions[region][find].tested_change = tested_change
                   cdtRegions[region][find].test_positivity = test_positivity
                   
-               } else {
-                  console.log('date not found')
                }
                
             } else {
                cdtRegions[region].push({
-                  reportDate: moment((datum.values)[i].reportDate).toDate(),
+                  date: date,
                   confirmed_cases_change:  cases_change,
                   deaths_change: deaths_change,
                   tested_change: tested_change,
@@ -1327,54 +1381,57 @@ const POINTS_AVERAGE = 6;
       
    //process data sections
    
-   //consol start date
-   var index = vaccineArrs.length-1
-   while (index >= 0) {
-      if(maxMinTime > moment(  (vaccineArrs[index]).Report_Date ).valueOf()) {
-         vaccineArrs.splice(index, 1); 
-      } else {
-         vaccineArrs[index].covid_region = countyMap[(vaccineArrs[index].CountyName).toUpperCase()].covid_region
-         delete vaccineArrs[index].CountyName
-         vaccineArrs[index].date = moment(vaccineArrs[index].Report_Date).toDate()
-         delete vaccineArrs[index].Report_Date
-      }
-   --index;
-}
-index = vaccineArrs.length-1
+//    //consol start date
+//    var index = vaccineArrs.length-1
+//    while (index >= 0) {
+//       if(maxMinTime > moment(  (vaccineArrs[index]).Report_Date ).valueOf()) {
+//          vaccineArrs.splice(index, 1); 
+//       } else {
+//          vaccineArrs[index].covid_region = countyMap[(vaccineArrs[index].CountyName).toUpperCase()].covid_region
+//          delete vaccineArrs[index].CountyName
+//          vaccineArrs[index].date = moment(vaccineArrs[index].Report_Date).toDate()
+//          delete vaccineArrs[index].Report_Date
+//       }
+//    --index;
+// }
+// index = vaccineArrs.length-1
 
-while (index >= 0) {
-   //find index of last matching date & region
-   var j = vaccineArrs.length - 1
-   while(j >= index) {
-      //go to last index of same region
-      if( (vaccineArrs[j].date).valueOf() === (vaccineArrs[index].date).valueOf() && 
-           vaccineArrs[j].covid_region === vaccineArrs[index].covid_region ) {
-         break;
-      } 
-      else {
-         --j
-      }
-   }
-   if(j > index ) {
-      vaccineArrs[index].AdministeredCount += vaccineArrs[j].AdministeredCount
-      vaccineArrs[index].AdministeredCountChange += vaccineArrs[j].AdministeredCountChange
-      vaccineArrs[index].PersonsFullyVaccinated += vaccineArrs[j].PersonsFullyVaccinated
-      vaccineArrs.splice(j, 1); 
-   }
-   --index;
-}
+// while (index >= 0) {
+//    //find index of last matching date & region
+//    var j = vaccineArrs.length - 1
+//    while(j >= index) {
+//       //go to last index of same region
+//       if( (vaccineArrs[j].date).valueOf() === (vaccineArrs[index].date).valueOf() && 
+//           vaccineArrs[j].covid_region === vaccineArrs[index].covid_region ) {
+//          break;
+//       } 
+//       else {
+//          --j
+//       }
+//    }
+//    if(j > index ) {
+//       vaccineArrs[index].AdministeredCount += vaccineArrs[j].AdministeredCount
+//       vaccineArrs[index].AdministeredCountChange += vaccineArrs[j].AdministeredCountChange
+//       vaccineArrs[index].PersonsFullyVaccinated += vaccineArrs[j].PersonsFullyVaccinated
+//       vaccineArrs.splice(j, 1); 
+//    }
+//    --index;
+// }
 
-// get PersonsFullyVaccinatedChange
-index = vaccineArrs.length-1
-while(index >= 0 ) {
-   //if next > region is the same 
-   if (index > 0 && (vaccineArrs[index].covid_region === vaccineArrs[index-1].covid_region) ) {
-      vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated - vaccineArrs[index-1].PersonsFullyVaccinated
-   } else {
-      vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated
-   }
-   --index
-}
+
+// // get PersonsFullyVaccinatedChange
+// index = vaccineArrs.length-1
+// while(index >= 0 ) {
+//    //if next > region is the same 
+//    if (index > 0 && (vaccineArrs[index].covid_region === vaccineArrs[index-1].covid_region) ) {
+//       vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated - vaccineArrs[index-1].PersonsFullyVaccinated
+//    } else {
+//       vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated
+//    }
+//    --index
+// }
+
+
 
 moment.suppressDeprecationWarnings = true;
 
@@ -1551,7 +1608,10 @@ function drawChart() {
     var data_map = cdtRegions[selectToRegion[selectedRegion]]
    
     
-   var vaccineData = vaccineArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
+   // var vaccineData = vaccineArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
+       
+   var vaccineData = vaccineRegions[selectToRegion[selectedRegion]]
+   
    
    var cliData = cliArr.filter(function(d){return d.regionID===selectToRegion[selectedRegion]})
    // var cli
@@ -1654,9 +1714,9 @@ var strHTML = formatDate(x0) + '<br>' +
        
        var selectedData = data_map[i]
        Tooltip_test_pos
-         .html( formatTime(selectedData.reportDate) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  
+         .html( formatTime(selectedData.date) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  
          parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
-         .style("left", (x_test_pos(selectedData.reportDate) + 11) + "px")
+         .style("left", (x_test_pos(selectedData.date) + 11) + "px")
          .style("top",  (y_test_pos(selectedData.test_pos_avg)-45) + "px")
       }
    
@@ -2109,7 +2169,7 @@ if(labelArr.length > 3 ){
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.reportDate) + "<br></br>Cases: <span style='color:red'>" + d.confirmed_cases_change + "</span><br></br>" +
+     return tickTimeFormat(d.date) + "<br></br>Cases: <span style='color:red'>" + d.confirmed_cases_change + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.cases_avg;
   })
 
@@ -2118,7 +2178,7 @@ if(labelArr.length > 3 ){
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.reportDate) + "<br></br>Deaths: <span style='color:red'>" + d.deaths_change + "</span><br></br>" +
+     return tickTimeFormat(d.date) + "<br></br>Deaths: <span style='color:red'>" + d.deaths_change + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.deaths_avg;
   })
   
@@ -2126,7 +2186,7 @@ if(labelArr.length > 3 ){
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-     return tickTimeFormat(d.reportDate) + "<br></br>Tests: <span style='color:red'>" + d.tested_change + "</span><br></br>" +
+     return tickTimeFormat(d.date) + "<br></br>Tests: <span style='color:red'>" + d.tested_change + "</span><br></br>" +
      "7-Day Average: <span style='color:red'>" + d.tests_avg;
   })
   
@@ -2200,7 +2260,7 @@ if(labelArr.length > 3 ){
 //  const len = data_map.length - 1;
 
    x_cases
-      .domain(data_map.map(function(d) { return d.reportDate; }))
+      .domain(data_map.map(function(d) { return d.date; }))
       .range([0,width_cases])
       .padding(0);
       
@@ -2210,11 +2270,11 @@ if(labelArr.length > 3 ){
       .padding(0);
    
    x_test_pos
-         .domain(d3.extent(data_map , function(d) { return d.reportDate}))
+         .domain(d3.extent(data_map , function(d) { return d.date}))
       .range([ 0, width_cases]);
    
    x_tests
-      .domain(data_map.map(function(d) { return d.reportDate; }))
+      .domain(data_map.map(function(d) { return d.date; }))
       .range([0,width_cases])
       .padding(0);
    
@@ -2225,7 +2285,7 @@ if(labelArr.length > 3 ){
    
    
    var tickVals = x_cases.domain().filter(function(d,i){ 
-            return ((data_map[i].reportDate).getDate() === 1)
+            return ((data_map[i].date).getDate() === 1)
    })
    
    var tickValsVac = x_vac.domain().filter(function(d,i){ 
@@ -2465,7 +2525,7 @@ var gridlines_cli = d3.axisLeft()
       .enter()
       .append("rect").merge(s)
       .attr("class", "bar1")
-      .attr("x", function(d) { return x_tests(d.reportDate)})
+      .attr("x", function(d) { return x_tests(d.date)})
       .attr("y", function(d) { return y_tests(d.tested_change); })
       .attr("width",  x_tests.bandwidth())
       .attr("height", function(d) { return height_cases - y_tests(d.tested_change); })
@@ -2489,7 +2549,7 @@ var gridlines_cli = d3.axisLeft()
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
       .attr("d", d3.line()
-      .x(function(d) { return x_tests(d.reportDate) })
+      .x(function(d) { return x_tests(d.date) })
       .y(function(d) { return y_tests(d.tests_avg) })
       )
       .attr("transform", "translate("+ margin_tests.left +","+ margin_tests.top + ")"  );
@@ -2509,7 +2569,7 @@ var gridlines_cli = d3.axisLeft()
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
       .attr("d", d3.line()
-      .x(function(d) { return x_test_pos(d.reportDate) })
+      .x(function(d) { return x_test_pos(d.date) })
       .y(function(d) { return y_test_pos(d.test_pos_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
@@ -2538,7 +2598,7 @@ var gridlines_cli = d3.axisLeft()
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(u) // get the already existing elements as well
-      .attr("x", function(d) { return x_cases(d.reportDate); })
+      .attr("x", function(d) { return x_cases(d.date); })
       .attr("y", function(d) { return y_cases(d.confirmed_cases_change); })
       .attr("width", x_cases.bandwidth())
       .attr("height", function(d) { return height_cases - y_cases(d.confirmed_cases_change); })
@@ -2567,13 +2627,13 @@ var gridlines_cli = d3.axisLeft()
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
       .attr("d", d3.line()
-      .x(function(d) { return x_cases(d.reportDate) })
+      .x(function(d) { return x_cases(d.date) })
       .y(function(d) { return y_cases(d.cases_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );
 
    x_deaths
-     .domain(data_map.map(function(d) { return d.reportDate; }))
+     .domain(data_map.map(function(d) { return d.date; }))
      .range([0,width_cases])
      .padding(0);
 
@@ -2611,7 +2671,7 @@ var gridlines_cli = d3.axisLeft()
     .enter()
     .append("rect") // Add a new rect for each new elements
     .merge(i) // get the already existing elements as well
-      .attr("x", function(d) { return x_deaths(d.reportDate); })
+      .attr("x", function(d) { return x_deaths(d.date); })
       .attr("y", function(d) { return y_deaths(d.deaths_change); })
       .attr("width", x_deaths.bandwidth())
       .attr("height", function(d) { return height_cases - y_deaths(d.deaths_change); })
@@ -2640,7 +2700,7 @@ var gridlines_cli = d3.axisLeft()
       .attr('stroke-linecap', 'round')
       // .attr('d', lineA)
       .attr("d", d3.line()
-      .x(function(d) { return x_deaths(d.reportDate) })
+      .x(function(d) { return x_deaths(d.date) })
       .y(function(d) { return y_deaths(d.deaths_avg) })
       )
       .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  )
@@ -2713,7 +2773,7 @@ saveAs(fileToSave, fileName);
    var formatHTMLDate = d3.timeFormat("%B %d");
    
    [].slice.call( date_divs ).forEach(function ( div ) {
-      div.innerHTML = formatHTMLDate(data_map[data_map.length - 1 ].reportDate)
+      div.innerHTML = formatHTMLDate(data_map[data_map.length - 1 ].date)
    });
    
    var reg_divs = document.getElementsByClassName( 'region_text' );
