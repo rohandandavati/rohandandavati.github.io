@@ -1144,7 +1144,7 @@ files.forEach(function(url) {
 
 // get all data
 Promise.all(promises).then(function(data) {
-   const t0 = performance.now();
+   // const t0 = performance.now();
 
    var cdtRegions = []
    var vaccineRegions = []
@@ -1165,7 +1165,7 @@ for (var i = 0; i < 12; ++i) {
    data.forEach((datum, i) => {
       if (datum.VaccineAdministration) {
          
-         var len = (datum.VaccineAdministration).length-1
+         var len = (datum.VaccineAdministration).length
          for (var i = 1; i < len; ++i) {
             
             var region = countyMap[((datum.VaccineAdministration)[i].CountyName).toUpperCase()].covid_region
@@ -1183,22 +1183,15 @@ for (var i = 0; i < 12; ++i) {
             }
             
             var dateTime = date.getTime()
-            if (vaccineRegions[region].length > 0 && dateTime < (vaccineRegions[region][vaccineRegions[region].length-1].date).getTime() ) {
+            if (vaccineRegions[region].length > 0 && dateTime <= (vaccineRegions[region][vaccineRegions[region].length-1].date).getTime() ) {
                var find = binarySearch(vaccineRegions[region], dateTime)
                
                 if (find !== -1){
                   AdministeredCount += vaccineRegions[region][find].AdministeredCount
                   AdministeredCountChange += vaccineRegions[region][find].AdministeredCountChange
                   PersonsFullyVaccinated += vaccineRegions[region][find].PersonsFullyVaccinated
-                  PersonsFullyVaccinatedChange = vaccineRegions[region][find].PersonsFullyVaccinatedChange
-               
-                        
-               if (AdministeredCountChange < 0) {
-                  AdministeredCountChange = 0
-               }
-               if (PersonsFullyVaccinatedChange < 0) {
-                  PersonsFullyVaccinatedChange = 0
-               }
+                  PersonsFullyVaccinatedChange += vaccineRegions[region][find].PersonsFullyVaccinatedChange
+                  
                   vaccineRegions[region][find].AdministeredCount = AdministeredCount
                   vaccineRegions[region][find].AdministeredCountChange = AdministeredCountChange
                   vaccineRegions[region][find].PersonsFullyVaccinated = PersonsFullyVaccinated
@@ -1222,11 +1215,12 @@ for (var i = 0; i < 12; ++i) {
       
       else if (typeof datum.values  === 'object'){
          
-         var len = (datum.values).length-1
+         var len = (datum.values).length
          for (var i = 1; i < len; ++i) {
             
             //compute vals 
             var date = moment((datum.values)[i].reportDate).toDate();
+            var dateTime = date.getTime()
             var region = countyMap[((datum.values)[i].CountyName).toUpperCase()].covid_region
             var cases_change = (datum.values)[i].confirmed_cases - (datum.values)[i-1].confirmed_cases
             var deaths_change =  (datum.values)[i].deaths - (datum.values)[i-1].deaths
@@ -1244,10 +1238,13 @@ for (var i = 0; i < 12; ++i) {
                tested_change = 0
                test_positivity = 0
             }
+            if (tested_change > 200000 || dateTime === moment('2020-05-04', 'YYYY-MM-DD').valueOf()) {
+               tested_change = 0
+            }
             
             //if date is less than last date in array -- date is likely in array
-            var dateTime = date.getTime()
-            if (cdtRegions[region].length > 0 && dateTime < (cdtRegions[region][cdtRegions[region].length-1].date).getTime() ) {
+            // var dateTime = date.getTime()
+            if (cdtRegions[region].length > 0 && dateTime <= (cdtRegions[region][cdtRegions[region].length-1].date).getTime() ) {
                
                //search for date
                var find = binarySearch(cdtRegions[region], dateTime)
@@ -1304,6 +1301,7 @@ for (var i = 0; i < 12; ++i) {
       }
    })
 
+console.log(vaccineRegions)
       
 const POINTS_AVERAGE = 6;
    cdtRegions.forEach(region => {
@@ -1469,8 +1467,8 @@ rtArrs.forEach(obj => {
 
 
 
-const t1 = performance.now();
-console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
+// const t1 = performance.now();
+// console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
    
       document.getElementById("loader").style.display = "none";
       var content_divs = document.getElementsByClassName( 'content' );
