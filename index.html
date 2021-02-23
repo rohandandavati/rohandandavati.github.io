@@ -1212,7 +1212,7 @@ for (var i = 0; i < 12; ++i) {
       }
    })
 
-console.log(vaccineRegions)
+// console.log(vaccineRegions)
       
 const POINTS_AVERAGE = 6;
    cdtRegions.forEach(region => {
@@ -1257,6 +1257,39 @@ const POINTS_AVERAGE = 6;
          region[i].tests_avg = tests_r;
       }
    })
+   
+   
+   vaccineRegions.forEach(region => {
+      
+      //  var end = cdtRegions[region].length - 1
+      var len = region.length
+      for (var i = 0; i < len; ++i ){
+         
+         //compute average 
+         
+         var persons_fully_r = 0
+         var doses_admin_r = 0
+         var persons_fully_avg = 0
+         var doses_admin_avg = 0
+         
+         for (let j = 0; j <= POINTS_AVERAGE; j++) {
+         //  if (end - j >= 0 && endTime > (cdtRegions[region][end-j].date).getTime()) {
+         if (i - j >= 0 ){
+            persons_fully_avg += region[i - j].PersonsFullyVaccinatedChange;
+            doses_admin_avg += region[i - j].AdministeredCountChange;
+            persons_fully_r = Math.floor(persons_fully_avg / (j + 1));
+            doses_admin_r = Math.floor(doses_admin_avg / (j + 1));
+          } else {
+             persons_fully_r = Math.floor(persons_fully_avg / j);
+             doses_admin_r = Math.floor(doses_admin_avg / j);
+             j = POINTS_AVERAGE + 1;
+          }
+         }
+         region[i].persons_fully_avg = persons_fully_r;
+         region[i].doses_admin_avg = doses_admin_r;
+      }
+   })
+   
    
    //once through all data
    //all data in same object? 
@@ -2402,6 +2435,42 @@ var gridlines_cli = d3.axisLeft()
    v2
       .exit()
       .remove()
+      
+      
+   svg_vac.selectAll('path').remove();
+     
+   svg_vac
+      .append('path')
+      .datum(vaccineData)
+      .attr('fill', 'none')
+      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .attr('stroke-width', 2.5)
+      .attr('stroke-linejoin', 'round')
+      .attr('stroke-linecap', 'round')
+      .attr("d", d3.line()
+      .x(function(d) { return x_vac(d.date) })
+      .y(function(d) { return y_vac(d.doses_admin_avg) })
+      )
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );   
+      
+      
+       svg_vac
+      .append('path')
+      .datum(vaccineData)
+      .attr('fill', 'none')
+      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .attr('stroke-width', 2.5)
+      .attr('stroke-linejoin', 'round')
+      .attr('stroke-linecap', 'round')
+      .attr("d", d3.line()
+      .x(function(d) { return x_vac(d.date) })
+      .y(function(d) { return y_vac(d.persons_fully_avg) })
+      )
+      .attr("transform", "translate("+ margin_cases.left +","+ margin_cases.top  + ")"  );   
+      
+      
+       
+      
       
       
    var c = svg_cli.selectAll(".bar1")
