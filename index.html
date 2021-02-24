@@ -2088,10 +2088,12 @@ if(labelArr.length > 3 ){
   })
       .on("mousemove", mousemove)
       .on("mouseout", function(event) {
+         if (event){
       var e = event.toElement || event.relatedTarget;
         if (e.parentNode == this || e == this) {
            return;
         }
+         }
    focus
      .style("opacity", 0)
      circle_NU
