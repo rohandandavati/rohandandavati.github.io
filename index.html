@@ -381,8 +381,9 @@ html, body {
 <div class="card vacc content" id = "card_12">
   <div class="card-body rt">
     <h2>Vaccination </h2>
-    <text>This is the daily number of doses administered in and newly fully vaccinated residents of <text class = "region_text"></text> of Illinois.
+    <text>This is the daily number of doses administered and newly fully vaccinated residents of <text class = "region_text"></text> of Illinois.
         As of <text class = "last_update_date"></text>, <text id = "percent_vaccinated"></text>% of residents of <text class = "region_text"></text> of Illinois have been fully vaccinated.
+        The cumulative number of doses distributed is <text id = "doses_total"></text> and <text id = "fully_total"></text> people have been fully vaccinated.
 </text>
   </div>
 </div>
@@ -2460,7 +2461,7 @@ var gridlines_cli = d3.axisLeft()
       .append('path')
       .datum(vaccineData)
       .attr('fill', 'none')
-      .attr("stroke", function(d){ return colors(selectedRegion) })
+      .attr("stroke", function(d){ return mapFillColor(selectedRegion) })
       .attr('stroke-width', 2.5)
       .attr('stroke-linejoin', 'round')
       .attr('stroke-linecap', 'round')
@@ -2738,6 +2739,9 @@ saveAs(fileToSave, fileName);
         document.getElementById('avg_case_pos').innerHTML = (data_map[data_map.length - 1 ].test_pos_avg).toFixed(2);
        
        document.getElementById('percent_vaccinated').innerHTML = ((vaccineData[vaccineData.length-1].PersonsFullyVaccinated / regionPopulation[selectedRegion]) *100).toFixed(0);
+       
+       document.getElementById('doses_total').innerHTML = (vaccineData[vaccineData.length-1].AdministeredCount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+       document.getElementById('fully_total').innerHTML = (vaccineData[vaccineData.length-1].PersonsFullyVaccinated).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
        
       //  console.log(vaccineData[vaccineData.length-1].PersonsFullyVaccinated, regionPopulation[selectedRegion])
         
