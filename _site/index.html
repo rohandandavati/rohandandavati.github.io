@@ -1099,19 +1099,24 @@ var y_cli = d3.scaleLinear()
 var x_axis_cli = svg_cli.append("g")
 var y_axis_cli = svg_cli.append("g")
 
+//  'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
 var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtNU.csv',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUC.csv',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtUIUC.csv',
              'https://raw.githubusercontent.com/rohandandavati/rohandandavati.github.io/master/_data/rtANL.csv',
-             'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
+            'http://ec2-3-133-104-140.us-east-2.compute.amazonaws.com/api/CLI'
              ]
              
-var idph_url = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDVaccine/getVaccineAdministration?CountyName='
-var idph_test = 'https://idph.illinois.gov/DPHPublicInformation/api/COVID/GetCountyHistorical?countyName='
+// var idph_url = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDVaccine/getVaccineAdministration?CountyName='
+var idph_url = 'http://ec2-3-133-104-140.us-east-2.compute.amazonaws.com/api/VACCINE/'
+var idph_test = 'http://ec2-3-133-104-140.us-east-2.compute.amazonaws.com/api/TESTS/'
+
+// var idph_test = 'https://idph.illinois.gov/DPHPublicInformation/api/COVID/GetCountyHistorical?countyName='
    
-   
+   //http://ec2-3-133-104-140.us-east-2.compute.amazonaws.com/api/CDT/ADAMS
+
    Object.entries(countyMap).forEach(county => {
       files.push(idph_url + county[0])
       files.push(idph_test + county[0])
@@ -1278,7 +1283,9 @@ for (var i = 0; i < 12; ++i) {
          if ((title).localeCompare('rtUIUC.csv') === 0 ) {
             datum = datum.filter(function(d) { return (d.scenario_name).localeCompare('baseline') === 0 })
          }
-         if ((title).localeCompare("GetResurgenceDataCLIAdmissions") === 0 ) {
+        //  if ((title).localeCompare("GetResurgenceDataCLIAdmissions") === 0 ) {
+        if ((title).localeCompare("CLI") === 0 ) {
+            // console.log(files[i])
             cliArr = datum
             // return
          } else {
