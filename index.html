@@ -844,7 +844,7 @@ html, body {
       }
    }
    
-   var margin_rt = {top: 10, right: 70, bottom: 50, left: 35};
+   var margin_rt = {top: 10, right: 75, bottom: 50, left: 35};
    var margin_cases = {top: 10, right: 20, bottom: 30, left: 50};
    var margin_deaths = {top: 10, right: 20, bottom: 30, left: 40};
    var margin_test_pos = {top: 10, right: 20, bottom: 30, left: 60};
@@ -1325,60 +1325,6 @@ const POINTS_AVERAGE = 6;
       //add datum cli to sum
       dayTotal += datum.CLIAdmissionsRA
    })
-   
-      
-   //process data sections
-   
-//    //consol start date
-//    var index = vaccineArrs.length-1
-//    while (index >= 0) {
-//       if(maxMinTime > moment(  (vaccineArrs[index]).Report_Date ).valueOf()) {
-//          vaccineArrs.splice(index, 1); 
-//       } else {
-//          vaccineArrs[index].covid_region = countyMap[(vaccineArrs[index].CountyName).toUpperCase()].covid_region
-//          delete vaccineArrs[index].CountyName
-//          vaccineArrs[index].date = moment(vaccineArrs[index].Report_Date).toDate()
-//          delete vaccineArrs[index].Report_Date
-//       }
-//    --index;
-// }
-// index = vaccineArrs.length-1
-
-// while (index >= 0) {
-//    //find index of last matching date & region
-//    var j = vaccineArrs.length - 1
-//    while(j >= index) {
-//       //go to last index of same region
-//       if( (vaccineArrs[j].date).valueOf() === (vaccineArrs[index].date).valueOf() && 
-//           vaccineArrs[j].covid_region === vaccineArrs[index].covid_region ) {
-//          break;
-//       } 
-//       else {
-//          --j
-//       }
-//    }
-//    if(j > index ) {
-//       vaccineArrs[index].AdministeredCount += vaccineArrs[j].AdministeredCount
-//       vaccineArrs[index].AdministeredCountChange += vaccineArrs[j].AdministeredCountChange
-//       vaccineArrs[index].PersonsFullyVaccinated += vaccineArrs[j].PersonsFullyVaccinated
-//       vaccineArrs.splice(j, 1); 
-//    }
-//    --index;
-// }
-
-
-// // get PersonsFullyVaccinatedChange
-// index = vaccineArrs.length-1
-// while(index >= 0 ) {
-//    //if next > region is the same 
-//    if (index > 0 && (vaccineArrs[index].covid_region === vaccineArrs[index-1].covid_region) ) {
-//       vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated - vaccineArrs[index-1].PersonsFullyVaccinated
-//    } else {
-//       vaccineArrs[index].PersonsFullyVaccinatedChange = vaccineArrs[index].PersonsFullyVaccinated
-//    }
-//    --index
-// }
-
 
 
 moment.suppressDeprecationWarnings = true;
@@ -1405,30 +1351,24 @@ var rtStart  =  moment('2020-4-1', 'YYYY-MM-DD').valueOf()
 rtArrs.forEach(obj => {
    
    var indx = (obj.data).length-1
+   var mod_date = ((obj.data)[indx].model_date).getTime()
    while(indx >= 0 ){
       var time = ((obj.data)[indx].date).getTime()
-      if(time < rtStart || time > today.getTime()) {
-         (obj.data).splice(indx, 1) 
+      
+      // if(time < rtStart || time > today.getTime()) {
+      if( time < rtStart || time > mod_date) {
+         (obj.data).splice(indx, 1)
       }
       --indx;
    }
 })
-
-
-
-
-// const t1 = performance.now();
-// console.log(`Call to doSomething took ${t1 - t0} milliseconds.`);
+// console.log()
    
       document.getElementById("loader").style.display = "none";
       var content_divs = document.getElementsByClassName( 'content' );
       [].slice.call( content_divs ).forEach(function ( div ) {
          div.style.display = 'block'
       });
-      
-      
-      
-   
 
 function drawChart() {
    
@@ -1555,7 +1495,7 @@ function drawChart() {
    // var data_map = cdtArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
     var data_map = cdtRegions[selectToRegion[selectedRegion]]
    
-    
+    console.log(dataNU)
    // var vaccineData = vaccineArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
        
    var vaccineData = vaccineRegions[selectToRegion[selectedRegion]]
@@ -1593,50 +1533,73 @@ function drawChart() {
 //  d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
 
 
-  var mousemove = function(d) {
-
-   var formatTime = d3.timeFormat("%b %d")
-    var x0 = x_rt.invert(d3.mouse(this)[0]);
-    var i = bisect(dataUC, x0, 1);
-    var j = bisect(dataNU, x0, 1);
-    var k = bisect(dataUIUC, x0, 1);
-    var l = bisect(dataANL, x0, 1);
-    var selectedDataUC = dataUC[i]
-    var selectedDataNU = dataNU[j]
-    var selectedDataUIUC = dataUIUC[k]
-    var selectedDataANL = dataANL[l]
+var mousemove = function(d) {
+   
+   var formatTime = d3.timeFormat("%b %d");
+   var x0 = x_rt.invert(d3.mouse(this)[0]);
+   
+   var i = bisect(dataUC, x0, 1);
+   var j = bisect(dataNU, x0, 1);
+   var k = bisect(dataUIUC, x0, 1);
+   var l = bisect(dataANL, x0, 1);
+   
+   var selectedDataUC = dataUC[i];
+   var selectedDataNU = dataNU[j];
+   var selectedDataUIUC = dataUIUC[k];
+   var selectedDataANL = dataANL[l];
     
    focus
       .attr("x1", x_rt(x0)) 
       .attr("y1", 0)
       .attr("x2", x_rt(x0)) 
       .attr("y2", height_rt)
-
- if (typeof selectedDataUC !== 'undefined') {
-   circle_UC
-      .attr("cx", x_rt(x0))
-      .attr("cy", y_rt(selectedDataUC.rt_median))
- }
- 
-   circle_NU
-      .attr("cx", x_rt(x0))
-      .attr("cy", y_rt(selectedDataNU.rt_median))
       
-   circle_UIUC
-      .attr("cx", x_rt(x0))
-      .attr("cy", y_rt(selectedDataUIUC.rt_median))
-
-   circle_ANL
-      .attr("cx", x_rt(x0))
-      .attr("cy", y_rt(selectedDataANL.rt_median))
-
-var strHTML = formatDate(x0) + '<br>' + 
-         "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-         "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+   var strHTML = formatDate(x0) + '<br>';
+      
+   if (typeof selectedDataUC !== 'undefined') {
+      circle_UC
+         .attr("cx", x_rt(x0))
+         .attr("cy", y_rt(selectedDataUC.rt_median))
          
-      if (typeof selectedDataUC !== 'undefined') {
-       strHTML = strHTML + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
-      }
+      strHTML = strHTML + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+   } 
+   
+   if (typeof selectedDataNU !== 'undefined') {
+      circle_NU
+         .attr("cx", x_rt(x0))
+         .attr("cy", y_rt(selectedDataNU.rt_median))
+         
+      strHTML = strHTML + "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>" + "<br>"
+   }
+   
+   if (typeof selectedDataUIUC !== 'undefined') {
+      circle_UIUC
+         .attr("cx", x_rt(x0))
+         .attr("cy", y_rt(selectedDataUIUC.rt_median))
+         
+      strHTML = strHTML + "UIUC: "+"<span style='color:red'>" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+   }
+   
+   if (typeof selectedDataANL !== 'undefined') {
+      circle_ANL
+         .attr("cx", x_rt(x0))
+         .attr("cy", y_rt(selectedDataANL.rt_median))
+      // strHTML = strHTML + "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+   }
+      
+   // var strHTML = formatDate(x0) + '<br>' + 
+   //    "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
+   //    "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+         
+   //    if (typeof selectedDataUC !== 'undefined') {
+   //     strHTML = strHTML + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+   //    }
+   
+   // var strHTML = formatDate(x0) + '<br>';
+   
+   
+
+
 
    if ((selectedRegion).localeCompare('covidregion_11') === 0) {
        
@@ -1646,22 +1609,24 @@ var strHTML = formatDate(x0) + '<br>' +
          .html(strHTML)
          .style("left", (margin_rt.left +24) + "px")
          .style("top",  (margin_rt.top +24) + "px")
-   } else {
-          Tooltip
-          .html(strHTML)
+         
+   } 
+   else {
+      Tooltip
+         .html(strHTML)
          .style("left", (margin_rt.left +24) + "px")
          .style("top",  (margin_rt.top +24) + "px")
    }
   }
   
-    var mousemove_test_pos = function(d) {
-       var formatTime = d3.timeFormat("%b %d")
-       var x0 = x_test_pos.invert(d3.mouse(this)[0]);
+   var mousemove_test_pos = function(d) {
+      var formatTime = d3.timeFormat("%b %d")
+      var x0 = x_test_pos.invert(d3.mouse(this)[0]);
        
-       var i = bisectCDT(data_map, x0, 1);
+      var i = bisectCDT(data_map, x0, 1);
        
-       var selectedData = data_map[i]
-       Tooltip_test_pos
+      var selectedData = data_map[i]
+      Tooltip_test_pos
          .html( formatTime(selectedData.date) +"<br></br><strong>Rate:</strong> <span style='color:red'> "+  
          parseFloat((selectedData.test_pos_avg)).toFixed(2) + "</span>")
          .style("left", (x_test_pos(selectedData.date) + 11) + "px")
@@ -1795,7 +1760,7 @@ var strHTML = formatDate(x0) + '<br>' +
       .transition()
       .duration(1000)
       .attr("d", d3.area()
-      .x(function(d) { return x_rtNU(d.date) })
+      .x(function(d) { return x_rt(d.date) })
       .y0(function(d) { return y_rt(d.rt_lower) })
       .y1(function(d) { return y_rt(d.rt_upper) }))
       
@@ -1850,7 +1815,7 @@ var strHTML = formatDate(x0) + '<br>' +
       .transition()
       .duration(1000)
       .attr("d", d3.line()
-      .x(function(d) { return x_rtNU(d.date) })
+      .x(function(d) { return x_rt(d.date) })
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
@@ -1894,7 +1859,7 @@ var strHTML = formatDate(x0) + '<br>' +
 
 var labelArr = [
    {'unv' : 'UC', 'Y' : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUC[dataUC.length - 1].model_date },
-   {'unv' : 'UIUC', 'Y' : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUIUC[dataUIUC.length - 1].date },
+   {'unv' : 'UIUC', 'Y' : y_rt(dataUIUC[dataUIUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUIUC[dataUIUC.length - 1].model_date },
    {'unv' : 'NU', 'Y' : y_rt(dataNU[dataNU.length - 1].rt_median) + margin_rt.top, 'm_d': dataNU[dataNU.length - 1].model_date }
   
    ]
