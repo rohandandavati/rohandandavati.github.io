@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="google-site-verification" content="FkmZtkTZp__GrGiedRxhWAG3L5SfgqFs7p8kwdGwq2U" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Illinois COVID - Reports</title>
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
@@ -134,13 +135,17 @@ height: 200px;
 
 </style>
 
+<div>
+
       <section class="jumbotron text-center bg-white">
         <div class="container">
           <h1 class="jumbotron-heading">Reports</h1>
           <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>-->
-          <!--<p>-->
+          <p>
             <!--<a href="#" class="btn btn-primary my-2">Weekly Reports</a>-->
             <!--<a href="#" class="btn btn-secondary my-2">All</a>-->
+            <button class="btn btn-primary my-2" id="weekly" onclick="filterUsingCategory('weekly')">Weekly Reports</button>
+            <button class="btn btn-secondary my-2" id="all" onclick="filterUsingCategory('all')">All</button>
           </p>
         </div>
       </section>
@@ -148,169 +153,183 @@ height: 200px;
       <div class="album py-5 bg-light">
         <div class="container">
           <div class="row">
-               
-            <div class="col-md-4">
+            
+             
+            
+            <div class="col-md-4" id="1">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200505_sentinel_surveillance_Rt.png" alt="Sentinel surveillance">
+                <img class="card-img-top img" src="/images/200505_sentinel_surveillance_Rt.png" alt="Sentinel surveillance" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Sentinel surveillance</text>
-                  <text class = "card-subtitle">May 5th, 2020</text>
+                  <text class="card-title crop-text-1 ">Sentinel surveillance</text>
+                  <text class="card-subtitle">May 5th, 2020</text>
                   <p class="card-text crop-text-2">Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
 </p> 
                 </div>
                 <a href="/reports/20200515_surveillance_to_restore_illinois.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="2">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200623_rt_lags.png" alt="Estimating Rt">
+                <img class="card-img-top img" src="/images/200623_rt_lags.png" alt="Estimating Rt" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Estimating Rt</text>
-                  <text class = "card-subtitle">June 23rd, 2020</text>
+                  <text class="card-title crop-text-1 ">Estimating Rt</text>
+                  <text class="card-subtitle">June 23rd, 2020</text>
                   <p class="card-text crop-text-2">Practical considerations for measuring the effective reproductive number, Rt
 </p> 
                 </div>
                 <a href="https://journals.plos.org/ploscompbiol/article/comments?id=10.1371/journal.pcbi.1008409" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="3">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/201110_mobility_poi_by_full_reopen_risk.png" alt="First wave mobility">
+                <img class="card-img-top img" src="/images/201110_mobility_poi_by_full_reopen_risk.png" alt="First wave mobility" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">First wave mobility</text>
-                  <text class = "card-subtitle">November 10th, 2020</text>
+                  <text class="card-title crop-text-1 ">First wave mobility</text>
+                  <text class="card-subtitle">November 10th, 2020</text>
                   <p class="card-text crop-text-2">Mobility network models of COVID-19 explain inequities and inform reopening
 </p> 
                 </div>
                 <a href="https://www.nature.com/articles/s41586-020-2923-3" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="4">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/210120_B117.png" alt="B.1.1.7 in Illinois">
+                <img class="card-img-top img" src="/images/210120_B117.png" alt="B.1.1.7 in Illinois" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">B.1.1.7 in Illinois</text>
-                  <text class = "card-subtitle">January 20, 2021</text>
+                  <text class="card-title crop-text-1 ">B.1.1.7 in Illinois</text>
+                  <text class="card-subtitle">January 20, 2021</text>
                   <p class="card-text crop-text-2">Why is B.1.1.7 so dangerous, and what should we do about it?
 </p> 
                 </div>
                 <a href="/reports/20210120_B117_in_Illinois.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="5">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200907_vax_prioritization.png" alt="Vaccine prioritization">
+                <img class="card-img-top img" src="/images/200907_vax_prioritization.png" alt="Vaccine prioritization" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Vaccine prioritization</text>
-                  <text class = "card-subtitle">September 10th, 2020</text>
+                  <text class="card-title crop-text-1 ">Vaccine prioritization</text>
+                  <text class="card-subtitle">September 10th, 2020</text>
                   <p class="card-text crop-text-2">Model-informed COVID-19 vaccine prioritization strategies by age and serostatus
 </p> 
                 </div>
                 <a href="https://www.medrxiv.org/content/10.1101/2020.09.08.20190629v2" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="6">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/201116_UIUC_Illinois_model_paper.png" alt="UIUC model">
+                <img class="card-img-top img" src="/images/201116_UIUC_Illinois_model_paper.png" alt="UIUC model" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">UIUC model</text>
-                  <text class = "card-subtitle">November 16th, 2020</text>
+                  <text class="card-title crop-text-1 ">UIUC model</text>
+                  <text class="card-subtitle">November 16th, 2020</text>
                   <p class="card-text crop-text-2">Structure, calibration, and application of the UIUC model.
 </p> 
                 </div>
                 <a href="/reports/20201116_UIUC_Illinois_model_paper.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="7">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200618_faster_testing_deaths_averted_per_day.png" alt="Reduce time to diagnosis">
+                <img class="card-img-top img" src="/images/200618_faster_testing_deaths_averted_per_day.png" alt="Reduce time to diagnosis" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Reduce time to diagnosis</text>
-                  <text class = "card-subtitle">June 18th, 2020</text>
+                  <text class="card-title crop-text-1 ">Reduce time to diagnosis</text>
+                  <text class="card-subtitle">June 18th, 2020</text>
                   <p class="card-text crop-text-2">Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
 </p> 
                 </div>
                 <a href="/reports/20200618_reduce_time_to_diagnosis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="8">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200710_contact_tracing_heatmap.png" alt="Contact tracing">
+                <img class="card-img-top img" src="/images/200710_contact_tracing_heatmap.png" alt="Contact tracing" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Contact tracing</text>
-                  <text class = "card-subtitle">July 10th, 2020</text>
+                  <text class="card-title crop-text-1 ">Contact tracing</text>
+                  <text class="card-subtitle">July 10th, 2020</text>
                   <p class="card-text crop-text-2">How do the performance requirements of contact tracing vary across different regions and transmission scenarios?
 </p> 
                 </div>
                 <a href="/reports/20200710_contact_tracing.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="9">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200714_overflow_simulated_trajectories.png" alt="NE Region hospital overflow">
+                <img class="card-img-top img" src="/images/200714_overflow_simulated_trajectories.png" alt="NE Region hospital overflow" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">NE Region hospital overflow</text>
-                  <text class = "card-subtitle">July 14th, 2020</text>
+                  <text class="card-title crop-text-1 ">NE Region hospital overflow</text>
+                  <text class="card-subtitle">July 14th, 2020</text>
                   <p class="card-text crop-text-2">How can we reliably tell that COVID-19 hospital needs in the Northeast Restore Region are likely to exceed available capacity?
 </p> 
                 </div>
                 <a href="/reports/20200714_overflow_alert_v3.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="10">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200804_admissions_prob_of_trigger.png" alt="Hospital admissions as indicator">
+                <img class="card-img-top img" src="/images/200804_admissions_prob_of_trigger.png" alt="Hospital admissions as indicator" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Hospital admissions as indicator</text>
-                  <text class = "card-subtitle">August 4th, 2020</text>
+                  <text class="card-title crop-text-1 ">Hospital admissions as indicator</text>
+                  <text class="card-subtitle">August 4th, 2020</text>
                   <p class="card-text crop-text-2">How reliable is COVID-like-illness (CLI) admissions as an indicator regions with fewer admissions?
 </p> 
                 </div>
                 <a href="/reports/20200804_hospitalizations_trigger_analysis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="11">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200811_exponential_extrapolation.png" alt="Hospital census as indicator">
+                <img class="card-img-top img" src="/images/200811_exponential_extrapolation.png" alt="Hospital census as indicator" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Hospital census as indicator</text>
-                  <text class = "card-subtitle">August 11th, 2020</text>
+                  <text class="card-title crop-text-1 ">Hospital census as indicator</text>
+                  <text class="card-subtitle">August 11th, 2020</text>
                   <p class="card-text crop-text-2">Can we predict ICU/hospital capacity overflow by fitting an exponential curve to recent data?
 </p> 
                 </div>
                 <a href="/reports/20200811_hospital_census_trigger_analysis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="12">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/200903_thresholds_for_action_risk_tolerance_curve.png" alt="Assessing thresholds for action">
+                <img class="card-img-top img" src="/images/200903_thresholds_for_action_risk_tolerance_curve.png" alt="Assessing thresholds for action" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Assessing thresholds for action</text>
-                  <text class = "card-subtitle">September 3rd, 2020</text>
+                  <text class="card-title crop-text-1 ">Assessing thresholds for action</text>
+                  <text class="card-subtitle">September 3rd, 2020</text>
                   <p class="card-text crop-text-2">Defining thresholds occupancy of ICU beds to trigger mitigation actions
 </p> 
                 </div>
                 <a href="/reports/20200903_assessing_thresholds_for_action.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
             </div>
-               
-            <div class="col-md-4">
+             
+            
+            <div class="col-md-4" id="13">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top img" src="/images/201019_TEPI_chicago_zip_map.png" alt="Prioritizing areas for expanding testing">
+                <img class="card-img-top img" src="/images/201019_TEPI_chicago_zip_map.png" alt="Prioritizing areas for expanding testing" />
                 <div class="card-body">
-                  <text class = "card-title crop-text-1 ">Prioritizing areas for expanding testing</text>
-                  <text class = "card-subtitle">October 19th, 2020</text>
+                  <text class="card-title crop-text-1 ">Prioritizing areas for expanding testing</text>
+                  <text class="card-subtitle">October 19th, 2020</text>
                   <p class="card-text crop-text-2">What areas in Chicago are most in need of expanded COVID-19 diagnostic testing?
 </p> 
                 </div>
@@ -321,184 +340,132 @@ height: 200px;
         </div>
         
       </div>
-
-<!--<div class = "container ">-->
+      
+      </div>
+      
+      
+      <script>
+      
+      
+  function filterUsingCategory(selectedCategory) {
+  function getMonday(d) {
+    d = new Date(d);
+    var day = d.getDay(),
+    diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+  return new Date(d.setDate(diff));
+  }
+  var id = 0
   
-<!--  <div class = "d-flex justify-content-between flex-wrap">-->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("May 5th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200505_sentinel_surveillance_Rt.png" alt="Sentinel surveillance">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Sentinel surveillance</text>-->
-<!--        <text class = "card-subtitle">May 5th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20200515_surveillance_to_restore_illinois.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("June 23rd, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200623_rt_lags.png" alt="Estimating Rt">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Estimating Rt</text>-->
-<!--        <text class = "card-subtitle">June 23rd, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Practical considerations for measuring the effective reproductive number, Rt
-</p> -->
-<!--      </div>-->
-<!--      <a href="https://journals.plos.org/ploscompbiol/article/comments?id=10.1371/journal.pcbi.1008409" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("November 10th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/201110_mobility_poi_by_full_reopen_risk.png" alt="First wave mobility">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">First wave mobility</text>-->
-<!--        <text class = "card-subtitle">November 10th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Mobility network models of COVID-19 explain inequities and inform reopening
-</p> -->
-<!--      </div>-->
-<!--      <a href="https://www.nature.com/articles/s41586-020-2923-3" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("January 20, 2021", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/210120_B117.png" alt="B.1.1.7 in Illinois">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">B.1.1.7 in Illinois</text>-->
-<!--        <text class = "card-subtitle">January 20, 2021</text>-->
-<!--        <p class="card-text crop-text-2">Why is B.1.1.7 so dangerous, and what should we do about it?
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20210120_B117_in_Illinois.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("September 10th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200907_vax_prioritization.png" alt="Vaccine prioritization">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Vaccine prioritization</text>-->
-<!--        <text class = "card-subtitle">September 10th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Model-informed COVID-19 vaccine prioritization strategies by age and serostatus
-</p> -->
-<!--      </div>-->
-<!--      <a href="https://www.medrxiv.org/content/10.1101/2020.09.08.20190629v2" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("November 16th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/201116_UIUC_Illinois_model_paper.png" alt="UIUC model">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">UIUC model</text>-->
-<!--        <text class = "card-subtitle">November 16th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Structure, calibration, and application of the UIUC model.
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20201116_UIUC_Illinois_model_paper.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("June 18th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200618_faster_testing_deaths_averted_per_day.png" alt="Reduce time to diagnosis">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Reduce time to diagnosis</text>-->
-<!--        <text class = "card-subtitle">June 18th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Reducing time to diagnosis impacts transmission and reduces eventual COVID-19 deaths.
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20200618_reduce_time_to_diagnosis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("July 10th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200710_contact_tracing_heatmap.png" alt="Contact tracing">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Contact tracing</text>-->
-<!--        <text class = "card-subtitle">July 10th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">How do the performance requirements of contact tracing vary across different regions and transmission scenarios?
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20200710_contact_tracing.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("July 14th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200714_overflow_simulated_trajectories.png" alt="NE Region hospital overflow">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">NE Region hospital overflow</text>-->
-<!--        <text class = "card-subtitle">July 14th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">How can we reliably tell that COVID-19 hospital needs in the Northeast Restore Region are likely to exceed available capacity?
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20200714_overflow_alert_v3.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("August 4th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200804_admissions_prob_of_trigger.png" alt="Hospital admissions as indicator">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Hospital admissions as indicator</text>-->
-<!--        <text class = "card-subtitle">August 4th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">How reliable is COVID-like-illness (CLI) admissions as an indicator regions with fewer admissions?
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20200804_hospitalizations_trigger_analysis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("August 11th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200811_exponential_extrapolation.png" alt="Hospital census as indicator">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Hospital census as indicator</text>-->
-<!--        <text class = "card-subtitle">August 11th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Can we predict ICU/hospital capacity overflow by fitting an exponential curve to recent data?
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20200811_hospital_census_trigger_analysis.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("September 3rd, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/200903_thresholds_for_action_risk_tolerance_curve.png" alt="Assessing thresholds for action">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Assessing thresholds for action</text>-->
-<!--        <text class = "card-subtitle">September 3rd, 2020</text>-->
-<!--        <p class="card-text crop-text-2">Defining thresholds occupancy of ICU beds to trigger mitigation actions
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20200903_assessing_thresholds_for_action.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--                 -->
-<!--    <div class="card mb-4 shadow-sm d-md-inline-flex card-outer row">  -->
+    var date = moment("October 19th, 2020", 'MMMM Do, YYYY').valueOf();
+    var weekStart = (getMonday(new Date())).getTime();
+    var postDiv = document.getElementById(++id);
+    postDiv.style.display =
+        (selectedCategory == 'all' || weekStart <= date ) 
+          ? 'unset' 
+          : 'none';
     
-<!--      <img class="card-img-top img" src="/images/201019_TEPI_chicago_zip_map.png" alt="Prioritizing areas for expanding testing">-->
-      
-<!--      <div class="card-body d-flex flex-column caption">-->
-<!--        <text class = "card-title crop-text-1 ">Prioritizing areas for expanding testing</text>-->
-<!--        <text class = "card-subtitle">October 19th, 2020</text>-->
-<!--        <p class="card-text crop-text-2">What areas in Chicago are most in need of expanded COVID-19 diagnostic testing?
-</p> -->
-<!--      </div>-->
-<!--      <a href="/reports/20201019_testing_expansion_priority.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>-->
-<!--    </div>  -->
-<!--    -->
-<!--  </div>-->
-<!--</div>-->
+    
+  }
+</script>
 
 
+</div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
