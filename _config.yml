@@ -32,7 +32,7 @@ whitelist           : []
 plugins             : []
 
 # Conversion
-markdown            : kramdown
+markdown            : GFM
 highlighter         : rouge
 lsi                 : false
 excerpt_separator   : "\n\n"
@@ -42,7 +42,7 @@ incremental         : false
 detach              : false
 port                : 4000
 host                : 127.0.0.1
-baseurl             : "" # does not include hostname
+baseurl             : "https://rohandandavati.github.io/" # does not include hostname
 show_dir_listing    : false
 
 # Outputting
