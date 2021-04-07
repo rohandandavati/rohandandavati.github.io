@@ -1,6 +1,44 @@
 - name: April 2nd, 2021
-#  date: April 2nd, 2021
   path: /reports/weekly/20210402.pdf
-#  image_path: /images/weekly/image.png
-#  description: >
-#    Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
+- name: March 19th, 2021
+  path: /reports/weekly/20210319.pdf
+- name: March 5th, 2021
+  path: /reports/weekly/20210305.pdf
+- name: February 19th, 2021
+  path: /reports/weekly/20210219.pdf
+- name: February 5th, 2021
+  path: /reports/weekly/20210205.pdf
+- name: January 22nd, 2021
+  path: /reports/weekly/20210122.pdf
+- name: January 15th, 2021
+  path: /reports/weekly/20210115.pdf
+- name: January 8th, 2021
+  path: /reports/weekly/20210108.pdf
+- name: December 18th, 2020
+  path: /reports/weekly/20201218.pdf
+- name: December 11th, 2020
+  path: /reports/weekly/20201211.pdf
+- name: December 4th, 2020
+  path: /reports/weekly/20201204.pdf
+- name: November 20th, 2020
+  path: /reports/weekly/20201120.pdf
+- name: November 13th, 2020
+  path: /reports/weekly/20201113.pdf
+- name: November 6th, 2020
+  path: /reports/weekly/20201106.pdf
+- name: October 30th, 2020
+  path: /reports/weekly/20201030.pdf
+- name: October 23rd, 2020
+  path: /reports/weekly/20201023.pdf
+- name: October 16th, 2020
+  path: /reports/weekly/20201016.pdf
+- name: October 9th, 2020
+  path: /reports/weekly/20201009.pdf
+- name: October 2nd, 2020
+  path: /reports/weekly/20201002.pdf
+- name: September 25h, 2020
+  path: /reports/weekly/20200925.pdf
+- name: September 18th, 2020
+  path: /reports/weekly/20200918.pdf
+- name: Sepetmber 11th, 2020
+  path: /reports/weekly/20200911.pdf
