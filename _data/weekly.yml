@@ -1,6 +1,6 @@
-- name: Weekly
-  date: April 2nd, 2021
+- name: April 2nd, 2021
+#  date: April 2nd, 2021
   path: /reports/weekly/20210402.pdf
-  image_path: /images/weekly/image.png
-  description: >
-    Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
+#  image_path: /images/weekly/image.png
+#  description: >
+#    Reliable indicators for decision-making: Proposal for a sentinel surveillance system for Illinois.
