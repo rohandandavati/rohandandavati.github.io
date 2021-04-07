@@ -14,9 +14,14 @@ title: Reports
     .card-subtitle {
         font-size: 12px;
     }
-    .card {
+    .all {
       /*width: 300px;*/
       height: 450px;
+    }
+        .weekly {
+      /*width: 300px;*/
+      height: 150px;
+      /*display: unset;*/
     }
 
     body {
@@ -65,18 +70,18 @@ height: 200px;
         <div class="container">
               <h1>Reports</h1>
           <p>
-           <button class="btn btn-outline-primary" id = "weekly" onclick = "filterUsingCategory('weekly')" >Weekly Reports</button>
-            <button class="btn btn-outline-secondary" id = "all" onclick="filterUsingCategory('all')" >All</button>
+           <button class="btn btn-outline-secondary" id = "reports" onclick="filterUsingCategory('reports')" >Reports</button>
+           <button class="btn btn-outline-primary" id = "weekly" onclick = "filterUsingCategory('weekly')" >Weekly Updates</button>
+           
           </p>
           <div class="row">
+          {% assign id = 0 %}
           {% for report in site.data.weekly %}
-            <div class="col-md-4" >
-              <div class="card border-primary mb-4 box-shadow">
-                <img class="card-img-top img" src="{{ report.image_path }}" alt="{{ report.name }}">
+          {% assign id = id | plus:1 %}
+            <div class="col-md-4 " id="{{id | append: "weekly" }}" >
+              <div class="card weekly border-primary mb-4 box-shadow">
                 <div class="card-body">
                   <text class = "card-title crop-text-1 ">{{ report.name }}</text>
-                  <text class = "card-subtitle">{{ report.date }}</text>
-                  <p class="card-text crop-text-2">{{ report.description }}</p> 
                 </div>
                 <a href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>
               </div>
@@ -85,8 +90,8 @@ height: 200px;
             {% assign id = 0 %}
             {% for report in site.data.reports %} 
             {% assign id = id | plus:1 %}
-            <div class="col-md-4" id="{{id}}" >
-              <div class="card mb-4 box-shadow">
+            <div class="col-md-4" id="{{id | append: "report" }}" >
+              <div class="all card mb-4 box-shadow">
                 <img class="card-img-top img" src="{{ report.image_path }}" alt="{{ report.name }}">
                 <div class="card-body">
                   <text class = "card-title crop-text-1 ">{{ report.name }}</text>
@@ -107,25 +112,29 @@ height: 200px;
       <script>
       
       
-  function filterUsingCategory(selectedCategory) {
-  function getMonday(d) {
-    d = new Date(d);
-    var day = d.getDay(),
-    diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
-  return new Date(d.setDate(diff));
-  }
+
+function filterUsingCategory(selectedCategory) { 
+
   var id = 0
-  {% for report in site.data.reports %}
-    var date = moment("{{ report.date }}", 'MMMM Do, YYYY').valueOf();
-    var weekStart = (getMonday(new Date())).getTime();
-    var postDiv = document.getElementById(++id);
+  {% for report in site.data.weekly %}
+    var postDiv = document.getElementById(++id + "weekly");
     postDiv.style.display =
-        (selectedCategory == 'all' || weekStart <= date ) 
+        (selectedCategory == 'weekly' ) 
+          ? 'unset' 
+          : 'none';
+    {% endfor %}
+    id =0;
+  {% for report in site.data.reports %}
+    var postDiv = document.getElementById(++id + "report");
+    postDiv.style.display =
+        (selectedCategory == 'reports' ) 
           ? 'unset' 
           : 'none';
     {% endfor %}
     
   }
+  filterUsingCategory('reports')
 </script>
+
 
 
