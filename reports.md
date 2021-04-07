@@ -20,7 +20,7 @@ title: Reports
     }
 
     body {
-    padding-top: 90px;
+    padding-top: 70px;
     }
     .read {
       width: 80px;
@@ -60,22 +60,28 @@ height: 200px;
 
 <div>
 
-      <section class="jumbotron text-center bg-white">
-        <div class="container">
-          <h1 class="jumbotron-heading">Reports</h1>
-          <!--<p class="lead text-muted">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.</p>-->
-          <p>
-            <!--<a href="#" class="btn btn-primary my-2">Weekly Reports</a>-->
-            <!--<a href="#" class="btn btn-secondary my-2">All</a>-->
-            <button class="btn btn-primary my-2" id = "weekly" onclick = "filterUsingCategory('weekly')" >Weekly Reports</button>
-            <button class="btn btn-secondary my-2" id = "all" onclick="filterUsingCategory('all')" >All</button>
-          </p>
-        </div>
-      </section>
 
       <div class="album py-5 bg-light">
         <div class="container">
+              <h1>Reports</h1>
+          <p>
+           <button class="btn btn-outline-primary" id = "weekly" onclick = "filterUsingCategory('weekly')" >Weekly Reports</button>
+            <button class="btn btn-outline-secondary" id = "all" onclick="filterUsingCategory('all')" >All</button>
+          </p>
           <div class="row">
+          {% for report in site.data.weekly %}
+            <div class="col-md-4" >
+              <div class="card border-primary mb-4 box-shadow">
+                <img class="card-img-top img" src="{{ report.image_path }}" alt="{{ report.name }}">
+                <div class="card-body">
+                  <text class = "card-title crop-text-1 ">{{ report.name }}</text>
+                  <text class = "card-subtitle">{{ report.date }}</text>
+                  <p class="card-text crop-text-2">{{ report.description }}</p> 
+                </div>
+                <a href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>
+              </div>
+            </div>
+            {% endfor %}
             {% assign id = 0 %}
             {% for report in site.data.reports %} 
             {% assign id = id | plus:1 %}
