@@ -36,9 +36,25 @@
   path: /reports/weekly/20201009.pdf
 - name: October 2nd, 2020
   path: /reports/weekly/20201002.pdf
-- name: September 25h, 2020
+- name: September 25th, 2020
   path: /reports/weekly/20200925.pdf
 - name: September 18th, 2020
   path: /reports/weekly/20200918.pdf
-- name: Sepetmber 11th, 2020
+- name: September 11th, 2020
   path: /reports/weekly/20200911.pdf
+- name: August 29th, 2020
+  path: /reports/weekly/20200829.pdf
+- name: August 22nd, 2020
+  path: /reports/weekly/20200822.pdf
+- name: August 15th, 2020
+  path: /reports/weekly/20200815.pdf
+- name: August 8th, 2020
+  path: /reports/weekly/20200808.pdf
+- name: August 1st, 2020
+  path: /reports/weekly/20200801.pdf
+- name: July 25th, 2020
+  path: /reports/weekly/20200725.pdf
+- name: July 18th, 2020
+  path: /reports/weekly/20200718.pdf
+- name: July 3rd, 2020
+  path: /reports/weekly/20200703.pdf
