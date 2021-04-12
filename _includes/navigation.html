@@ -19,7 +19,8 @@
        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
        </button>
-       <div class="collapse navbar-collapse buttons open" id="navbarNav">
+       
+       <div style = "width: 50%" class="collapse navbar-collapse buttons open" id="navbarNav">
          <ul class="navbar-nav list "id = "navList">
            {% for item in site.data.navigation %}
               <li class="nav-item">
@@ -29,12 +30,14 @@
          </ul>
        </div>
        
-       <div class = "container position-relative ">
-       <div class = "row">
-           <div class = "col drop ">
+       <div style="flex-grow: 1; " class = "container position-relative ">
+       <!--<div class = "row">-->
+           <!--<div class = "col drop ">-->
                <select id="selectButton" class = "dropdown "  ></select>
-           </div>
-       </div>
+           <!--</div>-->
+       <!--</div>-->
    </div>
    
      </nav>
+     
+     
