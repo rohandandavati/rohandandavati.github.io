@@ -1,0 +1,59 @@
+---
+layout: default
+title: Weekly Updates
+---
+<style type="text/css">
+/*div{*/
+/*  border: 1px solid red;*/
+/*}*/
+    body {
+        padding-top: 60px;
+    }
+    
+
+.themed-container {
+    padding: .55rem;
+    margin-bottom: 1.5rem;
+    width: 40%;
+    margin-right: 20%;
+    float:left;
+    background-color: rgba(0, 123, 255, .15);
+    border: 1px solid rgba(0, 123, 255, .2);
+}
+.read {
+  float: right;
+  
+}
+    .menu{
+        height: 20px;
+        line-height: 20px;
+        padding: 10px;        
+        /*border: 1px solid #666;*/
+    }
+
+
+
+</style>
+
+<div class = 'container'>
+    
+<h1>Updates</h1>
+
+          {% assign id = 0 %}
+          {% for report in site.data.weekly %}
+          {% assign id = id | plus:1 %}
+            <div class="container themed-container" style="display: flex;" id="{{id | append: "weekly" }}" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>{{ report.name }}</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            {% endfor %}
+            
+            
+</div>

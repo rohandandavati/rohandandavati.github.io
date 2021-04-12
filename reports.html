@@ -25,7 +25,7 @@ title: Reports
     }
 
     body {
-    padding-top: 70px;
+    padding-top: 60px;
     }
     .read {
       width: 80px;
@@ -66,31 +66,20 @@ height: 200px;
 <div>
 
 
-      <div class="album py-5 bg-light">
+      <div class="album py-5 ">
         <div class="container">
               <h1>Reports</h1>
           <p>
-           <button class="btn btn-outline-secondary" id = "reports" onclick="filterUsingCategory('reports')" >Reports</button>
-           <button class="btn btn-outline-primary" id = "weekly" onclick = "filterUsingCategory('weekly')" >Weekly Updates</button>
+          <!-- <button class="btn btn-outline-secondary" id = "reports" onclick="filterUsingCategory('reports')" >Reports</button>-->
+          <!-- <button class="btn btn-outline-primary" id = "weekly" onclick = "filterUsingCategory('weekly')" >Weekly Updates</button>-->
            
           </p>
           <div class="row">
-          {% assign id = 0 %}
-          {% for report in site.data.weekly %}
-          {% assign id = id | plus:1 %}
-            <div class="col-md-4 " id="{{id | append: "weekly" }}" >
-              <div class="card weekly border-primary mb-4 box-shadow">
-                <div class="card-body">
-                  <text class = "card-title crop-text-1 ">{{ report.name }}</text>
-                </div>
-                <a href="{{ report.path }}" class="btn btn-outline-primary read " target="_blank">Read</a>
-              </div>
-            </div>
-            {% endfor %}
-            {% assign id = 0 %}
+
+            <!--{% assign id = 0 %}-->
             {% for report in site.data.reports %} 
-            {% assign id = id | plus:1 %}
-            <div class="col-md-4" id="{{id | append: "report" }}" >
+            <!--{% assign id = id | plus:1 %}-->
+            <div class="col-md-4" >
               <div class="all card mb-4 box-shadow">
                 <img class="card-img-top img" src="{{ report.image_path }}" alt="{{ report.name }}">
                 <div class="card-body">
@@ -108,33 +97,31 @@ height: 200px;
       
       </div>
       
-      
-      <script>
-      
+
       
 
-function filterUsingCategory(selectedCategory) { 
+<!--function filterUsingCategory(selectedCategory) { -->
 
-  var id = 0
-  {% for report in site.data.weekly %}
-    var postDiv = document.getElementById(++id + "weekly");
-    postDiv.style.display =
-        (selectedCategory == 'weekly' ) 
-          ? 'unset' 
-          : 'none';
-    {% endfor %}
-    id =0;
-  {% for report in site.data.reports %}
-    var postDiv = document.getElementById(++id + "report");
-    postDiv.style.display =
-        (selectedCategory == 'reports' ) 
-          ? 'unset' 
-          : 'none';
-    {% endfor %}
+<!--  var id = 0-->
+<!--  {% for report in site.data.weekly %}-->
+<!--    var postDiv = document.getElementById(++id + "weekly");-->
+<!--    postDiv.style.display =-->
+<!--        (selectedCategory == 'weekly' ) -->
+<!--          ? 'unset' -->
+<!--          : 'none';-->
+<!--    {% endfor %}-->
+<!--    id =0;-->
+<!--  {% for report in site.data.reports %}-->
+<!--    var postDiv = document.getElementById(++id + "report");-->
+<!--    postDiv.style.display =-->
+<!--        (selectedCategory == 'reports' ) -->
+<!--          ? 'unset' -->
+<!--          : 'none';-->
+<!--    {% endfor %}-->
     
-  }
-  filterUsingCategory('reports')
-</script>
+<!--  }-->
+<!--  filterUsingCategory('reports')-->
+<!--</script>-->
 
 
 

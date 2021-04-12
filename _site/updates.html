@@ -1,0 +1,518 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="google-site-verification" content="FkmZtkTZp__GrGiedRxhWAG3L5SfgqFs7p8kwdGwq2U" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Illinois COVID - Weekly Updates</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <script type="text/javascript" src="/assets/js/d3.js"></script>
+    <script type="text/javascript" src="/assets/js/FileSaver.min.js"></script>
+    <script type="text/javascript" src="/assets/js/moment.min.js"></script>
+    <script type="text/javascript" src="/assets/js/d3-tip.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" integrity="sha512-P/PLNIojUNrUq2g5Q3NX8epp5X6KZmNvWV2pDGU+ZiU96YlqFhIrG0pkSZ/qgruT7uJ2Ok/vFN7/7brl4Y7ipw==" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/assets/js/d3-scale.js"></script>
+    <script type="text/javascript" src="/assets/js/d3-transition.js"></script>
+    <script type="text/javascript" src="/assets/js/d3-time.js"></script>
+     <script type="text/javascript" src="/assets/js/d3-time-format.js"></script>
+    <script type="text/javascript" src="/assets/js/d3-collection.js"></script>
+    <script type="text/javascript" src="/assets/js/d3-geo-projection.js"></script>
+    <script type="text/javascript" src="/assets/js/d3-scale-chromatic.js"></script>
+    <script type="text/javascript" src="/assets/js/d3-drag.js"></script>
+ <script type="text/javascript" src="/assets/js/d3-queue.js"></script>
+ <script type="text/javascript" src="/assets/js/d3-brush.js"></script>
+ <script type="text/javascript" src="/assets/js/d3-shape.js"></script>
+  
+<meta name="google-site-verification" content="nosSwzGY6NvfaGc0eqDx-o4iE3TrVFz3jghj0jGW5is" /> 
+  </head>
+ 
+  <body>
+    
+  <style>
+
+   .navbar {
+     z-index: 3;
+   }
+   
+   .open {
+       z-index:3;
+   }
+     .hi {
+       width:500px;
+     }
+   
+     </style>
+     
+     <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed ">
+       <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+         <span class="navbar-toggler-icon"></span>
+       </button>
+       <div class="collapse navbar-collapse buttons open" id="navbarNav">
+         <ul class="navbar-nav list "id = "navList">
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/" >Home</a>
+               </li>
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/reports.html" >Reports</a>
+               </li>
+           
+              <li class="nav-item">
+                 <a class="nav-link" href="/about.html" >About</a>
+               </li>
+           
+         </ul>
+       </div>
+       
+       <div class = "container position-relative ">
+       <div class = "row">
+           <div class = "col drop ">
+               <select id="selectButton" class = "dropdown "  ></select>
+           </div>
+       </div>
+   </div>
+   
+     </nav>
+    <style type="text/css">
+/*div{*/
+/*  border: 1px solid red;*/
+/*}*/
+    body {
+        padding-top: 60px;
+    }
+    
+
+.themed-container {
+    padding: .55rem;
+    margin-bottom: 1.5rem;
+    width: 40%;
+    margin-right: 20%;
+    float:left;
+    background-color: rgba(0, 123, 255, .15);
+    border: 1px solid rgba(0, 123, 255, .2);
+}
+.read {
+  float: right;
+  
+}
+    .menu{
+        height: 20px;
+        line-height: 20px;
+        padding: 10px;        
+        /*border: 1px solid #666;*/
+    }
+
+
+
+</style>
+
+<div class = 'container'>
+    
+<h1>Updates</h1>
+
+          
+          
+          
+            <div class="container themed-container" style="display: flex;" id="1weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>April 2nd, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210402.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="2weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>March 19th, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210319.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="3weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>March 5th, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210305.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="4weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>February 19th, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210219.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="5weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>February 5th, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210205.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="6weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>January 22nd, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210122.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="7weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>January 15th, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210115.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="8weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>January 8th, 2021</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20210108.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="9weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>December 18th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201218.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="10weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>December 11th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201211.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="11weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>December 4th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201204.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="12weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>November 20th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201120.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="13weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>November 13th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201113.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="14weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>November 6th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201106.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="15weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>October 30th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201030.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="16weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>October 23rd, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201023.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="17weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>October 16th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201016.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="18weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>October 9th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201009.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="19weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>October 2nd, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20201002.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="20weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>September 25th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200925.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="21weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>September 18th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200918.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="22weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>September 11th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200911.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="23weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>August 29th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200829.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="24weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>August 22nd, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200822.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="25weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>August 15th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200815.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="26weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>August 8th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200808.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="27weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>August 1st, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200801.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="28weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>July 25th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200725.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="29weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>July 18th, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200718.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+          
+            <div class="container themed-container" style="display: flex;" id="30weekly" >
+              <!--<div class="card weekly border-primary mb-4 box-shadow">-->
+                <div class="menu" style="width: 50%; " >
+                  <h6>July 3rd, 2020</h6>
+                </div>
+                <div style="flex-grow: 1; ">
+                  <a   href="/reports/weekly/20200703.pdf" class="btn btn-outline-primary read " target="_blank">Read</a>
+                </div>
+                
+              <!--</div>-->
+            </div>
+            
+            
+            
+</div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>
