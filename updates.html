@@ -6,9 +6,7 @@ title: Weekly Updates
 /*div{*/
 /*  border: 1px solid red;*/
 /*}*/
-    body {
-        padding-top: 60px;
-    }
+
         .dropdown{
       display: none !important;
     }
@@ -17,7 +15,7 @@ title: Weekly Updates
 .themed-container {
     padding: .55rem;
     margin-bottom: 1.5rem;
-    width: 40%;
+    /*width: 40%;*/
     margin-right: 20%;
     float:left;
     background-color: rgba(0, 123, 255, .15);
@@ -25,6 +23,7 @@ title: Weekly Updates
 }
 .read {
   float: right;
+  width: 100px;
   
 }
     .menu{
@@ -34,6 +33,63 @@ title: Weekly Updates
         /*border: 1px solid #666;*/
     }
 
+@media only screen and (max-width: 330px) {
+  
+  .themed-container {
+    width: 90%;
+  }
+} 
+
+
+@media only screen and (min-width: 339px) {
+    
+  .themed-container {
+    width: 90%;
+  }
+  
+      body {
+        padding-top: 80px;
+    }
+
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    
+  .themed-container {
+    width: 80%;
+  }
+  
+        body {
+        padding-top: 110px;
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+    
+  .themed-container {
+    width: 80%;
+  }
+  
+        body {
+        padding-top: 110px;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  
+    
+  .themed-container {
+    width: 70%;
+  }
+   
+         body {
+        padding-top: 110px;
+    }
+
+}
 
 
 </style>
@@ -47,7 +103,7 @@ title: Weekly Updates
           {% assign id = id | plus:1 %}
             <div class="container themed-container" style="display: flex;" id="{{id | append: "weekly" }}" >
               <!--<div class="card weekly border-primary mb-4 box-shadow">-->
-                <div class="menu" style="width: 50%; " >
+                <div class="menu" style="width: 70%; " >
                   <h6>{{ report.name }}</h6>
                 </div>
                 <div style="flex-grow: 1; ">
