@@ -1430,10 +1430,10 @@ rtArrs.forEach(obj => {
 })
 
 var rtStart  =  moment('2020-4-1', 'YYYY-MM-DD').valueOf()
-
+var indx = 0;
 rtArrs.forEach(obj => {
    
-   var indx = (obj.data).length-1
+   indx = (obj.data).length-1
    var mod_date = ((obj.data)[indx].model_date).getTime()
    while(indx >= 0 ){
       var time = ((obj.data)[indx].date).getTime()
