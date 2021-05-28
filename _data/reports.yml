@@ -10,6 +10,12 @@
   image_path: /images/200623_rt_lags.png
   description: >
     Practical considerations for measuring the effective reproductive number, Rt
+- name: Diagnostic testing in Illinois
+  date: May 28th, 2021
+  path: /reports/20210517_testing_paper.pdf
+  image_path: /images/210517_testing_paper_Fig1B_cropped.png
+  description: >
+    Heterogeneity in diagnostic testing in 2020
 - name: First wave mobility
   date: November 10th, 2020
   path: https://www.nature.com/articles/s41586-020-2923-3
