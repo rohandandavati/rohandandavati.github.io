@@ -1166,6 +1166,7 @@ for (var i = 0; i < 12; ++i) {
             // var dateTime = date.getTime()
             if (cdtRegions[region].length > 0 && dateTime <= (cdtRegions[region][cdtRegions[region].length-1].date).getTime() ) {
                
+               
                //search for date
                var find = binarySearch(cdtRegions[region], dateTime)
                if (find !== -1){
@@ -1353,7 +1354,18 @@ var indx = 0;
 rtArrs.forEach(obj => {
    
    indx = (obj.data).length-1
-   var mod_date = ((obj.data)[indx].model_date).getTime()
+   
+   // var mod_date = ((obj.data)[indx].model_date).getTime()
+   var mod_date;
+   if ((obj.data)[indx].model_date !== undefined) {
+      mod_date = ((obj.data)[indx].model_date).getTime();
+   } else {
+      // mod_date = ((obj.data)[(obj.data).length - 1].date).getTime(); //get last date - change to todays if greater than
+      mod_date = today.getTime();
+      console.log(mod_date)
+   }
+   
+   
    while(indx >= 0 ){
       var time = ((obj.data)[indx].date).getTime()
       
@@ -1855,6 +1867,8 @@ var mousemove = function(d) {
       .y(function(d) { return y_rt(d.rt_median) })
       )
    
+   
+   
 
 var labelArr = [
    {'unv' : 'UC', 'Y' : y_rt(dataUC[dataUC.length - 1].rt_median) + margin_rt.top, 'm_d': dataUC[dataUC.length - 1].model_date },
@@ -1863,9 +1877,12 @@ var labelArr = [
   
    ]
    
+   
    if((selectedRegion).localeCompare('covidregion_11') === 0) {
       labelArr.push({'unv' : 'ANL', 'Y' : y_rt(dataANL[dataANL.length - 1].rt_median) + margin_rt.top, 'm_d': dataANL[dataANL.length - 1].model_date })
    }
+   
+
    
 labelArr.sort((a, b) => (a.Y > b.Y) ? 1 : (a.Y === b.Y) ? ((a.Y > b.Y) ? 1 : -1) : -1 )
 
@@ -1878,6 +1895,12 @@ labelArr.forEach((label, i, obj) => {
    }
 })
    
+   labelArr.forEach(label => {
+      
+      if(label.m_d == undefined) {
+         label.m_d = today
+      }
+   });
    
 var formatModelDate = d3.timeFormat("%m/%d")
 lineLabel1
