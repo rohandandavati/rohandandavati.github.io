@@ -1,0 +1,177 @@
+
+     
+
+      
+      
+
+
+
+    <div id='loader_container'>
+<div id="loader"></div>
+</div>
+
+<div id="main_nav" >
+
+<nav  class="navbar fixed-top navbar-expand-sm navbar-light bg-light position-absolute position-fixed ">
+    <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div style = "width: 50%" class="collapse navbar-collapse buttons open" id="navbarNav">
+      <ul class="navbar-nav list "id = "navList">
+        {% for item in site.data.navigation %}
+           <li class="nav-item">
+              <a class="nav-link" href="{{ item.link }}" {% if page.url == item.link %} class="current" {% endif %}>{{ item.name }}</a>
+            </li>
+        {% endfor %}
+      </ul>
+    </div>
+    
+    <div style="flex-grow: 1; " class = "container position-relative ">
+    <!--<div class = "row">-->
+        <!--<div class = "col drop ">-->
+            <select id="selectButton" class = "dropdown "  ></select>
+        <!--</div>-->
+    <!--</div>-->
+</div>
+
+  </nav> 
+</div>
+
+<div class="map content" id = "cases_map"></div>
+
+
+
+<div class="card rt_title content">
+  <div class="card-body rt">
+    <h2>Transmission Status</h2>
+    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text_lower"></text> to <text id = "rt_text_upper"></text> for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
+      reproductive number, tells us whether the epidemic is <i>growing</i> <span class = "nowrap">(\(R_t\) > 1)</span>, <i>shrinking</i> (\(R_t\) < 1), or
+      staying the same (\(R_t\) = 1). </text></p>
+      <p><text>The curves below are estimated using different methods and data sources. Northwestern University (NU) estimates \(R_t\) from a dynamical model, which is fitted to COVID-19 hospitalizations and deaths.
+        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI.
+         The date next to the model name refers to the date of model fit. For more details and
+        links to the models, see the <a href="/about.html">About page</a>.</text></p>
+  </div>
+</div>
+
+<div class = "card cases content" id = "card_1">
+   <div class="card-body"> 
+   <div id = 'rt_chart'></div>
+      <button type="button" class="btn btn-primary" id= "rt_download">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"></path>
+</svg> Download 
+              </button>
+              
+              
+   </div>
+</div>
+
+
+
+<div class="card cases content" id = "card_2">
+  <div class="card-body rt">
+    <h2>Cases</h2>
+    <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
+      Illinois Department of Public Health. Individuals who receive multiple positive test results only count as one
+      case. Bars show daily cases, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases of SARS-CoV-2 infection are discovered daily in <text class = "region_text"></text>  of Illinois. </text>
+  </div>
+</div>
+
+
+<div class = "card cases chart content" id ="card_3">
+   <div class="card-body rt"> 
+      <div id = 'cases_chart'></div>
+   </div>
+</div>
+
+<div class="card vacc content" id = "card_4">
+  <div class="card-body rt">
+    <h2>COVID-like illness (CLI) Admissions </h2>
+    <text>This is the daily number of people admitted to the hospital for COVID-like illness (CLI) in <text class = "region_text"></text> of Illinois.
+        CLI admissions are a gold-standard indicator for COVID-19 trends because unlike cases or test positivity rate, CLI admissions are
+        much less sensitive to changes in diagnostic test availability or demand.
+</text>
+  </div>
+</div>
+
+<div class = "card cli chart content" id = "card_5">
+   <div class="card-body rt">
+      <div id = 'cli'></div>
+   </div>
+</div>
+
+
+<div class="card deaths content" id = "card_6">
+  <div class="card-body rt">
+    <h2>Deaths</h2>
+    <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
+      Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
+      but are likely within two weeks. Bars show daily deaths, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_deaths"></text> confirmed COVID-19 deaths
+      occur daily in <text class = "region_text"></text> of Illinois. </text>
+  </div>
+</div>
+
+<div class = "card deaths chart content" id ="card_7">
+   <div class="card-body rt"> 
+      <div id = 'deaths_chart'></div>
+   </div>
+</div>
+
+<div class="card cases content" id ="card_8">
+  <div class="card-body rt">
+    <h2>Cases per Test (case positivity rate)</h2>
+    <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
+      is not the same as the test positivity rate, which measures the number of positive tests per every test
+      administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
+      As of <text class = "last_update_date"></text>, an average of <text id = "avg_case_pos"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
+  </div>
+</div>
+
+<div class = "card deaths chart content" id ="card_9">
+   <div class="card-body rt"> 
+      <div id = 'test_pos'></div>
+   </div>
+</div>
+
+<div class="card cases content" id = "card_10">
+  <div class="card-body rt">
+    <h2>Tests</h2>
+    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois.
+      This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
+      test for past SARS-CoV-2 infection, are not included in this count. Diagnostic tests include only
+      molecular tests up to October 14, 2020 and include both molecular and antigen tests after October 14, 2020. Bars show daily tests, and the line
+      is a 7-day moving average. Dates are the date results were reported, not date of specimen collection. Spikes correspond to backlogged tests that were reported all at once.
+        As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
+</text>
+  </div>
+</div>
+
+
+<div class = "card deaths chart content" id = "card_11">
+   <div class="card-body rt"> 
+      <div id = 'tests'></div>
+   </div>
+</div>
+
+
+<div class="card vacc content" id = "card_12">
+  <div class="card-body rt">
+    <h2>Vaccination </h2>
+    <text>This is the daily number of doses administered and newly fully vaccinated residents of <text class = "region_text"></text> of Illinois.
+        As of <text class = "last_update_date"></text>, <text id = "percent_vaccinated"></text>% of residents of <text class = "region_text"></text> of Illinois have been fully vaccinated.
+        The cumulative number of doses distributed is <text id = "doses_total"></text> and <text id = "fully_total"></text> people have been fully vaccinated.
+</text>
+  </div>
+</div>
+
+
+<div class = "card deaths chart content" id = "card_13">
+   <div class="card-body rt"> 
+      <div id = 'vaccine'></div>
+   </div>
+</div>

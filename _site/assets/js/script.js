@@ -1,488 +1,7 @@
-<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="google-site-verification" content="FkmZtkTZp__GrGiedRxhWAG3L5SfgqFs7p8kwdGwq2U" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Illinois COVID - Home</title>
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?">
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <script type="text/javascript" src="/assets/js/d3.js"></script>
-    <script type="text/javascript" src="/assets/js/FileSaver.min.js"></script>
-    <script type="text/javascript" src="/assets/js/moment.min.js"></script>
-    <script type="text/javascript" src="/assets/js/d3-tip.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-selection/1.2.0/d3-selection.min.js" integrity="sha512-P/PLNIojUNrUq2g5Q3NX8epp5X6KZmNvWV2pDGU+ZiU96YlqFhIrG0pkSZ/qgruT7uJ2Ok/vFN7/7brl4Y7ipw==" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="/assets/js/d3-scale.js"></script>
-    <script type="text/javascript" src="/assets/js/d3-transition.js"></script>
-    <script type="text/javascript" src="/assets/js/d3-time.js"></script>
-     <script type="text/javascript" src="/assets/js/d3-time-format.js"></script>
-    <script type="text/javascript" src="/assets/js/d3-collection.js"></script>
-    <script type="text/javascript" src="/assets/js/d3-geo-projection.js"></script>
-    <script type="text/javascript" src="/assets/js/d3-scale-chromatic.js"></script>
-    <script type="text/javascript" src="/assets/js/d3-drag.js"></script>
- <script type="text/javascript" src="/assets/js/d3-queue.js"></script>
- <script type="text/javascript" src="/assets/js/d3-brush.js"></script>
- <script type="text/javascript" src="/assets/js/d3-shape.js"></script>
-  
-<meta name="google-site-verification" content="nosSwzGY6NvfaGc0eqDx-o4iE3TrVFz3jghj0jGW5is" /> 
-  </head>
- 
-  <body>
-    
-     
-     <div id="navcontain" >
-     <nav class="navbar fixed-top navbar-expand-sm navbar-light bg-light ">
-       <a class="navbar-brand" href="#">Illinois COVID-19 Modeling</a>
-       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-         <span class="navbar-toggler-icon"></span>
-       </button>
-       
-       <div style = "width: 50%" class="collapse navbar-collapse buttons open" id="navbarNav">
-         <ul class="navbar-nav list "id = "navList">
-           
-              <li class="nav-item">
-                 <a class="nav-link" href="/"  class="current" >Home</a>
-               </li>
-           
-              <li class="nav-item">
-                 <a class="nav-link" href="/reports.html" >Reports</a>
-               </li>
-           
-              <li class="nav-item">
-                 <a class="nav-link" href="/updates.html" >Weekly Updates</a>
-               </li>
-           
-              <li class="nav-item">
-                 <a class="nav-link" href="/about.html" >About</a>
-               </li>
-           
-         </ul>
-       </div>
-       
-       <div style="flex-grow: 1; " class = "container position-relative ">
-               <select id="selectButton" class = "dropdown "  ></select>
-           <!--</div>-->
-       <!--</div>-->
-   </div>
-   
-     </nav>
-    </div>
-     
-    <style>
-/*div {*/
-/*   border: 1px solid red;*/
-/*}*/
-
-#rt_download {
-   position:absolute;
-   right:90px;
-   bottom: 5px;
-   /*float: right;*/
-}
-.content {
-   position: relative;
-   display: none;
-}
-#loader {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 3;
-  width: 120px;
-  height: 120px;
-  margin: -76px 0 0 -76px;
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
-
-@-webkit-keyframes spin {
-  0% { -webkit-transform: rotate(0deg); }
-  100% { -webkit-transform: rotate(360deg); }
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Add animation to "page content" */
-.animate-bottom {
-  position: relative;
-  -webkit-animation-name: animatebottom;
-  -webkit-animation-duration: 1s;
-  animation-name: animatebottom;
-  animation-duration: 1s
-}
-
-@-webkit-keyframes animatebottom {
-  from { bottom:-100px; opacity:0 } 
-  to { bottom:0px; opacity:1 }
-}
-
-@keyframes animatebottom { 
-  from{ bottom:-100px; opacity:0 } 
-  to{ bottom:0; opacity:1 }
-}
-
-
-html, body {
-    max-width: 100%;
-    overflow-x: hidden;
-}
-.grid line {
-    stroke: #ddd;
-    /*opacity: 0.7;*/
-}
-.grid path {
-      stroke-width: 0;
-}
-
-.d3-tip, .tooltip, .tooltip_up {
-   z-index: 4;
-  line-height: 1;
-  font-weight: bold;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 2px;
-}
-
-/* Creates a small triangle extender for the tooltip */
-.d3-tip:after {
-  /*box-sizing: border-box;*/
-  display: block;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-}
-
-.tooltip.n:after {
-  box-sizing: border-box;
-  display: block;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25B2";
-  position: absolute;
-  text-align: center;
-  margin: -1px 0 0 0;
-  bottom: 100%;
-  left: 0;
-}
-
-
-/*MAKES BOTTOM TIP*/
-.tooltip.s:after {
-  box-sizing: border-box;
-  display: block;
-  font-size: 10px;
-  width: 100%;
-  line-height: 1;
-  color: rgba(0, 0, 0, 0.8);
-  content: "\25BC";
-  position: absolute;
-  text-align: center;
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-
-/*#tooltipUC {*/
-/*   background: #464646*/
-/*}*/
-
-#tooltipNU {
-   background: #949494
-}
-/* Style northward tooltips differently */
-.d3-tip.n:after {
-  margin: -1px 0 0 0;
-  top: 100%;
-  left: 0;
-}
-    .card {
-    border-color:transparent !important;
-    }
-    .chart {
-        z-index: 1;
-        /*margin-bottom: 1%;*/
-        
-    }
-    body {
-       margin: 0px;
-       padding: 0px;
-        /*padding-top: 50px;*/
-        /*padding-bottom:300px;*/
-        
-}
-	.classy {
-      fill:#009DAA;
-    } 
- 
-   #cases_map {
-      /*z-index: 2;*/   
-      position: fixed;
-      z-index: 2;
-}
-
-@media only screen and (max-width: 330px) {
-      body {
-         padding-top: 110px;
-      }
-      #cases_map {
-         width: 20%;
-         /*padding-top: 10px;*/
-         /*border: solid red 1px;*/
-      }
-            .card{
-         /*width:z;*/
-         width: 80%;
-      }
-
-} 
-
-
-@media only screen and (min-width: 339px) {
-      body {
-         padding-top: 90px;
-         /*margin-right: 0%;*/
-      }
-      #cases_map {
-         width: 15%;
-         /*border: solid red 1px;*/
-      }
-
-      #rt_outer {
-         width: 100%;
-      }
-      .card{
-         width:85%;
-         float: right;
-      }
-      .rt_title {
-         width: 85%;
-      }
-
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-      
-      #cases_map {
-         width: 15%;
-      }
-      .card {
-         margin-right: 5%;
-         width: 80%;
-      }
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-   body{
-      /*margin-left: 5%;*/
-      margin-right: 10%;
-   }
-   #cases_map {
-      margin-left: 1%;
-         width: 10%;
-}
-      .card {
-         margin-right: 5%;
-         width: 80%;
-      }
-}
-
-/* Extra large devices (large laptops and desktops, 1200px and up) */
-@media only screen and (min-width: 1200px) {
-   
-      body{
-      /*margin-left: 5%;*/
-      margin-right: 12%;
-   }
-   #cases_map {
-         width: 10%;
-      }
-}
-.bottom {
-   float: right;
-   /*width: 50%*/
-   position: relative;
-}
-
-
-</style>
-
-<!--try raising z index-->
-<div id="loader"></div>
-
-<div class="map content" id = "cases_map"></div>
-
-
-
-<div class="card rt_title content">
-  <div class="card-body rt">
-    <h2>Transmission Status</h2>
-    <p><text>We estimate \(R_t\) is currently around <text id = "rt_text_lower"></text> to <text id = "rt_text_upper"></text> for <text class = "region_text"></text> of Illinois. \(R_t\), the instantaneous
-      reproductive number, tells us whether the epidemic is <i>growing</i> <span class = "nowrap">(\(R_t\) > 1)</span>, <i>shrinking</i> (\(R_t\) < 1), or
-      staying the same (\(R_t\) = 1). </text></p>
-      <p><text>The curves below are estimated using different methods and data sources. Northwestern University (NU) estimates \(R_t\) from a dynamical model, which is fitted to COVID-19 hospitalizations and deaths.
-        The University of Chicago (UC) estimate derives from hospital admissions with COVID-like illness using methods in <a href="https://epiforecasts.io/EpiNow2/dev/">EpiNow2</a>. Each curve is shown with its 95% CI.
-         The date next to the model name refers to the date of model fit. For more details and
-        links to the models, see the <a href="/about.html">About page</a>.</text></p>
-  </div>
-</div>
-
-<div class = "card cases content" id = "card_1">
-   <div class="card-body"> 
-   <div id = 'rt_chart'></div>
-      <button type="button" class="btn btn-primary" id= "rt_download">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"></path>
-</svg> Download 
-              </button>
-              
-              
-   </div>
-</div>
-
-
-
-<div class="card cases content" id = "card_2">
-  <div class="card-body rt">
-    <h2>Cases</h2>
-    <text>This is the number of new infections discovered daily by diagnostic testing, as reported by the
-      Illinois Department of Public Health. Individuals who receive multiple positive test results only count as one
-      case. Bars show daily cases, and the line is a 7-day moving average.
-      As of <text class = "last_update_date"></text>, an average of <text id = "avg_cases"></text> cases of SARS-CoV-2 infection are discovered daily in <text class = "region_text"></text>  of Illinois. </text>
-  </div>
-</div>
-
-
-<div class = "card cases chart content" id ="card_3">
-   <div class="card-body rt"> 
-      <div id = 'cases_chart'></div>
-   </div>
-</div>
-
-<div class="card vacc content" id = "card_4">
-  <div class="card-body rt">
-    <h2>COVID-like illness (CLI) Admissions </h2>
-    <text>This is the daily number of people admitted to the hospital for COVID-like illness (CLI) in <text class = "region_text"></text> of Illinois.
-        CLI admissions are a gold-standard indicator for COVID-19 trends because unlike cases or test positivity rate, CLI admissions are
-        much less sensitive to changes in diagnostic test availability or demand.
-</text>
-  </div>
-</div>
-
-<div class = "card cli chart content" id = "card_5">
-   <div class="card-body rt">
-      <div id = 'cli'></div>
-   </div>
-</div>
-
-
-<div class="card deaths content" id = "card_6">
-  <div class="card-body rt">
-    <h2>Deaths</h2>
-    <text>This is the number of daily COVID-19 confirmed deaths reported to the Illinois Department of Public Health.
-      Reporting of deaths often lags behind reporting of cases, so death counts do not necessarily reflect date of death
-      but are likely within two weeks. Bars show daily deaths, and the line is a 7-day moving average.
-      As of <text class = "last_update_date"></text>, an average of <text id = "avg_deaths"></text> confirmed COVID-19 deaths
-      occur daily in <text class = "region_text"></text> of Illinois. </text>
-  </div>
-</div>
-
-<div class = "card deaths chart content" id ="card_7">
-   <div class="card-body rt"> 
-      <div id = 'deaths_chart'></div>
-   </div>
-</div>
-
-<div class="card cases content" id ="card_8">
-  <div class="card-body rt">
-    <h2>Cases per Test (case positivity rate)</h2>
-    <text>The case positivity rate is the number of cases discovered divided by the number of tests administered. This
-      is not the same as the test positivity rate, which measures the number of positive tests per every test
-      administered. Bars show the daily case positivity rate, and the line is a 7-day moving average.
-      As of <text class = "last_update_date"></text>, an average of <text id = "avg_case_pos"></text> cases are discovered per test in <text class = "region_text"></text>  of Illinois. </text>
-  </div>
-</div>
-
-<div class = "card deaths chart content" id ="card_9">
-   <div class="card-body rt"> 
-      <div id = 'test_pos'></div>
-   </div>
-</div>
-
-<div class="card cases content" id = "card_10">
-  <div class="card-body rt">
-    <h2>Tests</h2>
-    <text>This is the number of SARS-CoV-2 diagnostic tests administered daily in <text class = "region_text"></text> of Illinois.
-      This count only includes diagnostic tests, which test for current SARS-CoV-2 infection. Serological tests, which
-      test for past SARS-CoV-2 infection, are not included in this count. Diagnostic tests include only
-      molecular tests up to October 14, 2020 and include both molecular and antigen tests after October 14, 2020. Bars show daily tests, and the line
-      is a 7-day moving average. Dates are the date results were reported, not date of specimen collection. Spikes correspond to backlogged tests that were reported all at once.
-        As of <text class = "last_update_date"></text>, an average of <text id = "avg_test"></text> tests are conducted daily in <text class = "region_text"></text>  of Illinois.
-</text>
-  </div>
-</div>
-
-
-<div class = "card deaths chart content" id = "card_11">
-   <div class="card-body rt"> 
-      <div id = 'tests'></div>
-   </div>
-</div>
-
-
-<div class="card vacc content" id = "card_12">
-  <div class="card-body rt">
-    <h2>Vaccination </h2>
-    <text>This is the daily number of doses administered and newly fully vaccinated residents of <text class = "region_text"></text> of Illinois.
-        As of <text class = "last_update_date"></text>, <text id = "percent_vaccinated"></text>% of residents of <text class = "region_text"></text> of Illinois have been fully vaccinated.
-        The cumulative number of doses distributed is <text id = "doses_total"></text> and <text id = "fully_total"></text> people have been fully vaccinated.
-</text>
-  </div>
-</div>
-
-
-<div class = "card deaths chart content" id = "card_13">
-   <div class="card-body rt"> 
-      <div id = 'vaccine'></div>
-   </div>
-</div>
-
-
-
-
-<!--<div class = 'container'>-->
-
-<!--  <div class=" bottom row align-items-center">-->
-<!--    <div class="col-sm-2"><p id="value-time"></p></div>-->
-<!--    <div class="col-sm"><div id="slider-time"></div></div>-->
-<!--  </div>-->
-<!--  </div>-->
-
-<!--<div id="bottom"></div>-->
-
-<script>
-   /* global d3 */
+ /* global d3 */
    /* global $ */
    /*global moment*/
        
-   $('#navcontain').hide()
    
    let binarySearch = function (arr, x) { 
    
@@ -538,16 +57,6 @@ html, body {
       return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
    }
    
- 
-
-//  //orginal colors sent
-//    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
-//    var mapFill = ["#740000", "#743971", "#438a7f", "#b36f0e", "#505050", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#967c56"]
-//    var hexColorsLight = ["#c0514c", "#c08bbe","#94d4ca", "#f9bc65", "#a0a0a0", "#c3c0df", "#f58b7c", "#8bb5e0", "#bad96f", "#f9cce0", "#ecd056", "#dfc8a5"]
-//    var hexColorsLighter = ["#c76460", "#c798c5","#a0d9d0", "#fac376", "#ababab", "#cac7e3", "#f6988b", "#98bde3", "#c2dd7f", "#fad2e3", "#eed569", "#e3ceaf"]
-//    var hexColorsLightest = ["#ce7774", "#cea5cc","#acded6", "#facb87", "#b5b5b5", "#d0cee6", "#f7a599", "#a5c5e7", "#c9e18f", "#fad7e7", "#f0da7c", "#e6d4b9"]
-   
-   //region color swap issue #29
    var hexColors = ["#8f8f8f", "#BA7FB7","#89D0C5", "#F9B554", "#DCC29C", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#BA3E39"] 
    
    var mapFill = ["#505050", "#743971", "#438a7f", "#b36f0e", "#967c56", "#777396", "#ae3928", "#396797", "#6d8f1a", "#b38197", "#a48500", "#740000"]
@@ -600,320 +109,7 @@ html, body {
       var darkerColor = d3.scaleOrdinal().domain(allGroup)
      .range(hexColors)
      
-   var countyMap = {
-      "ADAMS": {
-         "covid_region": 3
-      },
-      "ALEXANDER": {
-         "covid_region": 5
-      },
-      "BOND": {
-         "covid_region": 4
-      },
-      "BOONE": {
-         "covid_region": 1
-      },
-      "BROWN": {
-         "covid_region": 3
-      },
-      "BUREAU": {
-         "covid_region": 2
-      },                   
-      "CALHOUN": {
-         "covid_region": 3
-      },
-      "CARROLL": {
-         "covid_region": 1
-      },
-      "CASS": {
-         "covid_region": 3
-      },
-      "CHAMPAIGN": {
-         "covid_region": 6
-      },
-      "CHICAGO": {
-         "covid_region": 11
-      },
-      "CHRISTIAN": {
-         "covid_region": 3
-      },
-      "CLARK": {
-         "covid_region": 6
-      },
-      "CLAY": {
-         "covid_region": 6
-      },
-      "CLINTON": {
-         "covid_region": 4
-      },
-      "COLES": {
-         "covid_region": 6
-      },
-      "COOK": {
-         "covid_region": 10
-      },
-      "CRAWFORD": {
-         "covid_region": 6
-      },
-      "CUMBERLAND": {
-         "covid_region": 6
-      },
-      "DE WITT": {
-         "covid_region": 6
-      },
-      "DEKALB": {
-         "covid_region": 1
-      },
-      "DOUGLAS": {
-         "covid_region": 6
-      },
-      "DUPAGE": {
-         "covid_region": 8
-      },
-      "EDGAR": {
-         "covid_region": 6
-      },
-      "EDWARDS": {
-         "covid_region": 5
-      },
-      "EFFINGHAM": {
-         "covid_region": 6
-      },
-      "FAYETTE": {
-         "covid_region": 6
-      },
-      "FORD": {
-         "covid_region": 6
-      },
-      "FRANKLIN": {
-         "covid_region": 5
-      },
-      "FULTON": {
-         "covid_region": 2
-      },
-      "GALLATIN": {
-         "covid_region": 5
-      },
-      "GREENE": {
-         "covid_region": 3
-      },
-      "GRUNDY": {
-         "covid_region": 2
-      },
-      "HAMILTON": {
-         "covid_region": 5
-      },
-      "HANCOCK": {
-         "covid_region": 3
-      },
-      "HARDIN": {
-         "covid_region": 5
-      },
-      "HENDERSON": {
-         "covid_region": 2
-      },
-      "HENRY": {
-         "covid_region": 2
-      },
-      "IROQUOIS": {
-         "covid_region": 6
-      },
-      "JACKSON": {
-         "covid_region": 5
-      },
-      "JASPER": {
-         "covid_region": 6
-      },
-      "JEFFERSON": {
-         "covid_region": 5
-      },
-      "JERSEY": {
-         "covid_region": 3
-      },
-      "JO DAVIESS": {
-         "covid_region": 1
-      },
-      "JOHNSON": {
-         "covid_region": 5
-      },
-      "KANE": {
-         "covid_region": 8
-      },
-      "KANKAKEE": {
-         "covid_region": 7
-      },
-      "KENDALL": {
-         "covid_region": 2
-      },
-      "KNOX": {
-         "covid_region": 2
-      },
-      "LAKE": {
-         "covid_region": 9
-      },
-      "LASALLE": {
-         "covid_region": 2
-      },
-      "LAWRENCE": {
-         "covid_region": 6
-      },
-      "LEE": {
-         "covid_region": 1
-      },
-      "LIVINGSTON": {
-         "covid_region": 2
-      },
-      "LOGAN": {
-         "covid_region": 3
-      },
-      "MACON": {
-         "covid_region": 6
-      },
-      "MACOUPIN": {
-         "covid_region": 3
-      },
-      "MADISON": {
-         "covid_region": 4
-      },
-      "MARION": {
-         "covid_region": 5
-      },
-      "MARSHALL": {
-         "covid_region": 2
-      },
-      "MASON": {
-         "covid_region": 3
-      },
-      "MASSAC": {
-         "covid_region": 5
-      },
-      "MCDONOUGH": {
-         "covid_region": 2
-      },
-      "MCHENRY": {
-         "covid_region": 9
-      },
-      "MCLEAN": {
-         "covid_region": 2
-      },
-      "MENARD": {
-         "covid_region": 3
-      },
-      "MERCER": {
-         "covid_region": 2
-      },
-      "MONROE": {
-         "covid_region": 4
-      },
-      "MONTGOMERY": {
-         "covid_region": 3
-      },
-      "MORGAN": {
-         "covid_region": 3
-      },
-      "MOULTRIE": {
-         "covid_region": 6
-      },
-      "OGLE": {
-         "covid_region": 1
-      },
-      "PEORIA": {
-         "covid_region": 2
-      },
-      "PERRY": {
-         "covid_region": 5
-      },
-      "PIATT": {
-         "covid_region": 6
-      },
-      "PIKE": {
-         "covid_region": 3
-      },
-      "POPE": {
-         "covid_region": 5
-      },
-      "PULASKI": {
-         "covid_region": 5
-      },
-      "PUTNAM": {
-         "covid_region": 2
-      },
-      "RANDOLPH": {
-         "covid_region": 4
-      },
-      "RICHLAND": {
-         "covid_region": 6
-      },
-      "ROCK ISLAND": {
-         "covid_region": 2
-      },
-      "SALINE": {
-         "covid_region": 5
-      },
-      "SANGAMON": {
-         "covid_region": 3
-      },
-      "SCHUYLER": {
-         "covid_region": 3 
-      },
-      "SCOTT": {
-         "covid_region": 3
-      },
-      "SHELBY": {
-         "covid_region": 6
-      },
-      "ST. CLAIR": {
-         "covid_region": 4
-      },
-      "STARK": {
-         "covid_region": 2
-      },
-      "STEPHENSON": {
-         "covid_region": 1
-      },
-      "TAZEWELL": {
-         "covid_region": 2
-      },
-      "UNION": {
-         "covid_region": 5
-      },
-      "VERMILION": {
-         "covid_region": 6
-      },
-      "WABASH": {
-         "covid_region": 5
-      },
-      "WARREN": {
-         "covid_region": 2
-      },
-      "WASHINGTON": {
-         "covid_region": 4
-      },
-      "WAYNE": {
-         "covid_region": 5
-      },
-      "WHITE": {
-         "covid_region": 5
-      },
-      "WHITESIDE": {
-         "covid_region": 1
-      },
-      "WILL": {
-         "covid_region": 7
-      },
-      "WILLIAMSON": {
-         "covid_region": 5
-      },
-      "WINNEBAGO": {
-         "covid_region": 1
-      },
-      "WOODFORD": {
-         "covid_region": 2
-      },
-      "ILLINOIS": {
-         "covid_region": 0
-      }
-   }
+   
    
    var margin_rt = {top: 10, right: 75, bottom: 50, left: 35};
    var margin_cases = {top: 10, right: 20, bottom: 30, left: 50};
@@ -1009,11 +205,9 @@ var lineLabel3 = svg_rt.append("text")
 var lineLabel4 = svg_rt.append("text")
 
  var focus = svg_rt.append("g")
-         //  .append('circle')
          .append('line')
          
  var refLine = svg_rt.append("g")
-         //  .append('circle')
          .append('line')
          
  var circle_UC = svg_rt.append("g")
@@ -1040,8 +234,6 @@ var dot_UIUC = svg_rt.append("g")
 var dot_ANL = svg_rt.append("g")
          .append('circle')
 
-   
- // Create the circle that travels along the curve of chart
  var focus_test_pos = d3.select("#test_pos")
     .append('g')
     .append('circle')
@@ -1094,8 +286,322 @@ var y_cli = d3.scaleLinear()
 var x_axis_cli = svg_cli.append("g")
 var y_axis_cli = svg_cli.append("g")
 
-//
-            //  'https://idph.illinois.gov/DPHPublicInformation/api/COVIDExport/GetResurgenceDataCLIAdmissions'
+// data start
+var countyMap = {
+    "ADAMS": {
+       "covid_region": 3
+    },
+    "ALEXANDER": {
+       "covid_region": 5
+    },
+    "BOND": {
+       "covid_region": 4
+    },
+    "BOONE": {
+       "covid_region": 1
+    },
+    "BROWN": {
+       "covid_region": 3
+    },
+    "BUREAU": {
+       "covid_region": 2
+    },                   
+    "CALHOUN": {
+       "covid_region": 3
+    },
+    "CARROLL": {
+       "covid_region": 1
+    },
+    "CASS": {
+       "covid_region": 3
+    },
+    "CHAMPAIGN": {
+       "covid_region": 6
+    },
+    "CHICAGO": {
+       "covid_region": 11
+    },
+    "CHRISTIAN": {
+       "covid_region": 3
+    },
+    "CLARK": {
+       "covid_region": 6
+    },
+    "CLAY": {
+       "covid_region": 6
+    },
+    "CLINTON": {
+       "covid_region": 4
+    },
+    "COLES": {
+       "covid_region": 6
+    },
+    "COOK": {
+       "covid_region": 10
+    },
+    "CRAWFORD": {
+       "covid_region": 6
+    },
+    "CUMBERLAND": {
+       "covid_region": 6
+    },
+    "DE WITT": {
+       "covid_region": 6
+    },
+    "DEKALB": {
+       "covid_region": 1
+    },
+    "DOUGLAS": {
+       "covid_region": 6
+    },
+    "DUPAGE": {
+       "covid_region": 8
+    },
+    "EDGAR": {
+       "covid_region": 6
+    },
+    "EDWARDS": {
+       "covid_region": 5
+    },
+    "EFFINGHAM": {
+       "covid_region": 6
+    },
+    "FAYETTE": {
+       "covid_region": 6
+    },
+    "FORD": {
+       "covid_region": 6
+    },
+    "FRANKLIN": {
+       "covid_region": 5
+    },
+    "FULTON": {
+       "covid_region": 2
+    },
+    "GALLATIN": {
+       "covid_region": 5
+    },
+    "GREENE": {
+       "covid_region": 3
+    },
+    "GRUNDY": {
+       "covid_region": 2
+    },
+    "HAMILTON": {
+       "covid_region": 5
+    },
+    "HANCOCK": {
+       "covid_region": 3
+    },
+    "HARDIN": {
+       "covid_region": 5
+    },
+    "HENDERSON": {
+       "covid_region": 2
+    },
+    "HENRY": {
+       "covid_region": 2
+    },
+    "IROQUOIS": {
+       "covid_region": 6
+    },
+    "JACKSON": {
+       "covid_region": 5
+    },
+    "JASPER": {
+       "covid_region": 6
+    },
+    "JEFFERSON": {
+       "covid_region": 5
+    },
+    "JERSEY": {
+       "covid_region": 3
+    },
+    "JO DAVIESS": {
+       "covid_region": 1
+    },
+    "JOHNSON": {
+       "covid_region": 5
+    },
+    "KANE": {
+       "covid_region": 8
+    },
+    "KANKAKEE": {
+       "covid_region": 7
+    },
+    "KENDALL": {
+       "covid_region": 2
+    },
+    "KNOX": {
+       "covid_region": 2
+    },
+    "LAKE": {
+       "covid_region": 9
+    },
+    "LASALLE": {
+       "covid_region": 2
+    },
+    "LAWRENCE": {
+       "covid_region": 6
+    },
+    "LEE": {
+       "covid_region": 1
+    },
+    "LIVINGSTON": {
+       "covid_region": 2
+    },
+    "LOGAN": {
+       "covid_region": 3
+    },
+    "MACON": {
+       "covid_region": 6
+    },
+    "MACOUPIN": {
+       "covid_region": 3
+    },
+    "MADISON": {
+       "covid_region": 4
+    },
+    "MARION": {
+       "covid_region": 5
+    },
+    "MARSHALL": {
+       "covid_region": 2
+    },
+    "MASON": {
+       "covid_region": 3
+    },
+    "MASSAC": {
+       "covid_region": 5
+    },
+    "MCDONOUGH": {
+       "covid_region": 2
+    },
+    "MCHENRY": {
+       "covid_region": 9
+    },
+    "MCLEAN": {
+       "covid_region": 2
+    },
+    "MENARD": {
+       "covid_region": 3
+    },
+    "MERCER": {
+       "covid_region": 2
+    },
+    "MONROE": {
+       "covid_region": 4
+    },
+    "MONTGOMERY": {
+       "covid_region": 3
+    },
+    "MORGAN": {
+       "covid_region": 3
+    },
+    "MOULTRIE": {
+       "covid_region": 6
+    },
+    "OGLE": {
+       "covid_region": 1
+    },
+    "PEORIA": {
+       "covid_region": 2
+    },
+    "PERRY": {
+       "covid_region": 5
+    },
+    "PIATT": {
+       "covid_region": 6
+    },
+    "PIKE": {
+       "covid_region": 3
+    },
+    "POPE": {
+       "covid_region": 5
+    },
+    "PULASKI": {
+       "covid_region": 5
+    },
+    "PUTNAM": {
+       "covid_region": 2
+    },
+    "RANDOLPH": {
+       "covid_region": 4
+    },
+    "RICHLAND": {
+       "covid_region": 6
+    },
+    "ROCK ISLAND": {
+       "covid_region": 2
+    },
+    "SALINE": {
+       "covid_region": 5
+    },
+    "SANGAMON": {
+       "covid_region": 3
+    },
+    "SCHUYLER": {
+       "covid_region": 3 
+    },
+    "SCOTT": {
+       "covid_region": 3
+    },
+    "SHELBY": {
+       "covid_region": 6
+    },
+    "ST. CLAIR": {
+       "covid_region": 4
+    },
+    "STARK": {
+       "covid_region": 2
+    },
+    "STEPHENSON": {
+       "covid_region": 1
+    },
+    "TAZEWELL": {
+       "covid_region": 2
+    },
+    "UNION": {
+       "covid_region": 5
+    },
+    "VERMILION": {
+       "covid_region": 6
+    },
+    "WABASH": {
+       "covid_region": 5
+    },
+    "WARREN": {
+       "covid_region": 2
+    },
+    "WASHINGTON": {
+       "covid_region": 4
+    },
+    "WAYNE": {
+       "covid_region": 5
+    },
+    "WHITE": {
+       "covid_region": 5
+    },
+    "WHITESIDE": {
+       "covid_region": 1
+    },
+    "WILL": {
+       "covid_region": 7
+    },
+    "WILLIAMSON": {
+       "covid_region": 5
+    },
+    "WINNEBAGO": {
+       "covid_region": 1
+    },
+    "WOODFORD": {
+       "covid_region": 2
+    },
+    "ILLINOIS": {
+       "covid_region": 0
+    }
+ }
+
 
 var files = [
              'https://raw.githubusercontent.com/samhovie/sitefiles/main/il-counties.json', 
@@ -1106,8 +612,6 @@ var files = [
             'https://raw.githubusercontent.com/samhovie/proxy-api/main/CLI/GetResurgenceDataCLIAdmissions.json'
              ]
              
-// var idph_url = 'https://idph.illinois.gov/DPHPublicInformation/api/COVIDVaccine/getVaccineAdministration?CountyName='
-// var idph_test = 'https://idph.illinois.gov/DPHPublicInformation/api/COVID/GetCountyHistorical?countyName='
 var idph_url = 'https://raw.githubusercontent.com/samhovie/proxy-api/main/VACCINE/'
 var idph_test = 'https://raw.githubusercontent.com/samhovie/proxy-api/main/CDT/'
    
@@ -1119,13 +623,7 @@ var idph_test = 'https://raw.githubusercontent.com/samhovie/proxy-api/main/CDT/'
 
 var promises = [];
 let today = new Date();
-// let lastCDT = new Date()
-let parDate = d3.timeParse("%m/%d/%Y");
 
-// console.log(files[213])
-// console.log(files)
-
-//push all urls in files
 files.forEach(function(url) {
     if (url.slice(-1) === 'v'){
        promises.push(d3.csv(url))
@@ -1134,31 +632,23 @@ files.forEach(function(url) {
     }
 });
 
-// get all data
 Promise.all(promises).then(function(data) {
 
-    // console.log(data)
-
+   
 
    var cdtRegions = []
    var vaccineRegions = []
+   var rtArrs = []
+   var cliArr = []
+
 
 for (var i = 0; i < 12; ++i) {
    cdtRegions.push([])
    vaccineRegions.push([])
 }   
    
-   var rtArrs = []
-   var cdtArrs = []
-   var vaccineArrs = []
-   var maxMinTime = 0
-   var maxMinTimeRT = 0;
-   var cliArr = []
-
-      //separate 
    data.forEach((datum, i) => {
        
-    // if it's vaccine array 
       if (datum.VaccineAdministration) {
          
          var len = (datum.VaccineAdministration).length
@@ -1215,14 +705,13 @@ for (var i = 0; i < 12; ++i) {
 
          
          var len = (datum.values).length
-        //  console.log(datum.values)
          for (var i = 1; i < len; ++i) {
             
-            //compute vals 
+           
             var date = moment((datum.values)[i].ReportDate).toDate();
 
             var dateTime = date.getTime()
-            // console.log(dateTime)
+            
             var region = countyMap[((datum.values)[i].CountyName).toUpperCase()].covid_region
             var cases_change = (datum.values)[i].CumulativeCases - (datum.values)[i-1].CumulativeCases
             var deaths_change =  (datum.values)[i].Deaths - (datum.values)[i-1].Deaths
@@ -1284,7 +773,7 @@ for (var i = 0; i < 12; ++i) {
                }
                
             } else {
-                // console.log(date)
+               
                cdtRegions[region].push({
                   date: date,
                   confirmed_cases_change:  cases_change,
@@ -1296,14 +785,14 @@ for (var i = 0; i < 12; ++i) {
          }
       }
       else if ((typeof(datum.values)).localeCompare('function') === 0){
-         // rtArrs.push(datum)
+        
          var title = files[i].slice(files[i].lastIndexOf('/') + 1 )
          if ((title).localeCompare('rtUIUC.csv') === 0 ) {
             datum = datum.filter(function(d) { return (d.scenario_name).localeCompare('baseline') === 0 })
          }
          if ((title).localeCompare("GetResurgenceDataCLIAdmissions.json") === 0 ) {
             cliArr = datum
-            // return
+            
          } else {
          rtArrs.push({title: title, data: datum })
          }
@@ -1316,11 +805,11 @@ for (var i = 0; i < 12; ++i) {
 const POINTS_AVERAGE = 6;
    cdtRegions.forEach(region => {
       
-      //  var end = cdtRegions[region].length - 1
+      
       var len = region.length
       for (var i = 0; i < len; ++i ){
          
-         //compute average 
+         
          
          var cases_r = 0
          var deaths_r = 0
@@ -1332,7 +821,7 @@ const POINTS_AVERAGE = 6;
          var tests_avg = 0;
          
          for (let j = 0; j <= POINTS_AVERAGE; j++) {
-         //  if (end - j >= 0 && endTime > (cdtRegions[region][end-j].date).getTime()) {
+         
          if (i - j >= 0 ){
             cases_avg += region[i - j].confirmed_cases_change;
             deaths_avg += region[i - j].deaths_change;
@@ -1360,11 +849,11 @@ const POINTS_AVERAGE = 6;
    
    vaccineRegions.forEach(region => {
       
-      //  var end = cdtRegions[region].length - 1
+      
       var len = region.length
       for (var i = 0; i < len; ++i ){
          
-         //compute average 
+         
          
          var persons_fully_r = 0
          var doses_admin_r = 0
@@ -1372,7 +861,7 @@ const POINTS_AVERAGE = 6;
          var doses_admin_avg = 0
          
          for (let j = 0; j <= POINTS_AVERAGE; j++) {
-         //  if (end - j >= 0 && endTime > (cdtRegions[region][end-j].date).getTime()) {
+        
          if (i - j >= 0 ){
             persons_fully_avg += region[i - j].PersonsFullyVaccinatedChange;
             doses_admin_avg += region[i - j].AdministeredCountChange;
@@ -1389,15 +878,12 @@ const POINTS_AVERAGE = 6;
       }
    })
    
-//    console.log(cdtRegions)
-   
-   //once through all data
-   //all data in same object? 
+
    
    let parseDate3 = d3.timeParse("%m/%d/%Y");
     let parseDate2 = d3.timeParse("%Y-%m-%d");
    
-   //get first day and init sum
+   
    var prev_day = moment(cliArr[0].reportDate).valueOf()
    var dayTotal = 0;
    
@@ -1446,21 +932,20 @@ rtArrs.forEach(obj => {
    
    indx = (obj.data).length-1
    
-   // var mod_date = ((obj.data)[indx].model_date).getTime()
+   
    var mod_date;
    if ((obj.data)[indx].model_date !== undefined) {
       mod_date = ((obj.data)[indx].model_date).getTime();
    } else {
-      // mod_date = ((obj.data)[(obj.data).length - 1].date).getTime(); //get last date - change to todays if greater than
+      
       mod_date = today.getTime();
-    //   console.log(mod_date)
+    
    }
    
    
    while(indx >= 0 ){
       var time = ((obj.data)[indx].date).getTime()
       
-      // if(time < rtStart || time > today.getTime()) {
       if( time < rtStart || time > mod_date) {
          (obj.data).splice(indx, 1)
       }
@@ -1468,15 +953,14 @@ rtArrs.forEach(obj => {
    }
 })
 
-// console.log(CDT)
-   
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("loader_container").style.display = "none";
       
-// document.getElementById("loader").style.display = "none";
-$('#loader').hide()
-$('#navcontain').show()
-      
+    //   document.getElementById("loader_container").style.display = "none";
+      window.onload = function() {
 
-
+        document.getElementById("main_nav").style.display = "block";
+      }
       var content_divs = document.getElementsByClassName( 'content' );
       [].slice.call( content_divs ).forEach(function ( div ) {
          div.style.display = 'block'
@@ -1604,47 +1088,16 @@ function drawChart() {
                
    var dataANL = (rtArrs.filter(function(d) { return (d.title).localeCompare('rtANL.csv') === 0})[0].data)
 
-   // var data_map = cdtArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
     var data_map = cdtRegions[selectToRegion[selectedRegion]]
-    // console.log(cdtRegions)
     console.log(data_map)
-   // var vaccineData = vaccineArrs.filter(function(d){return d.covid_region===selectToRegion[selectedRegion]})
        
    var vaccineData = vaccineRegions[selectToRegion[selectedRegion]]
    
    
    var cliData = cliArr.filter(function(d){return d.regionID===selectToRegion[selectedRegion]})
-   // var cli
    var formatDate = d3.timeFormat("%b %d")
 
  
-//  var sliderTime = d3
-//     .sliderBottom()
-//     .min(d3.min(dataTime))
-//     .max(d3.max(dataTime))
-//    .step(60 * 60 * 24)
-//     .width(600)
-//     .tickFormat(d3.timeFormat('%b %Y'))
-//     .tickValues(dataNU.map(function(d) { return d.date; }).filter(function(d,i){ 
-//       return ((dataNU[i].date).getDate() === 1)
-//    }))
-//     .on('onchange', val => {
-//       d3.select('p#value-time').text(d3.timeFormat('%b %d')(val));
-//     });
-
-//  var gTime = d3
-//     .select('div#slider-time')
-//     .append('svg')
-//     .attr('width', 500)
-//     .attr('height', 100)
-//     .append('g')
-//     .attr('transform', 'translate(30,30)');
-
-//  gTime.call(sliderTime);
-
-//  d3.select('p#value-time').text(d3.timeFormat('%b %d')(sliderTime.value()));
-
-
 var mousemove = function(d) {
    
    var formatTime = d3.timeFormat("%b %d");
@@ -1696,18 +1149,9 @@ var mousemove = function(d) {
       circle_ANL
          .attr("cx", x_rt(x0))
          .attr("cy", y_rt(selectedDataANL.rt_median))
-      // strHTML = strHTML + "ANL: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
+     
    }
       
-   // var strHTML = formatDate(x0) + '<br>' + 
-   //    "NU: "+"<span style='color:red'>" + parseFloat((selectedDataNU.rt_median)).toFixed(2) + "</span>"+ "<br>" +
-   //    "UIUC: "+"<span style='color:red' >" + parseFloat((selectedDataUIUC.rt_median)).toFixed(2) + "</span>" + "<br>"
-         
-   //    if (typeof selectedDataUC !== 'undefined') {
-   //     strHTML = strHTML + "UC: "+"<span style='color:red'>" + parseFloat((selectedDataUC.rt_median)).toFixed(2) + "</span>" + "<br>"
-   //    }
-   
-   // var strHTML = formatDate(x0) + '<br>';
    
    
 
@@ -1752,7 +1196,6 @@ var mousemove = function(d) {
       .attr("transform", "translate(" + margin_rt.left + "," + margin_rt.top + ")");
    
     x_rt
-      // .domain(d3.extent(dataUC, function(d) { return d.date}))
       .domain([ parseDate2('2020-4-1'), today])
       .range([ 0, width_rt]);
    
@@ -1801,16 +1244,13 @@ var mousemove = function(d) {
     x_rt_axis
    .attr("transform", "translate(" + margin_rt.left + "," + (height_rt + margin_rt.top) + ")")
    .call(d3.axisBottom(x_rt).tickSizeOuter(0)
-   // .tickValues(tickValsRT)
    .tickFormat(d3.timeFormat("%b %Y"))
    );
 
    // y_rt
    y_rt_axis
       .attr("transform", "translate("+ margin_rt.left +","+ margin_rt.top + ")"  )
-      // .call(d3.axisLeft(y_rt).ticks(6))
       .call(d3.axisLeft(y_rt))
-      // .call(y_rt_axis => y_rt_axis.select(".domain").remove())
       
       
           // Gridline
@@ -1839,7 +1279,6 @@ var mousemove = function(d) {
        .style("fill", "#242526")
        .attr("transform", "rotate(-90)")
      .html('Reproductive Number - R')
-   //  .style('font-size', '1rem')
      .style('font-size', function() {
         if (currentWidth < 600) {
            return ".6rem"
@@ -2295,14 +1734,12 @@ if(labelArr.length > 3 ){
    svg_cli.call(tip_cli)
    
    
-//  const len = data_map.length - 1;
 
    x_cases
       .domain(data_map.map(function(d) { return d.date; }))
       .range([0,width_cases])
       .padding(0);
 
-    //   console.log(data_map)
       
    x_cli
       .domain(cliData.map(function(d) { return d.reportDate; }))
@@ -2460,7 +1897,6 @@ var gridlines_cli = d3.axisLeft()
                    .tickSize(-width_cases)
                    .scale(y_test_pos);
                 
-            // console.log(data_map)
 
   grid_test_pos
      .attr("class", "grid")
@@ -2843,7 +2279,7 @@ saveAs(fileToSave, fileName);
 
     var region = ""
     if(selectedRegion == "illinois" ||selectedRegion == "Illinois" ) {
-         // return "Illinois";
+
         region = "the state";
      } else {
         region = "Region " + selectedRegion.substring( selectedRegion.indexOf('_')+1);
@@ -2879,10 +2315,3 @@ saveAs(fileToSave, fileName);
       drawChart()
     })
 })
-
-</script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
-</html>

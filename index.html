@@ -413,6 +413,7 @@ html, body {
    /* global $ */
    /*global moment*/
        
+   $('#navcontain').hide()
    
    let binarySearch = function (arr, x) { 
    
@@ -468,6 +469,7 @@ html, body {
       return (usePound?"#":"") + (g | (b << 8) | (r << 16)).toString(16);
    }
    
+ 
 
 //  //orginal colors sent
 //    var hexColors = ["#BA3E39", "#BA7FB7","#89D0C5", "#F9B554", "#969696", "#BDB9DC", "#F47F6E", "#7FADDD", "#B3D560", "#F9C7DD", "#EACB44", "#DCC29C"]
@@ -1399,7 +1401,13 @@ rtArrs.forEach(obj => {
 
 // console.log(CDT)
    
-      document.getElementById("loader").style.display = "none";
+      
+// document.getElementById("loader").style.display = "none";
+$('#loader').hide()
+$('#navcontain').show()
+      
+
+
       var content_divs = document.getElementsByClassName( 'content' );
       [].slice.call( content_divs ).forEach(function ( div ) {
          div.style.display = 'block'
